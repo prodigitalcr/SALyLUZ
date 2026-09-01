@@ -3,47 +3,921 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lectura Bíblica</title>
-  <!-- Enlace a Bootstrap -->
+  <title>Plataforma Iglesia · Biblia + Administrador</title>
+  <!-- Bootstrap + FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <!-- Tabler Icons (opcional) para más iconos -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+  <style>
+    /* ===== Estilos generales ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --teal: #1D9E75;
+      --teal-light: #E1F5EE;
+      --teal-dark: #085041;
+      --orange: #EF9F27;
+      --orange-light: #FAEEDA;
+      --orange-dark: #633806;
+      --wood: #F5EFE6;
+      --wood-mid: #D4C5A9;
+      --wood-dark: #8B6F47;
+      --plant: #639922;
+      --plant-light: #EAF3DE;
+      --bg-body: #f8f9fa;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6c757d;
+      --border-color: #dee2e6;
+    }
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: var(--bg-body);
+      color: var(--text-primary);
+      padding: 0 0 20px 0;
+    }
+    .app {
+      max-width: 720px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      background: white;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--teal), var(--orange));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+    }
+    .logo-text {
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .logo-sub {
+      font-size: 11px;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .btn-admin {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-admin:hover {
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal);
+    }
+    .btn-admin.active {
+      background: var(--teal);
+      color: white;
+      border-color: var(--teal);
+    }
+    /* Tabs */
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      gap: 2px;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--border-color);
+      background: white;
+      scrollbar-width: none;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      padding: 12px 16px;
+      font-size: 13px;
+      white-space: nowrap;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tab i { font-size: 16px; }
+    .tab.active {
+      color: var(--teal);
+      border-bottom-color: var(--teal);
+    }
+    .tab:hover { color: var(--teal-dark); }
+    /* Panels */
+    .panel {
+      display: none;
+      padding: 20px;
+      background: white;
+    }
+    .panel.active { display: block; }
+    /* Biblia */
+    .biblia-selectores {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .biblia-selectores .grupo {
+      flex: 1 1 200px;
+    }
+    .biblia-selectores label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      color: var(--text-secondary);
+    }
+    .biblia-selectores select {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: white;
+      font-size: 14px;
+    }
+    .versiculos {
+      background: #fafafa;
+      border-radius: 16px;
+      padding: 16px 20px;
+      border: 1px solid var(--border-color);
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .versiculos p {
+      margin-bottom: 4px;
+      font-size: 15px;
+      line-height: 1.7;
+      text-align: justify;
+      padding: 6px 0;
+      border-bottom: 1px dashed #eee;
+    }
+    .versiculos p:last-child { border-bottom: none; }
+    .versiculos .num { font-weight: 600; color: var(--teal-dark); margin-right: 4px; }
+    .versiculos .edit-mode textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid var(--teal);
+      padding: 6px 10px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fff;
+      resize: vertical;
+    }
+    .versiculos .edit-mode .btn-guardar-verso {
+      margin-top: 4px;
+      padding: 4px 14px;
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .btn-editar {
+      margin-top: 12px;
+      padding: 8px 24px;
+      background: var(--orange);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-editar:hover { background: var(--orange-dark); }
+    .btn-guardar-todo {
+      margin-top: 12px;
+      padding: 8px 24px;
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      display: none;
+    }
+    .btn-guardar-todo.show { display: inline-block; }
+    /* Admin Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-box {
+      background: white;
+      border-radius: 24px;
+      padding: 30px 28px;
+      max-width: 380px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-box h3 {
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .modal-box input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+    .modal-box .acciones {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    .modal-box .acciones button {
+      padding: 8px 24px;
+      border-radius: 30px;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .modal-box .acciones .btn-cancelar {
+      background: #f1f3f5;
+      color: var(--text-secondary);
+    }
+    .modal-box .acciones .btn-ingresar {
+      background: var(--teal);
+      color: white;
+    }
+    /* Tarjetas de módulos (estilo similar) */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .mod-card {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: center;
+    }
+    .mod-card:hover { border-color: var(--teal); box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+    .mod-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin: 0 auto 8px;
+    }
+    .mod-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .mod-card p { font-size: 12px; color: var(--text-secondary); }
+    /* Otros módulos (simplificados) */
+    .disc-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .disc-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--teal-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--teal-dark);
+    }
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .task-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border-color);
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .task-check.done {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .task-text.done { text-decoration: line-through; color: var(--text-secondary); }
+    .prayer-card, .need-card {
+      background: #f8f9fa;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    .prayer-top, .need-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .prayer-badge {
+      font-size: 11px;
+      background: var(--orange-light);
+      color: var(--orange-dark);
+      padding: 2px 10px;
+      border-radius: 99px;
+    }
+    .map-area {
+      background: #e9ecef;
+      border-radius: 16px;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-top: 1px solid var(--border-color);
+      background: white;
+    }
+    .bnav-item {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+    .bnav-item i { font-size: 20px; margin-bottom: 2px; }
+    .bnav-item.active { color: var(--teal); }
+    /* Responsive */
+    @media (max-width: 480px) {
+      .tab { padding: 10px 12px; font-size: 12px; }
+      .tab i { font-size: 14px; }
+      .modules-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
-<body class="page">
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
   <header class="header">
-    <h1 class="header__title"><i class="fas fa-book header__icon"></i>Biblia Reina Valera 1960</h1>
+    <div class="logo">
+      <div class="logo-icon"><i class="fas fa-church"></i></div>
+      <div>
+        <div class="logo-text">Mi Iglesia</div>
+        <div class="logo-sub">Fe · Comunidad · Servicio</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-admin" id="btnAdmin"><i class="fas fa-user-shield"></i> Admin</button>
+    </div>
   </header>
 
-  <main class="content">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-5 book">
-          <label for="libro" class="book__label"><i class="fas fa-book-open"></i> Libro: </label>
-          <select id="libro" class="book__select">
-            <option value="">Selecciona un libro</option>
-          </select>
-        </div>
+  <!-- TABS -->
+  <div class="tabs" id="mainTabs">
+    <button class="tab active" data-panel="inicio"><i class="fas fa-home"></i> Inicio</button>
+    <button class="tab" data-panel="biblia"><i class="fas fa-bible"></i> Biblia</button>
+    <button class="tab" data-panel="discipulado"><i class="fas fa-users"></i> Discipulado</button>
+    <button class="tab" data-panel="oracion"><i class="fas fa-heart"></i> Oración</button>
+    <button class="tab" data-panel="mapa"><i class="fas fa-map-pin"></i> Mapa</button>
+    <button class="tab" data-panel="necesidades"><i class="fas fa-hand-holding-heart"></i> Necesidades</button>
+    <button class="tab" data-panel="voluntariado"><i class="fas fa-hands-helping"></i> Servicio</button>
+  </div>
 
-        <div class="col-md-5 chapter">
-          <label for="capitulo" class="chapter__label"><i class="fas fa-chalkboard-teacher"></i> Capítulo: </label>
-          <select id="capitulo" class="chapter__select">
-            <option value="">Selecciona un capítulo</option>
-          </select>
-        </div>
+  <!-- PANEL: INICIO -->
+  <div class="panel active" id="panel-inicio">
+    <div style="text-align: center; padding: 20px 0;">
+      <h2 style="font-weight: 600; color: var(--teal-dark);">Bienvenido a la comunidad</h2>
+      <p style="color: var(--text-secondary); max-width: 400px; margin: 10px auto;">Crecemos juntos en la fe, el amor y el servicio. Explora los módulos y conecta con otros creyentes.</p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 16px;">
+        <button class="btn" style="background: var(--teal); color: white; border: none; padding: 10px 28px; border-radius: 40px; font-weight: 500;" onclick="switchTab('biblia')">📖 Leer Biblia</button>
+        <button class="btn" style="background: var(--orange); color: white; border: none; padding: 10px 28px; border-radius: 40px; font-weight: 500;" onclick="switchTab('oracion')">🙏 Pedir Oración</button>
       </div>
-
-      <section id="versiculo-container" class="verse">
-        <p class="verse__text"><i class="fas fa-quote-left verse__icon"></i>El versículo aparecerá aquí.</p>
-      </section>
     </div>
-  </main>
+    <div class="modules-grid">
+      <div class="mod-card" onclick="switchTab('biblia')">
+        <div class="mod-icon" style="background: var(--teal-light);"><i class="fas fa-bible" style="color: var(--teal-dark);"></i></div>
+        <h3>Biblia</h3>
+        <p>Lee y estudia la Palabra</p>
+      </div>
+      <div class="mod-card" onclick="switchTab('discipulado')">
+        <div class="mod-icon" style="background: #fce4ec;"><i class="fas fa-user-friends" style="color: #c62828;"></i></div>
+        <h3>Discipulado</h3>
+        <p>Crece con mentoría</p>
+      </div>
+      <div class="mod-card" onclick="switchTab('oracion')">
+        <div class="mod-icon" style="background: #fff3e0;"><i class="fas fa-pray" style="color: #e65100;"></i></div>
+        <h3>Oración</h3>
+        <p>Intercede y comparte</p>
+      </div>
+      <div class="mod-card" onclick="switchTab('necesidades')">
+        <div class="mod-icon" style="background: #e8f5e9;"><i class="fas fa-donate" style="color: #2e7d32;"></i></div>
+        <h3>Necesidades</h3>
+        <p>Ayuda práctica</p>
+      </div>
+    </div>
+  </div>
 
-  <footer class="footer">
-    <p class="footer__text"><i class="fas fa-heart footer__icon"></i>  Creado con amor y fe.</p>
-  </footer>
+  <!-- PANEL: BIBLIA -->
+  <div class="panel" id="panel-biblia">
+    <h4 style="margin-bottom: 16px; font-weight: 600;"><i class="fas fa-bible" style="color: var(--teal);"></i> Lectura Bíblica</h4>
+    <div class="biblia-selectores">
+      <div class="grupo">
+        <label for="libro"><i class="fas fa-book"></i> Libro</label>
+        <select id="libro"><option value="">Selecciona</option></select>
+      </div>
+      <div class="grupo">
+        <label for="capitulo"><i class="fas fa-chapter"></i> Capítulo</label>
+        <select id="capitulo"><option value="">Selecciona</option></select>
+      </div>
+    </div>
+    <div class="versiculos" id="versiculoContainer">
+      <p style="text-align: center; color: var(--text-secondary); padding: 20px 0;">Selecciona un libro y capítulo para ver los versículos.</p>
+    </div>
+    <!-- Botones de edición (solo visibles en modo admin) -->
+    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px;">
+      <button class="btn-editar" id="btnEditarVersos" style="display:none;"><i class="fas fa-edit"></i> Editar versículos</button>
+      <button class="btn-guardar-todo" id="btnGuardarVersos"><i class="fas fa-save"></i> Guardar cambios</button>
+    </div>
+    <p style="font-size: 12px; color: var(--text-secondary); margin-top: 8px;"><i class="fas fa-info-circle"></i> Los cambios se guardan localmente en tu navegador.</p>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="script.js"></script>
+  <!-- PANEL: DISCIPULADO (simplificado) -->
+  <div class="panel" id="panel-discipulado">
+    <div class="disc-header">
+      <div class="disc-avatar">MR</div>
+      <div><strong>María Rodríguez</strong><br><span style="font-size: 13px; color: var(--text-secondary);">Mentor: Pastor José · Nivel: Crecimiento</span></div>
+    </div>
+    <div style="margin-bottom: 12px;">
+      <div style="display: flex; justify-content: space-between; font-size: 13px;"><span>Progreso</span><span style="color: var(--teal);">62%</span></div>
+      <div style="height: 6px; background: #e9ecef; border-radius: 99px; overflow: hidden;"><div style="width:62%; height:100%; background: var(--teal);"></div></div>
+    </div>
+    <div class="task-item"><span class="task-check done"><i class="fas fa-check" style="font-size:10px;"></i></span><span class="task-text done">Lectura: Juan 13–17</span></div>
+    <div class="task-item"><span class="task-check done"><i class="fas fa-check" style="font-size:10px;"></i></span><span class="task-text done">Diario espiritual: 3 entradas</span></div>
+    <div class="task-item"><span class="task-check" id="task3" onclick="toggleTask(this)"></span><span class="task-text" id="txt3">Reunión con mentor (jue 7pm)</span></div>
+    <div class="task-item"><span class="task-check" id="task4" onclick="toggleTask(this)"></span><span class="task-text" id="txt4">Memorizar Hebreos 12:1–2</span></div>
+    <button style="margin-top: 12px; background: transparent; border: 1px dashed var(--border-color); border-radius: 30px; padding: 8px; width:100%; color: var(--teal); font-weight:500;">+ Agregar actividad</button>
+  </div>
+
+  <!-- PANEL: ORACIÓN -->
+  <div class="panel" id="panel-oracion">
+    <div style="background: #f8f9fa; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+      <h5 style="font-weight: 600;"><i class="fas fa-pen"></i> Nueva solicitud</h5>
+      <textarea placeholder="Comparte tu necesidad de oración..." style="width:100%; border-radius:12px; border:1px solid var(--border-color); padding:10px; resize:vertical; min-height:60px;"></textarea>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; margin:8px 0;">
+        <span class="badge" style="background:var(--orange-light); color:var(--orange-dark); padding:6px 14px; border-radius:99px;">Salud</span>
+        <span class="badge" style="background:#e3f2fd; color:#0d47a1; padding:6px 14px; border-radius:99px;">Familia</span>
+        <span class="badge" style="background:#f3e5f5; color:#6a1b9a; padding:6px 14px; border-radius:99px;">Trabajo</span>
+      </div>
+      <button style="background:var(--teal); color:white; border:none; padding:6px 20px; border-radius:30px;">Publicar</button>
+    </div>
+    <div class="prayer-card"><div class="prayer-top"><strong>Ana Núñez</strong><span class="prayer-badge">Familia</span></div><p style="font-size:14px; color:var(--text-secondary);">Mi hijo está pasando por una situación difícil en la escuela. Pido oración por sabiduría.</p><div style="display:flex; gap:12px; font-size:13px; color:var(--text-secondary);"><i class="fas fa-heart" style="color:var(--teal);"></i> Oré (14) <i class="fas fa-reply"></i> Responder</div></div>
+    <div class="prayer-card"><div class="prayer-top"><strong>Carlos López</strong><span class="prayer-badge" style="background:#e8f5e9; color:#2e7d32;">Trabajo</span></div><p style="font-size:14px; color:var(--text-secondary);">Perdí mi empleo. Pido paz y dirección.</p><div style="display:flex; gap:12px; font-size:13px; color:var(--text-secondary);"><i class="fas fa-heart"></i> Oré (8) <i class="fas fa-reply"></i> Responder</div></div>
+  </div>
+
+  <!-- PANEL: MAPA -->
+  <div class="panel" id="panel-mapa">
+    <div class="map-area"><i class="fas fa-map-marked-alt" style="font-size: 32px; color: var(--teal); margin-right: 8px;"></i> Mapa de ministerios (próximamente)</div>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--text-secondary);">
+      <span><span style="display:inline-block; width:12px; height:12px; background:var(--teal); border-radius:50%;"></span> Iglesias</span>
+      <span><span style="display:inline-block; width:12px; height:12px; background:var(--orange); border-radius:50%;"></span> Comedores</span>
+      <span><span style="display:inline-block; width:12px; height:12px; background:var(--plant); border-radius:50%;"></span> Ministerios</span>
+    </div>
+  </div>
+
+  <!-- PANEL: NECESIDADES -->
+  <div class="panel" id="panel-necesidades">
+    <div style="background: #f8f9fa; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+      <h5 style="font-weight: 600;"><i class="fas fa-hand-holding-heart"></i> Publicar necesidad</h5>
+      <input type="text" placeholder="Ej: Alimentos, medicinas..." style="width:100%; border-radius:12px; border:1px solid var(--border-color); padding:10px; margin-bottom:8px;">
+      <button style="background:var(--plant); color:white; border:none; padding:6px 20px; border-radius:30px;">Publicar</button>
+    </div>
+    <div class="need-card"><div class="need-top"><strong>Canasta básica</strong><span class="badge" style="background:var(--orange-light); color:var(--orange-dark);">Alimentos</span></div><p style="font-size:14px; color:var(--text-secondary);">Familia con 4 hijos necesita ayuda.</p><div style="display:flex; gap:8px; font-size:13px; color:var(--text-secondary);"><i class="fas fa-map-pin"></i> San José · 2 personas ofrecidas</div></div>
+    <div class="need-card"><div class="need-top"><strong>Insulina</strong><span class="badge" style="background:#fce4ec; color:#c62828;">Medicamentos</span></div><p style="font-size:14px; color:var(--text-secondary);">Adulto mayor sin seguro.</p><div style="display:flex; gap:8px; font-size:13px; color:var(--text-secondary);"><i class="fas fa-map-pin"></i> Cartago · Urgente</div></div>
+  </div>
+
+  <!-- PANEL: VOLUNTARIADO -->
+  <div class="panel" id="panel-voluntariado">
+    <div style="margin-bottom:12px; color:var(--text-secondary);"><i class="fas fa-award" style="color:var(--teal);"></i> Encuentra oportunidades para servir.</div>
+    <div style="background:#f8f9fa; border-radius:14px; padding:14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;"><div><strong>🍲 Comedor Esperanza</strong><br><span style="font-size:13px; color:var(--text-secondary);">Lun–Vie 11am–1pm</span></div><button style="background:var(--teal); color:white; border:none; border-radius:30px; padding:4px 16px;">Unirme</button></div>
+    <div style="background:#f8f9fa; border-radius:14px; padding:14px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;"><div><strong>👵 Hogar San Francisco</strong><br><span style="font-size:13px; color:var(--text-secondary);">Sábados 2–5pm</span></div><button style="background:var(--teal); color:white; border:none; border-radius:30px; padding:4px 16px;">Unirme</button></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button class="bnav-item active" id="bn-inicio" onclick="switchTab('inicio')"><i class="fas fa-home"></i> Inicio</button>
+    <button class="bnav-item" id="bn-biblia" onclick="switchTab('biblia')"><i class="fas fa-bible"></i> Biblia</button>
+    <button class="bnav-item" id="bn-discipulado" onclick="switchTab('discipulado')"><i class="fas fa-users"></i> Discipulado</button>
+    <button class="bnav-item" id="bn-oracion" onclick="switchTab('oracion')"><i class="fas fa-heart"></i> Oración</button>
+    <button class="bnav-item" id="bn-necesidades" onclick="switchTab('necesidades')"><i class="fas fa-hand-holding-heart"></i> Ayuda</button>
+  </div>
+
+</div>
+
+<!-- MODAL ADMIN -->
+<div class="modal-overlay" id="modalAdmin">
+  <div class="modal-box">
+    <h3><i class="fas fa-user-shield" style="color: var(--teal);"></i> Acceso Administrador</h3>
+    <p style="font-size:14px; color:var(--text-secondary);">Ingresa la contraseña para editar los textos bíblicos.</p>
+    <input type="password" id="passInput" placeholder="Contraseña" autocomplete="off">
+    <div class="acciones">
+      <button class="btn-cancelar" onclick="cerrarModalAdmin()">Cancelar</button>
+      <button class="btn-ingresar" onclick="validarAdmin()">Ingresar</button>
+    </div>
+    <p id="errorPass" style="color:#d32f2f; font-size:13px; margin-top:8px; display:none;">Contraseña incorrecta.</p>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// 1. LÓGICA DE PESTAÑAS
+// ============================================================
+function switchTab(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+
+  const panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.add('active');
+  const tab = document.querySelector(`.tab[data-panel="${name}"]`);
+  if (tab) tab.classList.add('active');
+  const bn = document.getElementById('bn-' + name);
+  if (bn) bn.classList.add('active');
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => switchTab(tab.dataset.panel));
+});
+
+// ============================================================
+// 2. CARGA DE LIBROS BÍBLICOS DESDE JSON
+// ============================================================
+const libroSelect = document.getElementById('libro');
+const capituloSelect = document.getElementById('capitulo');
+const versiculoContainer = document.getElementById('versiculoContainer');
+
+let textosBiblicos = {}; 
+let libroActual = '';
+let capituloActual = '';
+
+// Cargar el índice de libros desde textos-biblicos.json
+fetch('textos-biblicos.json')
+  .then(response => response.json())
+  .then(data => {
+    textosBiblicos = data;
+    // Poblar select de libros
+    const todosLosLibros = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
+    Object.keys(todosLosLibros).forEach(libro => {
+      const option = document.createElement('option');
+      option.value = libro;
+      option.textContent = libro;
+      libroSelect.appendChild(option);
+    });
+  })
+  .catch(err => {
+    console.error('Error cargando índice de libros:', err);
+    // Fallback: lista de libros conocidos (para demostración)
+    const librosFallback = ['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'];
+    librosFallback.forEach(libro => {
+      const option = document.createElement('option');
+      option.value = libro;
+      option.textContent = libro;
+      libroSelect.appendChild(option);
+    });
+    // También crear un objeto ficticio para que funcione la carga de capítulos
+    textosBiblicos = {
+      antiguoTestamento: {},
+      nuevoTestamento: {}
+    };
+    librosFallback.forEach(l => {
+      if (['Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'].includes(l)) {
+        textosBiblicos.nuevoTestamento[l] = `biblia/nuevo/${l.toLowerCase().replace(/ /g,'')}.json`;
+      } else {
+        textosBiblicos.antiguoTestamento[l] = `biblia/antiguo/${l.toLowerCase().replace(/ /g,'')}.json`;
+      }
+    });
+  });
+
+// Evento cambio de libro
+libroSelect.addEventListener('change', function() {
+  const libro = this.value;
+  if (!libro) return;
+  libroActual = libro;
+  cargarCapitulos(libro);
+});
+
+// Evento cambio de capítulo
+capituloSelect.addEventListener('change', function() {
+  const capitulo = this.value;
+  if (!capitulo) return;
+  capituloActual = capitulo;
+  mostrarVersiculos(libroActual, capitulo);
+});
+
+function cargarCapitulos(libro) {
+  // Determinar testamento
+  const testamento = textosBiblicos.antiguoTestamento && textosBiblicos.antiguoTestamento[libro] ? 'antiguoTestamento' : 
+                     (textosBiblicos.nuevoTestamento && textosBiblicos.nuevoTestamento[libro] ? 'nuevoTestamento' : null);
+  if (!testamento) {
+    capituloSelect.innerHTML = '<option value="">No disponible</option>';
+    return;
+  }
+  const ruta = textosBiblicos[testamento][libro];
+  fetch(ruta)
+    .then(res => res.json())
+    .then(data => {
+      capituloSelect.innerHTML = '<option value="">Selecciona capítulo</option>';
+      Object.keys(data).forEach(cap => {
+        const option = document.createElement('option');
+        option.value = cap;
+        option.textContent = `Capítulo ${cap}`;
+        capituloSelect.appendChild(option);
+      });
+    })
+    .catch(err => {
+      console.error('Error cargando capítulos:', err);
+      capituloSelect.innerHTML = '<option value="">Error al cargar</option>';
+    });
+}
+
+function mostrarVersiculos(libro, capitulo) {
+  const testamento = textosBiblicos.antiguoTestamento && textosBiblicos.antiguoTestamento[libro] ? 'antiguoTestamento' : 
+                     (textosBiblicos.nuevoTestamento && textosBiblicos.nuevoTestamento[libro] ? 'nuevoTestamento' : null);
+  if (!testamento) {
+    versiculoContainer.innerHTML = '<p>Libro no encontrado.</p>';
+    return;
+  }
+  const ruta = textosBiblicos[testamento][libro];
+  fetch(ruta)
+    .then(res => res.json())
+    .then(data => {
+      const contenido = data[capitulo];
+      if (!contenido) {
+        versiculoContainer.innerHTML = '<p>Capítulo no encontrado.</p>';
+        return;
+      }
+      // Verificar si hay ediciones guardadas en localStorage
+      const clave = `biblia_edit_${libro}_${capitulo}`;
+      const editado = localStorage.getItem(clave);
+      let versiculosData = contenido;
+      if (editado) {
+        try {
+          const parsed = JSON.parse(editado);
+          if (typeof parsed === 'object' && !Array.isArray(parsed)) {
+            versiculosData = parsed;
+          }
+        } catch (e) {}
+      }
+      renderVersiculos(versiculosData, libro, capitulo);
+    })
+    .catch(err => {
+      console.error('Error cargando versículos:', err);
+      versiculoContainer.innerHTML = '<p>Error al cargar los versículos.</p>';
+    });
+}
+
+function renderVersiculos(versiculosObj, libro, capitulo) {
+  const isAdmin = window.isAdminMode || false;
+  const editMode = window.editModeActivo || false;
+
+  let html = '';
+  const keys = Object.keys(versiculosObj);
+  if (keys.length === 0) {
+    html = '<p>No hay versículos.</p>';
+  } else {
+    keys.forEach(num => {
+      const texto = versiculosObj[num];
+      if (editMode && isAdmin) {
+        html += `<div class="edit-mode" style="margin-bottom:8px;">
+          <span class="num">${num}.</span>
+          <textarea data-verso="${num}" style="width:100%; border-radius:8px; border:1px solid var(--teal); padding:6px 10px; font-size:14px; resize:vertical;">${texto}</textarea>
+          <button class="btn-guardar-verso" data-libro="${libro}" data-cap="${capitulo}" data-num="${num}" style="margin-top:4px; padding:4px 14px; background:var(--teal); color:white; border:none; border-radius:20px; font-size:12px; cursor:pointer;">Guardar</button>
+        </div>`;
+      } else {
+        html += `<p><span class="num">${num}.</span> ${texto}</p>`;
+      }
+    });
+  }
+  versiculoContainer.innerHTML = html;
+
+  // Mostrar/ocultar botones de edición
+  const btnEditar = document.getElementById('btnEditarVersos');
+  const btnGuardar = document.getElementById('btnGuardarVersos');
+  if (isAdmin) {
+    btnEditar.style.display = 'inline-block';
+    btnEditar.textContent = editMode ? 'Cancelar edición' : 'Editar versículos';
+    if (editMode) {
+      btnGuardar.classList.add('show');
+    } else {
+      btnGuardar.classList.remove('show');
+    }
+  } else {
+    btnEditar.style.display = 'none';
+    btnGuardar.classList.remove('show');
+  }
+
+  // Eventos para guardar cada versículo individual (cuando se edita)
+  document.querySelectorAll('.btn-guardar-verso').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const libro = this.dataset.libro;
+      const cap = this.dataset.cap;
+      const num = this.dataset.num;
+      const textarea = this.parentElement.querySelector('textarea');
+      const nuevoTexto = textarea.value.trim();
+      if (!nuevoTexto) return;
+      guardarVerso(libro, cap, num, nuevoTexto);
+      // Recargar para mostrar cambios
+      mostrarVersiculos(libro, cap);
+    });
+  });
+}
+
+// Guardar un versículo editado en localStorage
+function guardarVerso(libro, capitulo, num, texto) {
+  const clave = `biblia_edit_${libro}_${capitulo}`;
+  let datos = {};
+  const existente = localStorage.getItem(clave);
+  if (existente) {
+    try { datos = JSON.parse(existente); } catch(e) {}
+  }
+  datos[num] = texto;
+  localStorage.setItem(clave, JSON.stringify(datos));
+}
+
+// Guardar todos los versículos editados (desde el botón "Guardar cambios")
+function guardarTodosVersos() {
+  const textareas = document.querySelectorAll('#versiculoContainer .edit-mode textarea');
+  if (textareas.length === 0) return;
+  const libro = libroActual;
+  const capitulo = capituloActual;
+  const clave = `biblia_edit_${libro}_${capitulo}`;
+  let datos = {};
+  textareas.forEach(ta => {
+    const num = ta.dataset.verso;
+    const texto = ta.value.trim();
+    if (texto) datos[num] = texto;
+  });
+  localStorage.setItem(clave, JSON.stringify(datos));
+  // Recargar la vista
+  mostrarVersiculos(libro, capitulo);
+  // Desactivar modo edición
+  window.editModeActivo = false;
+  renderVersiculos(
+    JSON.parse(localStorage.getItem(clave) || '{}'),
+    libro,
+    capitulo
+  );
+  // Actualizar botones
+  document.getElementById('btnEditarVersos').textContent = 'Editar versículos';
+  document.getElementById('btnGuardarVersos').classList.remove('show');
+}
+
+// Botón "Editar versículos"
+document.getElementById('btnEditarVersos').addEventListener('click', function() {
+  if (!window.isAdminMode) return;
+  window.editModeActivo = !window.editModeActivo;
+  if (window.editModeActivo) {
+    this.textContent = 'Cancelar edición';
+    document.getElementById('btnGuardarVersos').classList.add('show');
+  } else {
+    this.textContent = 'Editar versículos';
+    document.getElementById('btnGuardarVersos').classList.remove('show');
+  }
+  // Refrescar la vista de versículos
+  if (libroActual && capituloActual) {
+    mostrarVersiculos(libroActual, capituloActual);
+  }
+});
+
+// Botón "Guardar cambios" (guarda todo)
+document.getElementById('btnGuardarVersos').addEventListener('click', guardarTodosVersos);
+
+// ============================================================
+// 3. ADMINISTRADOR
+// ============================================================
+const btnAdmin = document.getElementById('btnAdmin');
+const modalAdmin = document.getElementById('modalAdmin');
+const passInput = document.getElementById('passInput');
+const errorPass = document.getElementById('errorPass');
+
+btnAdmin.addEventListener('click', () => {
+  modalAdmin.classList.add('show');
+  passInput.value = '';
+  errorPass.style.display = 'none';
+  passInput.focus();
+});
+
+function cerrarModalAdmin() {
+  modalAdmin.classList.remove('show');
+}
+
+function validarAdmin() {
+  const pass = passInput.value;
+  if (pass === '123456') {
+    window.isAdminMode = true;
+    window.editModeActivo = false;
+    btnAdmin.classList.add('active');
+    btnAdmin.innerHTML = '<i class="fas fa-user-shield"></i> Admin ✓';
+    cerrarModalAdmin();
+    // Refrescar versículos si están visibles
+    if (libroActual && capituloActual) {
+      mostrarVersiculos(libroActual, capituloActual);
+    }
+    // También mostrar botón de editar en la pestaña biblia
+    document.getElementById('btnEditarVersos').style.display = 'inline-block';
+    alert('Modo administrador activado. Ahora puedes editar los versículos.');
+  } else {
+    errorPass.style.display = 'block';
+    passInput.value = '';
+    passInput.focus();
+  }
+}
+
+// Cerrar modal al hacer clic fuera
+modalAdmin.addEventListener('click', function(e) {
+  if (e.target === this) cerrarModalAdmin();
+});
+
+// ============================================================
+// 4. FUNCIONES PARA OTROS MÓDULOS (ej. tareas)
+// ============================================================
+function toggleTask(el) {
+  el.classList.toggle('done');
+  const parent = el.parentElement;
+  const text = parent.querySelector('.task-text');
+  if (text) text.classList.toggle('done');
+  if (el.classList.contains('done')) {
+    el.innerHTML = '<i class="fas fa-check" style="font-size:10px;"></i>';
+  } else {
+    el.innerHTML = '';
+  }
+}
+
+// ============================================================
+// 5. INICIO: cargar primer libro por defecto (opcional)
+// ============================================================
+// No se carga automáticamente; el usuario selecciona.
+</script>
 </body>
 </html>
-

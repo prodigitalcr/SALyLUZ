@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>SAL Y LUZ · Comunidad Cristiana</title>
+  <!-- Bootstrap + FontAwesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    /* ===== ESTILOS GENERALES ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --teal: #1D9E75;
@@ -24,7 +26,6 @@
       --shadow: 0 8px 24px rgba(0,0,0,0.06);
       --radius: 16px;
       --transition: 0.25s ease;
-      --font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     }
     body.dark {
       --bg-body: #12121a;
@@ -35,7 +36,7 @@
       --teal-light: #1a3a30;
     }
     body {
-      font-family: var(--font);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       background: var(--bg-body);
       color: var(--text-primary);
       transition: background var(--transition), color var(--transition);
@@ -48,11 +49,12 @@
       background: var(--bg-body);
       padding-bottom: 80px;
     }
+    /* ===== HEADER ===== */
     .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 16px;
+      padding: 14px 20px;
       background: white;
       border-bottom: 1px solid var(--border-color);
       position: sticky;
@@ -65,13 +67,13 @@
     .logo {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       cursor: pointer;
     }
     .logo-icon {
       width: 40px;
       height: 40px;
-      border-radius: 50%;
+      border-radius: 12px;
       background: linear-gradient(135deg, var(--teal), var(--orange));
       display: flex;
       align-items: center;
@@ -86,16 +88,14 @@
     }
     .logo-text span { color: var(--teal); }
     .logo-sub {
-      font-size: 9px;
+      font-size: 10px;
       color: var(--text-secondary);
-      letter-spacing: 0.3px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
-      display: block;
-      margin-top: -2px;
     }
     .header-actions {
       display: flex;
-      gap: 6px;
+      gap: 8px;
       align-items: center;
       flex-wrap: wrap;
     }
@@ -113,9 +113,9 @@
     .user-badge {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       background: var(--teal-light);
-      padding: 2px 10px 2px 6px;
+      padding: 4px 12px 4px 8px;
       border-radius: 40px;
       font-size: 13px;
       font-weight: 500;
@@ -126,7 +126,7 @@
       background: var(--teal);
       color: white;
       border: none;
-      padding: 5px 16px;
+      padding: 6px 18px;
       border-radius: 40px;
       font-weight: 500;
       font-size: 13px;
@@ -138,7 +138,7 @@
       background: transparent;
       border: 1px solid var(--border-color);
       color: var(--text-primary);
-      padding: 5px 16px;
+      padding: 6px 18px;
       border-radius: 40px;
       font-weight: 500;
       font-size: 13px;
@@ -164,7 +164,9 @@
       font-size: 11px;
       font-weight: 600;
       cursor: pointer;
+      display: inline-block;
     }
+    /* ===== TABS ===== */
     .tabs {
       display: flex;
       overflow-x: auto;
@@ -177,7 +179,7 @@
     body.dark .tabs { background: #1a1a2e; }
     .tabs::-webkit-scrollbar { display: none; }
     .tab {
-      padding: 10px 14px;
+      padding: 12px 16px;
       font-size: 13px;
       white-space: nowrap;
       background: transparent;
@@ -189,14 +191,15 @@
       transition: 0.15s;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
-    .tab i { font-size: 14px; }
+    .tab i { font-size: 15px; }
     .tab.active {
       color: var(--teal);
       border-bottom-color: var(--teal);
     }
     .tab:hover { color: var(--text-primary); }
+    /* ===== PANELS ===== */
     .panel {
       display: none;
       padding: 16px 12px;
@@ -204,6 +207,7 @@
     }
     .panel.active { display: block; }
     @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    /* ===== CARDS ===== */
     .card {
       background: white;
       border-radius: var(--radius);
@@ -223,6 +227,7 @@
       gap: 8px;
     }
     .card h3 i { color: var(--teal); }
+    /* ===== MURO (FEED) ===== */
     .post {
       padding: 14px 0;
       border-bottom: 1px solid var(--border-color);
@@ -293,6 +298,7 @@
     }
     .comments { margin-top: 6px; font-size: 13px; color: var(--text-secondary); }
     .comments > div { padding: 2px 0; }
+    /* ===== GRUPOS ===== */
     .grupo-item {
       display: flex;
       justify-content: space-between;
@@ -303,6 +309,7 @@
     .grupo-item:last-child { border-bottom: none; }
     .grupo-info strong { display: block; font-size: 15px; }
     .grupo-info small { color: var(--text-secondary); font-size: 13px; }
+    /* ===== DISCIPULADOS ===== */
     .disc-card {
       background: white;
       border: 1px solid var(--border-color);
@@ -314,6 +321,7 @@
     .disc-card h4 { font-size: 16px; margin-bottom: 2px; }
     .disc-card .tel { color: var(--teal); font-weight: 500; }
     .disc-card .desc { color: var(--text-secondary); font-size: 14px; }
+    /* ===== MAPA ===== */
     .map-container {
       width: 100%;
       height: 260px;
@@ -335,6 +343,7 @@
       border-bottom: 1px solid var(--border-color);
     }
     .misionero-item:last-child { border-bottom: none; }
+    /* ===== NECESIDADES ===== */
     .need-item {
       padding: 12px 0;
       border-bottom: 1px solid var(--border-color);
@@ -351,6 +360,7 @@
     }
     .need-fotos { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0; }
     .need-fotos img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+    /* ===== ORACIONES ===== */
     .oracion-item {
       padding: 14px 0;
       border-bottom: 1px solid var(--border-color);
@@ -395,11 +405,13 @@
     }
     .oracion-actions button.orado { color: var(--teal); }
     .oracion-actions button:hover { color: var(--text-primary); }
+    /* ===== SERVICIO ===== */
     .serv-item {
       padding: 12px 0;
       border-bottom: 1px solid var(--border-color);
     }
     .serv-item:last-child { border-bottom: none; }
+    /* ===== BIBLIA ===== */
     .biblia-selectores {
       display: flex;
       flex-wrap: wrap;
@@ -489,6 +501,7 @@
       display: none;
     }
     .btn-guardar-todo.show { display: inline-block; }
+    /* ===== HISTORIAL BIBLIA ===== */
     .historial-tags {
       display: flex;
       gap: 8px;
@@ -504,6 +517,7 @@
       transition: 0.2s;
     }
     .historial-tags .tag:hover { background: var(--teal-light); }
+    /* ===== IA ===== */
     .ia-chat {
       background: var(--bg-body);
       border-radius: var(--radius);
@@ -516,6 +530,7 @@
     .ia-chat .msg { margin-bottom: 4px; font-size: 14px; }
     .ia-chat .user { color: var(--teal); font-weight: 500; }
     .ia-chat .bot { color: var(--text-secondary); }
+    /* ===== MODALES ===== */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -531,7 +546,7 @@
       background: white;
       border-radius: var(--radius);
       padding: 24px 28px;
-      max-width: 520px;
+      max-width: 480px;
       width: 92%;
       max-height: 90vh;
       overflow-y: auto;
@@ -583,10 +598,11 @@
       background: var(--teal);
       color: white;
     }
+    /* ===== BOTTOM NAV ===== */
     .bottom-nav {
       display: flex;
       justify-content: space-around;
-      padding: 8px 0;
+      padding: 10px 0;
       border-top: 1px solid var(--border-color);
       background: white;
       position: fixed;
@@ -607,56 +623,35 @@
       font-size: 10px;
       color: var(--text-secondary);
       cursor: pointer;
-      padding: 4px 8px;
+      padding: 4px 12px;
       transition: 0.15s;
     }
     .bnav-item i { font-size: 20px; margin-bottom: 2px; }
     .bnav-item.active { color: var(--teal); }
     .bnav-item:hover { color: var(--text-primary); }
-    .admin-user-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--border-color);
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 600px) {
+      .header { flex-wrap: wrap; gap: 6px; padding: 10px 14px; }
+      .tab { font-size: 12px; padding: 10px 10px; }
+      .tab i { font-size: 13px; }
+      .card { padding: 12px 14px; }
+      .modal-box { padding: 18px 16px; }
+      .user-badge { font-size: 12px; padding: 2px 10px 2px 6px; }
+      .btn-primary { font-size: 12px; padding: 4px 14px; }
     }
-    .admin-user-item:last-child { border-bottom: none; }
-    .admin-user-info strong { display: block; }
-    .admin-user-info small { color: var(--text-secondary); font-size: 12px; }
-    .categoria-tag {
-      display: inline-block;
-      background: var(--teal-light);
-      color: var(--teal-dark);
-      padding: 2px 12px;
-      border-radius: 40px;
-      font-size: 12px;
-      margin: 2px 4px 2px 0;
-    }
-    .verified-badge { color: var(--teal); font-size: 14px; margin-left: 4px; }
-    .support-tag { display: inline-block; background: var(--orange-light); color: var(--orange-dark); padding: 2px 10px; border-radius: 40px; font-size: 11px; margin: 2px 4px 2px 0; }
     .text-secondary { color: var(--text-secondary); }
     .fw-500 { font-weight: 500; }
     .mt-8 { margin-top: 8px; }
     .mb-8 { margin-bottom: 8px; }
     .flex-between { display: flex; justify-content: space-between; align-items: center; }
     .gap-8 { gap: 8px; }
-    @media (max-width: 600px) {
-      .header { flex-wrap: wrap; gap: 6px; padding: 10px 12px; }
-      .tab { font-size: 12px; padding: 8px 10px; }
-      .tab i { font-size: 12px; }
-      .card { padding: 12px 14px; }
-      .modal-box { padding: 18px 16px; }
-      .user-badge { font-size: 12px; padding: 2px 8px 2px 4px; }
-      .btn-primary { font-size: 12px; padding: 4px 12px; }
-      .logo-text { font-size: 16px; }
-    }
   </style>
 </head>
 <body>
 
-<div class="app" id="app">
+<div class="app">
 
-  <!-- HEADER -->
+  <!-- ===== HEADER ===== -->
   <header class="header">
     <div class="logo" onclick="switchPanel('inicio')">
       <div class="logo-icon"><i class="fas fa-church"></i></div>
@@ -670,11 +665,11 @@
       <button class="btn-icon" id="fullscreenToggle" title="Pantalla completa"><i class="fas fa-expand"></i></button>
       <span class="user-badge" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span></span>
       <button class="btn-primary" id="loginBtn">Entrar</button>
-      <span class="admin-badge" id="adminBadge" style="display:inline-block;"><i class="fas fa-user-shield"></i> Admin</span>
+      <span class="admin-badge" id="adminBadge"><i class="fas fa-user-shield"></i> Admin</span>
     </div>
   </header>
 
-  <!-- TABS -->
+  <!-- ===== TABS ===== -->
   <nav class="tabs" id="mainTabs">
     <button class="tab active" data-panel="inicio"><i class="fas fa-home"></i> Inicio</button>
     <button class="tab" data-panel="biblia"><i class="fas fa-bible"></i> Biblia</button>
@@ -682,14 +677,12 @@
     <button class="tab" data-panel="grupos"><i class="fas fa-users"></i> Grupos</button>
     <button class="tab" data-panel="discipulado"><i class="fas fa-user-friends"></i> Discipulado</button>
     <button class="tab" data-panel="oracion"><i class="fas fa-pray"></i> Oración</button>
-    <button class="tab" data-panel="consejeria"><i class="fas fa-hand-holding-heart"></i> Consejería</button>
     <button class="tab" data-panel="mapa"><i class="fas fa-map-marked-alt"></i> Mapa</button>
     <button class="tab" data-panel="necesidades"><i class="fas fa-hand-holding-heart"></i> Necesidades</button>
     <button class="tab" data-panel="servicio"><i class="fas fa-utensils"></i> Servicio</button>
-    <!-- Pestaña Admin siempre visible -->
-    <button class="tab" data-panel="admin" id="adminTab" style="display:inline-block;"><i class="fas fa-cog"></i> Admin</button>
   </nav>
 
+  <!-- ============================================================ -->
   <!-- PANEL: INICIO -->
   <div class="panel active" id="panel-inicio">
     <div class="card" style="text-align:center; padding:32px 20px;">
@@ -701,15 +694,15 @@
         <button class="btn-primary" style="background:var(--teal-dark);" onclick="switchPanel('oracion')"><i class="fas fa-pray"></i> Oración</button>
       </div>
     </div>
-    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap:10px;">
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap:10px;">
       <div class="card" style="text-align:center; cursor:pointer;" onclick="switchPanel('grupos')"><i class="fas fa-users" style="font-size:28px; color:var(--teal);"></i><br><strong>Grupos</strong><br><small class="text-secondary">Conexión</small></div>
       <div class="card" style="text-align:center; cursor:pointer;" onclick="switchPanel('discipulado')"><i class="fas fa-user-friends" style="font-size:28px; color:var(--orange);"></i><br><strong>Discipulado</strong><br><small class="text-secondary">Mentoría</small></div>
       <div class="card" style="text-align:center; cursor:pointer;" onclick="switchPanel('oracion')"><i class="fas fa-pray" style="font-size:28px; color:#6a1b9a;"></i><br><strong>Oración</strong><br><small class="text-secondary">Peticiones</small></div>
-      <div class="card" style="text-align:center; cursor:pointer;" onclick="switchPanel('consejeria')"><i class="fas fa-hand-holding-heart" style="font-size:28px; color:#c0392b;"></i><br><strong>Consejería</strong><br><small class="text-secondary">Pastoral</small></div>
+      <div class="card" style="text-align:center; cursor:pointer;" onclick="switchPanel('necesidades')"><i class="fas fa-hand-holding-heart" style="font-size:28px; color:#e74c3c;"></i><br><strong>Ayuda</strong><br><small class="text-secondary">Necesidades</small></div>
     </div>
   </div>
 
-  <!-- PANEL: BIBLIA -->
+  <!-- ===== PANEL: BIBLIA ===== -->
   <div class="panel" id="panel-biblia">
     <div class="card">
       <h3><i class="fas fa-bible"></i> Lectura Bíblica</h3>
@@ -732,6 +725,7 @@
       </div>
       <p style="font-size:12px; color:var(--text-secondary); margin-top:6px;"><i class="fas fa-info-circle"></i> Los cambios se guardan localmente.</p>
     </div>
+
     <div class="card">
       <h3><i class="fas fa-history"></i> Buscados recientemente</h3>
       <div class="historial-tags" id="historialContainer"></div>
@@ -741,8 +735,9 @@
       </div>
       <div id="resultadoBiblia" style="margin-top:8px; line-height:1.7;"></div>
     </div>
+
     <div class="card">
-      <h3><i class="fas fa-robot"></i> Asistente IA</h3>
+      <h3><i class="fas fa-robot"></i> Asistente IA (contexto histórico)</h3>
       <div style="display:flex; gap:8px;">
         <input type="text" id="iaPregunta" placeholder="Pregunta sobre el pasaje..." style="flex:1; padding:10px 14px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary);">
         <button class="btn-primary" onclick="preguntarIA()"><i class="fas fa-paper-plane"></i></button>
@@ -754,7 +749,7 @@
     </div>
   </div>
 
-  <!-- PANEL: MURO -->
+  <!-- ===== PANEL: MURO ===== -->
   <div class="panel" id="panel-muro">
     <div class="card">
       <h3><i class="fas fa-edit"></i> Publicar</h3>
@@ -771,7 +766,7 @@
     <div id="feedContainer"></div>
   </div>
 
-  <!-- PANEL: GRUPOS -->
+  <!-- ===== PANEL: GRUPOS ===== -->
   <div class="panel" id="panel-grupos">
     <div class="card">
       <h3><i class="fas fa-users"></i> Grupos de Conexión (máx 15)</h3>
@@ -780,7 +775,7 @@
     <div id="gruposContainer"></div>
   </div>
 
-  <!-- PANEL: DISCIPULADO -->
+  <!-- ===== PANEL: DISCIPULADO ===== -->
   <div class="panel" id="panel-discipulado">
     <div class="card">
       <h3><i class="fas fa-chalkboard-teacher"></i> Discipulados</h3>
@@ -789,28 +784,17 @@
     <div id="discipuladoContainer"></div>
   </div>
 
-  <!-- PANEL: ORACIÓN -->
+  <!-- ===== PANEL: ORACIÓN ===== -->
   <div class="panel" id="panel-oracion">
     <div class="card">
       <h3><i class="fas fa-pray"></i> Publicar petición de oración</h3>
-      <textarea id="oracionInput" placeholder="Comparte tu petición..." rows="3" style="width:100%; border-radius:12px; border:1px solid var(--border-color); padding:10px; background:var(--bg-body); color:var(--text-primary); resize:vertical;"></textarea>
+      <textarea id="oracionInput" placeholder="Comparte tu petición de oración..." rows="3" style="width:100%; border-radius:12px; border:1px solid var(--border-color); padding:10px; background:var(--bg-body); color:var(--text-primary); resize:vertical;"></textarea>
       <button class="btn-primary" onclick="publicarOracion()" style="margin-top:8px;"><i class="fas fa-upload"></i> Publicar oración</button>
     </div>
     <div id="oracionesContainer"></div>
   </div>
 
-  <!-- PANEL: CONSEJERÍA -->
-  <div class="panel" id="panel-consejeria">
-    <div class="card">
-      <h3><i class="fas fa-hand-holding-heart"></i> Consejería Bíblica</h3>
-      <p class="text-secondary">Comparte tu necesidad y un pastor o consejero te responderá.</p>
-      <textarea id="consejeriaInput" placeholder="Escribe tu consulta..." rows="3" style="width:100%; border-radius:12px; border:1px solid var(--border-color); padding:10px; background:var(--bg-body); color:var(--text-primary); resize:vertical; margin-top:8px;"></textarea>
-      <button class="btn-primary" onclick="enviarConsejeria()" style="margin-top:8px;"><i class="fas fa-paper-plane"></i> Enviar consulta</button>
-    </div>
-    <div id="consejeriaContainer"></div>
-  </div>
-
-  <!-- PANEL: MAPA -->
+  <!-- ===== PANEL: MAPA ===== -->
   <div class="panel" id="panel-mapa">
     <div class="card">
       <h3><i class="fas fa-map-marked-alt"></i> Misioneros en el mundo</h3>
@@ -828,7 +812,7 @@
     </div>
   </div>
 
-  <!-- PANEL: NECESIDADES -->
+  <!-- ===== PANEL: NECESIDADES ===== -->
   <div class="panel" id="panel-necesidades">
     <div class="card">
       <h3><i class="fas fa-hand-holding-heart"></i> Publicar necesidad</h3>
@@ -849,7 +833,7 @@
     <div id="necesidadesContainer"></div>
   </div>
 
-  <!-- PANEL: SERVICIO -->
+  <!-- ===== PANEL: SERVICIO ===== -->
   <div class="panel" id="panel-servicio">
     <div class="card">
       <h3><i class="fas fa-utensils"></i> Ofrecer ayuda alimentaria</h3>
@@ -867,38 +851,7 @@
     <div id="serviciosContainer"></div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- PANEL: ADMIN (FULL) -->
-  <div class="panel" id="panel-admin">
-    <div class="card">
-      <h3><i class="fas fa-cog"></i> Panel de Administración</h3>
-      <p class="text-secondary">Aquí puedes gestionar usuarios, categorías y la configuración del asistente IA.</p>
-      <hr style="border-color:var(--border-color); margin:12px 0;">
-      <h4><i class="fas fa-key"></i> Configuración de IA (OpenRouter)</h4>
-      <label>API Key</label>
-      <input type="text" id="openrouterKey" placeholder="sk-or-..." style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:8px;">
-      <label>URL del modelo</label>
-      <input type="text" id="openrouterModel" placeholder="https://openrouter.ai/api/v1/chat/completions" value="https://openrouter.ai/api/v1/chat/completions" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:8px;">
-      <label>Contexto adicional para el agente</label>
-      <textarea id="iaContextoAdmin" placeholder="Instrucciones adicionales para el asistente..." rows="3" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); resize:vertical;"></textarea>
-      <button class="btn-primary" onclick="guardarConfigIAAdmin()"><i class="fas fa-save"></i> Guardar configuración</button>
-      <hr style="border-color:var(--border-color); margin:12px 0;">
-      <h4><i class="fas fa-tags"></i> Editar Categorías</h4>
-      <div id="categoriasListAdmin"></div>
-      <div style="display:flex; gap:8px; margin-top:8px;">
-        <input type="text" id="nuevaCategoriaAdmin" placeholder="Nueva categoría" style="flex:1; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary);">
-        <button class="btn-primary" onclick="agregarCategoriaAdmin()"><i class="fas fa-plus"></i> Agregar</button>
-      </div>
-      <hr style="border-color:var(--border-color); margin:12px 0;">
-      <h4><i class="fas fa-users"></i> Usuarios registrados</h4>
-      <div id="adminUserList"></div>
-      <hr style="border-color:var(--border-color); margin:12px 0;">
-      <h4><i class="fas fa-user-graduate"></i> Inscripciones a Discipulados</h4>
-      <div id="adminInscripciones"></div>
-    </div>
-  </div>
-
-  <!-- BOTTOM NAV -->
+  <!-- ===== BOTTOM NAV ===== -->
   <div class="bottom-nav">
     <button class="bnav-item active" id="bn-inicio" onclick="switchPanel('inicio')"><i class="fas fa-home"></i> Inicio</button>
     <button class="bnav-item" id="bn-biblia" onclick="switchPanel('biblia')"><i class="fas fa-bible"></i> Biblia</button>
@@ -908,8 +861,9 @@
     <button class="bnav-item" id="bn-necesidades" onclick="switchPanel('necesidades')"><i class="fas fa-hand-holding-heart"></i> Ayuda</button>
   </div>
 
+  <!-- ============================================================ -->
   <!-- MODALES -->
-  <!-- Login -->
+  <!-- Modal Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
       <h3><i class="fas fa-user"></i> Ingresar</h3>
@@ -922,11 +876,11 @@
     </div>
   </div>
 
-  <!-- Grupo -->
+  <!-- Modal Grupo -->
   <div class="modal-overlay" id="grupoModal">
     <div class="modal-box">
       <h3><i class="fas fa-users"></i> Nuevo Grupo</h3>
-      <label>Nombre</label>
+      <label>Nombre del grupo</label>
       <input type="text" id="grupoNombre" placeholder="Ej: Jóvenes Unidos">
       <label>Facilitador</label>
       <input type="text" id="grupoFacilitador" placeholder="Nombre">
@@ -943,7 +897,7 @@
     </div>
   </div>
 
-  <!-- Discipulado -->
+  <!-- Modal Discipulado -->
   <div class="modal-overlay" id="discipuladoModal">
     <div class="modal-box">
       <h3><i class="fas fa-chalkboard-teacher"></i> Nuevo Discipulado</h3>
@@ -951,7 +905,7 @@
       <input type="text" id="discTitulo" placeholder="Ej: Fundamentos de la Fe">
       <label>Facilitador</label>
       <input type="text" id="discFacilitador" placeholder="Nombre">
-      <label>Teléfono</label>
+      <label>Teléfono del facilitador</label>
       <input type="tel" id="discTelefono" placeholder="+506 8888-8888">
       <label>Descripción</label>
       <textarea id="discDesc" placeholder="Contenido, días, etc."></textarea>
@@ -962,8 +916,32 @@
     </div>
   </div>
 
-</div>
+  <!-- Modal Admin (configuración IA) -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="modal-box">
+      <h3><i class="fas fa-user-shield"></i> Administración</h3>
+      <div id="adminPanel">
+        <h4 style="font-size:15px; margin-bottom:8px;">Configuración IA (OpenRouter)</h4>
+        <label>API Key</label>
+        <input type="text" id="openrouterKey" placeholder="sk-or-...">
+        <label>URL del modelo</label>
+        <input type="text" id="openrouterModel" placeholder="https://openrouter.ai/api/v1/chat/completions" value="https://openrouter.ai/api/v1/chat/completions">
+        <button class="btn-primary" onclick="guardarConfigIA()" style="margin-top:6px;">Guardar clave</button>
+        <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">La clave se almacena localmente.</p>
+        <hr style="margin:12px 0; border-color:var(--border-color);">
+        <h4 style="font-size:15px; margin-bottom:8px;">Entrenar agente (contexto)</h4>
+        <textarea id="iaContexto" placeholder="Instrucciones adicionales para el asistente (contexto histórico, teología, etc.)" rows="3" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary);"></textarea>
+        <button class="btn-primary" onclick="guardarContextoIA()" style="margin-top:6px;">Guardar contexto</button>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="cerrarModal('adminModal')">Cerrar</button>
+      </div>
+    </div>
+  </div>
 
+</div><!-- /app -->
+
+<!-- ============================================================ -->
 <script>
 // ================================================================
 // 1. ESTADO GLOBAL Y LOCALSTORAGE
@@ -977,12 +955,10 @@ const STORAGE = {
   necesidades: 'iglesia_necesidades',
   servicios: 'iglesia_servicios',
   oraciones: 'iglesia_oraciones',
-  consejeria: 'iglesia_consejeria',
   historialBiblia: 'iglesia_historial_biblia',
   iaKey: 'iglesia_ia_key',
   iaModel: 'iglesia_ia_model',
-  iaContexto: 'iglesia_ia_contexto',
-  categorias: 'iglesia_categorias'
+  iaContexto: 'iglesia_ia_contexto'
 };
 
 let usuarioActual = '';
@@ -1006,7 +982,11 @@ function iniciarSesion() {
   document.getElementById('userNameDisplay').textContent = name;
   document.getElementById('loginBtn').textContent = 'Cambiar';
   cerrarModal('loginModal');
-  renderTodo();
+  renderFeed();
+  renderGrupos();
+  renderDiscipulados();
+  renderNecesidades();
+  renderOraciones();
 }
 
 document.getElementById('loginBtn').addEventListener('click', function() {
@@ -1015,7 +995,8 @@ document.getElementById('loginBtn').addEventListener('click', function() {
       usuarioActual = '';
       document.getElementById('userNameDisplay').textContent = 'Invitado';
       this.textContent = 'Entrar';
-      renderTodo();
+      renderFeed();
+      renderOraciones();
     }
   } else {
     abrirModal('loginModal');
@@ -1030,7 +1011,7 @@ document.getElementById('loginBtn').addEventListener('click', function() {
     document.getElementById('userNameDisplay').textContent = usuarioActual;
     document.getElementById('loginBtn').textContent = 'Cambiar';
   }
-  document.getElementById('adminBadge').style.display = 'inline-block';
+  // La insignia admin ya está visible
 })();
 
 // ================================================================
@@ -1046,8 +1027,14 @@ function switchPanel(name) {
   if (tab) tab.classList.add('active');
   const bn = document.getElementById('bn-' + name);
   if (bn) bn.classList.add('active');
-  // Cargar contenido dinámico
-  if (name === 'admin') cargarAdminPanel();
+  if (name === 'muro') renderFeed();
+  if (name === 'grupos') renderGrupos();
+  if (name === 'discipulado') renderDiscipulados();
+  if (name === 'oracion') renderOraciones();
+  if (name === 'mapa') renderMisioneros();
+  if (name === 'necesidades') renderNecesidades();
+  if (name === 'servicio') renderServicios();
+  if (name === 'biblia') cargarHistorial();
 }
 
 document.querySelectorAll('.tab').forEach(tab => {
@@ -1058,24 +1045,7 @@ function abrirModal(id) { document.getElementById(id).classList.add('show'); }
 function cerrarModal(id) { document.getElementById(id).classList.remove('show'); }
 
 // ================================================================
-// 4. RENDERIZAR TODO
-// ================================================================
-function renderTodo() {
-  renderFeed();
-  renderGrupos();
-  renderDiscipulados();
-  renderOraciones();
-  renderConsejeria();
-  renderMisioneros();
-  renderNecesidades();
-  renderServicios();
-  cargarHistorial();
-  cargarCategorias();
-  cargarAdminPanel();
-}
-
-// ================================================================
-// 5. MURO (FEED)
+// 4. MURO (FEED)
 // ================================================================
 function crearPublicacion() {
   if (!usuarioActual) { alert('Ingresa con tu nombre primero.'); return; }
@@ -1196,7 +1166,7 @@ function compartirPost(id) {
 }
 
 // ================================================================
-// 6. GRUPOS
+// 5. GRUPOS
 // ================================================================
 function abrirModalGrupo() {
   if (!isAdmin) { alert('Solo el administrador puede crear grupos.'); return; }
@@ -1260,7 +1230,7 @@ function eliminarGrupo(id) {
 }
 
 // ================================================================
-// 7. DISCIPULADOS
+// 6. DISCIPULADOS
 // ================================================================
 function abrirModalDiscipulado() {
   if (!isAdmin) { alert('Solo el administrador puede crear discipulados.'); return; }
@@ -1324,7 +1294,7 @@ function eliminarDiscipulado(id) {
 }
 
 // ================================================================
-// 8. ORACIONES
+// 7. ORACIONES
 // ================================================================
 function publicarOracion() {
   if (!usuarioActual) { alert('Ingresa primero.'); return; }
@@ -1389,67 +1359,7 @@ function orarOracion(id) {
 }
 
 // ================================================================
-// 9. CONSEJERÍA
-// ================================================================
-function enviarConsejeria() {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const texto = document.getElementById('consejeriaInput').value.trim();
-  if (!texto) { alert('Escribe tu consulta.'); return; }
-  const consejeria = getData(STORAGE.consejeria, []);
-  consejeria.unshift({
-    id: Date.now(),
-    autor: usuarioActual,
-    texto: texto,
-    fecha: new Date().toLocaleString(),
-    respuestas: []
-  });
-  setData(STORAGE.consejeria, consejeria);
-  document.getElementById('consejeriaInput').value = '';
-  renderConsejeria();
-}
-
-function renderConsejeria() {
-  const container = document.getElementById('consejeriaContainer');
-  const consejeria = getData(STORAGE.consejeria, []);
-  if (consejeria.length === 0) {
-    container.innerHTML = '<p style="color:var(--text-secondary);">No hay consultas de consejería.</p>';
-    return;
-  }
-  let html = '';
-  consejeria.forEach(c => {
-    html += `<div class="disc-card">
-      <div><strong>${c.autor}</strong> <span class="text-secondary" style="font-size:12px;">${c.fecha}</span></div>
-      <p>${c.texto}</p>
-      <div style="margin-top:8px;">
-        ${c.respuestas && c.respuestas.map(r => `<div style="background:var(--bg-body); padding:6px 12px; border-radius:8px; margin:4px 0;"><strong>${r.autor}</strong>: ${r.texto}</div>`).join('')}
-      </div>
-      ${isAdmin ? `
-        <div class="comment-box" style="margin-top:8px;">
-          <input type="text" id="respuestaInput-${c.id}" placeholder="Responder como pastor...">
-          <button onclick="responderConsejeria(${c.id})"><i class="fas fa-paper-plane"></i></button>
-        </div>
-      ` : ''}
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function responderConsejeria(id) {
-  if (!isAdmin) { alert('Solo el administrador puede responder.'); return; }
-  const input = document.getElementById('respuestaInput-' + id);
-  const texto = input.value.trim();
-  if (!texto) return;
-  const consejeria = getData(STORAGE.consejeria, []);
-  const c = consejeria.find(item => item.id === id);
-  if (!c) return;
-  if (!c.respuestas) c.respuestas = [];
-  c.respuestas.push({ autor: usuarioActual || 'Admin', texto: texto });
-  setData(STORAGE.consejeria, consejeria);
-  renderConsejeria();
-}
-
-// ================================================================
-// 10. MAPA Y MISIONEROS
+// 8. MAPA Y MISIONEROS
 // ================================================================
 function registrarMisionero() {
   if (!usuarioActual) { alert('Ingresa primero.'); return; }
@@ -1479,7 +1389,7 @@ function renderMisioneros() {
 }
 
 // ================================================================
-// 11. NECESIDADES
+// 9. NECESIDADES
 // ================================================================
 function publicarNecesidad() {
   if (!usuarioActual) { alert('Ingresa primero.'); return; }
@@ -1557,7 +1467,7 @@ function subirAyuda(id, input) {
 }
 
 // ================================================================
-// 12. SERVICIO ALIMENTARIO
+// 10. SERVICIO ALIMENTARIO
 // ================================================================
 function ofrecerServicio() {
   if (!usuarioActual) { alert('Ingresa primero.'); return; }
@@ -1602,7 +1512,7 @@ function renderServicios() {
 }
 
 // ================================================================
-// 13. BIBLIA - CARGA DESDE JSON
+// 11. BIBLIA - CARGA DESDE JSON
 // ================================================================
 const libroSelect = document.getElementById('libro');
 const capituloSelect = document.getElementById('capitulo');
@@ -1777,7 +1687,7 @@ document.getElementById('btnEditarVersos').addEventListener('click', function() 
 document.getElementById('btnGuardarVersos').addEventListener('click', guardarTodosVersos);
 
 // ================================================================
-// 14. BIBLIA - BÚSQUEDA E HISTORIAL
+// 12. BIBLIA - BÚSQUEDA E HISTORIAL
 // ================================================================
 function cargarHistorial() {
   const historial = getData(STORAGE.historialBiblia, []);
@@ -1815,7 +1725,7 @@ function buscarTexto(query) {
 }
 
 // ================================================================
-// 15. ASISTENTE IA (OpenRouter)
+// 13. ASISTENTE IA (OpenRouter)
 // ================================================================
 function preguntarIA() {
   const pregunta = document.getElementById('iaPregunta').value.trim();
@@ -1863,132 +1773,33 @@ function preguntarIA() {
 }
 
 // ================================================================
-// 16. ADMIN - CONFIGURACIÓN IA (desde el panel Admin)
+// 14. ADMIN - CONFIGURACIÓN IA
 // ================================================================
-function guardarConfigIAAdmin() {
-  const key = document.getElementById('openrouterKey').value.trim();
-  const model = document.getElementById('openrouterModel').value.trim();
-  const contexto = document.getElementById('iaContextoAdmin').value.trim();
-  if (key) localStorage.setItem(STORAGE.iaKey, key);
-  if (model) localStorage.setItem(STORAGE.iaModel, model);
-  if (contexto) localStorage.setItem(STORAGE.iaContexto, contexto);
-  document.getElementById('iaStatus').textContent = '✅ API configurada correctamente.';
-  alert('Configuración guardada.');
-}
-
-// ================================================================
-// 17. ADMIN - PANEL DE ADMINISTRACIÓN
-// ================================================================
-function cargarAdminPanel() {
-  // Usuarios
-  const userList = document.getElementById('adminUserList');
-  const users = getData(STORAGE.usuarios, []);
-  if (users.length === 0) {
-    userList.innerHTML = '<p class="text-secondary">No hay usuarios registrados.</p>';
-  } else {
-    let html = '';
-    users.forEach((u, index) => {
-      html += `<div class="admin-user-item">
-        <div class="admin-user-info">
-          <strong>${u}</strong>
-          <small>ID: ${index+1}</small>
-        </div>
-        <div>
-          <button class="btn-danger" onclick="eliminarUsuario('${u}')">Eliminar</button>
-        </div>
-      </div>`;
-    });
-    userList.innerHTML = html;
-  }
-
-  // Inscripciones a discipulados
-  const inscripcionesContainer = document.getElementById('adminInscripciones');
-  const disc = getData(STORAGE.discipulados, []);
-  if (disc.length === 0) {
-    inscripcionesContainer.innerHTML = '<p class="text-secondary">No hay inscripciones aún.</p>';
-  } else {
-    let html = '';
-    disc.forEach(d => {
-      html += `<div><strong>${d.titulo}</strong>: ${d.inscritos.length} inscritos (${d.inscritos.join(', ') || 'ninguno'})</div>`;
-    });
-    inscripcionesContainer.innerHTML = html;
-  }
-
-  // Categorías (para editar)
-  cargarCategoriasAdmin();
-
-  // Cargar configuración actual en los campos
+document.getElementById('adminBadge').addEventListener('click', function() {
+  abrirModal('adminModal');
   document.getElementById('openrouterKey').value = localStorage.getItem(STORAGE.iaKey) || '';
-  document.getElementById('openrouterModel').value = localStorage.getItem(STORAGE.iaModel) || 'https://openrouter.ai/api/v1/chat/completions';
-  document.getElementById('iaContextoAdmin').value = localStorage.getItem(STORAGE.iaContexto) || '';
-}
+  document.getElementById('iaContexto').value = localStorage.getItem(STORAGE.iaContexto) || '';
+});
 
-function eliminarUsuario(nombre) {
-  if (!isAdmin) return;
-  if (confirm(`¿Eliminar al usuario "${nombre}"?`)) {
-    let users = getData(STORAGE.usuarios, []);
-    users = users.filter(u => u !== nombre);
-    setData(STORAGE.usuarios, users);
-    cargarAdminPanel();
+function guardarConfigIA() {
+  const key = document.getElementById('openrouterKey').value.trim();
+  if (key) {
+    localStorage.setItem(STORAGE.iaKey, key);
+    document.getElementById('iaStatus').textContent = '✅ API configurada correctamente.';
+  } else {
+    localStorage.removeItem(STORAGE.iaKey);
+    document.getElementById('iaStatus').textContent = '⚠️ API no configurada.';
   }
 }
 
-// ================================================================
-// 18. CATEGORÍAS (localStorage)
-// ================================================================
-function cargarCategorias() {
-  let categorias = getData(STORAGE.categorias, []);
-  if (categorias.length === 0) {
-    categorias = ['Alimentos', 'Medicamentos', 'Ropa', 'Útiles escolares', 'Dinero', 'Otro'];
-    setData(STORAGE.categorias, categorias);
-  }
-  const select = document.getElementById('needCategoria');
-  let options = '';
-  categorias.forEach(cat => {
-    options += `<option value="${cat}">${cat}</option>`;
-  });
-  select.innerHTML = options;
-}
-
-function cargarCategoriasAdmin() {
-  const container = document.getElementById('categoriasListAdmin');
-  const categorias = getData(STORAGE.categorias, []);
-  if (categorias.length === 0) { container.innerHTML = '<p class="text-secondary">No hay categorías.</p>'; return; }
-  let html = '';
-  categorias.forEach((cat, index) => {
-    html += `<div class="admin-user-item">
-      <span>${cat}</span>
-      <button class="btn-danger" onclick="eliminarCategoriaAdmin(${index})">Eliminar</button>
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function eliminarCategoriaAdmin(index) {
-  let categorias = getData(STORAGE.categorias, []);
-  if (confirm(`¿Eliminar categoría "${categorias[index]}"?`)) {
-    categorias.splice(index, 1);
-    setData(STORAGE.categorias, categorias);
-    cargarCategoriasAdmin();
-    cargarCategorias();
-  }
-}
-
-function agregarCategoriaAdmin() {
-  const input = document.getElementById('nuevaCategoriaAdmin');
-  const nombre = input.value.trim();
-  if (!nombre) return;
-  let categorias = getData(STORAGE.categorias, []);
-  if (categorias.includes(nombre)) { alert('Ya existe esa categoría.'); return; }
-  categorias.push(nombre);
-  setData(STORAGE.categorias, categorias);
-  input.value = '';
-  cargarCategoriasAdmin();
-  cargarCategorias();
+function guardarContextoIA() {
+  const ctx = document.getElementById('iaContexto').value.trim();
+  localStorage.setItem(STORAGE.iaContexto, ctx);
+  alert('Contexto guardado.');
 }
 
 // ================================================================
-// 19. MODO NOCTURNO Y PANTALLA COMPLETA
+// 15. MODO NOCTURNO Y PANTALLA COMPLETA
 // ================================================================
 document.getElementById('themeToggle').addEventListener('click', function() {
   document.body.classList.toggle('dark');
@@ -2005,7 +1816,7 @@ document.getElementById('fullscreenToggle').addEventListener('click', function()
 });
 
 // ================================================================
-// 20. DATOS DE EJEMPLO
+// 16. DATOS DE EJEMPLO (precargados en todas las secciones)
 // ================================================================
 function cargarEjemplos() {
   // MURO
@@ -2137,33 +1948,6 @@ function cargarEjemplos() {
     ]);
   }
 
-  // CONSEJERÍA
-  if (!getData(STORAGE.consejeria, []).length) {
-    setData(STORAGE.consejeria, [
-      {
-        id: 8001,
-        autor: 'María González',
-        texto: 'Estoy pasando por un momento de ansiedad y necesito orientación bíblica para encontrar paz.',
-        fecha: 'Hoy, 8:00am',
-        respuestas: [{ autor: 'Pastor José', texto: 'María, la paz de Dios sobrepasa todo entendimiento. Te recomiendo leer Filipenses 4:6-7 y orar confiando en Él. Estamos orando por ti.' }]
-      },
-      {
-        id: 8002,
-        autor: 'Pedro Ramírez',
-        texto: 'Mi matrimonio está en crisis. Necesito consejo para restaurar mi hogar.',
-        fecha: 'Ayer, 10:00pm',
-        respuestas: []
-      },
-      {
-        id: 8003,
-        autor: 'Elena Soto',
-        texto: 'Mi hijo se ha alejado de la fe. ¿Cómo puedo interceder por él y mantener la esperanza?',
-        fecha: 'Hace 1 día',
-        respuestas: []
-      }
-    ]);
-  }
-
   // NECESIDADES
   if (!getData(STORAGE.necesidades, []).length) {
     setData(STORAGE.necesidades, [
@@ -2247,16 +2031,23 @@ function cargarEjemplos() {
 }
 
 // ================================================================
-// 21. INICIALIZACIÓN
+// 17. INICIALIZACIÓN
 // ================================================================
 cargarEjemplos();
-renderTodo();
+renderFeed();
+renderGrupos();
+renderDiscipulados();
+renderOraciones();
+renderMisioneros();
+renderNecesidades();
+renderServicios();
+cargarHistorial();
 
 if (localStorage.getItem(STORAGE.iaKey)) {
   document.getElementById('iaStatus').textContent = '✅ API configurada.';
 }
 
-console.log('✅ SAL Y LUZ cargada correctamente. Panel Admin visible y funcional.');
+console.log('✅ SAL Y LUZ cargada. Admin auto-login activado. Ejemplos precargados.');
 </script>
 </body>
 </html>

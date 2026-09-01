@@ -4,18 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>SAL Y LUZ · Comunidad Cristiana</title>
-  <script type="importmap">
-    {
-      "imports": {
-        "firebase/app": "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js",
-        "firebase/auth": "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js",
-        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"
-      }
-    }
-  </script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    /* ===== ESTILOS GENERALES (idénticos a la versión anterior) ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --teal: #1D9E75;
@@ -77,17 +68,15 @@
       gap: 8px;
       cursor: pointer;
     }
-    .logo-img {
+    .logo-icon {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      object-fit: cover;
-      background: var(--teal-light);
+      background: linear-gradient(135deg, var(--teal), var(--orange));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      color: var(--teal-dark);
+      color: white;
       font-size: 18px;
     }
     .logo-text {
@@ -258,7 +247,6 @@
       flex-shrink: 0;
     }
     .post-author { font-weight: 600; }
-    .post-author .verified { color: var(--teal); font-size: 14px; margin-left: 4px; }
     .post-time { font-size: 12px; color: var(--text-secondary); }
     .post-content { margin: 6px 0 10px; line-height: 1.6; }
     .post-media { max-width: 100%; border-radius: 12px; margin: 4px 0; max-height: 280px; object-fit: cover; }
@@ -668,10 +656,10 @@
 
 <div class="app" id="app">
 
+  <!-- HEADER -->
   <header class="header">
     <div class="logo" onclick="switchPanel('inicio')">
-      <img id="logoImg" class="logo-img" src="" alt="Logo" style="display:none;">
-      <div id="logoPlaceholder" class="logo-img"><i class="fas fa-church"></i></div>
+      <div class="logo-icon"><i class="fas fa-church"></i></div>
       <div>
         <div class="logo-text">SAL <span>Y</span> LUZ</div>
         <div class="logo-sub">Comunidad Cristiana</div>
@@ -682,10 +670,11 @@
       <button class="btn-icon" id="fullscreenToggle" title="Pantalla completa"><i class="fas fa-expand"></i></button>
       <span class="user-badge" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span></span>
       <button class="btn-primary" id="loginBtn">Entrar</button>
-      <span class="admin-badge" id="adminBadge" style="display:none;"><i class="fas fa-user-shield"></i> Admin</span>
+      <span class="admin-badge" id="adminBadge" style="display:inline-block;"><i class="fas fa-user-shield"></i> Admin</span>
     </div>
   </header>
 
+  <!-- TABS -->
   <nav class="tabs" id="mainTabs">
     <button class="tab active" data-panel="inicio"><i class="fas fa-home"></i> Inicio</button>
     <button class="tab" data-panel="biblia"><i class="fas fa-bible"></i> Biblia</button>
@@ -697,10 +686,11 @@
     <button class="tab" data-panel="mapa"><i class="fas fa-map-marked-alt"></i> Mapa</button>
     <button class="tab" data-panel="necesidades"><i class="fas fa-hand-holding-heart"></i> Necesidades</button>
     <button class="tab" data-panel="servicio"><i class="fas fa-utensils"></i> Servicio</button>
-    <button class="tab" data-panel="admin" id="adminTab" style="display:none;"><i class="fas fa-cog"></i> Admin</button>
+    <!-- Pestaña Admin siempre visible -->
+    <button class="tab" data-panel="admin" id="adminTab" style="display:inline-block;"><i class="fas fa-cog"></i> Admin</button>
   </nav>
 
-  <!-- INICIO -->
+  <!-- PANEL: INICIO -->
   <div class="panel active" id="panel-inicio">
     <div class="card" style="text-align:center; padding:32px 20px;">
       <h2 style="font-size:26px; margin-bottom:10px;">Bienvenido a <span style="color:var(--teal);">SAL Y LUZ</span></h2>
@@ -719,7 +709,7 @@
     </div>
   </div>
 
-  <!-- BIBLIA (sin cambios, usa localStorage y fetch local) -->
+  <!-- PANEL: BIBLIA -->
   <div class="panel" id="panel-biblia">
     <div class="card">
       <h3><i class="fas fa-bible"></i> Lectura Bíblica</h3>
@@ -764,7 +754,7 @@
     </div>
   </div>
 
-  <!-- MURO -->
+  <!-- PANEL: MURO -->
   <div class="panel" id="panel-muro">
     <div class="card">
       <h3><i class="fas fa-edit"></i> Publicar</h3>
@@ -772,6 +762,8 @@
       <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
         <input type="file" id="postImage" accept="image/*" style="display:none;">
         <button class="btn-outline" onclick="document.getElementById('postImage').click()"><i class="fas fa-image"></i> Foto</button>
+        <input type="file" id="postVideo" accept="video/*" style="display:none;">
+        <button class="btn-outline" onclick="document.getElementById('postVideo').click()"><i class="fas fa-video"></i> Video</button>
         <input type="url" id="postLink" placeholder="Enlace..." style="flex:1; padding:8px 14px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary);">
         <button class="btn-primary" onclick="crearPublicacion()">Publicar</button>
       </div>
@@ -779,7 +771,7 @@
     <div id="feedContainer"></div>
   </div>
 
-  <!-- GRUPOS -->
+  <!-- PANEL: GRUPOS -->
   <div class="panel" id="panel-grupos">
     <div class="card">
       <h3><i class="fas fa-users"></i> Grupos de Conexión (máx 15)</h3>
@@ -788,7 +780,7 @@
     <div id="gruposContainer"></div>
   </div>
 
-  <!-- DISCIPULADO -->
+  <!-- PANEL: DISCIPULADO -->
   <div class="panel" id="panel-discipulado">
     <div class="card">
       <h3><i class="fas fa-chalkboard-teacher"></i> Discipulados</h3>
@@ -797,7 +789,7 @@
     <div id="discipuladoContainer"></div>
   </div>
 
-  <!-- ORACIÓN -->
+  <!-- PANEL: ORACIÓN -->
   <div class="panel" id="panel-oracion">
     <div class="card">
       <h3><i class="fas fa-pray"></i> Publicar petición de oración</h3>
@@ -807,7 +799,7 @@
     <div id="oracionesContainer"></div>
   </div>
 
-  <!-- CONSEJERÍA -->
+  <!-- PANEL: CONSEJERÍA -->
   <div class="panel" id="panel-consejeria">
     <div class="card">
       <h3><i class="fas fa-hand-holding-heart"></i> Consejería Bíblica</h3>
@@ -818,7 +810,7 @@
     <div id="consejeriaContainer"></div>
   </div>
 
-  <!-- MAPA -->
+  <!-- PANEL: MAPA -->
   <div class="panel" id="panel-mapa">
     <div class="card">
       <h3><i class="fas fa-map-marked-alt"></i> Misioneros en el mundo</h3>
@@ -836,21 +828,28 @@
     </div>
   </div>
 
-  <!-- NECESIDADES -->
+  <!-- PANEL: NECESIDADES -->
   <div class="panel" id="panel-necesidades">
     <div class="card">
       <h3><i class="fas fa-hand-holding-heart"></i> Publicar necesidad</h3>
-      <select id="needCategoria" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:8px;"></select>
+      <select id="needCategoria" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:8px;">
+        <option value="Alimentos">Alimentos</option>
+        <option value="Medicamentos">Medicamentos</option>
+        <option value="Ropa">Ropa</option>
+        <option value="Útiles escolares">Útiles escolares</option>
+        <option value="Dinero">Dinero</option>
+        <option value="Otro">Otro</option>
+      </select>
       <input type="text" id="needDesc" placeholder="Descripción de la necesidad..." style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:8px;">
       <input type="tel" id="needTelefono" placeholder="Teléfono de contacto" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:8px;">
-      <label style="font-size:13px; color:var(--text-secondary);">Fotos (opcional, hasta 3):</label>
+      <label style="font-size:13px; color:var(--text-secondary);">Fotos (opcional):</label>
       <input type="file" id="needFotos" accept="image/*" multiple style="margin:4px 0 10px;">
       <button class="btn-primary" onclick="publicarNecesidad()"><i class="fas fa-upload"></i> Publicar</button>
     </div>
     <div id="necesidadesContainer"></div>
   </div>
 
-  <!-- SERVICIO -->
+  <!-- PANEL: SERVICIO -->
   <div class="panel" id="panel-servicio">
     <div class="card">
       <h3><i class="fas fa-utensils"></i> Ofrecer ayuda alimentaria</h3>
@@ -868,21 +867,34 @@
     <div id="serviciosContainer"></div>
   </div>
 
-  <!-- ADMIN -->
+  <!-- ============================================================ -->
+  <!-- PANEL: ADMIN (FULL) -->
   <div class="panel" id="panel-admin">
     <div class="card">
       <h3><i class="fas fa-cog"></i> Panel de Administración</h3>
-      <div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
-        <button class="btn-primary" onclick="subirLogo()"><i class="fas fa-upload"></i> Cambiar Logo</button>
-        <button class="btn-primary" style="background:var(--orange);" onclick="editarCategorias()"><i class="fas fa-tags"></i> Editar Categorías</button>
+      <p class="text-secondary">Aquí puedes gestionar usuarios, categorías y la configuración del asistente IA.</p>
+      <hr style="border-color:var(--border-color); margin:12px 0;">
+      <h4><i class="fas fa-key"></i> Configuración de IA (OpenRouter)</h4>
+      <label>API Key</label>
+      <input type="text" id="openrouterKey" placeholder="sk-or-..." style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:8px;">
+      <label>URL del modelo</label>
+      <input type="text" id="openrouterModel" placeholder="https://openrouter.ai/api/v1/chat/completions" value="https://openrouter.ai/api/v1/chat/completions" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:8px;">
+      <label>Contexto adicional para el agente</label>
+      <textarea id="iaContextoAdmin" placeholder="Instrucciones adicionales para el asistente..." rows="3" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); resize:vertical;"></textarea>
+      <button class="btn-primary" onclick="guardarConfigIAAdmin()"><i class="fas fa-save"></i> Guardar configuración</button>
+      <hr style="border-color:var(--border-color); margin:12px 0;">
+      <h4><i class="fas fa-tags"></i> Editar Categorías</h4>
+      <div id="categoriasListAdmin"></div>
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <input type="text" id="nuevaCategoriaAdmin" placeholder="Nueva categoría" style="flex:1; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary);">
+        <button class="btn-primary" onclick="agregarCategoriaAdmin()"><i class="fas fa-plus"></i> Agregar</button>
       </div>
       <hr style="border-color:var(--border-color); margin:12px 0;">
-      <h4 style="font-weight:600; margin-bottom:8px;"><i class="fas fa-users"></i> Usuarios registrados</h4>
+      <h4><i class="fas fa-users"></i> Usuarios registrados</h4>
       <div id="adminUserList"></div>
-    </div>
-    <div class="card">
-      <h4><i class="fas fa-tags"></i> Categorías actuales</h4>
-      <div id="categoriasList"></div>
+      <hr style="border-color:var(--border-color); margin:12px 0;">
+      <h4><i class="fas fa-user-graduate"></i> Inscripciones a Discipulados</h4>
+      <div id="adminInscripciones"></div>
     </div>
   </div>
 
@@ -897,34 +909,20 @@
   </div>
 
   <!-- MODALES -->
+  <!-- Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
-      <h3><i class="fas fa-user"></i> Iniciar sesión / Registrarse</h3>
-      <label>Correo electrónico</label>
-      <input type="email" id="loginEmail" placeholder="tucorreo@ejemplo.com">
-      <label>Contraseña</label>
-      <input type="password" id="loginPassword" placeholder="••••••••">
-      <label>Nombre completo (para registro)</label>
-      <input type="text" id="loginNombre" placeholder="Tu nombre">
-      <label>Teléfono</label>
-      <input type="tel" id="loginTelefono" placeholder="+506 8888-8888">
-      <label>¿Cómo deseas apoyar? (selecciona varios)</label>
-      <div style="display:flex; flex-wrap:wrap; gap:8px; margin:6px 0;">
-        <label style="font-weight:400;"><input type="checkbox" class="apoyo-check" value="facilitador"> Facilitador</label>
-        <label style="font-weight:400;"><input type="checkbox" class="apoyo-check" value="estudios"> Estudios Bíblicos</label>
-        <label style="font-weight:400;"><input type="checkbox" class="apoyo-check" value="oracion"> Oración</label>
-        <label style="font-weight:400;"><input type="checkbox" class="apoyo-check" value="alimentos"> Alimentos</label>
-        <label style="font-weight:400;"><input type="checkbox" class="apoyo-check" value="medicina"> Medicina</label>
-      </div>
+      <h3><i class="fas fa-user"></i> Ingresar</h3>
+      <label>Tu nombre</label>
+      <input type="text" id="loginName" placeholder="Ej: María Pérez">
       <div class="modal-actions">
         <button class="btn-cancel" onclick="cerrarModal('loginModal')">Cancelar</button>
-        <button class="btn-confirm" onclick="registrarUsuario()">Registrarse</button>
-        <button class="btn-confirm" style="background:var(--orange);" onclick="iniciarSesionFirebase()">Iniciar sesión</button>
+        <button class="btn-confirm" onclick="iniciarSesion()">Entrar</button>
       </div>
-      <p id="loginError" style="color:#e74c3c; font-size:13px; margin-top:8px; display:none;"></p>
     </div>
   </div>
 
+  <!-- Grupo -->
   <div class="modal-overlay" id="grupoModal">
     <div class="modal-box">
       <h3><i class="fas fa-users"></i> Nuevo Grupo</h3>
@@ -945,6 +943,7 @@
     </div>
   </div>
 
+  <!-- Discipulado -->
   <div class="modal-overlay" id="discipuladoModal">
     <div class="modal-box">
       <h3><i class="fas fa-chalkboard-teacher"></i> Nuevo Discipulado</h3>
@@ -963,172 +962,81 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="adminModal">
-    <div class="modal-box">
-      <h3><i class="fas fa-user-shield"></i> Configuración IA</h3>
-      <label>API Key OpenRouter</label>
-      <input type="text" id="openrouterKey" placeholder="sk-or-...">
-      <label>URL del modelo</label>
-      <input type="text" id="openrouterModel" placeholder="https://openrouter.ai/api/v1/chat/completions" value="https://openrouter.ai/api/v1/chat/completions">
-      <button class="btn-primary" onclick="guardarConfigIA()" style="margin-top:6px;">Guardar clave</button>
-      <p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">La clave se almacena localmente.</p>
-      <hr style="margin:12px 0; border-color:var(--border-color);">
-      <h4 style="font-size:15px;">Entrenar agente (contexto)</h4>
-      <textarea id="iaContexto" placeholder="Instrucciones adicionales para el asistente" rows="3" style="width:100%; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary);"></textarea>
-      <button class="btn-primary" onclick="guardarContextoIA()" style="margin-top:6px;">Guardar contexto</button>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="cerrarModal('adminModal')">Cerrar</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="categoriasModal">
-    <div class="modal-box">
-      <h3><i class="fas fa-tags"></i> Editar Categorías de Necesidades</h3>
-      <div id="categoriasEditContainer"></div>
-      <div style="display:flex; gap:8px; margin-top:12px;">
-        <input type="text" id="nuevaCategoria" placeholder="Nueva categoría" style="flex:1; padding:10px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary);">
-        <button class="btn-primary" onclick="agregarCategoria()">Agregar</button>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="cerrarModal('categoriasModal')">Cerrar</button>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-<script type="module">
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
-import { getFirestore, doc, setDoc, getDoc, getDocs, collection, query, orderBy, deleteDoc, updateDoc, addDoc, serverTimestamp, arrayUnion, arrayRemove, onSnapshot } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCpCtxZqnj6HyjfjAfkgiJcEB5dMxwtmwc",
-  authDomain: "bibliarv60-5bbc5.firebaseapp.com",
-  projectId: "bibliarv60-5bbc5",
-  storageBucket: "bibliarv60-5bbc5.firebasestorage.app",
-  messagingSenderId: "445409342174",
-  appId: "1:445409342174:web:0ce65b2f6bc935ba2c884f",
-  measurementId: "G-DQ56JYDPN0"
+<script>
+// ================================================================
+// 1. ESTADO GLOBAL Y LOCALSTORAGE
+// ================================================================
+const STORAGE = {
+  usuarios: 'iglesia_usuarios',
+  posts: 'iglesia_posts',
+  grupos: 'iglesia_grupos',
+  discipulados: 'iglesia_discipulados',
+  misioneros: 'iglesia_misioneros',
+  necesidades: 'iglesia_necesidades',
+  servicios: 'iglesia_servicios',
+  oraciones: 'iglesia_oraciones',
+  consejeria: 'iglesia_consejeria',
+  historialBiblia: 'iglesia_historial_biblia',
+  iaKey: 'iglesia_ia_key',
+  iaModel: 'iglesia_ia_model',
+  iaContexto: 'iglesia_ia_contexto',
+  categorias: 'iglesia_categorias'
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+let usuarioActual = '';
+let isAdmin = true; // ADMIN AUTO-LOGIN
 
-const ADMIN_EMAIL = "salyluz@comunidad.com";
-let currentUser = null;
-let isAdmin = false;
+function getData(key, def) {
+  try { return JSON.parse(localStorage.getItem(key)) || def; } catch(e) { return def; }
+}
+function setData(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
-// ===== AUTENTICACIÓN =====
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    currentUser = user;
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    if (userDoc.exists()) {
-      const data = userDoc.data();
-      document.getElementById('userNameDisplay').textContent = data.nombre || user.displayName || user.email;
-      if (user.email === ADMIN_EMAIL) {
-        isAdmin = true;
-        document.getElementById('adminBadge').style.display = 'inline-block';
-        document.getElementById('adminTab').style.display = 'inline-block';
-        cargarAdminPanel();
-      } else {
-        isAdmin = false;
-        document.getElementById('adminBadge').style.display = 'none';
-        document.getElementById('adminTab').style.display = 'none';
-      }
-      document.getElementById('loginBtn').textContent = 'Salir';
-    } else {
-      await setDoc(doc(db, "users", user.uid), {
-        email: user.email,
-        nombre: user.displayName || user.email,
-        telefono: '',
-        apoyos: [],
-        esFacilitador: false,
-        verificado: false,
-        fechaRegistro: serverTimestamp()
-      });
-      document.getElementById('userNameDisplay').textContent = user.displayName || user.email;
-      document.getElementById('loginBtn').textContent = 'Salir';
+// ================================================================
+// 2. USUARIOS Y LOGIN
+// ================================================================
+function iniciarSesion() {
+  const name = document.getElementById('loginName').value.trim();
+  if (!name) { alert('Ingresa tu nombre'); return; }
+  usuarioActual = name;
+  let usuarios = getData(STORAGE.usuarios, []);
+  if (!usuarios.includes(name)) usuarios.push(name);
+  setData(STORAGE.usuarios, usuarios);
+  document.getElementById('userNameDisplay').textContent = name;
+  document.getElementById('loginBtn').textContent = 'Cambiar';
+  cerrarModal('loginModal');
+  renderTodo();
+}
+
+document.getElementById('loginBtn').addEventListener('click', function() {
+  if (usuarioActual) {
+    if (confirm('¿Cerrar sesión?')) {
+      usuarioActual = '';
+      document.getElementById('userNameDisplay').textContent = 'Invitado';
+      this.textContent = 'Entrar';
+      renderTodo();
     }
-    cargarFeed();
-    cargarGrupos();
-    cargarDiscipulados();
-    cargarOraciones();
-    cargarConsejeria();
-    cargarNecesidades();
-    cargarServicios();
-    cargarMisioneros();
-    cargarCategorias();
-    cargarLogo();
   } else {
-    currentUser = null;
-    isAdmin = false;
-    document.getElementById('userNameDisplay').textContent = 'Invitado';
-    document.getElementById('loginBtn').textContent = 'Entrar';
-    document.getElementById('adminBadge').style.display = 'none';
-    document.getElementById('adminTab').style.display = 'none';
-    document.getElementById('feedContainer').innerHTML = '<p style="color:var(--text-secondary);">Inicia sesión para ver el muro.</p>';
-    document.getElementById('gruposContainer').innerHTML = '<p style="color:var(--text-secondary);">Inicia sesión para ver grupos.</p>';
-    document.getElementById('discipuladoContainer').innerHTML = '<p style="color:var(--text-secondary);">Inicia sesión para ver discipulados.</p>';
-    document.getElementById('oracionesContainer').innerHTML = '<p style="color:var(--text-secondary);">Inicia sesión para ver oraciones.</p>';
-    document.getElementById('consejeriaContainer').innerHTML = '<p style="color:var(--text-secondary);">Inicia sesión para ver consejería.</p>';
-    document.getElementById('necesidadesContainer').innerHTML = '<p style="color:var(--text-secondary);">Inicia sesión para ver necesidades.</p>';
-    document.getElementById('serviciosContainer').innerHTML = '<p style="color:var(--text-secondary);">Inicia sesión para ver servicios.</p>';
-    document.getElementById('misionerosList').innerHTML = '<p style="color:var(--text-secondary);">Inicia sesión para ver misioneros.</p>';
+    abrirModal('loginModal');
   }
 });
 
-// Funciones de autenticación
-window.iniciarSesionFirebase = async function() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value.trim();
-  const errorEl = document.getElementById('loginError');
-  if (!email || !password) { errorEl.textContent = 'Correo y contraseña requeridos.'; errorEl.style.display = 'block'; return; }
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    cerrarModal('loginModal');
-    errorEl.style.display = 'none';
-  } catch (error) {
-    errorEl.textContent = error.message;
-    errorEl.style.display = 'block';
+// Cargar usuario guardado
+(function cargarUsuario() {
+  const users = getData(STORAGE.usuarios, []);
+  if (users.length > 0) {
+    usuarioActual = users[users.length - 1];
+    document.getElementById('userNameDisplay').textContent = usuarioActual;
+    document.getElementById('loginBtn').textContent = 'Cambiar';
   }
-};
+  document.getElementById('adminBadge').style.display = 'inline-block';
+})();
 
-window.registrarUsuario = async function() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value.trim();
-  const nombre = document.getElementById('loginNombre').value.trim();
-  const telefono = document.getElementById('loginTelefono').value.trim();
-  const apoyos = Array.from(document.querySelectorAll('.apoyo-check:checked')).map(cb => cb.value);
-  const errorEl = document.getElementById('loginError');
-  if (!email || !password || !nombre) { errorEl.textContent = 'Correo, contraseña y nombre obligatorios.'; errorEl.style.display = 'block'; return; }
-  try {
-    const userCred = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCred.user;
-    await setDoc(doc(db, "users", user.uid), {
-      email, nombre, telefono, apoyos,
-      esFacilitador: apoyos.includes('facilitador'),
-      verificado: false,
-      fechaRegistro: serverTimestamp()
-    });
-    cerrarModal('loginModal');
-    errorEl.style.display = 'none';
-    alert('Usuario registrado correctamente.');
-  } catch (error) {
-    errorEl.textContent = error.message;
-    errorEl.style.display = 'block';
-  }
-};
-
-document.getElementById('loginBtn').addEventListener('click', () => {
-  if (currentUser) { signOut(auth); } else { abrirModal('loginModal'); }
-});
-
-// ===== UI HELPERS =====
-window.switchPanel = function(name) {
+// ================================================================
+// 3. PANELES
+// ================================================================
+function switchPanel(name) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
@@ -1138,642 +1046,813 @@ window.switchPanel = function(name) {
   if (tab) tab.classList.add('active');
   const bn = document.getElementById('bn-' + name);
   if (bn) bn.classList.add('active');
-  if (name === 'admin' && isAdmin) cargarAdminPanel();
-};
+  // Cargar contenido dinámico
+  if (name === 'admin') cargarAdminPanel();
+}
 
 document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => window.switchPanel(tab.dataset.panel));
+  tab.addEventListener('click', () => switchPanel(tab.dataset.panel));
 });
 
-window.abrirModal = function(id) { document.getElementById(id).classList.add('show'); };
-window.cerrarModal = function(id) { document.getElementById(id).classList.remove('show'); };
+function abrirModal(id) { document.getElementById(id).classList.add('show'); }
+function cerrarModal(id) { document.getElementById(id).classList.remove('show'); }
 
-// ===== MURO (sin Storage, imágenes en base64) =====
-window.crearPublicacion = async function() {
-  if (!currentUser) { alert('Inicia sesión primero.'); return; }
+// ================================================================
+// 4. RENDERIZAR TODO
+// ================================================================
+function renderTodo() {
+  renderFeed();
+  renderGrupos();
+  renderDiscipulados();
+  renderOraciones();
+  renderConsejeria();
+  renderMisioneros();
+  renderNecesidades();
+  renderServicios();
+  cargarHistorial();
+  cargarCategorias();
+  cargarAdminPanel();
+}
+
+// ================================================================
+// 5. MURO (FEED)
+// ================================================================
+function crearPublicacion() {
+  if (!usuarioActual) { alert('Ingresa con tu nombre primero.'); return; }
   const texto = document.getElementById('postInput').value.trim();
   const link = document.getElementById('postLink').value.trim();
   const imgFile = document.getElementById('postImage').files[0];
-  if (!texto && !link && !imgFile) { alert('Escribe algo o adjunta una imagen.'); return; }
+  const vidFile = document.getElementById('postVideo').files[0];
+  if (!texto && !link && !imgFile && !vidFile) { alert('Escribe algo o adjunta contenido.'); return; }
 
-  let mediaBase64 = null;
+  let media = null;
   if (imgFile) {
     const reader = new FileReader();
-    mediaBase64 = await new Promise((resolve) => {
-      reader.onload = (e) => resolve(e.target.result);
-      reader.readAsDataURL(imgFile);
-    });
+    reader.onload = function(e) { media = { type: 'image', data: e.target.result }; publicar(media); };
+    reader.readAsDataURL(imgFile);
+  } else if (vidFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) { media = { type: 'video', data: e.target.result }; publicar(media); };
+    reader.readAsDataURL(vidFile);
+  } else {
+    publicar(null);
   }
 
-  const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-  const autorNombre = userSnap.exists() ? userSnap.data().nombre : currentUser.email;
-
-  await addDoc(collection(db, "posts"), {
-    autor: currentUser.uid,
-    autorNombre: autorNombre,
-    texto,
-    link: link || '',
-    mediaBase64: mediaBase64,
-    fecha: serverTimestamp(),
-    likes: [],
-    comentarios: []
-  });
-  document.getElementById('postInput').value = '';
-  document.getElementById('postLink').value = '';
-  document.getElementById('postImage').value = '';
-};
-
-function cargarFeed() {
-  const q = query(collection(db, "posts"), orderBy("fecha", "desc"));
-  onSnapshot(q, (snapshot) => {
-    const container = document.getElementById('feedContainer');
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones aún.</p>'; return; }
-    let html = '';
-    snapshot.forEach(doc => {
-      const post = doc.data();
-      const id = doc.id;
-      const liked = post.likes && post.likes.includes(currentUser?.uid);
-      html += `<div class="post">
-        <div class="post-header">
-          <div class="post-avatar">${(post.autorNombre||'U').charAt(0).toUpperCase()}</div>
-          <div>
-            <div class="post-author">${post.autorNombre||'Usuario'} ${post.autor === currentUser?.uid ? ' (tú)' : ''}</div>
-            <div class="post-time">${post.fecha ? new Date(post.fecha.seconds*1000).toLocaleString() : ''}</div>
-          </div>
-        </div>
-        <div class="post-content">${post.texto||''}</div>`;
-      if (post.mediaBase64) {
-        html += `<img src="${post.mediaBase64}" class="post-media" alt="imagen">`;
-      }
-      if (post.link) html += `<div style="margin:4px 0;"><a href="${post.link}" target="_blank" style="color:var(--teal);">${post.link}</a></div>`;
-      html += `<div class="post-actions">
-        <button onclick="likePost('${id}')" class="${liked?'liked':''}"><i class="fas fa-heart"></i> ${post.likes?.length||0}</button>
-        <button onclick="toggleComentarios('${id}')"><i class="fas fa-comment"></i> ${post.comentarios?.length||0}</button>
-        <button onclick="compartirPost('${id}')"><i class="fas fa-share"></i> Compartir</button>
-      </div>
-      <div class="comments" id="comments-${id}" style="display:none;">
-        ${post.comentarios ? post.comentarios.map(c => `<div><strong>${c.autorNombre||'Usuario'}</strong>: ${c.texto}</div>`).join('') : ''}
-        <div class="comment-box">
-          <input type="text" id="commentInput-${id}" placeholder="Escribe un comentario...">
-          <button onclick="comentarPost('${id}')"><i class="fas fa-paper-plane"></i></button>
-        </div>
-      </div>
-      </div>`;
+  function publicar(media) {
+    const posts = getData(STORAGE.posts, []);
+    posts.unshift({
+      id: Date.now(),
+      autor: usuarioActual,
+      texto: texto,
+      link: link,
+      media: media,
+      fecha: new Date().toLocaleString(),
+      likes: [],
+      comentarios: []
     });
-    container.innerHTML = html;
-  });
+    setData(STORAGE.posts, posts);
+    document.getElementById('postInput').value = '';
+    document.getElementById('postLink').value = '';
+    document.getElementById('postImage').value = '';
+    document.getElementById('postVideo').value = '';
+    renderFeed();
+  }
 }
 
-window.likePost = async function(id) {
-  if (!currentUser) return;
-  const ref = doc(db, "posts", id);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) return;
-  const data = snap.data();
-  const likes = data.likes || [];
-  if (likes.includes(currentUser.uid)) {
-    await updateDoc(ref, { likes: arrayRemove(currentUser.uid) });
-  } else {
-    await updateDoc(ref, { likes: arrayUnion(currentUser.uid) });
-  }
-};
+function renderFeed() {
+  const container = document.getElementById('feedContainer');
+  const posts = getData(STORAGE.posts, []);
+  if (posts.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones aún. ¡Sé el primero!</p>'; return; }
+  let html = '';
+  posts.forEach((post) => {
+    const liked = post.likes && post.likes.includes(usuarioActual);
+    html += `<div class="post">
+      <div class="post-header">
+        <div class="post-avatar">${post.autor.charAt(0).toUpperCase()}</div>
+        <div><div class="post-author">${post.autor}</div><div class="post-time">${post.fecha}</div></div>
+      </div>
+      <div class="post-content">${post.texto}</div>`;
+    if (post.media) {
+      if (post.media.type === 'image') html += `<img src="${post.media.data}" class="post-media" alt="imagen">`;
+      else if (post.media.type === 'video') html += `<video controls class="post-media" src="${post.media.data}"></video>`;
+    }
+    if (post.link) html += `<div style="margin:4px 0;"><a href="${post.link}" target="_blank" style="color:var(--teal);">${post.link}</a></div>`;
+    html += `<div class="post-actions">
+      <button onclick="likePost(${post.id})" class="${liked?'liked':''}"><i class="fas fa-heart"></i> ${post.likes?post.likes.length:0}</button>
+      <button onclick="toggleComentarios(${post.id})"><i class="fas fa-comment"></i> ${post.comentarios?post.comentarios.length:0}</button>
+      <button onclick="compartirPost('${post.id}')"><i class="fas fa-share"></i> Compartir</button>
+    </div>
+    <div class="comments" id="comments-${post.id}" style="display:none;">
+      ${post.comentarios ? post.comentarios.map(c => `<div><strong>${c.autor}</strong>: ${c.texto}</div>`).join('') : ''}
+      <div class="comment-box">
+        <input type="text" id="commentInput-${post.id}" placeholder="Escribe un comentario...">
+        <button onclick="comentarPost(${post.id})"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
 
-window.toggleComentarios = function(id) {
+function likePost(id) {
+  if (!usuarioActual) { alert('Ingresa primero.'); return; }
+  const posts = getData(STORAGE.posts, []);
+  const post = posts.find(p => p.id === id);
+  if (!post) return;
+  if (!post.likes) post.likes = [];
+  const idx = post.likes.indexOf(usuarioActual);
+  if (idx > -1) post.likes.splice(idx, 1);
+  else post.likes.push(usuarioActual);
+  setData(STORAGE.posts, posts);
+  renderFeed();
+}
+
+function toggleComentarios(id) {
   const div = document.getElementById('comments-' + id);
   if (div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
-};
+}
 
-window.comentarPost = async function(id) {
-  if (!currentUser) return;
+function comentarPost(id) {
+  if (!usuarioActual) { alert('Ingresa primero.'); return; }
   const input = document.getElementById('commentInput-' + id);
   const texto = input.value.trim();
   if (!texto) return;
-  const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-  const nombre = userSnap.exists() ? userSnap.data().nombre : currentUser.email;
-  await updateDoc(doc(db, "posts", id), {
-    comentarios: arrayUnion({ autor: currentUser.uid, autorNombre: nombre, texto })
-  });
-  input.value = '';
-};
+  const posts = getData(STORAGE.posts, []);
+  const post = posts.find(p => p.id === id);
+  if (!post) return;
+  if (!post.comentarios) post.comentarios = [];
+  post.comentarios.push({ autor: usuarioActual, texto: texto });
+  setData(STORAGE.posts, posts);
+  renderFeed();
+}
 
-window.compartirPost = function(id) {
+function compartirPost(id) {
   const url = window.location.href + '?post=' + id;
-  if (navigator.share) navigator.share({ title: 'Publicación', url });
-  else navigator.clipboard.writeText(url).then(() => alert('Enlace copiado.'));
-};
+  if (navigator.share) {
+    navigator.share({ title: 'Publicación', text: 'Mira esta publicación', url: url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => alert('Enlace copiado al portapapeles.'));
+  }
+}
 
-// ===== GRUPOS =====
-window.abrirModalGrupo = function() {
-  if (!currentUser || !isAdmin) { alert('Solo admin.'); return; }
+// ================================================================
+// 6. GRUPOS
+// ================================================================
+function abrirModalGrupo() {
+  if (!isAdmin) { alert('Solo el administrador puede crear grupos.'); return; }
   document.getElementById('grupoNombre').value = '';
   document.getElementById('grupoFacilitador').value = '';
   document.getElementById('grupoAsistente').value = '';
   document.getElementById('grupoAnfitrion').value = '';
   document.getElementById('grupoTelefono').value = '';
   abrirModal('grupoModal');
-};
+}
 
-window.crearGrupo = async function() {
+function crearGrupo() {
   const nombre = document.getElementById('grupoNombre').value.trim();
   const facilitador = document.getElementById('grupoFacilitador').value.trim();
   const asistente = document.getElementById('grupoAsistente').value.trim();
   const anfitrion = document.getElementById('grupoAnfitrion').value.trim();
   const telefono = document.getElementById('grupoTelefono').value.trim();
-  if (!nombre || !facilitador) { alert('Nombre y facilitador obligatorios.'); return; }
-  await addDoc(collection(db, "grupos"), { nombre, facilitador, asistente, anfitrion, telefono, miembros: [facilitador], max: 15, fecha: serverTimestamp() });
-  cerrarModal('grupoModal');
-};
-
-function cargarGrupos() {
-  onSnapshot(collection(db, "grupos"), (snapshot) => {
-    const container = document.getElementById('gruposContainer');
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos.</p>'; return; }
-    let html = '';
-    snapshot.forEach(doc => {
-      const g = doc.data();
-      const id = doc.id;
-      html += `<div class="grupo-item">
-        <div class="grupo-info">
-          <strong>${g.nombre}</strong>
-          <small>Facilitador: ${g.facilitador} ${g.telefono ? '📞 '+g.telefono : ''} | Asist: ${g.asistente||'N/A'} | Anfit: ${g.anfitrion||'N/A'}</small>
-          <br><small>Miembros: ${g.miembros?.length||0}/${g.max}</small>
-        </div>
-        ${isAdmin ? `<button class="btn-danger" onclick="eliminarGrupo('${id}')">Eliminar</button>` : ''}
-      </div>`;
-    });
-    container.innerHTML = html;
+  if (!nombre || !facilitador) { alert('Nombre y facilitador son obligatorios.'); return; }
+  const grupos = getData(STORAGE.grupos, []);
+  grupos.push({
+    id: Date.now(),
+    nombre,
+    facilitador,
+    asistente,
+    anfitrion,
+    telefono,
+    miembros: [facilitador],
+    max: 15
   });
+  setData(STORAGE.grupos, grupos);
+  cerrarModal('grupoModal');
+  renderGrupos();
 }
 
-window.eliminarGrupo = async function(id) {
-  if (!isAdmin) return;
-  if (confirm('¿Eliminar grupo?')) await deleteDoc(doc(db, "grupos", id));
-};
+function renderGrupos() {
+  const container = document.getElementById('gruposContainer');
+  const grupos = getData(STORAGE.grupos, []);
+  if (grupos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos creados.</p>'; return; }
+  let html = '';
+  grupos.forEach(g => {
+    html += `<div class="grupo-item">
+      <div class="grupo-info">
+        <strong>${g.nombre}</strong>
+        <small>Facilitador: ${g.facilitador} ${g.telefono ? '📞 '+g.telefono : ''} | Asist: ${g.asistente||'N/A'} | Anfit: ${g.anfitrion||'N/A'}</small>
+        <br><small>Miembros: ${g.miembros.length}/${g.max}</small>
+      </div>
+      ${isAdmin ? `<button class="btn-danger" onclick="eliminarGrupo(${g.id})">Eliminar</button>` : ''}
+    </div>`;
+  });
+  container.innerHTML = html;
+}
 
-// ===== DISCIPULADOS =====
-window.abrirModalDiscipulado = function() {
-  if (!currentUser || !isAdmin) { alert('Solo admin.'); return; }
+function eliminarGrupo(id) {
+  if (!isAdmin) return;
+  if (confirm('¿Eliminar este grupo?')) {
+    let grupos = getData(STORAGE.grupos, []);
+    grupos = grupos.filter(g => g.id !== id);
+    setData(STORAGE.grupos, grupos);
+    renderGrupos();
+  }
+}
+
+// ================================================================
+// 7. DISCIPULADOS
+// ================================================================
+function abrirModalDiscipulado() {
+  if (!isAdmin) { alert('Solo el administrador puede crear discipulados.'); return; }
   document.getElementById('discTitulo').value = '';
   document.getElementById('discFacilitador').value = '';
   document.getElementById('discTelefono').value = '';
   document.getElementById('discDesc').value = '';
   abrirModal('discipuladoModal');
-};
+}
 
-window.crearDiscipulado = async function() {
+function crearDiscipulado() {
   const titulo = document.getElementById('discTitulo').value.trim();
   const facilitador = document.getElementById('discFacilitador').value.trim();
   const telefono = document.getElementById('discTelefono').value.trim();
   const desc = document.getElementById('discDesc').value.trim();
-  if (!titulo || !facilitador) { alert('Título y facilitador obligatorios.'); return; }
-  await addDoc(collection(db, "discipulados"), { titulo, facilitador, telefono, desc, inscritos: [], fecha: serverTimestamp() });
+  if (!titulo || !facilitador) { alert('Título y facilitador son obligatorios.'); return; }
+  const disc = getData(STORAGE.discipulados, []);
+  disc.push({ id: Date.now(), titulo, facilitador, telefono, desc, inscritos: [] });
+  setData(STORAGE.discipulados, disc);
   cerrarModal('discipuladoModal');
-};
-
-function cargarDiscipulados() {
-  onSnapshot(collection(db, "discipulados"), (snapshot) => {
-    const container = document.getElementById('discipuladoContainer');
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay discipulados.</p>'; return; }
-    let html = '';
-    snapshot.forEach(doc => {
-      const d = doc.data();
-      const id = doc.id;
-      const inscrito = d.inscritos && d.inscritos.includes(currentUser?.uid);
-      html += `<div class="disc-card">
-        <h4>${d.titulo}</h4>
-        <p><i class="fas fa-user"></i> Facilitador: ${d.facilitador} ${d.telefono ? '📞 '+d.telefono : ''}</p>
-        <p class="desc">${d.desc || ''}</p>
-        <p><small>Inscritos: ${d.inscritos?.length||0}</small></p>
-        ${currentUser && !inscrito ? `<button class="btn-primary" onclick="inscribirDiscipulado('${id}')">Inscribirme</button>` : ''}
-        ${isAdmin ? `<button class="btn-danger" onclick="eliminarDiscipulado('${id}')">Eliminar</button>` : ''}
-      </div>`;
-    });
-    container.innerHTML = html;
-  });
+  renderDiscipulados();
 }
 
-window.inscribirDiscipulado = async function(id) {
-  if (!currentUser) return;
-  await updateDoc(doc(db, "discipulados", id), { inscritos: arrayUnion(currentUser.uid) });
-};
+function renderDiscipulados() {
+  const container = document.getElementById('discipuladoContainer');
+  const disc = getData(STORAGE.discipulados, []);
+  if (disc.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay discipulados disponibles.</p>'; return; }
+  let html = '';
+  disc.forEach(d => {
+    html += `<div class="disc-card">
+      <h4>${d.titulo}</h4>
+      <p><i class="fas fa-user"></i> Facilitador: ${d.facilitador} ${d.telefono ? '📞 '+d.telefono : ''}</p>
+      <p class="desc">${d.desc || ''}</p>
+      <p><small>Inscritos: ${d.inscritos.length}</small></p>
+      ${usuarioActual && !d.inscritos.includes(usuarioActual) ? `<button class="btn-primary" onclick="inscribirDiscipulado(${d.id})">Inscribirme</button>` : ''}
+      ${isAdmin ? `<button class="btn-danger" onclick="eliminarDiscipulado(${d.id})">Eliminar</button>` : ''}
+    </div>`;
+  });
+  container.innerHTML = html;
+}
 
-window.eliminarDiscipulado = async function(id) {
+function inscribirDiscipulado(id) {
+  if (!usuarioActual) { alert('Ingresa primero.'); return; }
+  const disc = getData(STORAGE.discipulados, []);
+  const d = disc.find(item => item.id === id);
+  if (!d) return;
+  if (d.inscritos.includes(usuarioActual)) return;
+  d.inscritos.push(usuarioActual);
+  setData(STORAGE.discipulados, disc);
+  renderDiscipulados();
+}
+
+function eliminarDiscipulado(id) {
   if (!isAdmin) return;
-  if (confirm('¿Eliminar discipulado?')) await deleteDoc(doc(db, "discipulados", id));
-};
-
-// ===== ORACIONES =====
-window.publicarOracion = async function() {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
-  const texto = document.getElementById('oracionInput').value.trim();
-  if (!texto) return;
-  const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-  const nombre = userSnap.exists() ? userSnap.data().nombre : currentUser.email;
-  await addDoc(collection(db, "oraciones"), { autor: currentUser.uid, autorNombre: nombre, texto, fecha: serverTimestamp(), orado: [] });
-  document.getElementById('oracionInput').value = '';
-};
-
-function cargarOraciones() {
-  const q = query(collection(db, "oraciones"), orderBy("fecha", "desc"));
-  onSnapshot(q, (snapshot) => {
-    const container = document.getElementById('oracionesContainer');
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones de oración.</p>'; return; }
-    let html = '';
-    snapshot.forEach(doc => {
-      const o = doc.data();
-      const id = doc.id;
-      const yaOro = o.orado && o.orado.includes(currentUser?.uid);
-      html += `<div class="oracion-item">
-        <div class="oracion-header">
-          <div class="oracion-avatar">${(o.autorNombre||'U').charAt(0).toUpperCase()}</div>
-          <div>
-            <span class="oracion-autor">${o.autorNombre||'Usuario'}</span>
-            <span class="oracion-time"> · ${o.fecha ? new Date(o.fecha.seconds*1000).toLocaleString() : ''}</span>
-          </div>
-        </div>
-        <div class="oracion-texto">${o.texto}</div>
-        <div class="oracion-actions">
-          <button onclick="orarOracion('${id}')" class="${yaOro?'orado':''}">
-            <i class="fas fa-hands-praying"></i> ${yaOro ? 'Oré' : 'Orar'} (${o.orado?.length||0})
-          </button>
-        </div>
-      </div>`;
-    });
-    container.innerHTML = html;
-  });
-}
-
-window.orarOracion = async function(id) {
-  if (!currentUser) return;
-  const ref = doc(db, "oraciones", id);
-  const snap = await getDoc(ref);
-  if (!snap.exists()) return;
-  const data = snap.data();
-  const orado = data.orado || [];
-  if (orado.includes(currentUser.uid)) {
-    await updateDoc(ref, { orado: arrayRemove(currentUser.uid) });
-  } else {
-    await updateDoc(ref, { orado: arrayUnion(currentUser.uid) });
+  if (confirm('¿Eliminar este discipulado?')) {
+    let disc = getData(STORAGE.discipulados, []);
+    disc = disc.filter(d => d.id !== id);
+    setData(STORAGE.discipulados, disc);
+    renderDiscipulados();
   }
-};
-
-// ===== CONSEJERÍA =====
-window.enviarConsejeria = async function() {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
-  const texto = document.getElementById('consejeriaInput').value.trim();
-  if (!texto) return;
-  const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-  const nombre = userSnap.exists() ? userSnap.data().nombre : currentUser.email;
-  await addDoc(collection(db, "consejeria"), { autor: currentUser.uid, autorNombre: nombre, texto, fecha: serverTimestamp(), respuestas: [] });
-  document.getElementById('consejeriaInput').value = '';
-};
-
-function cargarConsejeria() {
-  const q = query(collection(db, "consejeria"), orderBy("fecha", "desc"));
-  onSnapshot(q, (snapshot) => {
-    const container = document.getElementById('consejeriaContainer');
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay consultas de consejería.</p>'; return; }
-    let html = '';
-    snapshot.forEach(doc => {
-      const c = doc.data();
-      const id = doc.id;
-      html += `<div class="disc-card">
-        <div><strong>${c.autorNombre||'Usuario'}</strong> <span class="text-secondary" style="font-size:12px;">${c.fecha ? new Date(c.fecha.seconds*1000).toLocaleString() : ''}</span></div>
-        <p>${c.texto}</p>
-        <div style="margin-top:8px;">
-          ${c.respuestas && c.respuestas.map(r => `<div style="background:var(--bg-body); padding:6px 12px; border-radius:8px; margin:4px 0;"><strong>${r.autorNombre}</strong>: ${r.texto}</div>`).join('')}
-        </div>
-        ${isAdmin ? `
-          <div class="comment-box" style="margin-top:8px;">
-            <input type="text" id="respuestaInput-${id}" placeholder="Responder como pastor...">
-            <button onclick="responderConsejeria('${id}')"><i class="fas fa-paper-plane"></i></button>
-          </div>
-        ` : ''}
-      </div>`;
-    });
-    container.innerHTML = html;
-  });
 }
 
-window.responderConsejeria = async function(id) {
-  if (!isAdmin) return;
+// ================================================================
+// 8. ORACIONES
+// ================================================================
+function publicarOracion() {
+  if (!usuarioActual) { alert('Ingresa primero.'); return; }
+  const texto = document.getElementById('oracionInput').value.trim();
+  if (!texto) { alert('Escribe tu petición de oración.'); return; }
+  const oraciones = getData(STORAGE.oraciones, []);
+  oraciones.unshift({
+    id: Date.now(),
+    autor: usuarioActual,
+    texto: texto,
+    fecha: new Date().toLocaleString(),
+    orado: []
+  });
+  setData(STORAGE.oraciones, oraciones);
+  document.getElementById('oracionInput').value = '';
+  renderOraciones();
+}
+
+function renderOraciones() {
+  const container = document.getElementById('oracionesContainer');
+  const oraciones = getData(STORAGE.oraciones, []);
+  if (oraciones.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones de oración. ¡Sé el primero en compartir una!</p>';
+    return;
+  }
+  let html = '';
+  oraciones.forEach(o => {
+    const yaOro = o.orado && o.orado.includes(usuarioActual);
+    html += `<div class="oracion-item">
+      <div class="oracion-header">
+        <div class="oracion-avatar">${o.autor.charAt(0).toUpperCase()}</div>
+        <div>
+          <span class="oracion-autor">${o.autor}</span>
+          <span class="oracion-time"> · ${o.fecha}</span>
+        </div>
+      </div>
+      <div class="oracion-texto">${o.texto}</div>
+      <div class="oracion-actions">
+        <button onclick="orarOracion(${o.id})" class="${yaOro?'orado':''}">
+          <i class="fas fa-hands-praying"></i> ${yaOro ? 'Oré' : 'Orar'} (${o.orado ? o.orado.length : 0})
+        </button>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function orarOracion(id) {
+  if (!usuarioActual) { alert('Ingresa primero.'); return; }
+  const oraciones = getData(STORAGE.oraciones, []);
+  const o = oraciones.find(item => item.id === id);
+  if (!o) return;
+  if (!o.orado) o.orado = [];
+  const idx = o.orado.indexOf(usuarioActual);
+  if (idx > -1) {
+    o.orado.splice(idx, 1);
+  } else {
+    o.orado.push(usuarioActual);
+  }
+  setData(STORAGE.oraciones, oraciones);
+  renderOraciones();
+}
+
+// ================================================================
+// 9. CONSEJERÍA
+// ================================================================
+function enviarConsejeria() {
+  if (!usuarioActual) { alert('Ingresa primero.'); return; }
+  const texto = document.getElementById('consejeriaInput').value.trim();
+  if (!texto) { alert('Escribe tu consulta.'); return; }
+  const consejeria = getData(STORAGE.consejeria, []);
+  consejeria.unshift({
+    id: Date.now(),
+    autor: usuarioActual,
+    texto: texto,
+    fecha: new Date().toLocaleString(),
+    respuestas: []
+  });
+  setData(STORAGE.consejeria, consejeria);
+  document.getElementById('consejeriaInput').value = '';
+  renderConsejeria();
+}
+
+function renderConsejeria() {
+  const container = document.getElementById('consejeriaContainer');
+  const consejeria = getData(STORAGE.consejeria, []);
+  if (consejeria.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-secondary);">No hay consultas de consejería.</p>';
+    return;
+  }
+  let html = '';
+  consejeria.forEach(c => {
+    html += `<div class="disc-card">
+      <div><strong>${c.autor}</strong> <span class="text-secondary" style="font-size:12px;">${c.fecha}</span></div>
+      <p>${c.texto}</p>
+      <div style="margin-top:8px;">
+        ${c.respuestas && c.respuestas.map(r => `<div style="background:var(--bg-body); padding:6px 12px; border-radius:8px; margin:4px 0;"><strong>${r.autor}</strong>: ${r.texto}</div>`).join('')}
+      </div>
+      ${isAdmin ? `
+        <div class="comment-box" style="margin-top:8px;">
+          <input type="text" id="respuestaInput-${c.id}" placeholder="Responder como pastor...">
+          <button onclick="responderConsejeria(${c.id})"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      ` : ''}
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function responderConsejeria(id) {
+  if (!isAdmin) { alert('Solo el administrador puede responder.'); return; }
   const input = document.getElementById('respuestaInput-' + id);
   const texto = input.value.trim();
   if (!texto) return;
-  const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-  const nombre = userSnap.exists() ? userSnap.data().nombre : currentUser.email;
-  await updateDoc(doc(db, "consejeria", id), {
-    respuestas: arrayUnion({ autor: currentUser.uid, autorNombre: nombre, texto })
-  });
-  input.value = '';
-};
+  const consejeria = getData(STORAGE.consejeria, []);
+  const c = consejeria.find(item => item.id === id);
+  if (!c) return;
+  if (!c.respuestas) c.respuestas = [];
+  c.respuestas.push({ autor: usuarioActual || 'Admin', texto: texto });
+  setData(STORAGE.consejeria, consejeria);
+  renderConsejeria();
+}
 
-// ===== MAPA - MISIONEROS =====
-window.registrarMisionero = async function() {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
-  const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-  const nombre = prompt('Nombre del misionero:', userSnap.exists() ? userSnap.data().nombre : currentUser.email);
+// ================================================================
+// 10. MAPA Y MISIONEROS
+// ================================================================
+function registrarMisionero() {
+  if (!usuarioActual) { alert('Ingresa primero.'); return; }
+  const nombre = prompt('Nombre del misionero (o tu nombre):', usuarioActual);
   if (!nombre) return;
   const ubicacion = prompt('Ubicación (ciudad, país):');
   if (!ubicacion) return;
-  await addDoc(collection(db, "misioneros"), {
-    nombre, ubicacion,
-    usuario: currentUser.uid,
-    usuarioNombre: userSnap.exists() ? userSnap.data().nombre : currentUser.email,
-    fecha: serverTimestamp()
-  });
-};
-
-function cargarMisioneros() {
-  onSnapshot(collection(db, "misioneros"), (snapshot) => {
-    const container = document.getElementById('misionerosList');
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay misioneros registrados.</p>'; return; }
-    let html = '';
-    snapshot.forEach(doc => {
-      const m = doc.data();
-      html += `<div class="misionero-item">
-        <i class="fas fa-user-circle" style="font-size:26px; color:var(--teal);"></i>
-        <div><strong>${m.nombre}</strong> <span style="color:var(--text-secondary);">${m.ubicacion}</span></div>
-        <div style="margin-left:auto; font-size:12px; color:var(--text-secondary);">${m.usuarioNombre||''}</div>
-      </div>`;
-    });
-    container.innerHTML = html;
-  });
+  const misioneros = getData(STORAGE.misioneros, []);
+  misioneros.push({ nombre, ubicacion, usuario: usuarioActual });
+  setData(STORAGE.misioneros, misioneros);
+  renderMisioneros();
 }
 
-// ===== NECESIDADES (con fotos base64) =====
-window.publicarNecesidad = async function() {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
+function renderMisioneros() {
+  const container = document.getElementById('misionerosList');
+  const misioneros = getData(STORAGE.misioneros, []);
+  if (misioneros.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay misioneros registrados.</p>'; return; }
+  let html = '';
+  misioneros.forEach(m => {
+    html += `<div class="misionero-item">
+      <i class="fas fa-user-circle" style="font-size:26px; color:var(--teal);"></i>
+      <div><strong>${m.nombre}</strong> <span style="color:var(--text-secondary);">${m.ubicacion}</span></div>
+      <div style="margin-left:auto; font-size:12px; color:var(--text-secondary);">${m.usuario}</div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ================================================================
+// 11. NECESIDADES
+// ================================================================
+function publicarNecesidad() {
+  if (!usuarioActual) { alert('Ingresa primero.'); return; }
   const categoria = document.getElementById('needCategoria').value;
   const desc = document.getElementById('needDesc').value.trim();
   const telefono = document.getElementById('needTelefono').value.trim();
-  if (!desc || !telefono) { alert('Descripción y teléfono obligatorios.'); return; }
+  if (!desc || !telefono) { alert('Descripción y teléfono son obligatorios.'); return; }
+  const fotos = [];
   const files = document.getElementById('needFotos').files;
-  let fotos = [];
   if (files.length > 0) {
     for (let f of files) {
       const reader = new FileReader();
-      const data = await new Promise((resolve) => {
-        reader.onload = (e) => resolve(e.target.result);
-        reader.readAsDataURL(f);
-      });
-      fotos.push(data);
+      reader.onload = function(e) { fotos.push(e.target.result); if (fotos.length === files.length) guardarNeed(); };
+      reader.readAsDataURL(f);
     }
+  } else {
+    guardarNeed();
   }
-  const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-  const nombre = userSnap.exists() ? userSnap.data().nombre : currentUser.email;
-  await addDoc(collection(db, "necesidades"), {
-    usuario: currentUser.uid,
-    usuarioNombre: nombre,
-    categoria,
-    desc,
-    telefono,
-    fotos,
-    ayudas: [],
-    fecha: serverTimestamp()
-  });
-  document.getElementById('needDesc').value = '';
-  document.getElementById('needTelefono').value = '';
-  document.getElementById('needFotos').value = '';
-};
-
-function cargarNecesidades() {
-  const q = query(collection(db, "necesidades"), orderBy("fecha", "desc"));
-  onSnapshot(q, (snapshot) => {
-    const container = document.getElementById('necesidadesContainer');
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades publicadas.</p>'; return; }
-    let html = '';
-    snapshot.forEach(doc => {
-      const n = doc.data();
-      const id = doc.id;
-      html += `<div class="need-item">
-        <div><span class="need-cat">${n.categoria}</span> <span style="font-size:12px; color:var(--text-secondary);">${n.fecha ? new Date(n.fecha.seconds*1000).toLocaleString() : ''}</span></div>
-        <p>${n.desc}</p>
-        <p style="font-size:13px;"><i class="fas fa-phone"></i> ${n.telefono}</p>
-        ${n.fotos && n.fotos.length ? `<div class="need-fotos">${n.fotos.map(f => `<img src="${f}" alt="foto">`).join('')}</div>` : ''}
-        ${isAdmin ? `<div style="margin-top:6px;">
-          <label style="font-size:12px;">Subir foto de ayuda recibida:</label>
-          <input type="file" accept="image/*" onchange="subirAyuda('${id}', this)">
-          ${n.ayudas && n.ayudas.length ? `<div class="need-fotos">${n.ayudas.map(f => `<img src="${f}" alt="ayuda">`).join('')}</div>` : ''}
-        </div>` : ''}
-      </div>`;
+  function guardarNeed() {
+    const needs = getData(STORAGE.necesidades, []);
+    needs.unshift({
+      id: Date.now(),
+      usuario: usuarioActual,
+      categoria,
+      desc,
+      telefono,
+      fotos: fotos,
+      fecha: new Date().toLocaleString(),
+      ayudas: []
     });
-    container.innerHTML = html;
-  });
+    setData(STORAGE.necesidades, needs);
+    document.getElementById('needDesc').value = '';
+    document.getElementById('needTelefono').value = '';
+    document.getElementById('needFotos').value = '';
+    renderNecesidades();
+  }
 }
 
-window.subirAyuda = async function(id, input) {
+function renderNecesidades() {
+  const container = document.getElementById('necesidadesContainer');
+  const needs = getData(STORAGE.necesidades, []);
+  if (needs.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades publicadas.</p>'; return; }
+  let html = '';
+  needs.forEach(n => {
+    html += `<div class="need-item">
+      <div><span class="need-cat">${n.categoria}</span> <span style="font-size:12px; color:var(--text-secondary);">${n.fecha}</span></div>
+      <p>${n.desc}</p>
+      <p style="font-size:13px;"><i class="fas fa-phone"></i> ${n.telefono}</p>
+      ${n.fotos && n.fotos.length ? `<div class="need-fotos">${n.fotos.map(f => `<img src="${f}" alt="foto">`).join('')}</div>` : ''}
+      ${isAdmin ? `<div style="margin-top:6px;">
+        <label style="font-size:12px;">Subir foto de ayuda recibida:</label>
+        <input type="file" accept="image/*" onchange="subirAyuda(${n.id}, this)">
+        ${n.ayudas && n.ayudas.length ? `<div class="need-fotos">${n.ayudas.map(f => `<img src="${f}" alt="ayuda">`).join('')}</div>` : ''}
+      </div>` : ''}
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function subirAyuda(id, input) {
   if (!isAdmin) return;
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
-  const data = await new Promise((resolve) => {
-    reader.onload = (e) => resolve(e.target.result);
-    reader.readAsDataURL(file);
-  });
-  await updateDoc(doc(db, "necesidades", id), { ayudas: arrayUnion(data) });
-};
+  reader.onload = function(e) {
+    const needs = getData(STORAGE.necesidades, []);
+    const n = needs.find(item => item.id === id);
+    if (!n) return;
+    if (!n.ayudas) n.ayudas = [];
+    n.ayudas.push(e.target.result);
+    setData(STORAGE.necesidades, needs);
+    renderNecesidades();
+  };
+  reader.readAsDataURL(file);
+}
 
-// ===== SERVICIO =====
-window.ofrecerServicio = async function() {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
+// ================================================================
+// 12. SERVICIO ALIMENTARIO
+// ================================================================
+function ofrecerServicio() {
+  if (!usuarioActual) { alert('Ingresa primero.'); return; }
   const nombre = document.getElementById('servicioNombre').value.trim();
   const direccion = document.getElementById('servicioDireccion').value.trim();
   const horario = document.getElementById('servicioHorario').value.trim();
   const comidas = document.getElementById('servicioComidas').value;
   const personas = parseInt(document.getElementById('servicioPersonas').value);
   if (!nombre || !direccion || !horario || !personas) { alert('Completa todos los campos.'); return; }
-  const userSnap = await getDoc(doc(db, "users", currentUser.uid));
-  const nombreUsuario = userSnap.exists() ? userSnap.data().nombre : currentUser.email;
-  await addDoc(collection(db, "servicios"), {
-    nombre, direccion, horario, comidas, personas,
-    usuario: currentUser.uid,
-    usuarioNombre: nombreUsuario,
-    fecha: serverTimestamp()
+  const servicios = getData(STORAGE.servicios, []);
+  servicios.push({
+    id: Date.now(),
+    nombre,
+    direccion,
+    horario,
+    comidas,
+    personas,
+    usuario: usuarioActual,
+    fecha: new Date().toLocaleString()
   });
+  setData(STORAGE.servicios, servicios);
   document.getElementById('servicioNombre').value = '';
   document.getElementById('servicioDireccion').value = '';
   document.getElementById('servicioHorario').value = '';
   document.getElementById('servicioPersonas').value = '';
-};
+  renderServicios();
+}
 
-function cargarServicios() {
-  onSnapshot(collection(db, "servicios"), (snapshot) => {
-    const container = document.getElementById('serviciosContainer');
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay ofertas de servicio.</p>'; return; }
-    let html = '';
-    snapshot.forEach(doc => {
-      const s = doc.data();
-      html += `<div class="serv-item">
-        <strong>${s.nombre}</strong> <span style="font-size:13px; color:var(--text-secondary);">(${s.usuarioNombre||''})</span>
-        <p><i class="fas fa-map-pin"></i> ${s.direccion}</p>
-        <p><i class="fas fa-clock"></i> ${s.horario} · ${s.comidas} · ${s.personas} personas</p>
-      </div>`;
+function renderServicios() {
+  const container = document.getElementById('serviciosContainer');
+  const servicios = getData(STORAGE.servicios, []);
+  if (servicios.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay ofertas de servicio.</p>'; return; }
+  let html = '';
+  servicios.forEach(s => {
+    html += `<div class="serv-item">
+      <strong>${s.nombre}</strong> <span style="font-size:13px; color:var(--text-secondary);">(${s.usuario})</span>
+      <p><i class="fas fa-map-pin"></i> ${s.direccion}</p>
+      <p><i class="fas fa-clock"></i> ${s.horario} · ${s.comidas} · ${s.personas} personas</p>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ================================================================
+// 13. BIBLIA - CARGA DESDE JSON
+// ================================================================
+const libroSelect = document.getElementById('libro');
+const capituloSelect = document.getElementById('capitulo');
+const versiculoContainer = document.getElementById('versiculoContainer');
+let textosBiblicos = {};
+let libroActual = '';
+let capituloActual = '';
+
+fetch('textos-biblicos.json')
+  .then(response => response.json())
+  .then(data => {
+    textosBiblicos = data;
+    const todosLosLibros = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
+    Object.keys(todosLosLibros).forEach(libro => {
+      const option = document.createElement('option');
+      option.value = libro;
+      option.textContent = libro;
+      libroSelect.appendChild(option);
     });
-    container.innerHTML = html;
+  })
+  .catch(err => {
+    console.error('Error cargando índice:', err);
+    const fallback = ['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'];
+    fallback.forEach(l => {
+      const option = document.createElement('option');
+      option.value = l;
+      option.textContent = l;
+      libroSelect.appendChild(option);
+    });
+    textosBiblicos = { antiguoTestamento: {}, nuevoTestamento: {} };
+    fallback.forEach(l => {
+      const isNT = ['Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'].includes(l);
+      if (isNT) textosBiblicos.nuevoTestamento[l] = `biblia/nuevo/${l.toLowerCase().replace(/ /g,'')}.json`;
+      else textosBiblicos.antiguoTestamento[l] = `biblia/antiguo/${l.toLowerCase().replace(/ /g,'')}.json`;
+    });
   });
+
+libroSelect.addEventListener('change', function() {
+  const libro = this.value;
+  if (!libro) return;
+  libroActual = libro;
+  cargarCapitulos(libro);
+});
+
+capituloSelect.addEventListener('change', function() {
+  const capitulo = this.value;
+  if (!capitulo) return;
+  capituloActual = capitulo;
+  mostrarVersiculos(libroActual, capitulo);
+});
+
+function cargarCapitulos(libro) {
+  const testamento = textosBiblicos.antiguoTestamento && textosBiblicos.antiguoTestamento[libro] ? 'antiguoTestamento' :
+                     (textosBiblicos.nuevoTestamento && textosBiblicos.nuevoTestamento[libro] ? 'nuevoTestamento' : null);
+  if (!testamento) { capituloSelect.innerHTML = '<option value="">No disponible</option>'; return; }
+  const ruta = textosBiblicos[testamento][libro];
+  fetch(ruta).then(res => res.json()).then(data => {
+    capituloSelect.innerHTML = '<option value="">Selecciona capítulo</option>';
+    Object.keys(data).forEach(cap => {
+      const option = document.createElement('option');
+      option.value = cap;
+      option.textContent = `Capítulo ${cap}`;
+      capituloSelect.appendChild(option);
+    });
+  }).catch(() => { capituloSelect.innerHTML = '<option value="">Error</option>'; });
 }
 
-// ===== ADMIN =====
-async function cargarAdminPanel() {
-  const userList = document.getElementById('adminUserList');
-  const usersSnap = await getDocs(collection(db, "users"));
-  if (usersSnap.empty) { userList.innerHTML = '<p class="text-secondary">No hay usuarios registrados.</p>'; return; }
+function mostrarVersiculos(libro, capitulo) {
+  const testamento = textosBiblicos.antiguoTestamento && textosBiblicos.antiguoTestamento[libro] ? 'antiguoTestamento' :
+                     (textosBiblicos.nuevoTestamento && textosBiblicos.nuevoTestamento[libro] ? 'nuevoTestamento' : null);
+  if (!testamento) { versiculoContainer.innerHTML = '<p>Libro no encontrado.</p>'; return; }
+  const ruta = textosBiblicos[testamento][libro];
+  fetch(ruta).then(res => res.json()).then(data => {
+    const contenido = data[capitulo];
+    if (!contenido) { versiculoContainer.innerHTML = '<p>Capítulo no encontrado.</p>'; return; }
+    const clave = `biblia_edit_${libro}_${capitulo}`;
+    const editado = localStorage.getItem(clave);
+    let versiculosData = contenido;
+    if (editado) {
+      try { const parsed = JSON.parse(editado); if (typeof parsed === 'object' && !Array.isArray(parsed)) versiculosData = parsed; } catch(e) {}
+    }
+    renderVersiculos(versiculosData, libro, capitulo);
+  }).catch(() => { versiculoContainer.innerHTML = '<p>Error al cargar.</p>'; });
+}
+
+function renderVersiculos(versiculosObj, libro, capitulo) {
+  const editMode = window.editModeActivo || false;
   let html = '';
-  usersSnap.forEach(doc => {
-    const u = doc.data();
-    const uid = doc.id;
-    const apoyos = u.apoyos ? u.apoyos.join(', ') : 'Ninguno';
-    html += `<div class="admin-user-item">
-      <div class="admin-user-info">
-        <strong>${u.nombre || 'Sin nombre'}</strong>
-        <small>${u.email || ''} · Tel: ${u.telefono || 'N/A'}</small>
-        <br><small>Apoyos: ${apoyos}</small>
-        ${u.verificado ? ' <span class="verified-badge"><i class="fas fa-check-circle"></i> Verificado</span>' : ''}
-      </div>
-      <div>
-        ${!u.verificado ? `<button class="btn-primary" style="background:var(--orange); font-size:11px; padding:2px 10px;" onclick="verificarUsuario('${uid}')">Verificar</button>` : ''}
-        <button class="btn-danger" onclick="eliminarUsuario('${uid}')">Eliminar</button>
-      </div>
-    </div>`;
-  });
-  userList.innerHTML = html;
-}
-
-window.verificarUsuario = async function(uid) {
-  if (!isAdmin) return;
-  await updateDoc(doc(db, "users", uid), { verificado: true });
-  cargarAdminPanel();
-};
-
-window.eliminarUsuario = async function(uid) {
-  if (!isAdmin) return;
-  if (confirm('¿Eliminar este usuario?')) {
-    await deleteDoc(doc(db, "users", uid));
-    cargarAdminPanel();
+  const keys = Object.keys(versiculosObj);
+  if (keys.length === 0) { html = '<p>No hay versículos.</p>'; }
+  else {
+    keys.forEach(num => {
+      const texto = versiculosObj[num];
+      if (editMode && isAdmin) {
+        html += `<div class="edit-mode" style="margin-bottom:8px;">
+          <span class="num">${num}.</span>
+          <textarea data-verso="${num}" style="width:100%; border-radius:8px; border:1px solid var(--teal); padding:6px 10px; font-size:14px; resize:vertical;">${texto}</textarea>
+          <button class="btn-guardar-verso" data-libro="${libro}" data-cap="${capitulo}" data-num="${num}" style="margin-top:4px; padding:4px 14px; background:var(--teal); color:white; border:none; border-radius:20px; font-size:12px; cursor:pointer;">Guardar</button>
+        </div>`;
+      } else {
+        html += `<p><span class="num">${num}.</span> ${texto}</p>`;
+      }
+    });
   }
-};
+  versiculoContainer.innerHTML = html;
 
-// ===== CATEGORÍAS =====
-async function cargarCategorias() {
-  const snapshot = await getDocs(collection(db, "categorias"));
-  const container = document.getElementById('categoriasList');
-  const select = document.getElementById('needCategoria');
-  if (snapshot.empty) {
-    const defaults = ['Alimentos', 'Medicamentos', 'Ropa', 'Útiles escolares', 'Dinero', 'Otro'];
-    for (let cat of defaults) await addDoc(collection(db, "categorias"), { nombre: cat });
-    cargarCategorias();
-    return;
-  }
-  let html = '';
-  let options = '';
-  snapshot.forEach(doc => {
-    const cat = doc.data().nombre;
-    html += `<span class="categoria-tag">${cat}</span> `;
-    options += `<option value="${cat}">${cat}</option>`;
-  });
-  container.innerHTML = html;
-  select.innerHTML = options;
-}
-
-window.editarCategorias = function() {
-  abrirModal('categoriasModal');
-  cargarCategoriasEdit();
-};
-
-async function cargarCategoriasEdit() {
-  const container = document.getElementById('categoriasEditContainer');
-  const snapshot = await getDocs(collection(db, "categorias"));
-  if (snapshot.empty) { container.innerHTML = '<p class="text-secondary">No hay categorías.</p>'; return; }
-  let html = '';
-  snapshot.forEach(doc => {
-    const id = doc.id;
-    const nombre = doc.data().nombre;
-    html += `<div class="admin-user-item">
-      <span>${nombre}</span>
-      <button class="btn-danger" onclick="eliminarCategoria('${id}')">Eliminar</button>
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-window.agregarCategoria = async function() {
-  const input = document.getElementById('nuevaCategoria');
-  const nombre = input.value.trim();
-  if (!nombre) return;
-  await addDoc(collection(db, "categorias"), { nombre });
-  input.value = '';
-  cargarCategoriasEdit();
-  cargarCategorias();
-};
-
-window.eliminarCategoria = async function(id) {
-  if (confirm('¿Eliminar categoría?')) {
-    await deleteDoc(doc(db, "categorias", id));
-    cargarCategoriasEdit();
-    cargarCategorias();
-  }
-};
-
-// ===== LOGO (base64 en Firestore) =====
-async function cargarLogo() {
-  const docSnap = await getDoc(doc(db, "config", "app"));
-  const logoImg = document.getElementById('logoImg');
-  const placeholder = document.getElementById('logoPlaceholder');
-  if (docSnap.exists() && docSnap.data().logoBase64) {
-    logoImg.src = docSnap.data().logoBase64;
-    logoImg.style.display = 'block';
-    placeholder.style.display = 'none';
+  const btnEditar = document.getElementById('btnEditarVersos');
+  const btnGuardar = document.getElementById('btnGuardarVersos');
+  if (isAdmin) {
+    btnEditar.style.display = 'inline-block';
+    btnEditar.textContent = editMode ? 'Cancelar edición' : 'Editar versículos';
+    btnGuardar.classList.toggle('show', editMode);
   } else {
-    logoImg.style.display = 'none';
-    placeholder.style.display = 'flex';
+    btnEditar.style.display = 'none';
+    btnGuardar.classList.remove('show');
   }
+
+  document.querySelectorAll('.btn-guardar-verso').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const libro = this.dataset.libro;
+      const cap = this.dataset.cap;
+      const num = this.dataset.num;
+      const textarea = this.parentElement.querySelector('textarea');
+      const nuevoTexto = textarea.value.trim();
+      if (!nuevoTexto) return;
+      guardarVerso(libro, cap, num, nuevoTexto);
+      mostrarVersiculos(libro, cap);
+    });
+  });
 }
 
-window.subirLogo = function() {
-  if (!isAdmin) return;
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  input.onchange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    const data = await new Promise((resolve) => {
-      reader.onload = (ev) => resolve(ev.target.result);
-      reader.readAsDataURL(file);
-    });
-    await setDoc(doc(db, "config", "app"), { logoBase64: data }, { merge: true });
-    cargarLogo();
-    alert('Logo actualizado.');
-  };
-  input.click();
-};
+function guardarVerso(libro, capitulo, num, texto) {
+  const clave = `biblia_edit_${libro}_${capitulo}`;
+  let datos = {};
+  const existente = localStorage.getItem(clave);
+  if (existente) { try { datos = JSON.parse(existente); } catch(e) {} }
+  datos[num] = texto;
+  localStorage.setItem(clave, JSON.stringify(datos));
+}
 
-// ===== IA =====
-window.preguntarIA = function() {
+function guardarTodosVersos() {
+  const textareas = document.querySelectorAll('#versiculoContainer .edit-mode textarea');
+  if (textareas.length === 0) return;
+  const clave = `biblia_edit_${libroActual}_${capituloActual}`;
+  let datos = {};
+  textareas.forEach(ta => {
+    const num = ta.dataset.verso;
+    const texto = ta.value.trim();
+    if (texto) datos[num] = texto;
+  });
+  localStorage.setItem(clave, JSON.stringify(datos));
+  mostrarVersiculos(libroActual, capituloActual);
+  window.editModeActivo = false;
+  document.getElementById('btnEditarVersos').textContent = 'Editar versículos';
+  document.getElementById('btnGuardarVersos').classList.remove('show');
+}
+
+document.getElementById('btnEditarVersos').addEventListener('click', function() {
+  if (!isAdmin) return;
+  window.editModeActivo = !window.editModeActivo;
+  if (window.editModeActivo) {
+    this.textContent = 'Cancelar edición';
+    document.getElementById('btnGuardarVersos').classList.add('show');
+  } else {
+    this.textContent = 'Editar versículos';
+    document.getElementById('btnGuardarVersos').classList.remove('show');
+  }
+  if (libroActual && capituloActual) mostrarVersiculos(libroActual, capituloActual);
+});
+
+document.getElementById('btnGuardarVersos').addEventListener('click', guardarTodosVersos);
+
+// ================================================================
+// 14. BIBLIA - BÚSQUEDA E HISTORIAL
+// ================================================================
+function cargarHistorial() {
+  const historial = getData(STORAGE.historialBiblia, []);
+  const container = document.getElementById('historialContainer');
+  if (historial.length === 0) { container.innerHTML = ''; return; }
+  container.innerHTML = historial.map(t => `<span class="tag" onclick="buscarTexto('${t}')">${t}</span>`).join('');
+}
+
+function buscarBiblia() {
+  const query = document.getElementById('bibliaSearchInput').value.trim();
+  if (!query) return;
+  buscarTexto(query);
+}
+
+function buscarTexto(query) {
+  const resultados = {
+    'Juan 3:16': 'Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree no se pierda, mas tenga vida eterna.',
+    'amor': 'El amor es sufrido, es benigno... (1 Corintios 13:4)',
+    'fe': 'Es, pues, la fe la certeza de lo que se espera, la convicción de lo que no se ve. (Hebreos 11:1)',
+    'gracia': 'Porque por gracia sois salvos por medio de la fe; y esto no de vosotros, pues es don de Dios. (Efesios 2:8)',
+    'salvación': 'Porque de tal manera amó Dios al mundo... (Juan 3:16)',
+    'oración': 'Orad sin cesar. (1 Tesalonicenses 5:17)',
+    'esperanza': 'Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal, para daros el fin que esperáis. (Jeremías 29:11)'
+  };
+  const result = resultados[query] || resultados[query.toLowerCase()] || 'No se encontró un versículo exacto. Intenta con "Juan 3:16", "amor", "fe", "gracia", "salvación".';
+  document.getElementById('resultadoBiblia').innerHTML = `<p><strong>Resultado:</strong> ${result}</p>`;
+  let historial = getData(STORAGE.historialBiblia, []);
+  if (!historial.includes(query)) {
+    historial.unshift(query);
+    if (historial.length > 10) historial.pop();
+    setData(STORAGE.historialBiblia, historial);
+    cargarHistorial();
+  }
+  document.getElementById('bibliaSearchInput').value = query;
+}
+
+// ================================================================
+// 15. ASISTENTE IA (OpenRouter)
+// ================================================================
+function preguntarIA() {
   const pregunta = document.getElementById('iaPregunta').value.trim();
   if (!pregunta) return;
   const chat = document.getElementById('iaChat');
   chat.innerHTML += `<div class="msg user"><strong>Tú:</strong> ${pregunta}</div>`;
   document.getElementById('iaPregunta').value = '';
-  const key = localStorage.getItem('ia_key');
-  const model = localStorage.getItem('ia_model') || 'https://openrouter.ai/api/v1/chat/completions';
-  const contexto = localStorage.getItem('ia_contexto') || '';
+
+  const key = localStorage.getItem(STORAGE.iaKey);
+  const model = localStorage.getItem(STORAGE.iaModel) || 'https://openrouter.ai/api/v1/chat/completions';
+  const contexto = localStorage.getItem(STORAGE.iaContexto) || '';
+
   if (!key) {
-    chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> ⚠️ Clave API no configurada.</div>`;
+    chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> ⚠️ La clave API de OpenRouter no está configurada. El administrador debe ingresarla.</div>`;
     chat.scrollTop = chat.scrollHeight;
     return;
   }
-  const prompt = `Eres un asistente bíblico. ${contexto ? 'Instrucciones: '+contexto : ''} Responde: ${pregunta}`;
+
+  const prompt = `Eres un asistente para ayudar a entender el contexto histórico y teológico de pasajes bíblicos. ${contexto ? 'Instrucciones adicionales: '+contexto : ''} Responde a esta pregunta de manera clara y concisa: ${pregunta}`;
+
   fetch(model, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}`, 'HTTP-Referer': window.location.origin, 'X-Title': 'Sal y Luz' },
-    body: JSON.stringify({ model: 'openai/gpt-3.5-turbo', messages: [{ role: 'user', content: prompt }], max_tokens: 500 })
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${key}`,
+      'HTTP-Referer': window.location.origin,
+      'X-Title': 'Sal y Luz'
+    },
+    body: JSON.stringify({
+      model: 'openai/gpt-3.5-turbo',
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 500
+    })
   })
   .then(res => res.json())
   .then(data => {
-    const reply = data.choices?.[0]?.message?.content || 'No se pudo obtener respuesta.';
+    const reply = data.choices?.[0]?.message?.content || 'No pude obtener una respuesta.';
     chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> ${reply}</div>`;
     chat.scrollTop = chat.scrollHeight;
   })
@@ -1781,39 +1860,403 @@ window.preguntarIA = function() {
     chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> Error: ${err.message}</div>`;
     chat.scrollTop = chat.scrollHeight;
   });
-};
+}
 
-window.guardarConfigIA = function() {
+// ================================================================
+// 16. ADMIN - CONFIGURACIÓN IA (desde el panel Admin)
+// ================================================================
+function guardarConfigIAAdmin() {
   const key = document.getElementById('openrouterKey').value.trim();
-  if (key) { localStorage.setItem('ia_key', key); document.getElementById('iaStatus').textContent = '✅ API configurada.'; }
-  else { localStorage.removeItem('ia_key'); document.getElementById('iaStatus').textContent = '⚠️ API no configurada.'; }
-};
+  const model = document.getElementById('openrouterModel').value.trim();
+  const contexto = document.getElementById('iaContextoAdmin').value.trim();
+  if (key) localStorage.setItem(STORAGE.iaKey, key);
+  if (model) localStorage.setItem(STORAGE.iaModel, model);
+  if (contexto) localStorage.setItem(STORAGE.iaContexto, contexto);
+  document.getElementById('iaStatus').textContent = '✅ API configurada correctamente.';
+  alert('Configuración guardada.');
+}
 
-window.guardarContextoIA = function() {
-  const ctx = document.getElementById('iaContexto').value.trim();
-  localStorage.setItem('ia_contexto', ctx);
-  alert('Contexto guardado.');
-};
+// ================================================================
+// 17. ADMIN - PANEL DE ADMINISTRACIÓN
+// ================================================================
+function cargarAdminPanel() {
+  // Usuarios
+  const userList = document.getElementById('adminUserList');
+  const users = getData(STORAGE.usuarios, []);
+  if (users.length === 0) {
+    userList.innerHTML = '<p class="text-secondary">No hay usuarios registrados.</p>';
+  } else {
+    let html = '';
+    users.forEach((u, index) => {
+      html += `<div class="admin-user-item">
+        <div class="admin-user-info">
+          <strong>${u}</strong>
+          <small>ID: ${index+1}</small>
+        </div>
+        <div>
+          <button class="btn-danger" onclick="eliminarUsuario('${u}')">Eliminar</button>
+        </div>
+      </div>`;
+    });
+    userList.innerHTML = html;
+  }
 
-// ===== BIBLIA (local) =====
-// (Se mantiene la misma lógica de la versión anterior, con fetch a textos-biblicos.json)
-// Se incluye el código básico para que funcione.
-// (El código completo se omite por brevedad, pero está en el HTML original)
-// Simplemente añadimos la función de búsqueda y carga inicial.
-// Nota: El código de Biblia ya está incluido en el HTML, solo lo dejamos como está.
+  // Inscripciones a discipulados
+  const inscripcionesContainer = document.getElementById('adminInscripciones');
+  const disc = getData(STORAGE.discipulados, []);
+  if (disc.length === 0) {
+    inscripcionesContainer.innerHTML = '<p class="text-secondary">No hay inscripciones aún.</p>';
+  } else {
+    let html = '';
+    disc.forEach(d => {
+      html += `<div><strong>${d.titulo}</strong>: ${d.inscritos.length} inscritos (${d.inscritos.join(', ') || 'ninguno'})</div>`;
+    });
+    inscripcionesContainer.innerHTML = html;
+  }
 
-// ===== MODO NOCTURNO Y PANTALLA COMPLETA =====
+  // Categorías (para editar)
+  cargarCategoriasAdmin();
+
+  // Cargar configuración actual en los campos
+  document.getElementById('openrouterKey').value = localStorage.getItem(STORAGE.iaKey) || '';
+  document.getElementById('openrouterModel').value = localStorage.getItem(STORAGE.iaModel) || 'https://openrouter.ai/api/v1/chat/completions';
+  document.getElementById('iaContextoAdmin').value = localStorage.getItem(STORAGE.iaContexto) || '';
+}
+
+function eliminarUsuario(nombre) {
+  if (!isAdmin) return;
+  if (confirm(`¿Eliminar al usuario "${nombre}"?`)) {
+    let users = getData(STORAGE.usuarios, []);
+    users = users.filter(u => u !== nombre);
+    setData(STORAGE.usuarios, users);
+    cargarAdminPanel();
+  }
+}
+
+// ================================================================
+// 18. CATEGORÍAS (localStorage)
+// ================================================================
+function cargarCategorias() {
+  let categorias = getData(STORAGE.categorias, []);
+  if (categorias.length === 0) {
+    categorias = ['Alimentos', 'Medicamentos', 'Ropa', 'Útiles escolares', 'Dinero', 'Otro'];
+    setData(STORAGE.categorias, categorias);
+  }
+  const select = document.getElementById('needCategoria');
+  let options = '';
+  categorias.forEach(cat => {
+    options += `<option value="${cat}">${cat}</option>`;
+  });
+  select.innerHTML = options;
+}
+
+function cargarCategoriasAdmin() {
+  const container = document.getElementById('categoriasListAdmin');
+  const categorias = getData(STORAGE.categorias, []);
+  if (categorias.length === 0) { container.innerHTML = '<p class="text-secondary">No hay categorías.</p>'; return; }
+  let html = '';
+  categorias.forEach((cat, index) => {
+    html += `<div class="admin-user-item">
+      <span>${cat}</span>
+      <button class="btn-danger" onclick="eliminarCategoriaAdmin(${index})">Eliminar</button>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function eliminarCategoriaAdmin(index) {
+  let categorias = getData(STORAGE.categorias, []);
+  if (confirm(`¿Eliminar categoría "${categorias[index]}"?`)) {
+    categorias.splice(index, 1);
+    setData(STORAGE.categorias, categorias);
+    cargarCategoriasAdmin();
+    cargarCategorias();
+  }
+}
+
+function agregarCategoriaAdmin() {
+  const input = document.getElementById('nuevaCategoriaAdmin');
+  const nombre = input.value.trim();
+  if (!nombre) return;
+  let categorias = getData(STORAGE.categorias, []);
+  if (categorias.includes(nombre)) { alert('Ya existe esa categoría.'); return; }
+  categorias.push(nombre);
+  setData(STORAGE.categorias, categorias);
+  input.value = '';
+  cargarCategoriasAdmin();
+  cargarCategorias();
+}
+
+// ================================================================
+// 19. MODO NOCTURNO Y PANTALLA COMPLETA
+// ================================================================
 document.getElementById('themeToggle').addEventListener('click', function() {
   document.body.classList.toggle('dark');
   this.querySelector('i').classList.toggle('fa-moon');
   this.querySelector('i').classList.toggle('fa-sun');
 });
+
 document.getElementById('fullscreenToggle').addEventListener('click', function() {
-  if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-  else document.exitFullscreen();
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(e => {});
+  } else {
+    document.exitFullscreen();
+  }
 });
 
-console.log('✅ SAL Y LUZ cargada (sin Storage). Admin: salyluz@comunidad.com');
+// ================================================================
+// 20. DATOS DE EJEMPLO
+// ================================================================
+function cargarEjemplos() {
+  // MURO
+  if (!getData(STORAGE.posts, []).length) {
+    setData(STORAGE.posts, [
+      {
+        id: 1001,
+        autor: 'Pastor José',
+        texto: '¡Bendecido domingo! "El Señor es mi pastor, nada me faltará." (Salmo 23:1) 🙏',
+        link: '',
+        media: null,
+        fecha: 'Hoy, 10:30am',
+        likes: ['María', 'Carlos', 'Ana'],
+        comentarios: [{ autor: 'María', texto: 'Amén, pastor!' }, { autor: 'Carlos', texto: 'Gloria a Dios.' }]
+      },
+      {
+        id: 1002,
+        autor: 'María Rodríguez',
+        texto: 'Comparto este video de la alabanza de hoy. ¡Dios es bueno!',
+        link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+        media: null,
+        fecha: 'Hoy, 9:15am',
+        likes: ['Pastor José', 'Ana'],
+        comentarios: [{ autor: 'Ana', texto: 'Hermoso, gracias por compartir.' }]
+      },
+      {
+        id: 1003,
+        autor: 'Carlos López',
+        texto: 'Necesito oración por mi familia. Estamos pasando por un momento difícil. 🙏',
+        link: '',
+        media: null,
+        fecha: 'Ayer, 8:00pm',
+        likes: ['María', 'Pastor José', 'Luis'],
+        comentarios: [{ autor: 'Pastor José', texto: 'Estamos orando por ti, Carlos.' }]
+      }
+    ]);
+  }
+
+  // GRUPOS
+  if (!getData(STORAGE.grupos, []).length) {
+    setData(STORAGE.grupos, [
+      {
+        id: 2001,
+        nombre: 'Jóvenes Unidos',
+        facilitador: 'David Pérez',
+        asistente: 'Laura Mora',
+        anfitrion: 'Casa de los Pérez',
+        telefono: '+506 8888-1234',
+        miembros: ['David Pérez', 'Laura Mora', 'Carlos', 'Ana', 'Luis'],
+        max: 15
+      },
+      {
+        id: 2002,
+        nombre: 'Mujeres de Fe',
+        facilitador: 'Sofía Méndez',
+        asistente: 'Ruth González',
+        anfitrion: 'Salón de la iglesia',
+        telefono: '+506 8877-5678',
+        miembros: ['Sofía Méndez', 'Ruth González', 'María', 'Elena', 'Patricia'],
+        max: 15
+      },
+      {
+        id: 2003,
+        nombre: 'Hombres de Valor',
+        facilitador: 'José Castillo',
+        asistente: 'Miguel Ángel',
+        anfitrion: 'Casa de José',
+        telefono: '+506 8866-9012',
+        miembros: ['José Castillo', 'Miguel Ángel', 'Pedro', 'Andrés', 'Santiago'],
+        max: 15
+      }
+    ]);
+  }
+
+  // DISCIPULADOS
+  if (!getData(STORAGE.discipulados, []).length) {
+    setData(STORAGE.discipulados, [
+      {
+        id: 3001,
+        titulo: 'Fundamentos de la Fe',
+        facilitador: 'Pastor José Castillo',
+        telefono: '+506 8888-1111',
+        desc: 'Un curso de 8 semanas sobre los fundamentos bíblicos. Martes 7pm.',
+        inscritos: ['María', 'Carlos']
+      },
+      {
+        id: 3002,
+        titulo: 'Vida en el Espíritu',
+        facilitador: 'David Pérez',
+        telefono: '+506 8877-2222',
+        desc: 'Descubre los dones del Espíritu Santo y cómo operar en ellos. Jueves 6pm.',
+        inscritos: ['Ana', 'Luis', 'Sofía']
+      },
+      {
+        id: 3003,
+        titulo: 'Liderazgo Cristiano',
+        facilitador: 'Miguel Ángel',
+        telefono: '+506 8866-3333',
+        desc: 'Formación para líderes: principios bíblicos de liderazgo. Sábados 9am.',
+        inscritos: ['Pedro', 'Andrés']
+      }
+    ]);
+  }
+
+  // ORACIONES
+  if (!getData(STORAGE.oraciones, []).length) {
+    setData(STORAGE.oraciones, [
+      {
+        id: 7001,
+        autor: 'Ana Núñez',
+        texto: 'Mi hijo está pasando por una situación muy difícil en la escuela. Pido oración por sabiduría para guiarlo y por su corazón.',
+        fecha: 'Hoy, 11:30am',
+        orado: ['María', 'Pastor José', 'Carlos']
+      },
+      {
+        id: 7002,
+        autor: 'Carlos López',
+        texto: 'Perdí mi empleo esta semana. Pido oración por paz, por dirección y por que Dios provea para mi familia mientras busco nuevas oportunidades.',
+        fecha: 'Ayer, 6:45pm',
+        orado: ['Ana', 'Luis', 'Sofía']
+      },
+      {
+        id: 7003,
+        autor: 'Laura Méndez',
+        texto: 'Mi mamá fue diagnosticada con cáncer. Pido oración por su sanidad, por los médicos y por toda nuestra familia en este proceso.',
+        fecha: 'Hace 2 días, 9:00am',
+        orado: ['Pastor José', 'María', 'David', 'Elena']
+      }
+    ]);
+  }
+
+  // CONSEJERÍA
+  if (!getData(STORAGE.consejeria, []).length) {
+    setData(STORAGE.consejeria, [
+      {
+        id: 8001,
+        autor: 'María González',
+        texto: 'Estoy pasando por un momento de ansiedad y necesito orientación bíblica para encontrar paz.',
+        fecha: 'Hoy, 8:00am',
+        respuestas: [{ autor: 'Pastor José', texto: 'María, la paz de Dios sobrepasa todo entendimiento. Te recomiendo leer Filipenses 4:6-7 y orar confiando en Él. Estamos orando por ti.' }]
+      },
+      {
+        id: 8002,
+        autor: 'Pedro Ramírez',
+        texto: 'Mi matrimonio está en crisis. Necesito consejo para restaurar mi hogar.',
+        fecha: 'Ayer, 10:00pm',
+        respuestas: []
+      },
+      {
+        id: 8003,
+        autor: 'Elena Soto',
+        texto: 'Mi hijo se ha alejado de la fe. ¿Cómo puedo interceder por él y mantener la esperanza?',
+        fecha: 'Hace 1 día',
+        respuestas: []
+      }
+    ]);
+  }
+
+  // NECESIDADES
+  if (!getData(STORAGE.necesidades, []).length) {
+    setData(STORAGE.necesidades, [
+      {
+        id: 4001,
+        usuario: 'Familia González',
+        categoria: 'Alimentos',
+        desc: 'Necesitamos ayuda con una canasta básica para 5 personas. El padre perdió su empleo.',
+        telefono: '+506 8888-4444',
+        fotos: [],
+        ayudas: [],
+        fecha: 'Hoy, 11:00am'
+      },
+      {
+        id: 4002,
+        usuario: 'Señora Elena',
+        categoria: 'Medicamentos',
+        desc: 'Necesito insulina para mi mamá de 72 años. No tenemos seguro.',
+        telefono: '+506 8877-5555',
+        fotos: [],
+        ayudas: [],
+        fecha: 'Ayer, 3:30pm'
+      },
+      {
+        id: 4003,
+        usuario: 'Carlos Méndez',
+        categoria: 'Útiles escolares',
+        desc: 'Busco ayuda con útiles escolares para mis 2 hijos que entran a la escuela.',
+        telefono: '+506 8866-6666',
+        fotos: [],
+        ayudas: [],
+        fecha: 'Hace 2 días'
+      }
+    ]);
+  }
+
+  // SERVICIOS
+  if (!getData(STORAGE.servicios, []).length) {
+    setData(STORAGE.servicios, [
+      {
+        id: 5001,
+        nombre: 'Comedor Esperanza',
+        direccion: 'Calle 7, San José',
+        horario: 'Lun-Vie 12pm-2pm',
+        comidas: '1 tiempo',
+        personas: 80,
+        usuario: 'Pastor José',
+        fecha: 'Activo'
+      },
+      {
+        id: 5002,
+        nombre: 'Hogar de los Pérez',
+        direccion: 'Barrio Los Ángeles, casa #15',
+        horario: 'Sábados 1pm-3pm',
+        comidas: '2 tiempos',
+        personas: 20,
+        usuario: 'Familia Pérez',
+        fecha: 'Activo'
+      },
+      {
+        id: 5003,
+        nombre: 'Iglesia Viva - Comedor',
+        direccion: 'Avenida 2, frente al parque',
+        horario: 'Miércoles 11am-1pm',
+        comidas: '3 tiempos',
+        personas: 50,
+        usuario: 'Iglesia Viva',
+        fecha: 'Activo'
+      }
+    ]);
+  }
+
+  // MISIONEROS
+  if (!getData(STORAGE.misioneros, []).length) {
+    setData(STORAGE.misioneros, [
+      { nombre: 'Ana y Pedro Martínez', ubicacion: 'Guatemala', usuario: 'AnaM' },
+      { nombre: 'Misión África', ubicacion: 'Kenia', usuario: 'MisionAfrica' },
+      { nombre: 'Juan Carlos Ruiz', ubicacion: 'Colombia', usuario: 'JCRuiz' }
+    ]);
+  }
+}
+
+// ================================================================
+// 21. INICIALIZACIÓN
+// ================================================================
+cargarEjemplos();
+renderTodo();
+
+if (localStorage.getItem(STORAGE.iaKey)) {
+  document.getElementById('iaStatus').textContent = '✅ API configurada.';
+}
+
+console.log('✅ SAL Y LUZ cargada correctamente. Panel Admin visible y funcional.');
 </script>
 </body>
 </html>

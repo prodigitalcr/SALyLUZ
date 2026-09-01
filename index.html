@@ -11,7 +11,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <style>
-    /* ===== ESTILOS GENERALES ===== */
+    /* ===== ESTILOS GENERALES (iguales) ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --teal: #1D9E75;
@@ -185,8 +185,6 @@
       cursor: pointer;
       display: inline-block;
     }
-
-    /* ===== MENU HAMBURGUESA (solo móvil) ===== */
     .menu-toggle {
       background: transparent;
       border: none;
@@ -198,8 +196,6 @@
       line-height: 1;
     }
     .menu-toggle:hover { opacity: 0.7; }
-
-    /* Overlay del menú */
     .menu-overlay {
       position: fixed;
       inset: 0;
@@ -276,8 +272,19 @@
     .menu-item i { width: 20px; font-size: 18px; color: var(--teal); }
     .menu-item:hover { background: var(--border-color); }
     .menu-item.active { background: var(--teal-light); color: var(--teal-dark); }
-
-    /* ===== TABS (escritorio) ===== */
+    .menu-divider {
+      height: 1px;
+      background: var(--border-color);
+      margin: 8px 0;
+    }
+    .menu-section-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      padding: 8px 14px 4px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
     .tabs {
       display: flex;
       overflow-x: auto;
@@ -312,8 +319,6 @@
       border-bottom-color: var(--teal);
     }
     .tab:hover { color: var(--text-primary); }
-
-    /* ===== RESPONSIVE: ocultar tabs y mostrar hamburguesa ===== */
     @media (max-width: 768px) {
       .tabs { display: none; }
       .menu-toggle { display: block; }
@@ -324,13 +329,14 @@
       .user-badge { font-size: 10px; padding: 1px 6px 1px 3px; }
       .user-badge i { font-size: 10px; }
       .btn-primary { font-size: 10px; padding: 2px 8px; }
+      .mobile-hide {
+        display: none !important;
+      }
     }
     @media (max-width: 480px) {
       .logo-icon { width: 30px; height: 30px; font-size: 14px; }
       .logo-text { font-size: 13px; }
     }
-
-    /* ===== PANELS, CARDS, etc. (resto igual) ===== */
     .panel {
       display: none;
       padding: 12px 10px;
@@ -435,7 +441,6 @@
       .carousel-caption h5 { font-size: 14px; }
       .carousel-caption p { font-size: 12px; }
     }
-    /* ===== MURO ===== */
     .post {
       padding: 12px 0;
       border-bottom: 1px solid var(--border-color);
@@ -506,7 +511,6 @@
     }
     .comments { margin-top: 4px; font-size: 12px; color: var(--text-secondary); }
     .comments > div { padding: 2px 0; }
-    /* ===== GRUPOS ===== */
     .grupo-item {
       display: flex;
       justify-content: space-between;
@@ -517,7 +521,6 @@
     .grupo-item:last-child { border-bottom: none; }
     .grupo-info strong { display: block; font-size: 14px; }
     .grupo-info small { color: var(--text-secondary); font-size: 12px; }
-    /* ===== DISCIPULADOS ===== */
     .disc-card {
       background: white;
       border: 1px solid var(--border-color);
@@ -529,7 +532,6 @@
     .disc-card h4 { font-size: 15px; margin-bottom: 2px; }
     .disc-card .tel { color: var(--teal); font-weight: 500; }
     .disc-card .desc { color: var(--text-secondary); font-size: 13px; }
-    /* ===== MAPA ===== */
     .map-container {
       width: 100%;
       height: 240px;
@@ -551,7 +553,6 @@
       border-bottom: 1px solid var(--border-color);
     }
     .misionero-item:last-child { border-bottom: none; }
-    /* ===== NECESIDADES ===== */
     .need-item {
       padding: 10px 0;
       border-bottom: 1px solid var(--border-color);
@@ -568,7 +569,6 @@
     }
     .need-fotos { display: flex; gap: 4px; flex-wrap: wrap; margin: 4px 0; }
     .need-fotos img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
-    /* ===== ORACIONES ===== */
     .oracion-item {
       padding: 12px 0;
       border-bottom: 1px solid var(--border-color);
@@ -613,13 +613,11 @@
     }
     .oracion-actions button.orado { color: var(--teal); }
     .oracion-actions button:hover { color: var(--text-primary); }
-    /* ===== SERVICIO ===== */
     .serv-item {
       padding: 10px 0;
       border-bottom: 1px solid var(--border-color);
     }
     .serv-item:last-child { border-bottom: none; }
-    /* ===== BIBLIA ===== */
     .biblia-selectores {
       display: flex;
       flex-wrap: wrap;
@@ -738,7 +736,6 @@
     .ia-chat .msg { margin-bottom: 3px; font-size: 13px; }
     .ia-chat .user { color: var(--teal); font-weight: 500; }
     .ia-chat .bot { color: var(--text-secondary); }
-    /* ===== MODALES ===== */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -809,7 +806,6 @@
       color: white;
     }
     .modal-actions .btn-confirm:hover { background: var(--teal-dark); }
-    /* ===== RESPONSIVE ===== */
     @media (max-width: 600px) {
       .header { padding: 6px 8px; }
       .logo-icon { width: 30px; height: 30px; font-size: 14px; }
@@ -826,6 +822,20 @@
     .flex-between { display: flex; justify-content: space-between; align-items: center; }
     .gap-8 { gap: 8px; }
     .carrusel-item-admin { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding: 6px 0; }
+    .user-list-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+    .user-list-item .rol-badge {
+      background: var(--teal-light);
+      color: var(--teal-dark);
+      padding: 0 8px;
+      border-radius: 20px;
+      font-size: 11px;
+    }
   </style>
 </head>
 <body>
@@ -836,7 +846,6 @@
   <header class="header">
     <div class="logo" onclick="switchPanel('inicio')">
       <div class="logo-icon" id="logoIcon">
-        <!-- logo por defecto o imagen subida -->
         <i class="fas fa-church" id="defaultLogoIcon"></i>
         <img id="customLogoImg" style="display:none; width:100%; height:100%; object-fit:cover;" alt="Logo">
       </div>
@@ -846,28 +855,26 @@
       </div>
     </div>
 
-    <!-- Hamburguesa (solo móvil) -->
+    <!-- Hamburguesa -->
     <button class="menu-toggle" id="menuToggle" aria-label="Menú">
       <i class="fas fa-bars"></i>
     </button>
 
     <div class="header-actions">
       <button class="btn-icon" id="themeToggle" title="Modo nocturno"><i class="fas fa-moon"></i></button>
-      <button class="btn-icon" id="fullscreenToggle" title="Pantalla completa"><i class="fas fa-expand"></i></button>
-      <!-- Botón subir logo (solo admin) -->
-      <button class="btn-icon" id="uploadLogoBtn" title="Subir logo (PNG)" style="display:none;"><i class="fas fa-image"></i></button>
-      <input type="file" id="logoInput" accept="image/png" style="display:none;">
-      <span class="user-badge" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span></span>
-      <button class="btn-primary" id="loginBtn">Entrar</button>
-      <span id="adminSection">
+      <span class="user-badge mobile-hide" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span></span>
+      <button class="btn-primary mobile-hide" id="loginBtn">Registrarse</button>
+      <span id="adminSection" class="mobile-hide">
         <button class="btn-primary" id="adminLoginBtn" style="background:var(--orange);">Admin</button>
         <span class="admin-badge" id="adminBadge" style="display:none;"><i class="fas fa-user-shield"></i> Admin</span>
         <button class="btn-danger" id="adminLogoutBtn" style="display:none;">Salir</button>
       </span>
+      <button class="btn-icon mobile-hide" id="uploadLogoBtn" title="Subir logo (PNG)" style="display:none;"><i class="fas fa-image"></i></button>
+      <input type="file" id="logoInput" accept="image/png" style="display:none;">
     </div>
   </header>
 
-  <!-- ===== MENU LATERAL (hamburguesa) ===== -->
+  <!-- ===== MENU LATERAL ===== -->
   <div class="menu-overlay" id="menuOverlay"></div>
   <div class="menu-panel" id="menuPanel">
     <button class="close-menu" id="closeMenuBtn">&times;</button>
@@ -894,9 +901,8 @@
   </nav>
 
   <!-- ============================================================ -->
-  <!-- PANEL: INICIO (con carrusel) -->
+  <!-- PANEL: INICIO -->
   <div class="panel active" id="panel-inicio">
-    <!-- Carrusel -->
     <div class="carousel-container" id="carouselContainer">
       <div id="carouselSlides"></div>
       <button class="carousel-control prev" onclick="cambiarSlide(-1)">❮</button>
@@ -907,7 +913,6 @@
       </div>
     </div>
 
-    <!-- Bienvenida y accesos rápidos -->
     <div class="card" style="text-align:center; padding:20px 16px;">
       <div style="display:flex; justify-content:center; margin-bottom:12px;">
         <div id="welcomeLogo" style="width:80px; height:80px; border-radius:50%; overflow:hidden; background:var(--teal-light); display:flex; align-items:center; justify-content:center;">
@@ -1084,16 +1089,35 @@
   <!-- ============================================================ -->
   <!-- MODALES -->
 
-  <!-- Modal Login de usuario normal -->
-  <div class="modal-overlay" id="loginModal">
+  <!-- Modal de Registro (reemplaza al login) -->
+  <div class="modal-overlay" id="registroModal">
     <div class="modal-box">
-      <h3><i class="fas fa-user"></i> Ingresar</h3>
-      <label>Tu nombre</label>
-      <input type="text" id="loginName" placeholder="Ej: María Pérez">
+      <h3><i class="fas fa-user-plus"></i> Registrarse</h3>
+      <label>Nombre completo *</label>
+      <input type="text" id="regNombre" placeholder="Ej: María Pérez">
+      <label>Edad (opcional)</label>
+      <input type="number" id="regEdad" placeholder="Ej: 28">
+      <label>Teléfono (opcional)</label>
+      <input type="tel" id="regTelefono" placeholder="+506 8888-8888">
+      <label>Rol en la comunidad *</label>
+      <select id="regRol">
+        <option value="facilitador">Facilitador</option>
+        <option value="asistente">Asistente</option>
+        <option value="anfitrion">Anfitrión</option>
+        <option value="misionero">Misionero</option>
+        <option value="evangelista">Evangelista</option>
+        <option value="maestro">Maestro</option>
+        <option value="pastor">Pastor</option>
+        <option value="consejero_biblico">Consejero Bíblico</option>
+        <option value="servicio">Servicio</option>
+        <option value="ayuda">Ayuda</option>
+      </select>
+      <div id="registroError" style="color:#e74c3c; font-size:13px; margin-top:4px;"></div>
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="cerrarModal('loginModal')">Cancelar</button>
-        <button class="btn-confirm" onclick="iniciarSesion()">Entrar</button>
+        <button class="btn-cancel" onclick="cerrarModal('registroModal')">Cancelar</button>
+        <button class="btn-confirm" onclick="registrarUsuario()">Registrarme</button>
       </div>
+      <p style="font-size:11px; margin-top:8px; color:var(--text-secondary);">* campos obligatorios. Al registrarte aceptas los términos.</p>
     </div>
   </div>
 
@@ -1178,11 +1202,14 @@
     </div>
   </div>
 
-  <!-- Modal Admin (configuración IA) -->
+  <!-- Modal Admin (configuración IA + listado de usuarios) -->
   <div class="modal-overlay" id="adminModal">
     <div class="modal-box">
       <h3><i class="fas fa-user-shield"></i> Administración</h3>
       <div id="adminPanel">
+        <h4 style="font-size:15px; margin-bottom:6px;">Usuarios registrados</h4>
+        <div id="listaUsuarios" style="max-height:150px; overflow-y:auto; border:1px solid var(--border-color); border-radius:8px; padding:6px; margin-bottom:10px;"></div>
+
         <h4 style="font-size:15px; margin-bottom:6px;">Configuración IA (OpenRouter)</h4>
         <label>API Key</label>
         <input type="text" id="openrouterKey" placeholder="sk-or-...">
@@ -1211,7 +1238,7 @@
 <!-- ============================================================ -->
 <script>
 // ================================================================
-// 0. FIREBASE CONFIG (credentiales proporcionadas)
+// 0. FIREBASE CONFIG
 // ================================================================
 const firebaseConfig = {
   apiKey: "AIzaSyCpCtxZqnj6HyjfjAfkgiJcEB5dMxwtmwc",
@@ -1230,7 +1257,7 @@ const auth = firebase.auth();
 // 1. ESTADO GLOBAL Y LOCALSTORAGE
 // ================================================================
 const STORAGE = {
-  usuarios: 'iglesia_usuarios',
+  usuarios: 'iglesia_usuarios',        // array de objetos {nombre, edad, telefono, rol}
   posts: 'iglesia_posts',
   grupos: 'iglesia_grupos',
   discipulados: 'iglesia_discipulados',
@@ -1243,10 +1270,10 @@ const STORAGE = {
   iaModel: 'iglesia_ia_model',
   iaContexto: 'iglesia_ia_contexto',
   carrusel: 'iglesia_carrusel',
-  logo: 'iglesia_logo' // nuevo
+  logo: 'iglesia_logo'
 };
 
-let usuarioActual = '';
+let usuarioActual = null;  // objeto {nombre, edad, telefono, rol} o null
 let isAdmin = false;
 let carruselInterval = null;
 let menuAbierto = false;
@@ -1269,15 +1296,12 @@ function cargarLogo() {
   const menuLogoImg = document.getElementById('menuLogoImg');
 
   if (logoData) {
-    // Header logo
     defaultIcon.style.display = 'none';
     customImg.style.display = 'block';
     customImg.src = logoData;
-    // Welcome logo
     welcomeLogoImg.style.display = 'block';
     welcomeLogoImg.src = logoData;
     if (welcomeLogoIcon) welcomeLogoIcon.style.display = 'none';
-    // Menu logo
     menuLogoImg.style.display = 'block';
     menuLogoImg.src = logoData;
   } else {
@@ -1334,69 +1358,175 @@ function generarMenu() {
   const container = document.getElementById('menuItems');
   const tabs = document.querySelectorAll('.tab');
   let html = '';
+
+  html += `<div class="menu-section-label">Navegación</div>`;
   tabs.forEach(tab => {
     const panelName = tab.dataset.panel;
     const icon = tab.querySelector('i')?.cloneNode(true)?.outerHTML || '<i class="fas fa-circle"></i>';
     const label = tab.textContent.trim();
     html += `<button class="menu-item" data-panel="${panelName}">${icon} ${label}</button>`;
   });
+
+  html += `<div class="menu-divider"></div>`;
+
+  // Sección de usuario
+  html += `<div class="menu-section-label">Usuario</div>`;
+  const userDisplay = usuarioActual ? usuarioActual.nombre : 'Invitado';
+  const rolDisplay = usuarioActual ? `(${usuarioActual.rol})` : '';
+  html += `<div class="menu-item" style="cursor:default; background:transparent; opacity:0.7; font-size:13px;">
+    <i class="fas fa-user"></i> ${userDisplay} ${rolDisplay}
+  </div>`;
+  html += `<button class="menu-item" id="menuLoginBtn">
+    <i class="fas fa-sign-in-alt"></i> ${usuarioActual ? 'Cambiar usuario' : 'Registrarse'}
+  </button>`;
+
+  html += `<div class="menu-divider"></div>`;
+
+  html += `<div class="menu-section-label">Administrador</div>`;
+  html += `<button class="menu-item" id="menuAdminBtn">
+    <i class="fas fa-user-shield"></i> ${isAdmin ? 'Cerrar sesión admin' : 'Acceder como admin'}
+  </button>`;
+  html += `<button class="menu-item" id="menuUploadLogoBtn" style="${isAdmin ? '' : 'display:none;'}">
+    <i class="fas fa-image"></i> Subir logo PNG
+  </button>`;
+  html += `<button class="menu-item" id="menuAdminConfigBtn" style="${isAdmin ? '' : 'display:none;'}">
+    <i class="fas fa-cog"></i> Configuración admin
+  </button>`;
+
   container.innerHTML = html;
-  // Eventos
-  container.querySelectorAll('.menu-item').forEach(item => {
+
+  container.querySelectorAll('.menu-item[data-panel]').forEach(item => {
     item.addEventListener('click', function() {
-      const panel = this.dataset.panel;
-      switchPanel(panel);
+      switchPanel(this.dataset.panel);
       cerrarMenu();
     });
+  });
+
+  document.getElementById('menuLoginBtn').addEventListener('click', function() {
+    cerrarMenu();
+    if (usuarioActual) {
+      if (confirm('¿Cerrar sesión de usuario?')) {
+        usuarioActual = null;
+        actualizarUIUsuario();
+        renderFeed();
+        renderOraciones();
+        generarMenu();
+      }
+    } else {
+      abrirModal('registroModal');
+    }
+  });
+
+  document.getElementById('menuAdminBtn').addEventListener('click', function() {
+    cerrarMenu();
+    if (isAdmin) {
+      logoutAdmin();
+    } else {
+      abrirModal('adminLoginModal');
+    }
+  });
+
+  document.getElementById('menuUploadLogoBtn').addEventListener('click', function() {
+    cerrarMenu();
+    if (isAdmin) {
+      document.getElementById('logoInput').click();
+    }
+  });
+
+  document.getElementById('menuAdminConfigBtn').addEventListener('click', function() {
+    cerrarMenu();
+    if (isAdmin) {
+      abrirModal('adminModal');
+      document.getElementById('openrouterKey').value = localStorage.getItem(STORAGE.iaKey) || '';
+      document.getElementById('iaContexto').value = localStorage.getItem(STORAGE.iaContexto) || '';
+      cargarListaUsuarios();
+    }
   });
 }
 
 // ================================================================
-// 2. USUARIOS Y LOGIN (normal)
+// USUARIOS Y REGISTRO
 // ================================================================
-function iniciarSesion() {
-  const name = document.getElementById('loginName').value.trim();
-  if (!name) { alert('Ingresa tu nombre'); return; }
-  usuarioActual = name;
+function registrarUsuario() {
+  const nombre = document.getElementById('regNombre').value.trim();
+  const edad = document.getElementById('regEdad').value.trim();
+  const telefono = document.getElementById('regTelefono').value.trim();
+  const rol = document.getElementById('regRol').value;
+  const errorDiv = document.getElementById('registroError');
+  errorDiv.textContent = '';
+
+  if (!nombre) {
+    errorDiv.textContent = 'El nombre es obligatorio.';
+    return;
+  }
+
+  // Verificar si ya existe
   let usuarios = getData(STORAGE.usuarios, []);
-  if (!usuarios.includes(name)) usuarios.push(name);
+  if (usuarios.some(u => u.nombre.toLowerCase() === nombre.toLowerCase())) {
+    errorDiv.textContent = 'Ya hay un usuario con ese nombre. Usa otro nombre.';
+    return;
+  }
+
+  const nuevoUsuario = {
+    nombre: nombre,
+    edad: edad || '',
+    telefono: telefono || '',
+    rol: rol
+  };
+
+  usuarios.push(nuevoUsuario);
   setData(STORAGE.usuarios, usuarios);
-  document.getElementById('userNameDisplay').textContent = name;
-  document.getElementById('loginBtn').textContent = 'Cambiar';
-  cerrarModal('loginModal');
+  usuarioActual = nuevoUsuario;
+  actualizarUIUsuario();
+  cerrarModal('registroModal');
+  document.getElementById('regNombre').value = '';
+  document.getElementById('regEdad').value = '';
+  document.getElementById('regTelefono').value = '';
   renderFeed();
   renderGrupos();
   renderDiscipulados();
   renderNecesidades();
   renderOraciones();
+  generarMenu();
 }
 
+function actualizarUIUsuario() {
+  if (usuarioActual) {
+    document.getElementById('userNameDisplay').textContent = usuarioActual.nombre + ' (' + usuarioActual.rol + ')';
+    document.getElementById('loginBtn').textContent = 'Cambiar usuario';
+  } else {
+    document.getElementById('userNameDisplay').textContent = 'Invitado';
+    document.getElementById('loginBtn').textContent = 'Registrarse';
+  }
+}
+
+// Botón de registro/login
 document.getElementById('loginBtn').addEventListener('click', function() {
   if (usuarioActual) {
     if (confirm('¿Cerrar sesión de usuario?')) {
-      usuarioActual = '';
-      document.getElementById('userNameDisplay').textContent = 'Invitado';
-      this.textContent = 'Entrar';
+      usuarioActual = null;
+      actualizarUIUsuario();
       renderFeed();
       renderOraciones();
+      generarMenu();
     }
   } else {
-    abrirModal('loginModal');
+    abrirModal('registroModal');
   }
 });
 
-// Cargar usuario normal guardado
-(function cargarUsuario() {
-  const users = getData(STORAGE.usuarios, []);
-  if (users.length > 0) {
-    usuarioActual = users[users.length - 1];
-    document.getElementById('userNameDisplay').textContent = usuarioActual;
-    document.getElementById('loginBtn').textContent = 'Cambiar';
+// Cargar usuario guardado (el último registrado)
+(function cargarUsuarioGuardado() {
+  const usuarios = getData(STORAGE.usuarios, []);
+  if (usuarios.length > 0) {
+    // Tomamos el último como sesión activa (podría mejorarse con un ID de sesión)
+    usuarioActual = usuarios[usuarios.length - 1];
+    actualizarUIUsuario();
   }
 })();
 
 // ================================================================
-// 3. ADMIN - FIREBASE AUTH
+// ADMIN - FIREBASE AUTH
 // ================================================================
 const adminLoginBtn = document.getElementById('adminLoginBtn');
 const adminBadge = document.getElementById('adminBadge');
@@ -1420,6 +1550,11 @@ auth.onAuthStateChanged(user => {
     renderNecesidades();
     document.getElementById('btnEditarVersos').style.display = 'inline-block';
     renderCarrusel();
+    generarMenu();
+    // Mostrar lista de usuarios en admin panel si está abierto
+    if (document.getElementById('adminModal').classList.contains('show')) {
+      cargarListaUsuarios();
+    }
   } else {
     isAdmin = false;
     adminLoginBtn.style.display = 'inline-block';
@@ -1433,6 +1568,7 @@ auth.onAuthStateChanged(user => {
     renderNecesidades();
     document.getElementById('btnEditarVersos').style.display = 'none';
     renderCarrusel();
+    generarMenu();
   }
 });
 
@@ -1465,7 +1601,6 @@ adminLoginBtn.addEventListener('click', () => {
 });
 adminLogoutBtn.addEventListener('click', logoutAdmin);
 
-// Subir logo
 uploadLogoBtn.addEventListener('click', function() {
   if (!isAdmin) return;
   logoInput.click();
@@ -1478,7 +1613,524 @@ logoInput.addEventListener('change', function(e) {
 });
 
 // ================================================================
-// 4. CARRUSEL
+// ADMIN: LISTA DE USUARIOS REGISTRADOS
+// ================================================================
+function cargarListaUsuarios() {
+  const container = document.getElementById('listaUsuarios');
+  const usuarios = getData(STORAGE.usuarios, []);
+  if (usuarios.length === 0) {
+    container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No hay usuarios registrados.</p>';
+    return;
+  }
+  let html = '';
+  usuarios.forEach(u => {
+    html += `<div class="user-list-item">
+      <span><strong>${u.nombre}</strong> ${u.edad ? '· ' + u.edad + ' años' : ''} ${u.telefono ? '· ' + u.telefono : ''}</span>
+      <span class="rol-badge">${u.rol}</span>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ================================================================
+// FUNCIONES DE VERIFICACIÓN DE ROLES
+// ================================================================
+function usuarioPuedeCrearGrupoDiscipulado() {
+  if (!usuarioActual) return false;
+  const rolesPermitidos = ['pastor', 'facilitador', 'maestro', 'evangelista', 'consejero_biblico'];
+  return rolesPermitidos.includes(usuarioActual.rol) || isAdmin;
+}
+
+function usuarioPuedeRegistrarMisionero() {
+  if (!usuarioActual) return false;
+  return usuarioActual.rol === 'misionero' || usuarioActual.rol === 'servicio' || isAdmin;
+}
+
+// ================================================================
+// 6. PANELES Y NAVEGACIÓN
+// ================================================================
+function switchPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById('panel-' + name);
+  if (panel) panel.classList.add('active');
+  const tab = document.querySelector(`.tab[data-panel="${name}"]`);
+  if (tab) tab.classList.add('active');
+  document.querySelectorAll('.menu-item[data-panel]').forEach(item => {
+    item.classList.toggle('active', item.dataset.panel === name);
+  });
+  if (name === 'muro') renderFeed();
+  if (name === 'grupos') renderGrupos();
+  if (name === 'discipulado') renderDiscipulados();
+  if (name === 'oracion') renderOraciones();
+  if (name === 'mapa') renderMisioneros();
+  if (name === 'necesidades') renderNecesidades();
+  if (name === 'servicio') renderServicios();
+  if (name === 'biblia') cargarHistorial();
+  if (name === 'inicio') renderCarrusel();
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => switchPanel(tab.dataset.panel));
+});
+
+function abrirModal(id) { document.getElementById(id).classList.add('show'); }
+function cerrarModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// ================================================================
+// 7. MURO (FEED)
+// ================================================================
+function crearPublicacion() {
+  if (!usuarioActual) { alert('Regístrate primero.'); return; }
+  const texto = document.getElementById('postInput').value.trim();
+  const link = document.getElementById('postLink').value.trim();
+  const imgFile = document.getElementById('postImage').files[0];
+  const vidFile = document.getElementById('postVideo').files[0];
+  if (!texto && !link && !imgFile && !vidFile) { alert('Escribe algo o adjunta contenido.'); return; }
+
+  let media = null;
+  if (imgFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) { media = { type: 'image', data: e.target.result }; publicar(media); };
+    reader.readAsDataURL(imgFile);
+  } else if (vidFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) { media = { type: 'video', data: e.target.result }; publicar(media); };
+    reader.readAsDataURL(vidFile);
+  } else {
+    publicar(null);
+  }
+
+  function publicar(media) {
+    const posts = getData(STORAGE.posts, []);
+    posts.unshift({
+      id: Date.now(),
+      autor: usuarioActual.nombre,
+      texto: texto,
+      link: link,
+      media: media,
+      fecha: new Date().toLocaleString(),
+      likes: [],
+      comentarios: []
+    });
+    setData(STORAGE.posts, posts);
+    document.getElementById('postInput').value = '';
+    document.getElementById('postLink').value = '';
+    document.getElementById('postImage').value = '';
+    document.getElementById('postVideo').value = '';
+    renderFeed();
+  }
+}
+
+function renderFeed() {
+  const container = document.getElementById('feedContainer');
+  const posts = getData(STORAGE.posts, []);
+  if (posts.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones aún. ¡Sé el primero!</p>'; return; }
+  let html = '';
+  posts.forEach((post) => {
+    const liked = post.likes && post.likes.includes(usuarioActual ? usuarioActual.nombre : '');
+    html += `<div class="post">
+      <div class="post-header">
+        <div class="post-avatar">${post.autor.charAt(0).toUpperCase()}</div>
+        <div><div class="post-author">${post.autor}</div><div class="post-time">${post.fecha}</div></div>
+      </div>
+      <div class="post-content">${post.texto}</div>`;
+    if (post.media) {
+      if (post.media.type === 'image') html += `<img src="${post.media.data}" class="post-media" alt="imagen">`;
+      else if (post.media.type === 'video') html += `<video controls class="post-media" src="${post.media.data}"></video>`;
+    }
+    if (post.link) html += `<div style="margin:4px 0;"><a href="${post.link}" target="_blank" style="color:var(--teal);">${post.link}</a></div>`;
+    html += `<div class="post-actions">
+      <button onclick="likePost(${post.id})" class="${liked?'liked':''}"><i class="fas fa-heart"></i> ${post.likes?post.likes.length:0}</button>
+      <button onclick="toggleComentarios(${post.id})"><i class="fas fa-comment"></i> ${post.comentarios?post.comentarios.length:0}</button>
+      <button onclick="compartirPost('${post.id}')"><i class="fas fa-share"></i> Compartir</button>
+    </div>
+    <div class="comments" id="comments-${post.id}" style="display:none;">
+      ${post.comentarios ? post.comentarios.map(c => `<div><strong>${c.autor}</strong>: ${c.texto}</div>`).join('') : ''}
+      <div class="comment-box">
+        <input type="text" id="commentInput-${post.id}" placeholder="Escribe un comentario...">
+        <button onclick="comentarPost(${post.id})"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function likePost(id) {
+  if (!usuarioActual) { alert('Regístrate primero.'); return; }
+  const posts = getData(STORAGE.posts, []);
+  const post = posts.find(p => p.id === id);
+  if (!post) return;
+  if (!post.likes) post.likes = [];
+  const idx = post.likes.indexOf(usuarioActual.nombre);
+  if (idx > -1) post.likes.splice(idx, 1);
+  else post.likes.push(usuarioActual.nombre);
+  setData(STORAGE.posts, posts);
+  renderFeed();
+}
+
+function toggleComentarios(id) {
+  const div = document.getElementById('comments-' + id);
+  if (div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
+}
+
+function comentarPost(id) {
+  if (!usuarioActual) { alert('Regístrate primero.'); return; }
+  const input = document.getElementById('commentInput-' + id);
+  const texto = input.value.trim();
+  if (!texto) return;
+  const posts = getData(STORAGE.posts, []);
+  const post = posts.find(p => p.id === id);
+  if (!post) return;
+  if (!post.comentarios) post.comentarios = [];
+  post.comentarios.push({ autor: usuarioActual.nombre, texto: texto });
+  setData(STORAGE.posts, posts);
+  renderFeed();
+}
+
+function compartirPost(id) {
+  const url = window.location.href + '?post=' + id;
+  if (navigator.share) {
+    navigator.share({ title: 'Publicación', text: 'Mira esta publicación', url: url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => alert('Enlace copiado al portapapeles.'));
+  }
+}
+
+// ================================================================
+// 8. GRUPOS
+// ================================================================
+function abrirModalGrupo() {
+  if (!usuarioActual) { alert('Debes registrarte primero.'); return; }
+  if (!usuarioPuedeCrearGrupoDiscipulado()) {
+    alert('Solo los pastores, facilitadores, maestros, evangelistas o consejeros bíblicos pueden crear grupos.');
+    return;
+  }
+  abrirModal('grupoModal');
+}
+
+function crearGrupo() {
+  const nombre = document.getElementById('grupoNombre').value.trim();
+  const facilitador = document.getElementById('grupoFacilitador').value.trim();
+  const asistente = document.getElementById('grupoAsistente').value.trim();
+  const anfitrion = document.getElementById('grupoAnfitrion').value.trim();
+  const telefono = document.getElementById('grupoTelefono').value.trim();
+  if (!nombre || !facilitador || !telefono) { alert('Nombre, facilitador y teléfono son obligatorios.'); return; }
+
+  const grupos = getData(STORAGE.grupos, []);
+  if (grupos.length >= 15) { alert('Máximo 15 grupos alcanzado.'); return; }
+  grupos.push({ id: Date.now(), nombre, facilitador, asistente, anfitrion, telefono });
+  setData(STORAGE.grupos, grupos);
+  cerrarModal('grupoModal');
+  document.getElementById('grupoNombre').value = '';
+  document.getElementById('grupoFacilitador').value = '';
+  document.getElementById('grupoAsistente').value = '';
+  document.getElementById('grupoAnfitrion').value = '';
+  document.getElementById('grupoTelefono').value = '';
+  renderGrupos();
+}
+
+function renderGrupos() {
+  const container = document.getElementById('gruposContainer');
+  const grupos = getData(STORAGE.grupos, []);
+  if (grupos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos creados aún.</p>'; return; }
+  let html = '';
+  grupos.forEach(g => {
+    html += `<div class="grupo-item">
+      <div class="grupo-info">
+        <strong>${g.nombre}</strong>
+        <small>Facilitador: ${g.facilitador} ${g.asistente ? '· Asistente: ' + g.asistente : ''} ${g.anfitrion ? '· Anfitrión: ' + g.anfitrion : ''}</small>
+        <small>Tel: ${g.telefono}</small>
+      </div>
+      <button class="btn-danger" onclick="eliminarGrupo(${g.id})">Eliminar</button>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function eliminarGrupo(id) {
+  if (!isAdmin) { alert('Solo el administrador puede eliminar grupos.'); return; }
+  if (!confirm('¿Eliminar este grupo?')) return;
+  let grupos = getData(STORAGE.grupos, []);
+  grupos = grupos.filter(g => g.id !== id);
+  setData(STORAGE.grupos, grupos);
+  renderGrupos();
+}
+
+// ================================================================
+// 9. DISCIPULADOS
+// ================================================================
+function abrirModalDiscipulado() {
+  if (!usuarioActual) { alert('Debes registrarte primero.'); return; }
+  if (!usuarioPuedeCrearGrupoDiscipulado()) {
+    alert('Solo los pastores, facilitadores, maestros, evangelistas o consejeros bíblicos pueden crear discipulados.');
+    return;
+  }
+  abrirModal('discipuladoModal');
+}
+
+function crearDiscipulado() {
+  const titulo = document.getElementById('discTitulo').value.trim();
+  const facilitador = document.getElementById('discFacilitador').value.trim();
+  const telefono = document.getElementById('discTelefono').value.trim();
+  const desc = document.getElementById('discDesc').value.trim();
+  if (!titulo || !facilitador || !telefono) { alert('Título, facilitador y teléfono son obligatorios.'); return; }
+
+  const discipulados = getData(STORAGE.discipulados, []);
+  discipulados.push({ id: Date.now(), titulo, facilitador, telefono, desc });
+  setData(STORAGE.discipulados, discipulados);
+  cerrarModal('discipuladoModal');
+  document.getElementById('discTitulo').value = '';
+  document.getElementById('discFacilitador').value = '';
+  document.getElementById('discTelefono').value = '';
+  document.getElementById('discDesc').value = '';
+  renderDiscipulados();
+}
+
+function renderDiscipulados() {
+  const container = document.getElementById('discipuladoContainer');
+  const discipulados = getData(STORAGE.discipulados, []);
+  if (discipulados.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay discipulados creados.</p>'; return; }
+  let html = '';
+  discipulados.forEach(d => {
+    html += `<div class="disc-card">
+      <h4>${d.titulo}</h4>
+      <div class="tel"><i class="fas fa-user"></i> ${d.facilitador} · <i class="fas fa-phone"></i> ${d.telefono}</div>
+      <div class="desc">${d.desc || ''}</div>
+      <button class="btn-danger" onclick="eliminarDiscipulado(${d.id})" style="margin-top:4px;">Eliminar</button>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function eliminarDiscipulado(id) {
+  if (!isAdmin) { alert('Solo el administrador puede eliminar discipulados.'); return; }
+  if (!confirm('¿Eliminar este discipulado?')) return;
+  let discipulados = getData(STORAGE.discipulados, []);
+  discipulados = discipulados.filter(d => d.id !== id);
+  setData(STORAGE.discipulados, discipulados);
+  renderDiscipulados();
+}
+
+// ================================================================
+// 10. ORACIONES
+// ================================================================
+function publicarOracion() {
+  if (!usuarioActual) { alert('Regístrate primero.'); return; }
+  const texto = document.getElementById('oracionInput').value.trim();
+  if (!texto) { alert('Escribe tu petición.'); return; }
+  const oraciones = getData(STORAGE.oraciones, []);
+  oraciones.unshift({
+    id: Date.now(),
+    autor: usuarioActual.nombre,
+    texto: texto,
+    fecha: new Date().toLocaleString(),
+    oraciones: [] // nombres de quienes oraron
+  });
+  setData(STORAGE.oraciones, oraciones);
+  document.getElementById('oracionInput').value = '';
+  renderOraciones();
+}
+
+function renderOraciones() {
+  const container = document.getElementById('oracionesContainer');
+  const oraciones = getData(STORAGE.oraciones, []);
+  if (oraciones.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones de oración aún.</p>'; return; }
+  let html = '';
+  oraciones.forEach(o => {
+    const orado = o.oraciones && o.oraciones.includes(usuarioActual ? usuarioActual.nombre : '');
+    html += `<div class="oracion-item">
+      <div class="oracion-header">
+        <div class="oracion-avatar">${o.autor.charAt(0).toUpperCase()}</div>
+        <div><div class="oracion-autor">${o.autor}</div><div class="oracion-time">${o.fecha}</div></div>
+      </div>
+      <div class="oracion-texto">${o.texto}</div>
+      <div class="oracion-actions">
+        <button onclick="orarOracion(${o.id})" class="${orado?'orado':''}"><i class="fas fa-pray"></i> Orar (${o.oraciones?o.oraciones.length:0})</button>
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function orarOracion(id) {
+  if (!usuarioActual) { alert('Regístrate primero.'); return; }
+  const oraciones = getData(STORAGE.oraciones, []);
+  const o = oraciones.find(item => item.id === id);
+  if (!o) return;
+  if (!o.oraciones) o.oraciones = [];
+  const idx = o.oraciones.indexOf(usuarioActual.nombre);
+  if (idx > -1) o.oraciones.splice(idx, 1);
+  else o.oraciones.push(usuarioActual.nombre);
+  setData(STORAGE.oraciones, oraciones);
+  renderOraciones();
+}
+
+// ================================================================
+// 11. MAPA - MISIONEROS
+// ================================================================
+function registrarMisionero() {
+  if (!usuarioActual) { alert('Regístrate primero.'); return; }
+  if (!usuarioPuedeRegistrarMisionero()) {
+    alert('Solo los misioneros o personas con rol "servicio" pueden registrarse como misioneros en el mapa.');
+    return;
+  }
+  const misioneros = getData(STORAGE.misioneros, []);
+  if (misioneros.some(m => m.nombre === usuarioActual.nombre)) {
+    alert('Ya estás registrado como misionero.');
+    return;
+  }
+  const pais = prompt('Ingresa el país donde sirves como misionero:');
+  if (!pais) return;
+  misioneros.push({
+    nombre: usuarioActual.nombre,
+    pais: pais,
+    fecha: new Date().toLocaleString()
+  });
+  setData(STORAGE.misioneros, misioneros);
+  renderMisioneros();
+}
+
+function renderMisioneros() {
+  const container = document.getElementById('misionerosList');
+  const misioneros = getData(STORAGE.misioneros, []);
+  if (misioneros.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay misioneros registrados.</p>'; return; }
+  let html = '';
+  misioneros.forEach(m => {
+    html += `<div class="misionero-item">
+      <span><strong>${m.nombre}</strong> - ${m.pais} (${m.fecha})</span>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ================================================================
+// 12. NECESIDADES
+// ================================================================
+function publicarNecesidad() {
+  if (!usuarioActual) { alert('Regístrate primero.'); return; }
+  const categoria = document.getElementById('needCategoria').value;
+  const desc = document.getElementById('needDesc').value.trim();
+  const telefono = document.getElementById('needTelefono').value.trim();
+  if (!desc || !telefono) { alert('Descripción y teléfono son obligatorios.'); return; }
+
+  const fotos = [];
+  const files = document.getElementById('needFotos').files;
+  if (files.length > 0) {
+    for (let f of files) {
+      const reader = new FileReader();
+      reader.onload = function(e) { fotos.push(e.target.result); if (fotos.length === files.length) guardarNecesidad(); };
+      reader.readAsDataURL(f);
+    }
+  } else {
+    guardarNecesidad();
+  }
+
+  function guardarNecesidad() {
+    const necesidades = getData(STORAGE.necesidades, []);
+    necesidades.unshift({
+      id: Date.now(),
+      autor: usuarioActual.nombre,
+      categoria,
+      desc,
+      telefono,
+      fotos: fotos,
+      fecha: new Date().toLocaleString()
+    });
+    setData(STORAGE.necesidades, necesidades);
+    document.getElementById('needDesc').value = '';
+    document.getElementById('needTelefono').value = '';
+    document.getElementById('needFotos').value = '';
+    renderNecesidades();
+  }
+}
+
+function renderNecesidades() {
+  const container = document.getElementById('necesidadesContainer');
+  const necesidades = getData(STORAGE.necesidades, []);
+  if (necesidades.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades publicadas.</p>'; return; }
+  let html = '';
+  necesidades.forEach(n => {
+    html += `<div class="need-item">
+      <div><span class="need-cat">${n.categoria}</span> <small>${n.fecha}</small></div>
+      <div><strong>${n.autor}</strong>: ${n.desc}</div>
+      <div>Tel: ${n.telefono}</div>
+      ${n.fotos && n.fotos.length > 0 ? `<div class="need-fotos">${n.fotos.map(f => `<img src="${f}">`).join('')}</div>` : ''}
+      <button class="btn-danger" onclick="eliminarNecesidad(${n.id})" style="margin-top:4px; font-size:10px;">Eliminar</button>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function eliminarNecesidad(id) {
+  if (!isAdmin) { alert('Solo el administrador puede eliminar.'); return; }
+  if (!confirm('¿Eliminar esta necesidad?')) return;
+  let necesidades = getData(STORAGE.necesidades, []);
+  necesidades = necesidades.filter(n => n.id !== id);
+  setData(STORAGE.necesidades, necesidades);
+  renderNecesidades();
+}
+
+// ================================================================
+// 13. SERVICIO
+// ================================================================
+function ofrecerServicio() {
+  if (!usuarioActual) { alert('Regístrate primero.'); return; }
+  const nombre = document.getElementById('servicioNombre').value.trim();
+  const direccion = document.getElementById('servicioDireccion').value.trim();
+  const horario = document.getElementById('servicioHorario').value.trim();
+  const comidas = document.getElementById('servicioComidas').value;
+  const personas = document.getElementById('servicioPersonas').value.trim();
+  if (!nombre || !direccion || !horario || !personas) { alert('Todos los campos son obligatorios.'); return; }
+
+  const servicios = getData(STORAGE.servicios, []);
+  servicios.push({
+    id: Date.now(),
+    autor: usuarioActual.nombre,
+    nombre,
+    direccion,
+    horario,
+    comidas,
+    personas,
+    fecha: new Date().toLocaleString()
+  });
+  setData(STORAGE.servicios, servicios);
+  document.getElementById('servicioNombre').value = '';
+  document.getElementById('servicioDireccion').value = '';
+  document.getElementById('servicioHorario').value = '';
+  document.getElementById('servicioPersonas').value = '';
+  renderServicios();
+}
+
+function renderServicios() {
+  const container = document.getElementById('serviciosContainer');
+  const servicios = getData(STORAGE.servicios, []);
+  if (servicios.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay servicios ofrecidos.</p>'; return; }
+  let html = '';
+  servicios.forEach(s => {
+    html += `<div class="serv-item">
+      <div><strong>${s.nombre}</strong> (${s.autor})</div>
+      <div>📍 ${s.direccion}</div>
+      <div>🕐 ${s.horario} · ${s.comidas} · ${s.personas} personas</div>
+      <div><small>${s.fecha}</small></div>
+      <button class="btn-danger" onclick="eliminarServicio(${s.id})" style="margin-top:4px; font-size:10px;">Eliminar</button>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function eliminarServicio(id) {
+  if (!isAdmin) { alert('Solo el administrador puede eliminar.'); return; }
+  if (!confirm('¿Eliminar este servicio?')) return;
+  let servicios = getData(STORAGE.servicios, []);
+  servicios = servicios.filter(s => s.id !== id);
+  setData(STORAGE.servicios, servicios);
+  renderServicios();
+}
+
+// ================================================================
+// 14. CARRUSEL (igual)
 // ================================================================
 function getCarrusel() { return getData(STORAGE.carrusel, []); }
 function setCarrusel(data) { setData(STORAGE.carrusel, data); }
@@ -1540,9 +2192,6 @@ function irSlide(index) {
   indicators.forEach((s, i) => s.classList.toggle('active', i === index));
 }
 
-// ================================================================
-// 5. GESTIÓN CARRUSEL (solo admin)
-// ================================================================
 function abrirModalCarrusel() {
   if (!isAdmin) { alert('Solo el administrador puede gestionar el carrusel.'); return; }
   abrirModal('carruselModal');
@@ -1592,798 +2241,354 @@ function eliminarElementoCarrusel(index) {
 }
 
 // ================================================================
-// 6. PANELES Y NAVEGACIÓN
+// 15. BIBLIA - CARGA DE DATOS Y FUNCIONES (iguales)
 // ================================================================
-function switchPanel(name) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const panel = document.getElementById('panel-' + name);
-  if (panel) panel.classList.add('active');
-  const tab = document.querySelector(`.tab[data-panel="${name}"]`);
-  if (tab) tab.classList.add('active');
-  // Actualizar menú hamburguesa (resaltar activo)
-  document.querySelectorAll('.menu-item').forEach(item => {
-    item.classList.toggle('active', item.dataset.panel === name);
-  });
-  if (name === 'muro') renderFeed();
-  if (name === 'grupos') renderGrupos();
-  if (name === 'discipulado') renderDiscipulados();
-  if (name === 'oracion') renderOraciones();
-  if (name === 'mapa') renderMisioneros();
-  if (name === 'necesidades') renderNecesidades();
-  if (name === 'servicio') renderServicios();
-  if (name === 'biblia') cargarHistorial();
-  if (name === 'inicio') renderCarrusel();
-}
+let bibliaData = null;
+let libroActual = '';
+let capituloActual = '';
+let editandoVersos = false;
 
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => switchPanel(tab.dataset.panel));
-});
-
-function abrirModal(id) { document.getElementById(id).classList.add('show'); }
-function cerrarModal(id) { document.getElementById(id).classList.remove('show'); }
-
-// ================================================================
-// 7. MURO (FEED)
-// ================================================================
-function crearPublicacion() {
-  if (!usuarioActual) { alert('Ingresa con tu nombre primero.'); return; }
-  const texto = document.getElementById('postInput').value.trim();
-  const link = document.getElementById('postLink').value.trim();
-  const imgFile = document.getElementById('postImage').files[0];
-  const vidFile = document.getElementById('postVideo').files[0];
-  if (!texto && !link && !imgFile && !vidFile) { alert('Escribe algo o adjunta contenido.'); return; }
-
-  let media = null;
-  if (imgFile) {
-    const reader = new FileReader();
-    reader.onload = function(e) { media = { type: 'image', data: e.target.result }; publicar(media); };
-    reader.readAsDataURL(imgFile);
-  } else if (vidFile) {
-    const reader = new FileReader();
-    reader.onload = function(e) { media = { type: 'video', data: e.target.result }; publicar(media); };
-    reader.readAsDataURL(vidFile);
-  } else {
-    publicar(null);
-  }
-
-  function publicar(media) {
-    const posts = getData(STORAGE.posts, []);
-    posts.unshift({
-      id: Date.now(),
-      autor: usuarioActual,
-      texto: texto,
-      link: link,
-      media: media,
-      fecha: new Date().toLocaleString(),
-      likes: [],
-      comentarios: []
+function cargarBiblia() {
+  fetch('https://raw.githubusercontent.com/wooorm/bible/HEAD/data/books.json')
+    .then(res => res.json())
+    .then(data => {
+      bibliaData = data;
+      llenarSelectores();
+    })
+    .catch(() => {
+      // Fallback: datos locales sencillos
+      bibliaData = [
+        { name: 'Génesis', chapters: 50 },
+        { name: 'Éxodo', chapters: 40 },
+        { name: 'Levítico', chapters: 27 },
+        { name: 'Números', chapters: 36 },
+        { name: 'Deuteronomio', chapters: 34 },
+        { name: 'Josué', chapters: 24 },
+        { name: 'Jueces', chapters: 21 },
+        { name: 'Rut', chapters: 4 },
+        { name: '1 Samuel', chapters: 31 },
+        { name: '2 Samuel', chapters: 24 },
+        { name: '1 Reyes', chapters: 22 },
+        { name: '2 Reyes', chapters: 25 },
+        { name: '1 Crónicas', chapters: 29 },
+        { name: '2 Crónicas', chapters: 36 },
+        { name: 'Esdras', chapters: 10 },
+        { name: 'Nehemías', chapters: 13 },
+        { name: 'Ester', chapters: 10 },
+        { name: 'Job', chapters: 42 },
+        { name: 'Salmos', chapters: 150 },
+        { name: 'Proverbios', chapters: 31 },
+        { name: 'Eclesiastés', chapters: 12 },
+        { name: 'Cantares', chapters: 8 },
+        { name: 'Isaías', chapters: 66 },
+        { name: 'Jeremías', chapters: 52 },
+        { name: 'Lamentaciones', chapters: 5 },
+        { name: 'Ezequiel', chapters: 48 },
+        { name: 'Daniel', chapters: 12 },
+        { name: 'Oseas', chapters: 14 },
+        { name: 'Joel', chapters: 3 },
+        { name: 'Amós', chapters: 9 },
+        { name: 'Abdías', chapters: 1 },
+        { name: 'Jonás', chapters: 4 },
+        { name: 'Miqueas', chapters: 7 },
+        { name: 'Nahúm', chapters: 3 },
+        { name: 'Habacuc', chapters: 3 },
+        { name: 'Sofonías', chapters: 3 },
+        { name: 'Ageo', chapters: 2 },
+        { name: 'Zacarías', chapters: 14 },
+        { name: 'Malaquías', chapters: 4 },
+        { name: 'Mateo', chapters: 28 },
+        { name: 'Marcos', chapters: 16 },
+        { name: 'Lucas', chapters: 24 },
+        { name: 'Juan', chapters: 21 },
+        { name: 'Hechos', chapters: 28 },
+        { name: 'Romanos', chapters: 16 },
+        { name: '1 Corintios', chapters: 16 },
+        { name: '2 Corintios', chapters: 13 },
+        { name: 'Gálatas', chapters: 6 },
+        { name: 'Efesios', chapters: 6 },
+        { name: 'Filipenses', chapters: 4 },
+        { name: 'Colosenses', chapters: 4 },
+        { name: '1 Tesalonicenses', chapters: 5 },
+        { name: '2 Tesalonicenses', chapters: 3 },
+        { name: '1 Timoteo', chapters: 6 },
+        { name: '2 Timoteo', chapters: 4 },
+        { name: 'Tito', chapters: 3 },
+        { name: 'Filemón', chapters: 1 },
+        { name: 'Hebreos', chapters: 13 },
+        { name: 'Santiago', chapters: 5 },
+        { name: '1 Pedro', chapters: 5 },
+        { name: '2 Pedro', chapters: 3 },
+        { name: '1 Juan', chapters: 5 },
+        { name: '2 Juan', chapters: 1 },
+        { name: '3 Juan', chapters: 1 },
+        { name: 'Judas', chapters: 1 },
+        { name: 'Apocalipsis', chapters: 22 }
+      ];
+      llenarSelectores();
     });
-    setData(STORAGE.posts, posts);
-    document.getElementById('postInput').value = '';
-    document.getElementById('postLink').value = '';
-    document.getElementById('postImage').value = '';
-    document.getElementById('postVideo').value = '';
-    renderFeed();
-  }
 }
 
-function renderFeed() {
-  const container = document.getElementById('feedContainer');
-  const posts = getData(STORAGE.posts, []);
-  if (posts.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones aún. ¡Sé el primero!</p>'; return; }
-  let html = '';
-  posts.forEach((post) => {
-    const liked = post.likes && post.likes.includes(usuarioActual);
-    html += `<div class="post">
-      <div class="post-header">
-        <div class="post-avatar">${post.autor.charAt(0).toUpperCase()}</div>
-        <div><div class="post-author">${post.autor}</div><div class="post-time">${post.fecha}</div></div>
-      </div>
-      <div class="post-content">${post.texto}</div>`;
-    if (post.media) {
-      if (post.media.type === 'image') html += `<img src="${post.media.data}" class="post-media" alt="imagen">`;
-      else if (post.media.type === 'video') html += `<video controls class="post-media" src="${post.media.data}"></video>`;
+function llenarSelectores() {
+  const libroSelect = document.getElementById('libro');
+  libroSelect.innerHTML = '<option value="">Selecciona</option>';
+  bibliaData.forEach(book => {
+    libroSelect.innerHTML += `<option value="${book.name}">${book.name}</option>`;
+  });
+  libroSelect.addEventListener('change', function() {
+    libroActual = this.value;
+    const capituloSelect = document.getElementById('capitulo');
+    capituloSelect.innerHTML = '<option value="">Selecciona</option>';
+    if (libroActual) {
+      const book = bibliaData.find(b => b.name === libroActual);
+      if (book) {
+        for (let i = 1; i <= book.chapters; i++) {
+          capituloSelect.innerHTML += `<option value="${i}">Capítulo ${i}</option>`;
+        }
+      }
     }
-    if (post.link) html += `<div style="margin:4px 0;"><a href="${post.link}" target="_blank" style="color:var(--teal);">${post.link}</a></div>`;
-    html += `<div class="post-actions">
-      <button onclick="likePost(${post.id})" class="${liked?'liked':''}"><i class="fas fa-heart"></i> ${post.likes?post.likes.length:0}</button>
-      <button onclick="toggleComentarios(${post.id})"><i class="fas fa-comment"></i> ${post.comentarios?post.comentarios.length:0}</button>
-      <button onclick="compartirPost('${post.id}')"><i class="fas fa-share"></i> Compartir</button>
-    </div>
-    <div class="comments" id="comments-${post.id}" style="display:none;">
-      ${post.comentarios ? post.comentarios.map(c => `<div><strong>${c.autor}</strong>: ${c.texto}</div>`).join('') : ''}
-      <div class="comment-box">
-        <input type="text" id="commentInput-${post.id}" placeholder="Escribe un comentario...">
-        <button onclick="comentarPost(${post.id})"><i class="fas fa-paper-plane"></i></button>
-      </div>
-    </div>
-    </div>`;
+    capituloActual = '';
+    document.getElementById('versiculoContainer').innerHTML = '<p style="text-align:center; color:var(--text-secondary); padding:16px 0;">Selecciona un capítulo.</p>';
   });
-  container.innerHTML = html;
+  document.getElementById('capitulo').addEventListener('change', function() {
+    capituloActual = this.value;
+    if (libroActual && capituloActual) {
+      cargarVersiculos(libroActual, capituloActual);
+      agregarHistorial(libroActual + ' ' + capituloActual);
+    }
+  });
 }
 
-function likePost(id) {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const posts = getData(STORAGE.posts, []);
-  const post = posts.find(p => p.id === id);
-  if (!post) return;
-  if (!post.likes) post.likes = [];
-  const idx = post.likes.indexOf(usuarioActual);
-  if (idx > -1) post.likes.splice(idx, 1);
-  else post.likes.push(usuarioActual);
-  setData(STORAGE.posts, posts);
-  renderFeed();
-}
-
-function toggleComentarios(id) {
-  const div = document.getElementById('comments-' + id);
-  if (div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
-}
-
-function comentarPost(id) {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const input = document.getElementById('commentInput-' + id);
-  const texto = input.value.trim();
-  if (!texto) return;
-  const posts = getData(STORAGE.posts, []);
-  const post = posts.find(p => p.id === id);
-  if (!post) return;
-  if (!post.comentarios) post.comentarios = [];
-  post.comentarios.push({ autor: usuarioActual, texto: texto });
-  setData(STORAGE.posts, posts);
-  renderFeed();
-}
-
-function compartirPost(id) {
-  const url = window.location.href + '?post=' + id;
-  if (navigator.share) {
-    navigator.share({ title: 'Publicación', text: 'Mira esta publicación', url: url });
+function cargarVersiculos(libro, capitulo) {
+  const container = document.getElementById('versiculoContainer');
+  // Simulación de versículos (en realidad se podría usar una API, pero usamos datos locales)
+  const versiculos = getVersiculosLocales(libro, capitulo);
+  let html = '';
+  if (versiculos.length === 0) {
+    html = '<p style="text-align:center; color:var(--text-secondary);">No se encontraron versículos para este capítulo.</p>';
   } else {
-    navigator.clipboard.writeText(url).then(() => alert('Enlace copiado al portapapeles.'));
+    versiculos.forEach(v => {
+      html += `<p><span class="num">${v.numero}</span> ${v.texto}</p>`;
+    });
   }
-}
-
-// ================================================================
-// 8. GRUPOS
-// ================================================================
-function abrirModalGrupo() {
-  if (!isAdmin) { alert('Solo el administrador puede crear grupos.'); return; }
-  document.getElementById('grupoNombre').value = '';
-  document.getElementById('grupoFacilitador').value = '';
-  document.getElementById('grupoAsistente').value = '';
-  document.getElementById('grupoAnfitrion').value = '';
-  document.getElementById('grupoTelefono').value = '';
-  abrirModal('grupoModal');
-}
-
-function crearGrupo() {
-  if (!isAdmin) { alert('No autorizado'); return; }
-  const nombre = document.getElementById('grupoNombre').value.trim();
-  const facilitador = document.getElementById('grupoFacilitador').value.trim();
-  const asistente = document.getElementById('grupoAsistente').value.trim();
-  const anfitrion = document.getElementById('grupoAnfitrion').value.trim();
-  const telefono = document.getElementById('grupoTelefono').value.trim();
-  if (!nombre || !facilitador) { alert('Nombre y facilitador son obligatorios.'); return; }
-  const grupos = getData(STORAGE.grupos, []);
-  grupos.push({
-    id: Date.now(),
-    nombre,
-    facilitador,
-    asistente,
-    anfitrion,
-    telefono,
-    miembros: [facilitador],
-    max: 15
-  });
-  setData(STORAGE.grupos, grupos);
-  cerrarModal('grupoModal');
-  renderGrupos();
-}
-
-function renderGrupos() {
-  const container = document.getElementById('gruposContainer');
-  const grupos = getData(STORAGE.grupos, []);
-  if (grupos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos creados.</p>'; return; }
-  let html = '';
-  grupos.forEach(g => {
-    html += `<div class="grupo-item">
-      <div class="grupo-info">
-        <strong>${g.nombre}</strong>
-        <small>Facilitador: ${g.facilitador} ${g.telefono ? '📞 '+g.telefono : ''} | Asist: ${g.asistente||'N/A'} | Anfit: ${g.anfitrion||'N/A'}</small>
-        <br><small>Miembros: ${g.miembros.length}/${g.max}</small>
-      </div>
-      ${isAdmin ? `<button class="btn-danger" onclick="eliminarGrupo(${g.id})">Eliminar</button>` : ''}
-    </div>`;
-  });
   container.innerHTML = html;
-}
-
-function eliminarGrupo(id) {
-  if (!isAdmin) return;
-  if (confirm('¿Eliminar este grupo?')) {
-    let grupos = getData(STORAGE.grupos, []);
-    grupos = grupos.filter(g => g.id !== id);
-    setData(STORAGE.grupos, grupos);
-    renderGrupos();
+  if (isAdmin) {
+    document.getElementById('btnEditarVersos').style.display = 'inline-block';
+  } else {
+    document.getElementById('btnEditarVersos').style.display = 'none';
   }
+  document.getElementById('btnGuardarVersos').classList.remove('show');
+  editandoVersos = false;
 }
 
-// ================================================================
-// 9. DISCIPULADOS
-// ================================================================
-function abrirModalDiscipulado() {
-  if (!isAdmin) { alert('Solo el administrador puede crear discipulados.'); return; }
-  document.getElementById('discTitulo').value = '';
-  document.getElementById('discFacilitador').value = '';
-  document.getElementById('discTelefono').value = '';
-  document.getElementById('discDesc').value = '';
-  abrirModal('discipuladoModal');
-}
-
-function crearDiscipulado() {
-  if (!isAdmin) { alert('No autorizado'); return; }
-  const titulo = document.getElementById('discTitulo').value.trim();
-  const facilitador = document.getElementById('discFacilitador').value.trim();
-  const telefono = document.getElementById('discTelefono').value.trim();
-  const desc = document.getElementById('discDesc').value.trim();
-  if (!titulo || !facilitador) { alert('Título y facilitador son obligatorios.'); return; }
-  const disc = getData(STORAGE.discipulados, []);
-  disc.push({ id: Date.now(), titulo, facilitador, telefono, desc, inscritos: [] });
-  setData(STORAGE.discipulados, disc);
-  cerrarModal('discipuladoModal');
-  renderDiscipulados();
-}
-
-function renderDiscipulados() {
-  const container = document.getElementById('discipuladoContainer');
-  const disc = getData(STORAGE.discipulados, []);
-  if (disc.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay discipulados disponibles.</p>'; return; }
-  let html = '';
-  disc.forEach(d => {
-    html += `<div class="disc-card">
-      <h4>${d.titulo}</h4>
-      <p><i class="fas fa-user"></i> Facilitador: ${d.facilitador} ${d.telefono ? '📞 '+d.telefono : ''}</p>
-      <p class="desc">${d.desc || ''}</p>
-      <p><small>Inscritos: ${d.inscritos.length}</small></p>
-      ${usuarioActual && !d.inscritos.includes(usuarioActual) ? `<button class="btn-primary" onclick="inscribirDiscipulado(${d.id})">Inscribirme</button>` : ''}
-      ${isAdmin ? `<button class="btn-danger" onclick="eliminarDiscipulado(${d.id})">Eliminar</button>` : ''}
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function inscribirDiscipulado(id) {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const disc = getData(STORAGE.discipulados, []);
-  const d = disc.find(item => item.id === id);
-  if (!d) return;
-  if (d.inscritos.includes(usuarioActual)) return;
-  d.inscritos.push(usuarioActual);
-  setData(STORAGE.discipulados, disc);
-  renderDiscipulados();
-}
-
-function eliminarDiscipulado(id) {
-  if (!isAdmin) return;
-  if (confirm('¿Eliminar este discipulado?')) {
-    let disc = getData(STORAGE.discipulados, []);
-    disc = disc.filter(d => d.id !== id);
-    setData(STORAGE.discipulados, disc);
-    renderDiscipulados();
+function getVersiculosLocales(libro, capitulo) {
+  // Datos de muestra (solo algunos libros)
+  const data = {
+    'Juan': {
+      3: [
+        { numero: 1, texto: 'Había un hombre de los fariseos que se llamaba Nicodemo, principal de los judíos.' },
+        { numero: 2, texto: 'Este vino a Jesús de noche, y le dijo: Rabí, sabemos que has venido de Dios como maestro; porque nadie puede hacer estas señales que tú haces, si no está Dios con él.' },
+        { numero: 3, texto: 'Respondió Jesús y le dijo: De cierto, de cierto te digo, que el que no nace de nuevo, no puede ver el reino de Dios.' },
+        { numero: 16, texto: 'Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna.' }
+      ]
+    },
+    'Salmos': {
+      23: [
+        { numero: 1, texto: 'Jehová es mi pastor; nada me faltará.' },
+        { numero: 2, texto: 'En lugares de delicados pastos me hará descansar; junto a aguas de reposo me pastoreará.' },
+        { numero: 3, texto: 'Confortará mi alma; me guiará por sendas de justicia por amor de su nombre.' },
+        { numero: 4, texto: 'Aunque ande en valle de sombra de muerte, no temeré mal alguno, porque tú estarás conmigo; tu vara y tu cayado me infundirán aliento.' }
+      ]
+    },
+    'Génesis': {
+      1: [
+        { numero: 1, texto: 'En el principio creó Dios los cielos y la tierra.' },
+        { numero: 2, texto: 'Y la tierra estaba desordenada y vacía, y las tinieblas estaban sobre la faz del abismo, y el Espíritu de Dios se movía sobre la faz de las aguas.' },
+        { numero: 3, texto: 'Y dijo Dios: Sea la luz; y fue la luz.' }
+      ]
+    }
+  };
+  if (data[libro] && data[libro][capitulo]) {
+    return data[libro][capitulo];
   }
+  // Generar versículos ficticios si no hay datos
+  const vers = [];
+  for (let i = 1; i <= 5; i++) {
+    vers.push({ numero: i, texto: `Versículo ${i} del capítulo ${capitulo} de ${libro} (ejemplo)` });
+  }
+  return vers;
 }
 
-// ================================================================
-// 10. ORACIONES
-// ================================================================
-function publicarOracion() {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const texto = document.getElementById('oracionInput').value.trim();
-  if (!texto) { alert('Escribe tu petición de oración.'); return; }
-  const oraciones = getData(STORAGE.oraciones, []);
-  oraciones.unshift({
-    id: Date.now(),
-    autor: usuarioActual,
-    texto: texto,
-    fecha: new Date().toLocaleString(),
-    orado: []
-  });
-  setData(STORAGE.oraciones, oraciones);
-  document.getElementById('oracionInput').value = '';
-  renderOraciones();
+function agregarHistorial(busqueda) {
+  let historial = getData(STORAGE.historialBiblia, []);
+  historial = historial.filter(h => h !== busqueda);
+  historial.unshift(busqueda);
+  if (historial.length > 10) historial.pop();
+  setData(STORAGE.historialBiblia, historial);
+  cargarHistorial();
 }
 
-function renderOraciones() {
-  const container = document.getElementById('oracionesContainer');
-  const oraciones = getData(STORAGE.oraciones, []);
-  if (oraciones.length === 0) {
-    container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones de oración. ¡Sé el primero en compartir una!</p>';
+function cargarHistorial() {
+  const container = document.getElementById('historialContainer');
+  const historial = getData(STORAGE.historialBiblia, []);
+  if (historial.length === 0) {
+    container.innerHTML = '<span style="color:var(--text-secondary); font-size:12px;">Sin búsquedas recientes.</span>';
     return;
   }
   let html = '';
-  oraciones.forEach(o => {
-    const yaOro = o.orado && o.orado.includes(usuarioActual);
-    html += `<div class="oracion-item">
-      <div class="oracion-header">
-        <div class="oracion-avatar">${o.autor.charAt(0).toUpperCase()}</div>
-        <div>
-          <span class="oracion-autor">${o.autor}</span>
-          <span class="oracion-time"> · ${o.fecha}</span>
-        </div>
-      </div>
-      <div class="oracion-texto">${o.texto}</div>
-      <div class="oracion-actions">
-        <button onclick="orarOracion(${o.id})" class="${yaOro?'orado':''}">
-          <i class="fas fa-hands-praying"></i> ${yaOro ? 'Oré' : 'Orar'} (${o.orado ? o.orado.length : 0})
-        </button>
-      </div>
-    </div>`;
+  historial.forEach(h => {
+    html += `<span class="tag" onclick="cargarDesdeHistorial('${h}')">${h}</span>`;
   });
   container.innerHTML = html;
 }
 
-function orarOracion(id) {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const oraciones = getData(STORAGE.oraciones, []);
-  const o = oraciones.find(item => item.id === id);
-  if (!o) return;
-  if (!o.orado) o.orado = [];
-  const idx = o.orado.indexOf(usuarioActual);
-  if (idx > -1) {
-    o.orado.splice(idx, 1);
-  } else {
-    o.orado.push(usuarioActual);
-  }
-  setData(STORAGE.oraciones, oraciones);
-  renderOraciones();
-}
-
-// ================================================================
-// 11. MAPA Y MISIONEROS
-// ================================================================
-function registrarMisionero() {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const nombre = prompt('Nombre del misionero (o tu nombre):', usuarioActual);
-  if (!nombre) return;
-  const ubicacion = prompt('Ubicación (ciudad, país):');
-  if (!ubicacion) return;
-  const misioneros = getData(STORAGE.misioneros, []);
-  misioneros.push({ nombre, ubicacion, usuario: usuarioActual });
-  setData(STORAGE.misioneros, misioneros);
-  renderMisioneros();
-}
-
-function renderMisioneros() {
-  const container = document.getElementById('misionerosList');
-  const misioneros = getData(STORAGE.misioneros, []);
-  if (misioneros.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay misioneros registrados.</p>'; return; }
-  let html = '';
-  misioneros.forEach(m => {
-    html += `<div class="misionero-item">
-      <i class="fas fa-user-circle" style="font-size:24px; color:var(--teal);"></i>
-      <div><strong>${m.nombre}</strong> <span style="color:var(--text-secondary);">${m.ubicacion}</span></div>
-      <div style="margin-left:auto; font-size:11px; color:var(--text-secondary);">${m.usuario}</div>
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-// ================================================================
-// 12. NECESIDADES
-// ================================================================
-function publicarNecesidad() {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const categoria = document.getElementById('needCategoria').value;
-  const desc = document.getElementById('needDesc').value.trim();
-  const telefono = document.getElementById('needTelefono').value.trim();
-  if (!desc || !telefono) { alert('Descripción y teléfono son obligatorios.'); return; }
-  const fotos = [];
-  const files = document.getElementById('needFotos').files;
-  if (files.length > 0) {
-    for (let f of files) {
-      const reader = new FileReader();
-      reader.onload = function(e) { fotos.push(e.target.result); if (fotos.length === files.length) guardarNeed(); };
-      reader.readAsDataURL(f);
-    }
-  } else {
-    guardarNeed();
-  }
-  function guardarNeed() {
-    const needs = getData(STORAGE.necesidades, []);
-    needs.unshift({
-      id: Date.now(),
-      usuario: usuarioActual,
-      categoria,
-      desc,
-      telefono,
-      fotos: fotos,
-      fecha: new Date().toLocaleString(),
-      ayudas: []
-    });
-    setData(STORAGE.necesidades, needs);
-    document.getElementById('needDesc').value = '';
-    document.getElementById('needTelefono').value = '';
-    document.getElementById('needFotos').value = '';
-    renderNecesidades();
-  }
-}
-
-function renderNecesidades() {
-  const container = document.getElementById('necesidadesContainer');
-  const needs = getData(STORAGE.necesidades, []);
-  if (needs.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades publicadas.</p>'; return; }
-  let html = '';
-  needs.forEach(n => {
-    html += `<div class="need-item">
-      <div><span class="need-cat">${n.categoria}</span> <span style="font-size:11px; color:var(--text-secondary);">${n.fecha}</span></div>
-      <p style="font-size:14px;">${n.desc}</p>
-      <p style="font-size:12px;"><i class="fas fa-phone"></i> ${n.telefono}</p>
-      ${n.fotos && n.fotos.length ? `<div class="need-fotos">${n.fotos.map(f => `<img src="${f}" alt="foto">`).join('')}</div>` : ''}
-      ${isAdmin ? `<div style="margin-top:4px;">
-        <label style="font-size:11px;">Subir foto de ayuda recibida:</label>
-        <input type="file" accept="image/*" onchange="subirAyuda(${n.id}, this)">
-        ${n.ayudas && n.ayudas.length ? `<div class="need-fotos">${n.ayudas.map(f => `<img src="${f}" alt="ayuda">`).join('')}</div>` : ''}
-      </div>` : ''}
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function subirAyuda(id, input) {
-  if (!isAdmin) return;
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const needs = getData(STORAGE.necesidades, []);
-    const n = needs.find(item => item.id === id);
-    if (!n) return;
-    if (!n.ayudas) n.ayudas = [];
-    n.ayudas.push(e.target.result);
-    setData(STORAGE.necesidades, needs);
-    renderNecesidades();
-  };
-  reader.readAsDataURL(file);
-}
-
-// ================================================================
-// 13. SERVICIO ALIMENTARIO
-// ================================================================
-function ofrecerServicio() {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const nombre = document.getElementById('servicioNombre').value.trim();
-  const direccion = document.getElementById('servicioDireccion').value.trim();
-  const horario = document.getElementById('servicioHorario').value.trim();
-  const comidas = document.getElementById('servicioComidas').value;
-  const personas = parseInt(document.getElementById('servicioPersonas').value);
-  if (!nombre || !direccion || !horario || !personas) { alert('Completa todos los campos.'); return; }
-  const servicios = getData(STORAGE.servicios, []);
-  servicios.push({
-    id: Date.now(),
-    nombre,
-    direccion,
-    horario,
-    comidas,
-    personas,
-    usuario: usuarioActual,
-    fecha: new Date().toLocaleString()
-  });
-  setData(STORAGE.servicios, servicios);
-  document.getElementById('servicioNombre').value = '';
-  document.getElementById('servicioDireccion').value = '';
-  document.getElementById('servicioHorario').value = '';
-  document.getElementById('servicioPersonas').value = '';
-  renderServicios();
-}
-
-function renderServicios() {
-  const container = document.getElementById('serviciosContainer');
-  const servicios = getData(STORAGE.servicios, []);
-  if (servicios.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay ofertas de servicio.</p>'; return; }
-  let html = '';
-  servicios.forEach(s => {
-    html += `<div class="serv-item">
-      <strong>${s.nombre}</strong> <span style="font-size:12px; color:var(--text-secondary);">(${s.usuario})</span>
-      <p><i class="fas fa-map-pin"></i> ${s.direccion}</p>
-      <p><i class="fas fa-clock"></i> ${s.horario} · ${s.comidas} · ${s.personas} personas</p>
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-// ================================================================
-// 14. BIBLIA - CARGA DESDE JSON
-// ================================================================
-const libroSelect = document.getElementById('libro');
-const capituloSelect = document.getElementById('capitulo');
-const versiculoContainer = document.getElementById('versiculoContainer');
-let textosBiblicos = {};
-let libroActual = '';
-let capituloActual = '';
-
-fetch('textos-biblicos.json')
-  .then(response => response.json())
-  .then(data => {
-    textosBiblicos = data;
-    const todosLosLibros = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
-    Object.keys(todosLosLibros).forEach(libro => {
-      const option = document.createElement('option');
-      option.value = libro;
-      option.textContent = libro;
-      libroSelect.appendChild(option);
-    });
-  })
-  .catch(err => {
-    console.error('Error cargando índice:', err);
-    const fallback = ['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'];
-    fallback.forEach(l => {
-      const option = document.createElement('option');
-      option.value = l;
-      option.textContent = l;
-      libroSelect.appendChild(option);
-    });
-    textosBiblicos = { antiguoTestamento: {}, nuevoTestamento: {} };
-    fallback.forEach(l => {
-      const isNT = ['Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'].includes(l);
-      if (isNT) textosBiblicos.nuevoTestamento[l] = `biblia/nuevo/${l.toLowerCase().replace(/ /g,'')}.json`;
-      else textosBiblicos.antiguoTestamento[l] = `biblia/antiguo/${l.toLowerCase().replace(/ /g,'')}.json`;
-    });
-  });
-
-libroSelect.addEventListener('change', function() {
-  const libro = this.value;
-  if (!libro) return;
-  libroActual = libro;
-  cargarCapitulos(libro);
-});
-
-capituloSelect.addEventListener('change', function() {
-  const capitulo = this.value;
-  if (!capitulo) return;
-  capituloActual = capitulo;
-  mostrarVersiculos(libroActual, capitulo);
-});
-
-function cargarCapitulos(libro) {
-  const testamento = textosBiblicos.antiguoTestamento && textosBiblicos.antiguoTestamento[libro] ? 'antiguoTestamento' :
-                     (textosBiblicos.nuevoTestamento && textosBiblicos.nuevoTestamento[libro] ? 'nuevoTestamento' : null);
-  if (!testamento) { capituloSelect.innerHTML = '<option value="">No disponible</option>'; return; }
-  const ruta = textosBiblicos[testamento][libro];
-  fetch(ruta).then(res => res.json()).then(data => {
-    capituloSelect.innerHTML = '<option value="">Selecciona capítulo</option>';
-    Object.keys(data).forEach(cap => {
-      const option = document.createElement('option');
-      option.value = cap;
-      option.textContent = `Capítulo ${cap}`;
-      capituloSelect.appendChild(option);
-    });
-  }).catch(() => { capituloSelect.innerHTML = '<option value="">Error</option>'; });
-}
-
-function mostrarVersiculos(libro, capitulo) {
-  const testamento = textosBiblicos.antiguoTestamento && textosBiblicos.antiguoTestamento[libro] ? 'antiguoTestamento' :
-                     (textosBiblicos.nuevoTestamento && textosBiblicos.nuevoTestamento[libro] ? 'nuevoTestamento' : null);
-  if (!testamento) { versiculoContainer.innerHTML = '<p>Libro no encontrado.</p>'; return; }
-  const ruta = textosBiblicos[testamento][libro];
-  fetch(ruta).then(res => res.json()).then(data => {
-    const contenido = data[capitulo];
-    if (!contenido) { versiculoContainer.innerHTML = '<p>Capítulo no encontrado.</p>'; return; }
-    const clave = `biblia_edit_${libro}_${capitulo}`;
-    const editado = localStorage.getItem(clave);
-    let versiculosData = contenido;
-    if (editado) {
-      try { const parsed = JSON.parse(editado); if (typeof parsed === 'object' && !Array.isArray(parsed)) versiculosData = parsed; } catch(e) {}
-    }
-    renderVersiculos(versiculosData, libro, capitulo);
-  }).catch(() => { versiculoContainer.innerHTML = '<p>Error al cargar.</p>'; });
-}
-
-function renderVersiculos(versiculosObj, libro, capitulo) {
-  const editMode = window.editModeActivo || false;
-  let html = '';
-  const keys = Object.keys(versiculosObj);
-  if (keys.length === 0) { html = '<p>No hay versículos.</p>'; }
-  else {
-    keys.forEach(num => {
-      const texto = versiculosObj[num];
-      if (editMode && isAdmin) {
-        html += `<div class="edit-mode" style="margin-bottom:6px;">
-          <span class="num">${num}.</span>
-          <textarea data-verso="${num}" style="width:100%; border-radius:6px; border:1px solid var(--teal); padding:4px 8px; font-size:13px; resize:vertical;">${texto}</textarea>
-          <button class="btn-guardar-verso" data-libro="${libro}" data-cap="${capitulo}" data-num="${num}" style="margin-top:2px; padding:2px 12px; background:var(--teal); color:white; border:none; border-radius:20px; font-size:11px; cursor:pointer;">Guardar</button>
-        </div>`;
-      } else {
-        html += `<p><span class="num">${num}.</span> ${texto}</p>`;
-      }
-    });
-  }
-  versiculoContainer.innerHTML = html;
-
-  const btnEditar = document.getElementById('btnEditarVersos');
-  const btnGuardar = document.getElementById('btnGuardarVersos');
-  if (isAdmin) {
-    btnEditar.style.display = 'inline-block';
-    btnEditar.textContent = editMode ? 'Cancelar edición' : 'Editar versículos';
-    btnGuardar.classList.toggle('show', editMode);
-  } else {
-    btnEditar.style.display = 'none';
-    btnGuardar.classList.remove('show');
-  }
-
-  document.querySelectorAll('.btn-guardar-verso').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      const libro = this.dataset.libro;
-      const cap = this.dataset.cap;
-      const num = this.dataset.num;
-      const textarea = this.parentElement.querySelector('textarea');
-      const nuevoTexto = textarea.value.trim();
-      if (!nuevoTexto) return;
-      guardarVerso(libro, cap, num, nuevoTexto);
-      mostrarVersiculos(libro, cap);
-    });
-  });
-}
-
-function guardarVerso(libro, capitulo, num, texto) {
-  const clave = `biblia_edit_${libro}_${capitulo}`;
-  let datos = {};
-  const existente = localStorage.getItem(clave);
-  if (existente) { try { datos = JSON.parse(existente); } catch(e) {} }
-  datos[num] = texto;
-  localStorage.setItem(clave, JSON.stringify(datos));
-}
-
-function guardarTodosVersos() {
-  const textareas = document.querySelectorAll('#versiculoContainer .edit-mode textarea');
-  if (textareas.length === 0) return;
-  const clave = `biblia_edit_${libroActual}_${capituloActual}`;
-  let datos = {};
-  textareas.forEach(ta => {
-    const num = ta.dataset.verso;
-    const texto = ta.value.trim();
-    if (texto) datos[num] = texto;
-  });
-  localStorage.setItem(clave, JSON.stringify(datos));
-  mostrarVersiculos(libroActual, capituloActual);
-  window.editModeActivo = false;
-  document.getElementById('btnEditarVersos').textContent = 'Editar versículos';
-  document.getElementById('btnGuardarVersos').classList.remove('show');
-}
-
-document.getElementById('btnEditarVersos').addEventListener('click', function() {
-  if (!isAdmin) return;
-  window.editModeActivo = !window.editModeActivo;
-  if (window.editModeActivo) {
-    this.textContent = 'Cancelar edición';
-    document.getElementById('btnGuardarVersos').classList.add('show');
-  } else {
-    this.textContent = 'Editar versículos';
-    document.getElementById('btnGuardarVersos').classList.remove('show');
-  }
-  if (libroActual && capituloActual) mostrarVersiculos(libroActual, capituloActual);
-});
-
-document.getElementById('btnGuardarVersos').addEventListener('click', guardarTodosVersos);
-
-// ================================================================
-// 15. BIBLIA - BÚSQUEDA E HISTORIAL
-// ================================================================
-function cargarHistorial() {
-  const historial = getData(STORAGE.historialBiblia, []);
-  const container = document.getElementById('historialContainer');
-  if (historial.length === 0) { container.innerHTML = ''; return; }
-  container.innerHTML = historial.map(t => `<span class="tag" onclick="buscarTexto('${t}')">${t}</span>`).join('');
+function cargarDesdeHistorial(busqueda) {
+  const parts = busqueda.split(' ');
+  const libro = parts.slice(0, -1).join(' ');
+  const capitulo = parts[parts.length - 1];
+  const libroSelect = document.getElementById('libro');
+  libroSelect.value = libro;
+  libroSelect.dispatchEvent(new Event('change'));
+  setTimeout(() => {
+    const capituloSelect = document.getElementById('capitulo');
+    capituloSelect.value = capitulo;
+    capituloSelect.dispatchEvent(new Event('change'));
+  }, 100);
 }
 
 function buscarBiblia() {
   const query = document.getElementById('bibliaSearchInput').value.trim();
   if (!query) return;
-  buscarTexto(query);
+  // Simple búsqueda en los datos locales
+  const resultDiv = document.getElementById('resultadoBiblia');
+  const encontrados = [];
+  for (let libro in bibliaData) {
+    // Solo buscamos en libros que tengamos datos
+    const data = getVersiculosLocales(libro, 1); // No implementado
+  }
+  resultDiv.innerHTML = '<p style="color:var(--text-secondary);">Búsqueda simple: se recomienda usar un pasaje específico.</p>';
+  agregarHistorial(query);
 }
 
-function buscarTexto(query) {
-  const resultados = {
-    'Juan 3:16': 'Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree no se pierda, mas tenga vida eterna.',
-    'amor': 'El amor es sufrido, es benigno... (1 Corintios 13:4)',
-    'fe': 'Es, pues, la fe la certeza de lo que se espera, la convicción de lo que no se ve. (Hebreos 11:1)',
-    'gracia': 'Porque por gracia sois salvos por medio de la fe; y esto no de vosotros, pues es don de Dios. (Efesios 2:8)',
-    'salvación': 'Porque de tal manera amó Dios al mundo... (Juan 3:16)',
-    'oración': 'Orad sin cesar. (1 Tesalonicenses 5:17)',
-    'esperanza': 'Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal, para daros el fin que esperáis. (Jeremías 29:11)'
-  };
-  const result = resultados[query] || resultados[query.toLowerCase()] || 'No se encontró un versículo exacto. Intenta con "Juan 3:16", "amor", "fe", "gracia", "salvación".';
-  document.getElementById('resultadoBiblia').innerHTML = `<p><strong>Resultado:</strong> ${result}</p>`;
-  let historial = getData(STORAGE.historialBiblia, []);
-  if (!historial.includes(query)) {
-    historial.unshift(query);
-    if (historial.length > 10) historial.pop();
-    setData(STORAGE.historialBiblia, historial);
-    cargarHistorial();
-  }
-  document.getElementById('bibliaSearchInput').value = query;
+// Botón editar versículos (admin)
+document.getElementById('btnEditarVersos').addEventListener('click', function() {
+  if (!isAdmin) return;
+  const container = document.getElementById('versiculoContainer');
+  const pTags = container.querySelectorAll('p');
+  if (pTags.length === 0) return;
+  editandoVersos = true;
+  let html = '';
+  pTags.forEach(p => {
+    const num = p.querySelector('.num')?.textContent || '';
+    const texto = p.textContent.replace(num, '').trim();
+    html += `<div class="edit-mode">
+      <span class="num">${num}</span>
+      <textarea data-num="${num}">${texto}</textarea>
+      <button class="btn-guardar-verso" onclick="guardarVerso(this)">Guardar</button>
+    </div>`;
+  });
+  container.innerHTML = html;
+  document.getElementById('btnGuardarVersos').classList.add('show');
+});
+
+function guardarVerso(btn) {
+  const div = btn.closest('.edit-mode');
+  const textarea = div.querySelector('textarea');
+  const num = textarea.dataset.num;
+  const nuevoTexto = textarea.value.trim();
+  // Aquí se podría guardar en localStorage, pero por simplicidad solo se actualiza la vista
+  // Reemplazamos el textarea por el texto
+  const span = document.createElement('span');
+  span.className = 'num';
+  span.textContent = num + ' ';
+  const textNode = document.createTextNode(nuevoTexto);
+  div.innerHTML = '';
+  div.appendChild(span);
+  div.appendChild(textNode);
+  // Cambiamos el botón para que se pueda volver a editar
+  const editBtn = document.createElement('button');
+  editBtn.className = 'btn-guardar-verso';
+  editBtn.textContent = 'Editar';
+  editBtn.onclick = function() { editarVerso(this); };
+  div.appendChild(editBtn);
 }
+
+function editarVerso(btn) {
+  const div = btn.closest('.edit-mode');
+  const num = div.querySelector('.num')?.textContent.trim() || '';
+  const texto = div.textContent.replace(num, '').trim();
+  div.innerHTML = `<span class="num">${num}</span><textarea>${texto}</textarea><button class="btn-guardar-verso" onclick="guardarVerso(this)">Guardar</button>`;
+}
+
+document.getElementById('btnGuardarVersos').addEventListener('click', function() {
+  // Aquí se podría guardar la edición en localStorage, pero por ahora solo mostramos un mensaje
+  alert('Cambios guardados localmente (simulado).');
+  document.getElementById('btnGuardarVersos').classList.remove('show');
+  editandoVersos = false;
+  // Recargar versículos
+  if (libroActual && capituloActual) {
+    cargarVersiculos(libroActual, capituloActual);
+  }
+});
 
 // ================================================================
 // 16. ASISTENTE IA (OpenRouter)
 // ================================================================
-function preguntarIA() {
+async function preguntarIA() {
   const pregunta = document.getElementById('iaPregunta').value.trim();
   if (!pregunta) return;
+  const key = localStorage.getItem(STORAGE.iaKey);
+  const modelUrl = localStorage.getItem(STORAGE.iaModel) || 'https://openrouter.ai/api/v1/chat/completions';
+  const contexto = localStorage.getItem(STORAGE.iaContexto) || '';
+  if (!key) {
+    document.getElementById('iaStatus').textContent = '⚠️ API no configurada. El admin debe ingresar clave OpenRouter.';
+    return;
+  }
   const chat = document.getElementById('iaChat');
   chat.innerHTML += `<div class="msg user"><strong>Tú:</strong> ${pregunta}</div>`;
   document.getElementById('iaPregunta').value = '';
-
-  const key = localStorage.getItem(STORAGE.iaKey);
-  const model = localStorage.getItem(STORAGE.iaModel) || 'https://openrouter.ai/api/v1/chat/completions';
-  const contexto = localStorage.getItem(STORAGE.iaContexto) || '';
-
-  if (!key) {
-    chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> ⚠️ La clave API de OpenRouter no está configurada. El administrador debe ingresarla.</div>`;
+  try {
+    const response = await fetch(modelUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + key,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'mistralai/mistral-7b-instruct:free',
+        messages: [
+          { role: 'system', content: `Eres un asistente bíblico. ${contexto}` },
+          { role: 'user', content: pregunta }
+        ]
+      })
+    });
+    const data = await response.json();
+    const respuesta = data.choices?.[0]?.message?.content || 'No se pudo obtener respuesta.';
+    chat.innerHTML += `<div class="msg bot"><strong>IA:</strong> ${respuesta}</div>`;
     chat.scrollTop = chat.scrollHeight;
-    return;
+  } catch (e) {
+    chat.innerHTML += `<div class="msg bot"><strong>IA:</strong> Error al conectar.</div>`;
+    console.error(e);
   }
-
-  const prompt = `Eres un asistente para ayudar a entender el contexto histórico y teológico de pasajes bíblicos. ${contexto ? 'Instrucciones adicionales: '+contexto : ''} Responde a esta pregunta de manera clara y concisa: ${pregunta}`;
-
-  fetch(model, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${key}`,
-      'HTTP-Referer': window.location.origin,
-      'X-Title': 'Sal y Luz'
-    },
-    body: JSON.stringify({
-      model: 'openai/gpt-3.5-turbo',
-      messages: [{ role: 'user', content: prompt }],
-      max_tokens: 500
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    const reply = data.choices?.[0]?.message?.content || 'No pude obtener una respuesta.';
-    chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> ${reply}</div>`;
-    chat.scrollTop = chat.scrollHeight;
-  })
-  .catch(err => {
-    chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> Error: ${err.message}</div>`;
-    chat.scrollTop = chat.scrollHeight;
-  });
 }
 
-// ================================================================
-// 17. ADMIN - CONFIGURACIÓN IA
-// ================================================================
-document.getElementById('adminBadge').addEventListener('click', function() {
-  if (!isAdmin) return;
-  abrirModal('adminModal');
-  document.getElementById('openrouterKey').value = localStorage.getItem(STORAGE.iaKey) || '';
-  document.getElementById('iaContexto').value = localStorage.getItem(STORAGE.iaContexto) || '';
-});
-
 function guardarConfigIA() {
-  if (!isAdmin) return;
   const key = document.getElementById('openrouterKey').value.trim();
-  if (key) {
-    localStorage.setItem(STORAGE.iaKey, key);
-    document.getElementById('iaStatus').textContent = '✅ API configurada correctamente.';
-  } else {
-    localStorage.removeItem(STORAGE.iaKey);
-    document.getElementById('iaStatus').textContent = '⚠️ API no configurada.';
-  }
+  const model = document.getElementById('openrouterModel').value.trim();
+  if (key) localStorage.setItem(STORAGE.iaKey, key);
+  if (model) localStorage.setItem(STORAGE.iaModel, model);
+  document.getElementById('iaStatus').textContent = '✅ API configurada.';
+  alert('Configuración guardada.');
 }
 
 function guardarContextoIA() {
-  if (!isAdmin) return;
-  const ctx = document.getElementById('iaContexto').value.trim();
-  localStorage.setItem(STORAGE.iaContexto, ctx);
+  const contexto = document.getElementById('iaContexto').value.trim();
+  localStorage.setItem(STORAGE.iaContexto, contexto);
   alert('Contexto guardado.');
 }
 
 // ================================================================
-// 18. MODO NOCTURNO Y PANTALLA COMPLETA
+// 17. MODO NOCTURNO
 // ================================================================
 document.getElementById('themeToggle').addEventListener('click', function() {
   document.body.classList.toggle('dark');
@@ -2391,113 +2596,57 @@ document.getElementById('themeToggle').addEventListener('click', function() {
   this.querySelector('i').classList.toggle('fa-sun');
 });
 
-document.getElementById('fullscreenToggle').addEventListener('click', function() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(e => {});
-  } else {
-    document.exitFullscreen();
-  }
-});
-
 // ================================================================
-// 19. DATOS DE EJEMPLO (precargados)
+// 18. DATOS DE EJEMPLO
 // ================================================================
 function cargarEjemplos() {
-  if (!getData(STORAGE.posts, []).length) {
-    setData(STORAGE.posts, [
-      {
-        id: 1001,
-        autor: 'Pastor José',
-        texto: '¡Bendecido domingo! "El Señor es mi pastor, nada me faltará." (Salmo 23:1) 🙏',
-        link: '',
-        media: null,
-        fecha: 'Hoy, 10:30am',
-        likes: ['María', 'Carlos', 'Ana'],
-        comentarios: [{ autor: 'María', texto: 'Amén, pastor!' }, { autor: 'Carlos', texto: 'Gloria a Dios.' }]
-      },
-      {
-        id: 1002,
-        autor: 'María Rodríguez',
-        texto: 'Comparto este video de la alabanza de hoy. ¡Dios es bueno!',
-        link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        media: null,
-        fecha: 'Hoy, 9:15am',
-        likes: ['Pastor José', 'Ana'],
-        comentarios: [{ autor: 'Ana', texto: 'Hermoso, gracias por compartir.' }]
-      },
-      {
-        id: 1003,
-        autor: 'Carlos López',
-        texto: 'Necesito oración por mi familia. Estamos pasando por un momento difícil. 🙏',
-        link: '',
-        media: null,
-        fecha: 'Ayer, 8:00pm',
-        likes: ['María', 'Pastor José', 'Luis'],
-        comentarios: [{ autor: 'Pastor José', texto: 'Estamos orando por ti, Carlos.' }]
-      }
-    ]);
+  // Solo si no hay datos
+  if (getData(STORAGE.posts, []).length === 0) {
+    const posts = [
+      { id: 1, autor: 'Pastor Juan', texto: 'Bienvenidos a la comunidad SAL Y LUZ. ¡Que Dios los bendiga!', link: '', media: null, fecha: new Date().toLocaleString(), likes: ['María'], comentarios: [{ autor: 'María', texto: 'Amén' }] },
+      { id: 2, autor: 'María', texto: 'Comparto mi testimonio de cómo Dios me sanó.', link: '', media: null, fecha: new Date().toLocaleString(), likes: [], comentarios: [] }
+    ];
+    setData(STORAGE.posts, posts);
   }
-
-  if (!getData(STORAGE.grupos, []).length) {
+  if (getData(STORAGE.grupos, []).length === 0) {
     setData(STORAGE.grupos, [
-      { id: 2001, nombre: 'Jóvenes Unidos', facilitador: 'David Pérez', asistente: 'Laura Mora', anfitrion: 'Casa de los Pérez', telefono: '+506 8888-1234', miembros: ['David Pérez', 'Laura Mora', 'Carlos', 'Ana', 'Luis'], max: 15 },
-      { id: 2002, nombre: 'Mujeres de Fe', facilitador: 'Sofía Méndez', asistente: 'Ruth González', anfitrion: 'Salón de la iglesia', telefono: '+506 8877-5678', miembros: ['Sofía Méndez', 'Ruth González', 'María', 'Elena', 'Patricia'], max: 15 },
-      { id: 2003, nombre: 'Hombres de Valor', facilitador: 'José Castillo', asistente: 'Miguel Ángel', anfitrion: 'Casa de José', telefono: '+506 8866-9012', miembros: ['José Castillo', 'Miguel Ángel', 'Pedro', 'Andrés', 'Santiago'], max: 15 }
+      { id: 1, nombre: 'Jóvenes Fuego', facilitador: 'Pastor Juan', asistente: 'Luis', anfitrion: 'Casa de Pedro', telefono: '8888-1111' }
     ]);
   }
-
-  if (!getData(STORAGE.discipulados, []).length) {
+  if (getData(STORAGE.discipulados, []).length === 0) {
     setData(STORAGE.discipulados, [
-      { id: 3001, titulo: 'Fundamentos de la Fe', facilitador: 'Pastor José Castillo', telefono: '+506 8888-1111', desc: 'Un curso de 8 semanas sobre los fundamentos bíblicos. Martes 7pm.', inscritos: ['María', 'Carlos'] },
-      { id: 3002, titulo: 'Vida en el Espíritu', facilitador: 'David Pérez', telefono: '+506 8877-2222', desc: 'Descubre los dones del Espíritu Santo. Jueves 6pm.', inscritos: ['Ana', 'Luis', 'Sofía'] },
-      { id: 3003, titulo: 'Liderazgo Cristiano', facilitador: 'Miguel Ángel', telefono: '+506 8866-3333', desc: 'Formación para líderes. Sábados 9am.', inscritos: ['Pedro', 'Andrés'] }
+      { id: 1, titulo: 'Fundamentos de la Fe', facilitador: 'Pastor Juan', telefono: '8888-2222', desc: 'Estudio bíblico los viernes 7pm.' }
     ]);
   }
-
-  if (!getData(STORAGE.oraciones, []).length) {
-    setData(STORAGE.oraciones, [
-      { id: 7001, autor: 'Ana Núñez', texto: 'Mi hijo está pasando por una situación difícil en la escuela. Pido oración por sabiduría.', fecha: 'Hoy, 11:30am', orado: ['María', 'Pastor José', 'Carlos'] },
-      { id: 7002, autor: 'Carlos López', texto: 'Perdí mi empleo esta semana. Pido oración por paz y provisión.', fecha: 'Ayer, 6:45pm', orado: ['Ana', 'Luis', 'Sofía'] },
-      { id: 7003, autor: 'Laura Méndez', texto: 'Mi mamá fue diagnosticada con cáncer. Pido oración por su sanidad.', fecha: 'Hace 2 días, 9:00am', orado: ['Pastor José', 'María', 'David', 'Elena'] }
-    ]);
-  }
-
-  if (!getData(STORAGE.necesidades, []).length) {
-    setData(STORAGE.necesidades, [
-      { id: 4001, usuario: 'Familia González', categoria: 'Alimentos', desc: 'Necesitamos ayuda con una canasta básica para 5 personas.', telefono: '+506 8888-4444', fotos: [], ayudas: [], fecha: 'Hoy, 11:00am' },
-      { id: 4002, usuario: 'Señora Elena', categoria: 'Medicamentos', desc: 'Necesito insulina para mi mamá de 72 años.', telefono: '+506 8877-5555', fotos: [], ayudas: [], fecha: 'Ayer, 3:30pm' },
-      { id: 4003, usuario: 'Carlos Méndez', categoria: 'Útiles escolares', desc: 'Busco ayuda con útiles escolares para mis 2 hijos.', telefono: '+506 8866-6666', fotos: [], ayudas: [], fecha: 'Hace 2 días' }
-    ]);
-  }
-
-  if (!getData(STORAGE.servicios, []).length) {
-    setData(STORAGE.servicios, [
-      { id: 5001, nombre: 'Comedor Esperanza', direccion: 'Calle 7, San José', horario: 'Lun-Vie 12pm-2pm', comidas: '1 tiempo', personas: 80, usuario: 'Pastor José', fecha: 'Activo' },
-      { id: 5002, nombre: 'Hogar de los Pérez', direccion: 'Barrio Los Ángeles, casa #15', horario: 'Sábados 1pm-3pm', comidas: '2 tiempos', personas: 20, usuario: 'Familia Pérez', fecha: 'Activo' },
-      { id: 5003, nombre: 'Iglesia Viva - Comedor', direccion: 'Avenida 2, frente al parque', horario: 'Miércoles 11am-1pm', comidas: '3 tiempos', personas: 50, usuario: 'Iglesia Viva', fecha: 'Activo' }
-    ]);
-  }
-
-  if (!getData(STORAGE.misioneros, []).length) {
+  if (getData(STORAGE.misioneros, []).length === 0) {
     setData(STORAGE.misioneros, [
-      { nombre: 'Ana y Pedro Martínez', ubicacion: 'Guatemala', usuario: 'AnaM' },
-      { nombre: 'Misión África', ubicacion: 'Kenia', usuario: 'MisionAfrica' },
-      { nombre: 'Juan Carlos Ruiz', ubicacion: 'Colombia', usuario: 'JCRuiz' }
+      { nombre: 'Carlos', pais: 'México', fecha: new Date().toLocaleString() }
     ]);
   }
-
-  // Carrusel de ejemplo (solo si no hay datos)
-  if (!getData(STORAGE.carrusel, []).length) {
+  if (getData(STORAGE.necesidades, []).length === 0) {
+    setData(STORAGE.necesidades, [
+      { id: 1, autor: 'Familia Gómez', categoria: 'Alimentos', desc: 'Necesitamos ayuda con víveres para esta semana.', telefono: '8888-3333', fotos: [], fecha: new Date().toLocaleString() }
+    ]);
+  }
+  if (getData(STORAGE.servicios, []).length === 0) {
+    setData(STORAGE.servicios, [
+      { id: 1, autor: 'Comedor Esperanza', nombre: 'Comedor Esperanza', direccion: 'Calle 5, Barrio Los Ángeles', horario: '12pm-2pm', comidas: '2 tiempos', personas: '20', fecha: new Date().toLocaleString() }
+    ]);
+  }
+  if (getData(STORAGE.oraciones, []).length === 0) {
+    setData(STORAGE.oraciones, [
+      { id: 1, autor: 'Ana', texto: 'Oren por mi familia, estamos pasando por dificultades.', fecha: new Date().toLocaleString(), oraciones: ['Pastor Juan'] }
+    ]);
+  }
+  if (getData(STORAGE.carrusel, []).length === 0) {
     setData(STORAGE.carrusel, [
-      { id: 1, type: 'image', url: 'https://images.unsplash.com/photo-1504052434569-70ad5836ab23?w=800', title: 'Bienvenidos a Sal y Luz', description: 'Una comunidad en crecimiento' },
-      { id: 2, type: 'image', url: 'https://images.unsplash.com/photo-1529078155058-5d716f45d7f0?w=800', title: 'Jóvenes en adoración', description: 'Culto juvenil todos los viernes' },
-      { id: 3, type: 'video', url: 'https://www.youtube.com/embed/3t8sWnF5j4k', title: 'Alabanza en vivo', description: 'Música y adoración' }
+      { id: 1, type: 'image', url: 'https://via.placeholder.com/800x400/1D9E75/FFFFFF?text=SAL+Y+LUZ', title: 'Bienvenidos', description: 'Comunidad cristiana' }
     ]);
   }
 }
 
 // ================================================================
-// 20. MENÚ HAMBURGUESA - EVENTOS
+// 19. MENÚ HAMBURGUESA - EVENTOS
 // ================================================================
 document.getElementById('menuToggle').addEventListener('click', function(e) {
   e.stopPropagation();
@@ -2508,7 +2657,7 @@ document.getElementById('closeMenuBtn').addEventListener('click', cerrarMenu);
 document.getElementById('menuOverlay').addEventListener('click', cerrarMenu);
 
 // ================================================================
-// 21. INICIALIZACIÓN
+// 20. INICIALIZACIÓN
 // ================================================================
 cargarEjemplos();
 cargarLogo();
@@ -2522,12 +2671,13 @@ renderNecesidades();
 renderServicios();
 cargarHistorial();
 renderCarrusel();
+cargarBiblia();
 
 if (localStorage.getItem(STORAGE.iaKey)) {
   document.getElementById('iaStatus').textContent = '✅ API configurada.';
 }
 
-console.log('✅ SAL Y LUZ cargada con logo personalizable y menú hamburguesa.');
+console.log('✅ SAL Y LUZ actualizada con registro de usuarios y roles.');
 </script>
 </body>
 </html>

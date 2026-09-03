@@ -9,7 +9,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <style>
-    /* ===== ESTILOS GENERALES ===== */
+    /* ===== ESTILOS GENERALES (sin cambios relevantes) ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --teal: #1D9E75;
@@ -49,19 +49,13 @@
       padding-bottom: 0;
       transition: max-width 0.3s ease, margin 0.3s ease;
     }
-    /* Modo expandido (pantalla completa optimizada) */
     .app.expanded {
       max-width: 100% !important;
       margin: 0 !important;
       padding: 0 10px;
     }
-    .app.expanded .header {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    .app.expanded .panel {
-      padding: 12px 20px;
-    }
+    .app.expanded .header { padding-left: 20px; padding-right: 20px; }
+    .app.expanded .panel { padding: 12px 20px; }
     /* ===== HEADER ===== */
     .header {
       display: flex;
@@ -103,9 +97,7 @@
       font-size: 16px;
       transition: transform 0.3s ease;
     }
-    .logo:hover .logo-icon {
-      transform: rotate(20deg) scale(1.1);
-    }
+    .logo:hover .logo-icon { transform: rotate(20deg) scale(1.1); }
     .logo-text {
       font-weight: 700;
       font-size: 16px;
@@ -204,7 +196,7 @@
       cursor: pointer;
       display: inline-block;
     }
-    /* ===== TABS (menú compacto) ===== */
+    /* ===== TABS ===== */
     .tabs {
       display: flex;
       overflow-x: auto;
@@ -430,11 +422,12 @@
       align-items: center;
       padding: 8px 0;
       border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
     }
     .grupo-item:last-child { border-bottom: none; }
     .grupo-info strong { display: block; font-size: 14px; }
     .grupo-info small { color: var(--text-secondary); font-size: 12px; }
-    .grupo-ubicacion { font-size: 12px; color: var(--teal); cursor: pointer; }
+    .grupo-actions { display: flex; gap: 4px; flex-wrap: wrap; }
     /* ===== DISCIPULADOS ===== */
     .disc-card {
       background: white;
@@ -547,6 +540,23 @@
       cursor: pointer;
     }
     .serv-item .btn-whatsapp:hover { background: #1da851; }
+    .serv-item .solicitante-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 0;
+      font-size: 13px;
+      border-bottom: 1px dashed var(--border-color);
+    }
+    .serv-item .estado-solicitud {
+      font-size: 11px;
+      padding: 1px 8px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+    .estado-pendiente { background: #f39c12; color: white; }
+    .estado-confirmado { background: #27ae60; color: white; }
+    .estado-cancelado { background: #e74c3c; color: white; }
     /* ===== BIBLIA ===== */
     .biblia-selectores {
       display: flex;
@@ -683,6 +693,27 @@
       font-size: 13px;
     }
     .consejo-respuesta .autor { font-weight: 500; color: var(--teal); }
+    /* ===== CHAT MODAL ===== */
+    .chat-mensajes {
+      max-height: 300px;
+      overflow-y: auto;
+      background: var(--bg-body);
+      border-radius: var(--radius);
+      padding: 10px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border-color);
+    }
+    .chat-mensajes .msg {
+      margin-bottom: 6px;
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: white;
+      border: 1px solid var(--border-color);
+    }
+    body.dark .chat-mensajes .msg { background: #1a1a2e; }
+    .chat-mensajes .msg .autor { font-weight: 600; color: var(--teal); }
+    .chat-mensajes .msg .hora { font-size: 10px; color: var(--text-secondary); }
     /* ===== MODALES ===== */
     .modal-overlay {
       display: none;
@@ -699,7 +730,7 @@
       background: white;
       border-radius: var(--radius);
       padding: 20px 24px;
-      max-width: 420px;
+      max-width: 480px;
       width: 92%;
       max-height: 90vh;
       overflow-y: auto;
@@ -838,6 +869,8 @@
       .tab { font-size: 10px; padding: 5px 6px; }
       .tab i { font-size: 14px; }
       .admin-stats { grid-template-columns: repeat(3,1fr); }
+      .grupo-item { flex-direction: column; align-items: stretch; }
+      .grupo-actions { justify-content: flex-start; margin-top: 4px; }
     }
     .text-secondary { color: var(--text-secondary); }
     .fw-500 { font-weight: 500; }
@@ -890,7 +923,7 @@
   </nav>
 
   <!-- ============================================================ -->
-  <!-- PANEL: INICIO -->
+  <!-- PANEL: INICIO (sin cambios) -->
   <div class="panel active" id="panel-inicio">
     <div class="carousel-container" id="carouselContainer">
       <div id="carouselSlides"></div>
@@ -918,7 +951,7 @@
     </div>
   </div>
 
-  <!-- ===== PANEL: BIBLIA ===== -->
+  <!-- ===== PANEL: BIBLIA (sin cambios) ===== -->
   <div class="panel" id="panel-biblia">
     <div class="card">
       <h3><i class="fas fa-bible"></i> Lectura Bíblica</h3>
@@ -963,7 +996,7 @@
     </div>
   </div>
 
-  <!-- ===== PANEL: MURO ===== -->
+  <!-- ===== PANEL: MURO (sin cambios) ===== -->
   <div class="panel" id="panel-muro">
     <div class="card">
       <h3><i class="fas fa-edit"></i> Publicar</h3>
@@ -980,7 +1013,7 @@
     <div id="feedContainer"></div>
   </div>
 
-  <!-- ===== PANEL: GRUPOS ===== -->
+  <!-- ===== PANEL: GRUPOS (con chat) ===== -->
   <div class="panel" id="panel-grupos">
     <div class="card">
       <h3><i class="fas fa-users"></i> Grupos de Conexión (máx 15)</h3>
@@ -989,7 +1022,7 @@
     <div id="gruposContainer"></div>
   </div>
 
-  <!-- ===== PANEL: DISCIPULADO ===== -->
+  <!-- ===== PANEL: DISCIPULADO (sin cambios) ===== -->
   <div class="panel" id="panel-discipulado">
     <div class="card">
       <h3><i class="fas fa-chalkboard-teacher"></i> Discipulados</h3>
@@ -998,7 +1031,7 @@
     <div id="discipuladoContainer"></div>
   </div>
 
-  <!-- ===== PANEL: ORACIÓN ===== -->
+  <!-- ===== PANEL: ORACIÓN (sin cambios) ===== -->
   <div class="panel" id="panel-oracion">
     <div class="card">
       <h3><i class="fas fa-pray"></i> Publicar petición de oración</h3>
@@ -1008,20 +1041,17 @@
     <div id="oracionesContainer"></div>
   </div>
 
-  <!-- ===== PANEL: MAPA (actualizado: sin lista de misioneros, solo ubicaciones) ===== -->
+  <!-- ===== PANEL: MAPA (sin cambios relevantes) ===== -->
   <div class="panel" id="panel-mapa">
-    <!-- Tarjeta de grupos con ubicación -->
     <div class="card">
       <h3><i class="fas fa-church"></i> Grupos de conexión con ubicación</h3>
       <div id="gruposMapaList"></div>
     </div>
-    <!-- Tarjeta de misioneros con ubicación (con botón de registrar) -->
     <div class="card">
       <h3><i class="fas fa-globe-americas"></i> Ubicación de misioneros</h3>
       <button class="btn-primary" id="btnRegistrarMisionero" style="display:none;" onclick="window.registrarMisionero()"><i class="fas fa-user-plus"></i> Registrar Misionero</button>
       <div id="misionerosMapaList" style="margin-top:10px;"></div>
     </div>
-    <!-- Mapa de iglesias locales -->
     <div class="card">
       <h3><i class="fas fa-church"></i> Iglesias locales</h3>
       <div class="map-container">
@@ -1033,7 +1063,7 @@
     </div>
   </div>
 
-  <!-- ===== PANEL: NECESIDADES ===== -->
+  <!-- ===== PANEL: NECESIDADES (sin cambios) ===== -->
   <div class="panel" id="panel-necesidades">
     <div class="card">
       <h3><i class="fas fa-hand-holding-heart"></i> Publicar necesidad</h3>
@@ -1054,15 +1084,15 @@
     <div id="necesidadesContainer"></div>
   </div>
 
-  <!-- ===== PANEL: SERVICIO ===== -->
+  <!-- ===== PANEL: SERVICIO (con fecha, solicitudes y mis servicios) ===== -->
   <div class="panel" id="panel-servicio">
     <div class="card">
       <h3><i class="fas fa-utensils"></i> Ofrecer ayuda alimentaria</h3>
-      <!-- Formulario solo para servidores, ayuda_alimentaria o admin -->
       <div id="servicioFormContainer" style="display:none;">
         <input type="text" id="servicioNombre" placeholder="Nombre del hogar o persona" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
         <input type="text" id="servicioDireccion" placeholder="Dirección / Ubicación" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
-        <input type="text" id="servicioHorario" placeholder="Horario (ej: Lun-Vie 12pm-2pm)" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
+        <input type="date" id="servicioFecha" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
+        <input type="text" id="servicioHorario" placeholder="Horario (ej: 12pm-2pm)" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
         <select id="servicioComidas" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
           <option value="1 tiempo">1 tiempo (almuerzo)</option>
           <option value="2 tiempos">2 tiempos (almuerzo y cena)</option>
@@ -1074,11 +1104,23 @@
       </div>
       <p id="servicioMensaje" style="font-size:12px; color:var(--text-secondary);">Si eres servidor o tienes ayuda alimentaria, verás el formulario para ofrecer servicio.</p>
     </div>
-    <!-- Lista de servicios para todos -->
-    <div id="serviciosContainer"></div>
+
+    <!-- Mis servicios (solo para servidores y admin) -->
+    <div id="misServiciosContainer" style="display:none;">
+      <div class="card">
+        <h3><i class="fas fa-user-cog"></i> Mis servicios</h3>
+        <div id="misServiciosLista"></div>
+      </div>
+    </div>
+
+    <!-- Todos los servicios disponibles -->
+    <div class="card">
+      <h3><i class="fas fa-list"></i> Servicios disponibles</h3>
+      <div id="serviciosContainer"></div>
+    </div>
   </div>
 
-  <!-- ===== PANEL: CONSEJERÍA ===== -->
+  <!-- ===== PANEL: CONSEJERÍA (sin cambios) ===== -->
   <div class="panel" id="panel-consejeria">
     <div class="card">
       <h3><i class="fas fa-comment-dots"></i> Consejería Bíblica</h3>
@@ -1090,7 +1132,7 @@
     <div id="consejosContainer"></div>
   </div>
 
-  <!-- ===== PANEL: ADMIN ===== -->
+  <!-- ===== PANEL: ADMIN (sin cambios) ===== -->
   <div class="panel" id="panel-admin">
     <div class="card">
       <h3><i class="fas fa-tachometer-alt"></i> Panel de Administración</h3>
@@ -1285,6 +1327,21 @@
     </div>
   </div>
 
+  <!-- Modal Chat del Grupo -->
+  <div class="modal-overlay" id="chatGrupoModal">
+    <div class="modal-box">
+      <h3><i class="fas fa-comments"></i> <span id="chatGrupoTitulo">Chat del grupo</span></h3>
+      <div class="chat-mensajes" id="chatMensajesContainer"></div>
+      <div style="display:flex; gap:6px;">
+        <input type="text" id="chatMensajeInput" placeholder="Escribe un mensaje..." style="flex:1; padding:8px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
+        <button class="btn-primary" onclick="window.enviarMensajeChat()"><i class="fas fa-paper-plane"></i></button>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="window.cerrarModal('chatGrupoModal')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /app -->
 
 <script>
@@ -1324,13 +1381,15 @@ document.addEventListener('DOMContentLoaded', function() {
     iaModel: 'iglesia_ia_model',
     iaContexto: 'iglesia_ia_contexto',
     carrusel: 'iglesia_carrusel',
-    consejos: 'iglesia_consejos'
+    consejos: 'iglesia_consejos',
+    chatGrupos: 'iglesia_chat_grupos'
   };
 
   let usuarioActual = '';
   let isAdmin = false;
   let carruselInterval = null;
   let editModeActivo = false;
+  let chatGrupoActual = null; // id del grupo para el chat
 
   function getData(key, def) {
     try { return JSON.parse(localStorage.getItem(key)) || def; } catch(e) { return def; }
@@ -1350,7 +1409,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ================================================================
-  // 2. USUARIOS Y LOGIN
+  // 2. USUARIOS Y LOGIN (sin cambios)
   // ================================================================
   window.iniciarSesion = function() {
     const nombre = document.getElementById('loginName').value.trim();
@@ -1389,6 +1448,7 @@ document.addEventListener('DOMContentLoaded', function() {
     renderOraciones();
     renderServicios();
     renderConsejos();
+    renderMisServicios();
     actualizarBotonesPorRol();
     if (isAdmin) renderAdminPanel();
   };
@@ -1403,6 +1463,7 @@ document.addEventListener('DOMContentLoaded', function() {
         renderOraciones();
         renderServicios();
         renderConsejos();
+        renderMisServicios();
         actualizarBotonesPorRol();
       }
     } else {
@@ -1425,7 +1486,7 @@ document.addEventListener('DOMContentLoaded', function() {
   })();
 
   // ================================================================
-  // 3. ADMIN - FIREBASE AUTH
+  // 3. ADMIN - FIREBASE AUTH (sin cambios)
   // ================================================================
   const adminLoginBtn = document.getElementById('adminLoginBtn');
   const adminBadge = document.getElementById('adminBadge');
@@ -1503,7 +1564,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ================================================================
-  // 4. CARRUSEL
+  // 4. CARRUSEL (sin cambios)
   // ================================================================
   function getCarrusel() { return getData(STORAGE.carrusel, []); }
   function setCarrusel(data) { setData(STORAGE.carrusel, data); }
@@ -1563,7 +1624,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 5. GESTIÓN CARRUSEL
+  // 5. GESTIÓN CARRUSEL (sin cambios)
   // ================================================================
   window.abrirModalCarrusel = function() {
     if (!isAdmin) { alert('Solo el administrador puede gestionar el carrusel.'); return; }
@@ -1614,7 +1675,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 6. PANELES Y NAVEGACIÓN
+  // 6. PANELES Y NAVEGACIÓN (sin cambios)
   // ================================================================
   window.switchPanel = function(name) {
     document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
@@ -1629,7 +1690,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (name === 'oracion') renderOraciones();
     if (name === 'mapa') { renderGruposMapa(); renderMisionerosMapa(); }
     if (name === 'necesidades') renderNecesidades();
-    if (name === 'servicio') renderServicios();
+    if (name === 'servicio') { renderServicios(); renderMisServicios(); }
     if (name === 'biblia') cargarHistorial();
     if (name === 'inicio') renderCarrusel();
     if (name === 'consejeria') renderConsejos();
@@ -1646,7 +1707,7 @@ document.addEventListener('DOMContentLoaded', function() {
   window.cerrarModal = function(id) { document.getElementById(id).classList.remove('show'); };
 
   // ================================================================
-  // 7. MURO
+  // 7. MURO (sin cambios)
   // ================================================================
   window.crearPublicacion = function() {
     if (!usuarioActual) { alert('Ingresa con tu nombre primero.'); return; }
@@ -1765,7 +1826,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 8. GRUPOS
+  // 8. GRUPOS (con chat)
   // ================================================================
   function puedeCrearGrupo() {
     return isAdmin || tieneRol('facilitador');
@@ -1777,6 +1838,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const servicioForm = document.getElementById('servicioFormContainer');
     const servicioMsg = document.getElementById('servicioMensaje');
     const btnMisionero = document.getElementById('btnRegistrarMisionero');
+    const misServicios = document.getElementById('misServiciosContainer');
 
     if (puedeCrearGrupo()) {
       btnGrupo.style.display = 'inline-block';
@@ -1794,12 +1856,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (isAdmin || tieneRol('servidor') || tieneRol('ayuda_alimentaria')) {
       servicioForm.style.display = 'block';
       servicioMsg.style.display = 'none';
+      misServicios.style.display = 'block';
     } else {
       servicioForm.style.display = 'none';
       servicioMsg.style.display = 'block';
+      misServicios.style.display = 'none';
     }
 
-    // Misionero: solo misioneros o admin pueden registrar
     if (isAdmin || tieneRol('misionero')) {
       btnMisionero.style.display = 'inline-block';
     } else {
@@ -1850,6 +1913,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (grupos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos creados.</p>'; return; }
     let html = '';
     grupos.forEach(function(g) {
+      const esMiembro = g.miembros && g.miembros.includes(usuarioActual);
       html += '<div class="grupo-item">' +
         '<div class="grupo-info">' +
         '<strong>' + g.nombre + '</strong>' +
@@ -1857,7 +1921,10 @@ document.addEventListener('DOMContentLoaded', function() {
         (g.ubicacion ? '<br><small><i class="fas fa-map-pin"></i> ' + g.ubicacion + ' <a href="https://maps.google.com/?q=' + encodeURIComponent(g.ubicacion) + '" target="_blank" style="color:var(--teal);">Ver en mapa</a></small>' : '') +
         '<br><small>Miembros: ' + g.miembros.length + '/' + g.max + '</small>' +
         '</div>' +
+        '<div class="grupo-actions">' +
+        (esMiembro ? '<button class="btn-primary" onclick="window.abrirChatGrupo(' + g.id + ')"><i class="fas fa-comments"></i> Chat</button>' : '') +
         (isAdmin || (usuarioActual === g.facilitador) ? '<button class="btn-danger" onclick="window.eliminarGrupo(' + g.id + ')">Eliminar</button>' : '') +
+        '</div>' +
         '</div>';
     });
     container.innerHTML = html;
@@ -1874,8 +1941,60 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
+  // ===== CHAT DEL GRUPO =====
+  window.abrirChatGrupo = function(grupoId) {
+    if (!usuarioActual) { alert('Inicia sesión primero.'); return; }
+    const grupos = getData(STORAGE.grupos, []);
+    const grupo = grupos.find(g => g.id === grupoId);
+    if (!grupo) { alert('Grupo no encontrado.'); return; }
+    if (!grupo.miembros.includes(usuarioActual)) { alert('No eres miembro de este grupo.'); return; }
+    chatGrupoActual = grupoId;
+    document.getElementById('chatGrupoTitulo').textContent = 'Chat: ' + grupo.nombre;
+    renderChatMensajes(grupoId);
+    window.abrirModal('chatGrupoModal');
+  };
+
+  function renderChatMensajes(grupoId) {
+    const container = document.getElementById('chatMensajesContainer');
+    const chats = getData(STORAGE.chatGrupos, {});
+    const mensajes = chats[grupoId] || [];
+    if (mensajes.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No hay mensajes aún. ¡Sé el primero en enviar un mensaje!</p>';
+      return;
+    }
+    let html = '';
+    mensajes.forEach(function(msg) {
+      const esPropio = msg.autor === usuarioActual;
+      html += '<div class="msg" style="' + (esPropio ? 'text-align:right;' : '') + '">' +
+        '<span class="autor">' + msg.autor + '</span> ' +
+        '<span style="font-size:13px;">' + msg.texto + '</span> ' +
+        '<span class="hora">' + msg.hora + '</span>' +
+        '</div>';
+    });
+    container.innerHTML = html;
+    container.scrollTop = container.scrollHeight;
+  }
+
+  window.enviarMensajeChat = function() {
+    if (!usuarioActual) { alert('Inicia sesión primero.'); return; }
+    if (!chatGrupoActual) { alert('No hay grupo seleccionado.'); return; }
+    const input = document.getElementById('chatMensajeInput');
+    const texto = input.value.trim();
+    if (!texto) return;
+    const chats = getData(STORAGE.chatGrupos, {});
+    if (!chats[chatGrupoActual]) chats[chatGrupoActual] = [];
+    chats[chatGrupoActual].push({
+      autor: usuarioActual,
+      texto: texto,
+      hora: new Date().toLocaleString()
+    });
+    setData(STORAGE.chatGrupos, chats);
+    input.value = '';
+    renderChatMensajes(chatGrupoActual);
+  };
+
   // ================================================================
-  // 9. DISCIPULADOS
+  // 9. DISCIPULADOS (sin cambios)
   // ================================================================
   window.abrirModalDiscipulado = function() {
     if (!puedeCrearGrupo()) { alert('Solo los facilitadores y el administrador pueden crear discipulados.'); return; }
@@ -1941,7 +2060,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 10. ORACIONES
+  // 10. ORACIONES (sin cambios)
   // ================================================================
   window.publicarOracion = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
@@ -1998,7 +2117,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 11. MAPA Y MISIONEROS (sin lista, solo ubicaciones)
+  // 11. MAPA Y MISIONEROS (sin cambios)
   // ================================================================
   window.registrarMisionero = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
@@ -2052,7 +2171,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ================================================================
-  // 12. NECESIDADES
+  // 12. NECESIDADES (sin cambios)
   // ================================================================
   window.publicarNecesidad = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
@@ -2136,7 +2255,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 13. SERVICIO
+  // 13. SERVICIO (con fecha, solicitudes y mis servicios)
   // ================================================================
   function puedeOfrecerServicio() {
     return isAdmin || tieneRol('servidor') || tieneRol('ayuda_alimentaria');
@@ -2147,52 +2266,142 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
     const nombre = document.getElementById('servicioNombre').value.trim();
     const direccion = document.getElementById('servicioDireccion').value.trim();
+    const fecha = document.getElementById('servicioFecha').value;
     const horario = document.getElementById('servicioHorario').value.trim();
     const comidas = document.getElementById('servicioComidas').value;
     const personas = parseInt(document.getElementById('servicioPersonas').value);
     const telefono = document.getElementById('servicioTelefono').value.trim();
-    if (!nombre || !direccion || !horario || !personas || !telefono) { alert('Completa todos los campos.'); return; }
+    if (!nombre || !direccion || !fecha || !horario || !personas || !telefono) {
+      alert('Completa todos los campos.');
+      return;
+    }
     const servicios = getData(STORAGE.servicios, []);
     servicios.push({
       id: Date.now(),
       nombre: nombre,
       direccion: direccion,
+      fecha: fecha,
       horario: horario,
       comidas: comidas,
       personas: personas,
       telefono: telefono,
       usuario: usuarioActual,
-      fecha: new Date().toLocaleString()
+      fechaRegistro: new Date().toLocaleString(),
+      solicitantes: [] // { nombre, telefono, estado: 'pendiente'|'confirmado'|'cancelado' }
     });
     setData(STORAGE.servicios, servicios);
     document.getElementById('servicioNombre').value = '';
     document.getElementById('servicioDireccion').value = '';
+    document.getElementById('servicioFecha').value = '';
     document.getElementById('servicioHorario').value = '';
     document.getElementById('servicioPersonas').value = '';
     document.getElementById('servicioTelefono').value = '';
     renderServicios();
+    renderMisServicios();
   };
 
   function renderServicios() {
     const container = document.getElementById('serviciosContainer');
     const servicios = getData(STORAGE.servicios, []);
-    if (servicios.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay ofertas de servicio.</p>'; return; }
+    if (servicios.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No hay ofertas de servicio disponibles.</p>';
+      return;
+    }
     let html = '';
     servicios.forEach(function(s) {
-      const whatsappLink = 'https://wa.me/' + s.telefono.replace(/\s/g, '') + '?text=Hola, vi tu oferta de ayuda alimentaria "' + s.nombre + '" y me gustaría reservar un lugar.';
+      const yaSolicito = s.solicitantes && s.solicitantes.find(sol => sol.nombre === usuarioActual);
+      const estadoSolicitud = yaSolicito ? yaSolicito.estado : null;
       html += '<div class="serv-item">' +
         '<strong>' + s.nombre + '</strong> <span style="font-size:12px; color:var(--text-secondary);">(' + s.usuario + ')</span>' +
+        '<p><i class="fas fa-calendar-day"></i> ' + s.fecha + ' · <i class="fas fa-clock"></i> ' + s.horario + '</p>' +
         '<p><i class="fas fa-map-pin"></i> ' + s.direccion + '</p>' +
-        '<p><i class="fas fa-clock"></i> ' + s.horario + ' · ' + s.comidas + ' · ' + s.personas + ' personas</p>' +
-        '<p><i class="fas fa-phone"></i> ' + s.telefono + ' <a href="' + whatsappLink + '" target="_blank" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> Reservar por WhatsApp</a></p>' +
-        '</div>';
+        '<p><i class="fas fa-utensils"></i> ' + s.comidas + ' · <i class="fas fa-users"></i> ' + s.personas + ' personas</p>' +
+        '<p><i class="fas fa-phone"></i> ' + s.telefono + ' <a href="https://wa.me/' + s.telefono.replace(/\s/g, '') + '?text=Hola, vi tu oferta de ayuda alimentaria "' + s.nombre + '" y me gustaría reservar un lugar." target="_blank" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a></p>';
+      if (usuarioActual && usuarioActual !== s.usuario) {
+        if (!yaSolicito) {
+          html += '<button class="btn-primary" onclick="window.solicitarServicio(' + s.id + ')"><i class="fas fa-hand-paper"></i> Solicitar lugar</button>';
+        } else if (estadoSolicitud === 'pendiente') {
+          html += '<span class="estado-solicitud estado-pendiente">Solicitud pendiente</span>';
+        } else if (estadoSolicitud === 'confirmado') {
+          html += '<span class="estado-solicitud estado-confirmado">Confirmado</span>';
+        } else if (estadoSolicitud === 'cancelado') {
+          html += '<span class="estado-solicitud estado-cancelado">Cancelado</span>';
+        }
+      }
+      html += '</div>';
     });
     container.innerHTML = html;
-    actualizarBotonesPorRol();
   }
 
+  window.solicitarServicio = function(id) {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    const servicios = getData(STORAGE.servicios, []);
+    const s = servicios.find(function(item) { return item.id === id; });
+    if (!s) return;
+    if (s.solicitantes && s.solicitantes.find(sol => sol.nombre === usuarioActual)) {
+      alert('Ya has solicitado este servicio.');
+      return;
+    }
+    if (!s.solicitantes) s.solicitantes = [];
+    s.solicitantes.push({ nombre: usuarioActual, telefono: getUsuarioActual()?.telefono || '', estado: 'pendiente' });
+    setData(STORAGE.servicios, servicios);
+    renderServicios();
+    renderMisServicios();
+  };
+
+  // Mis servicios (para servidores y admin)
+  function renderMisServicios() {
+    const container = document.getElementById('misServiciosLista');
+    if (!container) return;
+    const servicios = getData(STORAGE.servicios, []);
+    const misServicios = servicios.filter(s => s.usuario === usuarioActual || isAdmin);
+    if (misServicios.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No has ofrecido servicios aún.</p>';
+      return;
+    }
+    let html = '';
+    misServicios.forEach(function(s) {
+      html += '<div class="serv-item" style="border:1px solid var(--border-color); border-radius:10px; padding:10px; margin-bottom:10px;">' +
+        '<strong>' + s.nombre + '</strong> <span style="font-size:12px; color:var(--text-secondary);">(' + s.fecha + ' ' + s.horario + ')</span>' +
+        '<p><i class="fas fa-map-pin"></i> ' + s.direccion + ' · <i class="fas fa-utensils"></i> ' + s.comidas + ' · ' + s.personas + ' personas</p>' +
+        '<p><i class="fas fa-phone"></i> ' + s.telefono + '</p>' +
+        '<div><strong>Solicitudes:</strong></div>';
+      if (s.solicitantes && s.solicitantes.length) {
+        s.solicitantes.forEach(function(sol) {
+          html += '<div class="solicitante-item">' +
+            '<span>' + sol.nombre + ' (📞 ' + (sol.telefono || 'N/A') + ')</span>' +
+            '<span style="display:flex; gap:4px;">' +
+            '<span class="estado-solicitud estado-' + sol.estado + '">' + sol.estado.toUpperCase() + '</span>' +
+            (sol.estado === 'pendiente' ? '<button class="btn-primary" onclick="window.actualizarSolicitud(' + s.id + ', \'' + sol.nombre + '\', \'confirmado\')" style="font-size:10px; padding:0 6px;">Confirmar</button><button class="btn-danger" onclick="window.actualizarSolicitud(' + s.id + ', \'' + sol.nombre + '\', \'cancelado\')" style="font-size:10px; padding:0 6px;">Cancelar</button>' : '') +
+            '</span>' +
+            '</div>';
+        });
+      } else {
+        html += '<p style="font-size:12px; color:var(--text-secondary);">Sin solicitudes aún.</p>';
+      }
+      html += '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  window.actualizarSolicitud = function(servicioId, solicitanteNombre, nuevoEstado) {
+    if (!isAdmin && getUsuarioActual()?.nombre !== getData(STORAGE.servicios, []).find(s => s.id === servicioId)?.usuario) {
+      alert('No autorizado.');
+      return;
+    }
+    const servicios = getData(STORAGE.servicios, []);
+    const s = servicios.find(item => item.id === servicioId);
+    if (!s) return;
+    const sol = s.solicitantes.find(sol => sol.nombre === solicitanteNombre);
+    if (!sol) return;
+    sol.estado = nuevoEstado;
+    setData(STORAGE.servicios, servicios);
+    renderMisServicios();
+    renderServicios();
+  };
+
   // ================================================================
-  // 14. CONSEJERÍA
+  // 14. CONSEJERÍA (sin cambios)
   // ================================================================
   window.publicarConsejo = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
@@ -2263,7 +2472,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 15. BIBLIA
+  // 15. BIBLIA (sin cambios)
   // ================================================================
   const libroSelect = document.getElementById('libro');
   const capituloSelect = document.getElementById('capitulo');
@@ -2438,7 +2647,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnGuardarVersos').addEventListener('click', guardarTodosVersos);
 
   // ================================================================
-  // 16. BIBLIA - BÚSQUEDA E HISTORIAL
+  // 16. BIBLIA - BÚSQUEDA E HISTORIAL (sin cambios)
   // ================================================================
   function cargarHistorial() {
     const historial = getData(STORAGE.historialBiblia, []);
@@ -2482,7 +2691,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 17. ASISTENTE IA
+  // 17. ASISTENTE IA (sin cambios)
   // ================================================================
   window.preguntarIA = function() {
     const pregunta = document.getElementById('iaPregunta').value.trim();
@@ -2530,7 +2739,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 18. ADMIN - CONFIGURACIÓN IA
+  // 18. ADMIN - CONFIGURACIÓN IA (sin cambios)
   // ================================================================
   window.guardarConfigIA = function() {
     if (!isAdmin) return;
@@ -2561,7 +2770,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ================================================================
-  // 19. ADMIN PANEL
+  // 19. ADMIN PANEL (sin cambios)
   // ================================================================
   function renderAdminPanel() {
     if (!isAdmin) return;
@@ -2587,7 +2796,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('statMisioneros').textContent = misioneros.length;
     document.getElementById('statConsejos').textContent = consejos.length;
 
-    // Usuarios
     const userList = document.getElementById('adminUserList');
     if (usuarios.length === 0) {
       userList.innerHTML = '<p style="color:var(--text-secondary);">No hay usuarios registrados.</p>';
@@ -2602,7 +2810,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }).join('');
     }
 
-    // Publicaciones
     const postList = document.getElementById('adminPostList');
     if (posts.length === 0) {
       postList.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones.</p>';
@@ -2615,7 +2822,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }).join('');
     }
 
-    // Oraciones
     const oracList = document.getElementById('adminOracionList');
     if (oraciones.length === 0) {
       oracList.innerHTML = '<p style="color:var(--text-secondary);">No hay oraciones.</p>';
@@ -2628,7 +2834,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }).join('');
     }
 
-    // Necesidades
     const needList = document.getElementById('adminNeedList');
     if (necesidades.length === 0) {
       needList.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades.</p>';
@@ -2641,21 +2846,19 @@ document.addEventListener('DOMContentLoaded', function() {
       }).join('');
     }
 
-    // Servicios
     const servList = document.getElementById('adminServicioList');
     if (servicios.length === 0) {
       servList.innerHTML = '<p style="color:var(--text-secondary);">No hay servicios.</p>';
     } else {
       servList.innerHTML = servicios.map(function(s) {
         return '<div class="admin-list-item">' +
-          '<span class="info"><strong>' + s.nombre + '</strong> (' + s.usuario + ') - ' + s.direccion + '</span>' +
+          '<span class="info"><strong>' + s.nombre + '</strong> (' + s.usuario + ') - ' + s.direccion + ' ' + s.fecha + ' ' + s.horario + '</span>' +
           '<div class="actions"><button class="btn-danger" onclick="window.eliminarServicio(' + s.id + ')">Eliminar</button></div>' +
           '</div>';
       }).join('');
     }
   }
 
-  // Funciones de eliminación para el panel admin
   window.eliminarUsuario = function(nombre) {
     if (!isAdmin) return;
     if (!confirm('¿Eliminar al usuario "' + nombre + '"?')) return;
@@ -2702,11 +2905,12 @@ document.addEventListener('DOMContentLoaded', function() {
     servicios = servicios.filter(function(s) { return s.id !== id; });
     setData(STORAGE.servicios, servicios);
     renderServicios();
+    renderMisServicios();
     renderAdminPanel();
   };
 
   // ================================================================
-  // 20. EDICIÓN DE PERFIL
+  // 20. EDICIÓN DE PERFIL (sin cambios)
   // ================================================================
   window.abrirEditarPerfil = function() {
     if (!usuarioActual) {
@@ -2771,6 +2975,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
       setData(STORAGE.consejos, consejos);
+      // Actualizar miembros en grupos
+      let grupos = getData(STORAGE.grupos, []);
+      grupos.forEach(function(g) {
+        if (g.miembros) {
+          const idxM = g.miembros.indexOf(oldName);
+          if (idxM > -1) g.miembros[idxM] = nombre;
+        }
+        if (g.facilitador === oldName) g.facilitador = nombre;
+        if (g.asistente === oldName) g.asistente = nombre;
+        if (g.anfitrion === oldName) g.anfitrion = nombre;
+      });
+      setData(STORAGE.grupos, grupos);
       usuarioActual = nombre;
       document.getElementById('userNameDisplay').textContent = nombre;
       document.getElementById('loginBtn').textContent = 'Cambiar';
@@ -2787,6 +3003,7 @@ document.addEventListener('DOMContentLoaded', function() {
     renderNecesidades();
     renderOraciones();
     renderServicios();
+    renderMisServicios();
     renderConsejos();
     renderMisionerosMapa();
     actualizarBotonesPorRol();
@@ -2794,7 +3011,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 21. EXPANDIR PANTALLA (no fullscreen API)
+  // 21. EXPANDIR PANTALLA (sin cambios)
   // ================================================================
   document.getElementById('expandToggle').addEventListener('click', function() {
     const app = document.getElementById('appContainer');
@@ -2804,7 +3021,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ================================================================
-  // 22. MODO NOCTURNO
+  // 22. MODO NOCTURNO (sin cambios)
   // ================================================================
   document.getElementById('themeToggle').addEventListener('click', function() {
     document.body.classList.toggle('dark');
@@ -2813,7 +3030,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ================================================================
-  // 23. DATOS DE EJEMPLO
+  // 23. DATOS DE EJEMPLO (actualizados con fecha)
   // ================================================================
   function cargarEjemplos() {
     if (!getData(STORAGE.posts, []).length) {
@@ -2852,10 +3069,11 @@ document.addEventListener('DOMContentLoaded', function() {
       ]);
     }
     if (!getData(STORAGE.servicios, []).length) {
+      const hoy = new Date().toISOString().split('T')[0];
       setData(STORAGE.servicios, [
-        { id: 5001, nombre: 'Comedor Esperanza', direccion: 'Calle 7, San José', horario: 'Lun-Vie 12pm-2pm', comidas: '1 tiempo', personas: 80, telefono: '+506 2222-3333', usuario: 'Pastor José', fecha: 'Activo' },
-        { id: 5002, nombre: 'Hogar de los Pérez', direccion: 'Barrio Los Ángeles, casa #15', horario: 'Sábados 1pm-3pm', comidas: '2 tiempos', personas: 20, telefono: '+506 4444-5555', usuario: 'Familia Pérez', fecha: 'Activo' },
-        { id: 5003, nombre: 'Iglesia Viva - Comedor', direccion: 'Avenida 2, frente al parque', horario: 'Miércoles 11am-1pm', comidas: '3 tiempos', personas: 50, telefono: '+506 6666-7777', usuario: 'Iglesia Viva', fecha: 'Activo' }
+        { id: 5001, nombre: 'Comedor Esperanza', direccion: 'Calle 7, San José', fecha: hoy, horario: '12pm-2pm', comidas: '1 tiempo', personas: 80, telefono: '+506 2222-3333', usuario: 'Pastor José', fechaRegistro: 'Activo', solicitantes: [] },
+        { id: 5002, nombre: 'Hogar de los Pérez', direccion: 'Barrio Los Ángeles, casa #15', fecha: hoy, horario: '1pm-3pm', comidas: '2 tiempos', personas: 20, telefono: '+506 4444-5555', usuario: 'Familia Pérez', fechaRegistro: 'Activo', solicitantes: [] },
+        { id: 5003, nombre: 'Iglesia Viva - Comedor', direccion: 'Avenida 2, frente al parque', fecha: hoy, horario: '11am-1pm', comidas: '3 tiempos', personas: 50, telefono: '+506 6666-7777', usuario: 'Iglesia Viva', fechaRegistro: 'Activo', solicitantes: [] }
       ]);
     }
     if (!getData(STORAGE.misioneros, []).length) {
@@ -2892,6 +3110,7 @@ document.addEventListener('DOMContentLoaded', function() {
   renderMisionerosMapa();
   renderNecesidades();
   renderServicios();
+  renderMisServicios();
   renderConsejos();
   cargarHistorial();
   renderCarrusel();
@@ -2901,7 +3120,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('iaStatus').textContent = '✅ API configurada.';
   }
 
-  console.log('✅ SAL Y LUZ cargada con todas las correcciones.');
+  console.log('✅ SAL Y LUZ cargada con todas las funcionalidades actualizadas.');
 });
 </script>
 </body>

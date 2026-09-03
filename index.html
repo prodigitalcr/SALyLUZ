@@ -4,19 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>SAL Y LUZ · Comunidad Cristiana</title>
-  <!-- Bootstrap, FontAwesome, Firebase (Auth + Firestore) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
-  <!-- Leaflet CSS y JS para mapas interactivos -->
+  <!-- Leaflet para mapas -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <style>
-    /* ===== ESTILOS GENERALES (sin cambios relevantes) ===== */
+    /* ===== ESTILOS GENERALES (sin cambios) ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --teal: #1D9E75;
@@ -864,7 +861,7 @@
     body.dark .admin-ia-config input, body.dark .admin-ia-config textarea {
       background: #1a1a2e;
     }
-    /* ===== MAPA INTERACTIVO (Leaflet) ===== */
+    /* ===== MAPA INTERACTIVO ===== */
     .map-wrapper {
       height: 200px;
       border-radius: 10px;
@@ -899,6 +896,65 @@
       cursor: pointer;
     }
     .map-search button:hover { background: var(--teal-dark); }
+    /* ===== REPORTES ===== */
+    .reporte-item {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .reporte-item:last-child { border-bottom: none; }
+    .reporte-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .reporte-titulo { font-weight: 600; font-size: 15px; }
+    .reporte-fecha { font-size: 11px; color: var(--text-secondary); }
+    .reporte-desc { margin: 4px 0; font-size: 14px; }
+    .reporte-actions { display: flex; gap: 4px; }
+    /* ===== CHATS ===== */
+    .chat-mensajes-container {
+      max-height: 350px;
+      overflow-y: auto;
+      background: var(--bg-body);
+      border-radius: var(--radius);
+      padding: 10px;
+      margin-bottom: 8px;
+      border: 1px solid var(--border-color);
+    }
+    .chat-mensajes-container .msg {
+      margin-bottom: 6px;
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: white;
+      border: 1px solid var(--border-color);
+    }
+    body.dark .chat-mensajes-container .msg { background: #1a1a2e; }
+    .chat-mensajes-container .msg .autor { font-weight: 600; color: var(--teal); }
+    .chat-mensajes-container .msg .hora { font-size: 10px; color: var(--text-secondary); }
+    .chat-input {
+      display: flex;
+      gap: 6px;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-body);
+      color: var(--text-primary);
+      font-size: 13px;
+    }
+    .chat-input button {
+      padding: 8px 16px;
+      border-radius: 30px;
+      border: none;
+      background: var(--teal);
+      color: white;
+      cursor: pointer;
+    }
+    .chat-input button:hover { background: var(--teal-dark); }
     /* ===== RESPONSIVE ===== */
     @media (max-width: 600px) {
       .header { padding: 8px 10px; }
@@ -963,6 +1019,10 @@
     <button class="tab" data-panel="necesidades"><i class="fas fa-hand-holding-heart"></i><span> Necesidades</span></button>
     <button class="tab" data-panel="servicio"><i class="fas fa-utensils"></i><span> Servicio</span></button>
     <button class="tab" data-panel="consejeria"><i class="fas fa-comment-dots"></i><span> Consejería</span></button>
+    <!-- Nuevos tabs -->
+    <button class="tab" data-panel="reportes"><i class="fas fa-clipboard-list"></i><span> Reportes</span></button>
+    <button class="tab" data-panel="chatadmin"><i class="fas fa-user-cog"></i><span> Chat Admin</span></button>
+    <button class="tab" id="tabChatEquipo" data-panel="chatequipo" style="display:none;"><i class="fas fa-users-cog"></i><span> Equipo</span></button>
     <button class="tab" data-panel="admin" id="adminTab" style="display:none;"><i class="fas fa-cog"></i><span> Admin</span></button>
   </nav>
 
@@ -1144,7 +1204,6 @@
         <input type="number" id="servicioPersonas" placeholder="Número de personas" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
         <input type="tel" id="servicioTelefono" placeholder="Teléfono de contacto" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
         <button class="btn-primary" onclick="window.ofrecerServicio()"><i class="fas fa-plus"></i> Ofrecer ayuda</button>
-        <!-- Mapa interactivo para ubicación -->
         <div style="margin-top:10px;">
           <label style="font-size:13px; font-weight:500;">Ubicación en mapa (buscar o arrastrar marcador)</label>
           <div class="map-search">
@@ -1160,7 +1219,6 @@
       <p id="servicioMensaje" style="font-size:12px; color:var(--text-secondary);">Solo los servidores y colaboradores de ayuda alimentaria pueden ofrecer servicios.</p>
     </div>
 
-    <!-- Mis servicios -->
     <div id="misServiciosContainer" style="display:none;">
       <div class="card">
         <h3><i class="fas fa-user-cog"></i> Mis servicios ofrecidos</h3>
@@ -1168,7 +1226,6 @@
       </div>
     </div>
 
-    <!-- Todos los servicios (públicos) -->
     <div class="card">
       <h3><i class="fas fa-list"></i> Servicios disponibles (todos)</h3>
       <div id="serviciosContainer"></div>
@@ -1187,6 +1244,42 @@
     <div id="consejosContainer"></div>
   </div>
 
+  <!-- ===== PANEL REPORTES ===== -->
+  <div class="panel" id="panel-reportes">
+    <div class="card">
+      <h3><i class="fas fa-clipboard-list"></i> Mis Reportes</h3>
+      <p style="font-size:13px; color:var(--text-secondary);">Crea reportes sobre tus actividades, avances o necesidades. El administrador puede ver todos.</p>
+      <button class="btn-primary" onclick="window.abrirModalReporte()"><i class="fas fa-plus"></i> Nuevo Reporte</button>
+    </div>
+    <div id="reportesContainer"></div>
+  </div>
+
+  <!-- ===== PANEL CHAT ADMIN ===== -->
+  <div class="panel" id="panel-chatadmin">
+    <div class="card">
+      <h3><i class="fas fa-user-cog"></i> Chat con el Administrador</h3>
+      <p style="font-size:13px; color:var(--text-secondary);">Mensajes privados entre tú y el administrador.</p>
+      <div id="chatAdminMensajes" class="chat-mensajes-container"></div>
+      <div class="chat-input">
+        <input type="text" id="chatAdminInput" placeholder="Escribe tu mensaje...">
+        <button onclick="window.enviarChatAdmin()"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL CHAT EQUIPO ===== -->
+  <div class="panel" id="panel-chatequipo">
+    <div class="card">
+      <h3><i class="fas fa-users-cog"></i> Chat de Equipo de Apoyo</h3>
+      <p style="font-size:13px; color:var(--text-secondary);">Comunicación entre todos los miembros del equipo de apoyo (facilitadores, asistentes, anfitriones, misioneros, servidores, consejeros, oración, ayuda alimentaria).</p>
+      <div id="chatEquipoMensajes" class="chat-mensajes-container"></div>
+      <div class="chat-input">
+        <input type="text" id="chatEquipoInput" placeholder="Escribe tu mensaje...">
+        <button onclick="window.enviarChatEquipo()"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
   <!-- ===== PANEL ADMIN ===== -->
   <div class="panel" id="panel-admin">
     <div class="card">
@@ -1201,6 +1294,7 @@
         <div class="admin-stat"><div class="num" id="statDiscipulados">0</div><div class="label">Discipulados</div></div>
         <div class="admin-stat"><div class="num" id="statMisioneros">0</div><div class="label">Misioneros</div></div>
         <div class="admin-stat"><div class="num" id="statConsejos">0</div><div class="label">Consejos</div></div>
+        <div class="admin-stat"><div class="num" id="statReportes">0</div><div class="label">Reportes</div></div>
       </div>
     </div>
     <div class="card">
@@ -1222,6 +1316,10 @@
     <div class="card">
       <h3><i class="fas fa-utensils"></i> Servicios alimentarios</h3>
       <div id="adminServicioList"></div>
+    </div>
+    <div class="card">
+      <h3><i class="fas fa-clipboard-list"></i> Reportes de todos</h3>
+      <div id="adminReportesList"></div>
     </div>
     <div class="card">
       <h3><i class="fas fa-robot"></i> Configuración de IA (OpenRouter)</h3>
@@ -1355,7 +1453,6 @@
       <input type="tel" id="grupoTelefono" placeholder="+506 8888-8888">
       <label>Ubicación (dirección, opcional)</label>
       <input type="text" id="grupoUbicacion" placeholder="Ej: Calle 5, San José">
-      <!-- Mapa interactivo -->
       <div style="margin-top:10px;">
         <div class="map-search">
           <input type="text" id="grupoMapSearch" placeholder="Buscar dirección..." />
@@ -1407,7 +1504,7 @@
     </div>
   </div>
 
-  <!-- Misionero (NUEVO MODAL) -->
+  <!-- Misionero -->
   <div class="modal-overlay" id="misioneroModal">
     <div class="modal-box">
       <h3><i class="fas fa-globe-americas"></i> Registrar Misionero</h3>
@@ -1417,7 +1514,6 @@
       <input type="text" id="misioneroCiudad" placeholder="Ciudad o región">
       <label>Ubicación (dirección detallada, opcional)</label>
       <input type="text" id="misioneroUbicacion" placeholder="Dirección o punto de referencia">
-      <!-- Mapa interactivo -->
       <div style="margin-top:10px;">
         <div class="map-search">
           <input type="text" id="misioneroMapSearch" placeholder="Buscar dirección..." />
@@ -1433,6 +1529,61 @@
       <div class="modal-actions">
         <button class="btn-cancel" onclick="window.cerrarModal('misioneroModal')">Cancelar</button>
         <button class="btn-confirm" onclick="window.registrarMisionero()">Registrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nuevo Reporte -->
+  <div class="modal-overlay" id="reporteModal">
+    <div class="modal-box">
+      <h3><i class="fas fa-file-alt"></i> Nuevo Reporte</h3>
+      <label>Título *</label>
+      <input type="text" id="reporteTitulo" placeholder="Título del reporte">
+      <label>Descripción *</label>
+      <textarea id="reporteDescripcion" placeholder="Describe tu reporte..." rows="4"></textarea>
+      <label>Rol relacionado (opcional)</label>
+      <select id="reporteRol">
+        <option value="">Selecciona tu rol</option>
+        <option value="facilitador">Facilitador</option>
+        <option value="asistente">Asistente</option>
+        <option value="anfitrion">Anfitrión</option>
+        <option value="misionero">Misionero</option>
+        <option value="servidor">Servidor</option>
+        <option value="consejero">Consejero</option>
+        <option value="oracion">Oración</option>
+        <option value="ayuda_alimentaria">Ayuda alimentaria</option>
+      </select>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="window.cerrarModal('reporteModal')">Cancelar</button>
+        <button class="btn-confirm" onclick="window.guardarReporte()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Editar Reporte -->
+  <div class="modal-overlay" id="editarReporteModal">
+    <div class="modal-box">
+      <h3><i class="fas fa-edit"></i> Editar Reporte</h3>
+      <input type="hidden" id="editReporteId">
+      <label>Título *</label>
+      <input type="text" id="editReporteTitulo" placeholder="Título del reporte">
+      <label>Descripción *</label>
+      <textarea id="editReporteDescripcion" placeholder="Describe tu reporte..." rows="4"></textarea>
+      <label>Rol relacionado (opcional)</label>
+      <select id="editReporteRol">
+        <option value="">Selecciona tu rol</option>
+        <option value="facilitador">Facilitador</option>
+        <option value="asistente">Asistente</option>
+        <option value="anfitrion">Anfitrión</option>
+        <option value="misionero">Misionero</option>
+        <option value="servidor">Servidor</option>
+        <option value="consejero">Consejero</option>
+        <option value="oracion">Oración</option>
+        <option value="ayuda_alimentaria">Ayuda alimentaria</option>
+      </select>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="window.cerrarModal('editarReporteModal')">Cancelar</button>
+        <button class="btn-confirm" onclick="window.actualizarReporte()">Actualizar</button>
       </div>
     </div>
   </div>
@@ -1491,7 +1642,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let editModeActivo = false;
   let chatGrupoActual = null;
 
-  // Mapas interactivos (Leaflet)
+  // Mapas
   let mapInstances = {};
 
   function getData(key, def) {
@@ -1509,6 +1660,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const perfil = getUsuarioActual();
     if (!perfil) return false;
     return perfil.apoyos && perfil.apoyos.includes(rol);
+  }
+
+  function tieneAlgunRolApoyo() {
+    const roles = ['facilitador','asistente','anfitrion','misionero','servidor','consejero','oracion','ayuda_alimentaria'];
+    return roles.some(r => tieneRol(r)) || isAdmin;
   }
 
   // ================================================================
@@ -1552,7 +1708,11 @@ document.addEventListener('DOMContentLoaded', function() {
     renderServicios();
     renderMisServicios();
     renderConsejos();
+    renderReportes();
+    renderChatAdmin();
+    renderChatEquipo();
     actualizarBotonesPorRol();
+    actualizarTabs();
     if (isAdmin) renderAdminPanel();
   };
 
@@ -1567,7 +1727,11 @@ document.addEventListener('DOMContentLoaded', function() {
         renderServicios();
         renderMisServicios();
         renderConsejos();
+        renderReportes();
+        renderChatAdmin();
+        renderChatEquipo();
         actualizarBotonesPorRol();
+        actualizarTabs();
       }
     } else {
       document.getElementById('loginName').value = '';
@@ -1613,9 +1777,14 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('btnEditarVersos').style.display = 'inline-block';
       renderCarrusel();
       actualizarBotonesPorRol();
+      actualizarTabs();
       if (document.getElementById('panel-admin').classList.contains('active')) {
         renderAdminPanel();
       }
+      // Escuchar chats en tiempo real
+      listenChatAdmin();
+      listenChatEquipo();
+      listenReportes();
     } else {
       isAdmin = false;
       adminLoginBtn.style.display = 'inline-block';
@@ -1630,6 +1799,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('btnEditarVersos').style.display = 'none';
       renderCarrusel();
       actualizarBotonesPorRol();
+      actualizarTabs();
     }
   });
 
@@ -1797,6 +1967,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (name === 'biblia') cargarHistorial();
     if (name === 'inicio') renderCarrusel();
     if (name === 'consejeria') renderConsejos();
+    if (name === 'reportes') renderReportes();
+    if (name === 'chatadmin') renderChatAdmin();
+    if (name === 'chatequipo') renderChatEquipo();
     if (name === 'admin' && isAdmin) renderAdminPanel();
   };
 
@@ -1955,7 +2128,6 @@ document.addEventListener('DOMContentLoaded', function() {
       btnDiscipulado.style.display = 'none';
     }
 
-    // Ofrecer servicio: solo servidor o ayuda_alimentaria (no admin)
     if (tieneRol('servidor') || tieneRol('ayuda_alimentaria')) {
       servicioForm.style.display = 'block';
       servicioMsg.style.display = 'none';
@@ -1964,7 +2136,6 @@ document.addEventListener('DOMContentLoaded', function() {
       servicioMsg.style.display = 'block';
     }
 
-    // Mis servicios: visible para todos los que tengan algún rol (para que vean sus propios servicios)
     if (usuarioActual) {
       misServicios.style.display = 'block';
     } else {
@@ -1978,7 +2149,23 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  // ===== ABRIR MODAL DE GRUPO CON MAPA =====
+  function actualizarTabs() {
+    // Mostrar tab de chat equipo solo si tiene algún rol de apoyo o es admin
+    const tabEquipo = document.getElementById('tabChatEquipo');
+    if (tieneAlgunRolApoyo() || isAdmin) {
+      tabEquipo.style.display = 'inline-block';
+    } else {
+      tabEquipo.style.display = 'none';
+    }
+    // El tab de reportes visible para todos los autenticados
+    const tabReportes = document.querySelector('.tab[data-panel="reportes"]');
+    if (usuarioActual) {
+      tabReportes.style.display = 'inline-block';
+    } else {
+      tabReportes.style.display = 'none';
+    }
+  }
+
   window.abrirModalGrupo = function() {
     if (!puedeCrearGrupo()) { alert('Solo los facilitadores y el administrador pueden crear grupos.'); return; }
     document.getElementById('grupoNombre').value = '';
@@ -1989,7 +2176,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('grupoUbicacion').value = '';
     document.getElementById('grupoLat').value = '';
     document.getElementById('grupoLng').value = '';
-    // Inicializar mapa en el modal
     setTimeout(function() {
       initMap('grupoMap', 'grupoMapSearch', 'grupoLat', 'grupoLng');
     }, 200);
@@ -2007,7 +2193,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const lat = document.getElementById('grupoLat').value;
     const lng = document.getElementById('grupoLng').value;
     if (!nombre || !facilitador) { alert('Nombre y facilitador son obligatorios.'); return; }
-    // Si no hay ubicación pero sí lat/lng, generar dirección a partir de coords (opcional)
     if (lat && lng && !ubicacion) {
       ubicacion = `Lat: ${lat}, Lng: ${lng}`;
     }
@@ -2070,7 +2255,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
-  // ===== CHAT DEL GRUPO (sin cambios) =====
+  // ===== CHAT DEL GRUPO =====
   window.abrirChatGrupo = function(grupoId) {
     if (!usuarioActual) { alert('Inicia sesión primero.'); return; }
     const grupos = getData(STORAGE.grupos, []);
@@ -2246,7 +2431,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 11. MAPA Y MISIONEROS (con nuevo modal)
+  // 11. MAPA Y MISIONEROS
   // ================================================================
   window.abrirModalMisionero = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
@@ -2429,7 +2614,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 13. SERVICIO CON FIRESTORE (con mapa)
+  // 13. SERVICIO CON FIRESTORE
   // ================================================================
   function puedeOfrecerServicio() {
     return tieneRol('servidor') || tieneRol('ayuda_alimentaria');
@@ -2443,7 +2628,6 @@ document.addEventListener('DOMContentLoaded', function() {
     return db.collection('servicios');
   }
 
-  // Al abrir el panel de servicio, inicializar mapa si el formulario está visible
   document.getElementById('servicioFormContainer').addEventListener('DOMNodeInserted', function(e) {
     if (e.target.id === 'servicioFormContainer') {
       setTimeout(function() {
@@ -2504,7 +2688,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('servicioLat').value = '';
       document.getElementById('servicioLng').value = '';
       if (mapInstances['servicioMap']) {
-        mapInstances['servicioMap'].setView([0,0], 2); // reset
+        mapInstances['servicioMap'].setView([0,0], 2);
       }
       renderServicios();
       renderMisServicios();
@@ -3075,7 +3259,298 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ================================================================
-  // 19. ADMIN PANEL (sin cambios)
+  // 19. REPORTES (Firestore)
+  // ================================================================
+  function getReportesRef() {
+    return db.collection('reportes');
+  }
+
+  function listenReportes() {
+    if (!isAdmin) return;
+    // No necesitamos escuchar en tiempo real para admin, usamos renderAdminPanel que llama a renderReportesAdmin
+  }
+
+  window.abrirModalReporte = function() {
+    if (!usuarioActual) { alert('Debes iniciar sesión.'); return; }
+    document.getElementById('reporteTitulo').value = '';
+    document.getElementById('reporteDescripcion').value = '';
+    // Seleccionar el rol del usuario automáticamente si tiene uno
+    const perfil = getUsuarioActual();
+    if (perfil && perfil.apoyos && perfil.apoyos.length > 0) {
+      const select = document.getElementById('reporteRol');
+      // Si tiene varios, poner el primero
+      select.value = perfil.apoyos[0];
+    } else {
+      document.getElementById('reporteRol').value = '';
+    }
+    window.abrirModal('reporteModal');
+  };
+
+  window.guardarReporte = async function() {
+    if (!usuarioActual) { alert('Debes iniciar sesión.'); return; }
+    const titulo = document.getElementById('reporteTitulo').value.trim();
+    const descripcion = document.getElementById('reporteDescripcion').value.trim();
+    const rol = document.getElementById('reporteRol').value || '';
+    if (!titulo || !descripcion) {
+      alert('Título y descripción son obligatorios.');
+      return;
+    }
+    try {
+      await getReportesRef().add({
+        titulo: titulo,
+        descripcion: descripcion,
+        rol: rol,
+        usuario: usuarioActual,
+        fecha: new Date().toISOString()
+      });
+      alert('Reporte guardado correctamente.');
+      window.cerrarModal('reporteModal');
+      renderReportes();
+      if (isAdmin) renderAdminPanel();
+    } catch (error) {
+      console.error('Error al guardar reporte:', error);
+      alert('Error al guardar: ' + error.message);
+    }
+  };
+
+  window.renderReportes = async function() {
+    const container = document.getElementById('reportesContainer');
+    if (!usuarioActual) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">Inicia sesión para ver tus reportes.</p>';
+      return;
+    }
+    container.innerHTML = '<p style="color:var(--text-secondary);">Cargando...</p>';
+    try {
+      const snapshot = await getReportesRef().where('usuario', '==', usuarioActual).orderBy('fecha', 'desc').get();
+      if (snapshot.empty) {
+        container.innerHTML = '<p style="color:var(--text-secondary);">No has creado reportes aún.</p>';
+        return;
+      }
+      let html = '';
+      snapshot.forEach(doc => {
+        const r = { id: doc.id, ...doc.data() };
+        html += `<div class="reporte-item">
+          <div class="reporte-header">
+            <span class="reporte-titulo">${r.titulo}</span>
+            <span class="reporte-fecha">${new Date(r.fecha).toLocaleString()}</span>
+          </div>
+          ${r.rol ? `<span style="font-size:12px; background:var(--teal-light); padding:1px 10px; border-radius:20px;">${r.rol}</span>` : ''}
+          <div class="reporte-desc">${r.descripcion}</div>
+          <div class="reporte-actions">
+            <button class="btn-primary" onclick="window.abrirEditarReporte('${r.id}')"><i class="fas fa-edit"></i> Editar</button>
+            <button class="btn-danger" onclick="window.eliminarReporte('${r.id}')"><i class="fas fa-trash"></i> Eliminar</button>
+          </div>
+        </div>`;
+      });
+      container.innerHTML = html;
+    } catch (error) {
+      console.error('Error al cargar reportes:', error);
+      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar reportes.</p>';
+    }
+  };
+
+  window.abrirEditarReporte = async function(id) {
+    if (!usuarioActual) { alert('Debes iniciar sesión.'); return; }
+    try {
+      const doc = await getReportesRef().doc(id).get();
+      if (!doc.exists) { alert('Reporte no encontrado.'); return; }
+      const data = doc.data();
+      if (data.usuario !== usuarioActual && !isAdmin) {
+        alert('No tienes permiso para editar este reporte.');
+        return;
+      }
+      document.getElementById('editReporteId').value = id;
+      document.getElementById('editReporteTitulo').value = data.titulo || '';
+      document.getElementById('editReporteDescripcion').value = data.descripcion || '';
+      document.getElementById('editReporteRol').value = data.rol || '';
+      window.abrirModal('editarReporteModal');
+    } catch (error) {
+      console.error('Error al cargar reporte:', error);
+      alert('Error al cargar el reporte.');
+    }
+  };
+
+  window.actualizarReporte = async function() {
+    const id = document.getElementById('editReporteId').value;
+    const titulo = document.getElementById('editReporteTitulo').value.trim();
+    const descripcion = document.getElementById('editReporteDescripcion').value.trim();
+    const rol = document.getElementById('editReporteRol').value || '';
+    if (!titulo || !descripcion) {
+      alert('Título y descripción son obligatorios.');
+      return;
+    }
+    try {
+      await getReportesRef().doc(id).update({
+        titulo: titulo,
+        descripcion: descripcion,
+        rol: rol,
+        fecha: new Date().toISOString()
+      });
+      alert('Reporte actualizado.');
+      window.cerrarModal('editarReporteModal');
+      renderReportes();
+      if (isAdmin) renderAdminPanel();
+    } catch (error) {
+      console.error('Error al actualizar:', error);
+      alert('Error al actualizar: ' + error.message);
+    }
+  };
+
+  window.eliminarReporte = async function(id) {
+    if (!usuarioActual) { alert('Debes iniciar sesión.'); return; }
+    if (!confirm('¿Eliminar este reporte?')) return;
+    try {
+      const doc = await getReportesRef().doc(id).get();
+      if (!doc.exists) return;
+      const data = doc.data();
+      if (data.usuario !== usuarioActual && !isAdmin) {
+        alert('No tienes permiso para eliminar este reporte.');
+        return;
+      }
+      await getReportesRef().doc(id).delete();
+      alert('Reporte eliminado.');
+      renderReportes();
+      if (isAdmin) renderAdminPanel();
+    } catch (error) {
+      console.error('Error al eliminar:', error);
+      alert('Error al eliminar: ' + error.message);
+    }
+  };
+
+  // ================================================================
+  // 20. CHAT ADMIN (Firestore)
+  // ================================================================
+  function getChatAdminRef() {
+    return db.collection('chat_admin');
+  }
+
+  let chatAdminListener = null;
+
+  function listenChatAdmin() {
+    if (chatAdminListener) chatAdminListener();
+    chatAdminListener = getChatAdminRef().orderBy('timestamp', 'asc').onSnapshot(function(snapshot) {
+      renderChatAdmin(snapshot);
+    }, function(error) {
+      console.error('Error en chat admin listener:', error);
+    });
+  }
+
+  window.renderChatAdmin = function(snapshot) {
+    const container = document.getElementById('chatAdminMensajes');
+    if (!container) return;
+    if (!snapshot) {
+      // Llamada sin parámetro: obtener datos una sola vez
+      getChatAdminRef().orderBy('timestamp', 'asc').get().then(function(snap) {
+        renderChatAdmin(snap);
+      });
+      return;
+    }
+    if (snapshot.empty) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No hay mensajes.</p>';
+      return;
+    }
+    let html = '';
+    snapshot.forEach(doc => {
+      const msg = doc.data();
+      const esPropio = msg.remitente === usuarioActual;
+      html += `<div class="msg" style="${esPropio ? 'text-align:right;' : ''}">
+        <span class="autor">${msg.remitente}</span> 
+        <span style="font-size:13px;">${msg.texto}</span> 
+        <span class="hora">${new Date(msg.timestamp).toLocaleString()}</span>
+      </div>`;
+    });
+    container.innerHTML = html;
+    container.scrollTop = container.scrollHeight;
+  };
+
+  window.enviarChatAdmin = async function() {
+    if (!usuarioActual) { alert('Debes iniciar sesión.'); return; }
+    const input = document.getElementById('chatAdminInput');
+    const texto = input.value.trim();
+    if (!texto) return;
+    try {
+      await getChatAdminRef().add({
+        remitente: usuarioActual,
+        texto: texto,
+        timestamp: new Date().toISOString()
+      });
+      input.value = '';
+      // No es necesario volver a renderizar, el listener lo hará
+    } catch (error) {
+      console.error('Error al enviar mensaje:', error);
+      alert('Error al enviar: ' + error.message);
+    }
+  };
+
+  // ================================================================
+  // 21. CHAT EQUIPO (Firestore)
+  // ================================================================
+  function getChatEquipoRef() {
+    return db.collection('chat_equipo');
+  }
+
+  let chatEquipoListener = null;
+
+  function listenChatEquipo() {
+    if (chatEquipoListener) chatEquipoListener();
+    chatEquipoListener = getChatEquipoRef().orderBy('timestamp', 'asc').onSnapshot(function(snapshot) {
+      renderChatEquipo(snapshot);
+    }, function(error) {
+      console.error('Error en chat equipo listener:', error);
+    });
+  }
+
+  window.renderChatEquipo = function(snapshot) {
+    const container = document.getElementById('chatEquipoMensajes');
+    if (!container) return;
+    if (!snapshot) {
+      getChatEquipoRef().orderBy('timestamp', 'asc').get().then(function(snap) {
+        renderChatEquipo(snap);
+      });
+      return;
+    }
+    if (snapshot.empty) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No hay mensajes en el chat de equipo.</p>';
+      return;
+    }
+    let html = '';
+    snapshot.forEach(doc => {
+      const msg = doc.data();
+      const esPropio = msg.remitente === usuarioActual;
+      html += `<div class="msg" style="${esPropio ? 'text-align:right;' : ''}">
+        <span class="autor">${msg.remitente}</span> 
+        <span style="font-size:13px;">${msg.texto}</span> 
+        <span class="hora">${new Date(msg.timestamp).toLocaleString()}</span>
+      </div>`;
+    });
+    container.innerHTML = html;
+    container.scrollTop = container.scrollHeight;
+  };
+
+  window.enviarChatEquipo = async function() {
+    if (!usuarioActual) { alert('Debes iniciar sesión.'); return; }
+    if (!tieneAlgunRolApoyo() && !isAdmin) {
+      alert('No tienes permisos para escribir en el chat de equipo.');
+      return;
+    }
+    const input = document.getElementById('chatEquipoInput');
+    const texto = input.value.trim();
+    if (!texto) return;
+    try {
+      await getChatEquipoRef().add({
+        remitente: usuarioActual,
+        texto: texto,
+        timestamp: new Date().toISOString()
+      });
+      input.value = '';
+    } catch (error) {
+      console.error('Error al enviar mensaje equipo:', error);
+      alert('Error al enviar: ' + error.message);
+    }
+  };
+
+  // ================================================================
+  // 22. ADMIN PANEL (con reportes)
   // ================================================================
   function renderAdminPanel() {
     if (!isAdmin) return;
@@ -3100,13 +3575,20 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('statMisioneros').textContent = misioneros.length;
     document.getElementById('statConsejos').textContent = consejos.length;
 
-    // Obtener conteo de servicios desde Firestore
     getServiciosRef().get().then(function(snapshot) {
       document.getElementById('statServicios').textContent = snapshot.size;
     }).catch(function() {
       document.getElementById('statServicios').textContent = '?';
     });
 
+    // Reportes
+    getReportesRef().get().then(function(snapshot) {
+      document.getElementById('statReportes').textContent = snapshot.size;
+    }).catch(function() {
+      document.getElementById('statReportes').textContent = '?';
+    });
+
+    // Lista de usuarios
     const userList = document.getElementById('adminUserList');
     if (usuarios.length === 0) {
       userList.innerHTML = '<p style="color:var(--text-secondary);">No hay usuarios registrados.</p>';
@@ -3121,6 +3603,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }).join('');
     }
 
+    // Publicaciones
     const postList = document.getElementById('adminPostList');
     if (posts.length === 0) {
       postList.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones.</p>';
@@ -3133,6 +3616,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }).join('');
     }
 
+    // Oraciones
     const oracList = document.getElementById('adminOracionList');
     if (oraciones.length === 0) {
       oracList.innerHTML = '<p style="color:var(--text-secondary);">No hay oraciones.</p>';
@@ -3145,6 +3629,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }).join('');
     }
 
+    // Necesidades
     const needList = document.getElementById('adminNeedList');
     if (necesidades.length === 0) {
       needList.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades.</p>';
@@ -3157,6 +3642,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }).join('');
     }
 
+    // Servicios
     const servList = document.getElementById('adminServicioList');
     servList.innerHTML = '<p style="color:var(--text-secondary);">Cargando servicios...</p>';
     getServiciosRef().orderBy('fechaRegistro', 'desc').get().then(function(snapshot) {
@@ -3176,49 +3662,46 @@ document.addEventListener('DOMContentLoaded', function() {
     }).catch(function() {
       servList.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar servicios.</p>';
     });
+
+    // Reportes (admin)
+    const reportesList = document.getElementById('adminReportesList');
+    reportesList.innerHTML = '<p style="color:var(--text-secondary);">Cargando reportes...</p>';
+    getReportesRef().orderBy('fecha', 'desc').get().then(function(snapshot) {
+      if (snapshot.empty) {
+        reportesList.innerHTML = '<p style="color:var(--text-secondary);">No hay reportes.</p>';
+        return;
+      }
+      let html = '';
+      snapshot.forEach(function(doc) {
+        const r = doc.data();
+        html += '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + r.usuario + '</strong> - ' + r.titulo + ' (' + (r.rol || 'sin rol') + ') <small style="color:var(--text-secondary);">' + new Date(r.fecha).toLocaleString() + '</small></span>' +
+          '<div class="actions">' +
+            '<button class="btn-danger" onclick="window.eliminarReporteAdmin(\'' + doc.id + '\')">Eliminar</button>' +
+          '</div>' +
+          '</div>';
+      });
+      reportesList.innerHTML = html;
+    }).catch(function() {
+      reportesList.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar reportes.</p>';
+    });
   }
 
-  window.eliminarUsuario = function(nombre) {
+  // Función para admin eliminar reporte
+  window.eliminarReporteAdmin = async function(id) {
     if (!isAdmin) return;
-    if (!confirm('¿Eliminar al usuario "' + nombre + '"?')) return;
-    let usuarios = getData(STORAGE.usuarios, []);
-    usuarios = usuarios.filter(function(u) { return u.nombre !== nombre; });
-    setData(STORAGE.usuarios, usuarios);
-    renderAdminPanel();
-  };
-
-  window.eliminarPublicacion = function(id) {
-    if (!isAdmin) return;
-    if (!confirm('¿Eliminar esta publicación?')) return;
-    let posts = getData(STORAGE.posts, []);
-    posts = posts.filter(function(p) { return p.id !== id; });
-    setData(STORAGE.posts, posts);
-    renderFeed();
-    renderAdminPanel();
-  };
-
-  window.eliminarOracion = function(id) {
-    if (!isAdmin) return;
-    if (!confirm('¿Eliminar esta oración?')) return;
-    let oraciones = getData(STORAGE.oraciones, []);
-    oraciones = oraciones.filter(function(o) { return o.id !== id; });
-    setData(STORAGE.oraciones, oraciones);
-    renderOraciones();
-    renderAdminPanel();
-  };
-
-  window.eliminarNecesidad = function(id) {
-    if (!isAdmin) return;
-    if (!confirm('¿Eliminar esta necesidad?')) return;
-    let necesidades = getData(STORAGE.necesidades, []);
-    necesidades = necesidades.filter(function(n) { return n.id !== id; });
-    setData(STORAGE.necesidades, necesidades);
-    renderNecesidades();
-    renderAdminPanel();
+    if (!confirm('¿Eliminar este reporte?')) return;
+    try {
+      await getReportesRef().doc(id).delete();
+      renderAdminPanel();
+    } catch (error) {
+      console.error('Error al eliminar reporte:', error);
+      alert('Error al eliminar: ' + error.message);
+    }
   };
 
   // ================================================================
-  // 20. EDICIÓN DE PERFIL (sin cambios)
+  // 23. EDICIÓN DE PERFIL (sin cambios)
   // ================================================================
   window.abrirEditarPerfil = function() {
     if (!usuarioActual) {
@@ -3311,45 +3794,36 @@ document.addEventListener('DOMContentLoaded', function() {
     renderConsejos();
     renderMisionerosMapa();
     actualizarBotonesPorRol();
+    actualizarTabs();
     alert('Perfil actualizado correctamente.');
   };
 
   // ================================================================
-  // 21. MAPA INTERACTIVO (Leaflet)
+  // 24. MAPA INTERACTIVO (Leaflet)
   // ================================================================
   window.initMap = function(mapId, searchId, latId, lngId) {
-    // Destruir mapa anterior si existe
     if (mapInstances[mapId]) {
       mapInstances[mapId].remove();
       delete mapInstances[mapId];
     }
-
     var container = document.getElementById(mapId);
     if (!container) return;
-    // Asegurar que el contenedor tenga tamaño
     container.style.height = '200px';
     container.style.width = '100%';
-
     var map = L.map(mapId).setView([0, 0], 2);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
-
     var marker = L.marker([0, 0], { draggable: true }).addTo(map);
-
-    // Actualizar campos ocultos cuando se arrastra el marcador
     marker.on('dragend', function(e) {
       var pos = marker.getLatLng();
       document.getElementById(latId).value = pos.lat;
       document.getElementById(lngId).value = pos.lng;
-      // También actualizar el campo de búsqueda con las coordenadas (opcional)
       var searchInput = document.getElementById(searchId);
       if (searchInput) {
         searchInput.value = pos.lat.toFixed(6) + ', ' + pos.lng.toFixed(6);
       }
     });
-
-    // Función de búsqueda (geocodificación con Nominatim)
     var searchInput = document.getElementById(searchId);
     if (searchInput) {
       searchInput.addEventListener('keypress', function(e) {
@@ -3358,16 +3832,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     }
-
     mapInstances[mapId] = map;
-    // Guardar referencia al marcador y campos para usarlos en búsqueda
     mapInstances[mapId + '_marker'] = marker;
     mapInstances[mapId + '_lat'] = latId;
     mapInstances[mapId + '_lng'] = lngId;
     mapInstances[mapId + '_search'] = searchId;
-
-    // Si el mapa se abre con una ubicación ya guardada (edición), no lo tenemos, pero se puede implementar
-    // Por ahora solo inicializamos en 0,0.
   };
 
   window.buscarEnMapa = function(mapId) {
@@ -3375,8 +3844,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!searchInput) return;
     var query = searchInput.value.trim();
     if (!query) return;
-
-    // Usar Nominatim para geocodificar
     fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query))
       .then(function(response) { return response.json(); })
       .then(function(data) {
@@ -3401,12 +3868,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   };
 
-  // Exponer funciones al scope global
-  window.initMap = initMap;
-  window.buscarEnMapa = buscarEnMapa;
-
   // ================================================================
-  // 22. EXPANDIR PANTALLA (sin cambios)
+  // 25. EXPANDIR PANTALLA (sin cambios)
   // ================================================================
   document.getElementById('expandToggle').addEventListener('click', function() {
     const app = document.getElementById('appContainer');
@@ -3416,7 +3879,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ================================================================
-  // 23. MODO NOCTURNO (sin cambios)
+  // 26. MODO NOCTURNO (sin cambios)
   // ================================================================
   document.getElementById('themeToggle').addEventListener('click', function() {
     document.body.classList.toggle('dark');
@@ -3425,7 +3888,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ================================================================
-  // 24. DATOS DE EJEMPLO (sin cambios)
+  // 27. DATOS DE EJEMPLO (sin cambios)
   // ================================================================
   function cargarEjemplos() {
     if (!getData(STORAGE.posts, []).length) {
@@ -3486,7 +3949,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ================================================================
-  // 25. INICIALIZACIÓN
+  // 28. INICIALIZACIÓN
   // ================================================================
   cargarEjemplos();
   renderFeed();
@@ -3499,9 +3962,13 @@ document.addEventListener('DOMContentLoaded', function() {
   renderServicios();
   renderMisServicios();
   renderConsejos();
+  renderReportes();
+  renderChatAdmin();
+  renderChatEquipo();
   cargarHistorial();
   renderCarrusel();
   actualizarBotonesPorRol();
+  actualizarTabs();
 
   if (localStorage.getItem(STORAGE.iaKey)) {
     document.getElementById('iaStatus').textContent = '✅ API configurada.';
@@ -3513,21 +3980,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!--
   ================================================================
-  REGLAS DE SEGURIDAD PARA FIRESTORE (NECESARIAS)
+  REGLAS DE SEGURIDAD PARA FIRESTORE
   ================================================================
   Aplica estas reglas en la consola de Firebase → Firestore → Reglas:
 
   rules_version = '2';
   service cloud.firestore {
     match /databases/{database}/documents {
+      // Servicios
       match /servicios/{document} {
+        allow read, write: if request.auth != null;
+      }
+      // Reportes
+      match /reportes/{document} {
+        allow read: if request.auth != null;
+        allow create: if request.auth != null;
+        allow update, delete: if request.auth != null && (resource.data.usuario == request.auth.uid || request.auth.token.email == 'admin@iglesia.com');
+      }
+      // Chat Admin
+      match /chat_admin/{document} {
+        allow read, write: if request.auth != null;
+      }
+      // Chat Equipo
+      match /chat_equipo/{document} {
         allow read, write: if request.auth != null;
       }
     }
   }
 
-  Esto permite que cualquier usuario autenticado (anónimo) lea y escriba.
-  La lógica de permisos de creación/gestión está en el frontend.
+  Nota: Como usamos autenticación anónima, todas las reglas se basan en request.auth != null.
+  Para mayor control se puede usar request.auth.uid, pero con anónimo todos tienen uid diferente.
+  En la práctica, la lógica de permisos se maneja en el frontend.
   ================================================================
 -->
 </body>

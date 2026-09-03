@@ -673,6 +673,25 @@
       font-family: inherit;
     }
     .modal-box textarea { min-height: 50px; resize: vertical; }
+    .modal-box .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      margin: 4px 0 6px;
+    }
+    .modal-box .checkbox-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 400;
+      font-size: 13px;
+      margin: 0;
+      cursor: pointer;
+    }
+    .modal-box .checkbox-group input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
     .modal-actions {
       display: flex;
       gap: 8px;
@@ -723,6 +742,32 @@
     .admin-list-item:last-child { border-bottom: none; }
     .admin-list-item .info { flex: 1; }
     .admin-list-item .actions { display: flex; gap: 4px; }
+    .admin-ia-config {
+      background: var(--bg-body);
+      padding: 12px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      margin-top: 6px;
+    }
+    .admin-ia-config label {
+      font-weight: 500;
+      font-size: 13px;
+      margin-top: 6px;
+      display: block;
+    }
+    .admin-ia-config input, .admin-ia-config textarea {
+      width: 100%;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      background: white;
+      color: var(--text-primary);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+    body.dark .admin-ia-config input, body.dark .admin-ia-config textarea {
+      background: #1a1a2e;
+    }
     /* ===== RESPONSIVE ===== */
     @media (max-width: 600px) {
       .header { padding: 8px 10px; }
@@ -760,7 +805,7 @@
     </div>
     <div class="header-actions">
       <button class="btn-icon" id="themeToggle" title="Modo nocturno"><i class="fas fa-moon"></i></button>
-      <button class="btn-icon" id="fullscreenToggle" title="Pantalla completa"><i class="fas fa-expand"></i></button>
+      <!-- Botón de pantalla completa ELIMINADO -->
       <span class="user-badge" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span></span>
       <button class="btn-primary" id="loginBtn">Entrar</button>
       <span id="adminSection">
@@ -1013,20 +1058,52 @@
       <h3><i class="fas fa-utensils"></i> Servicios alimentarios</h3>
       <div id="adminServicioList"></div>
     </div>
+
+    <!-- Configuración de IA (movida aquí) -->
+    <div class="card">
+      <h3><i class="fas fa-robot"></i> Configuración de IA (OpenRouter)</h3>
+      <div class="admin-ia-config">
+        <label>API Key</label>
+        <input type="text" id="openrouterKey" placeholder="sk-or-...">
+        <label>URL del modelo</label>
+        <input type="text" id="openrouterModel" placeholder="https://openrouter.ai/api/v1/chat/completions" value="https://openrouter.ai/api/v1/chat/completions">
+        <button class="btn-primary" onclick="guardarConfigIA()" style="margin-top:6px;">Guardar clave y URL</button>
+        <hr style="border-color:var(--border-color); margin:12px 0;">
+        <label>Entrenar agente (contexto histórico / teológico)</label>
+        <textarea id="iaContexto" placeholder="Instrucciones adicionales para el asistente..." rows="3"></textarea>
+        <button class="btn-primary" onclick="guardarContextoIA()" style="margin-top:6px;">Guardar contexto</button>
+        <p style="font-size:11px; color:var(--text-secondary); margin-top:4px;">La clave y el contexto se almacenan localmente.</p>
+      </div>
+    </div>
   </div>
 
   <!-- ============================================================ -->
   <!-- MODALES -->
 
-  <!-- Modal Login de usuario normal -->
+  <!-- Modal Login de usuario (con campos adicionales) -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
-      <h3><i class="fas fa-user"></i> Ingresar</h3>
-      <label>Tu nombre</label>
+      <h3><i class="fas fa-user"></i> Registro / Inicio de sesión</h3>
+      <label>Nombre completo *</label>
       <input type="text" id="loginName" placeholder="Ej: María Pérez">
+      <label>Teléfono *</label>
+      <input type="tel" id="loginTelefono" placeholder="+506 8888-8888">
+      <label>Edad *</label>
+      <input type="number" id="loginEdad" placeholder="Ej: 25">
+      <label style="margin-top:8px;">Áreas de apoyo (opcional, selecciona las que desees)</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" value="facilitador"> Facilitador</label>
+        <label><input type="checkbox" value="asistente"> Asistente</label>
+        <label><input type="checkbox" value="anfitrion"> Anfitrión</label>
+        <label><input type="checkbox" value="misionero"> Misionero</label>
+        <label><input type="checkbox" value="servidor"> Servidor</label>
+        <label><input type="checkbox" value="consejero"> Consejero</label>
+        <label><input type="checkbox" value="oracion"> Oración</label>
+        <label><input type="checkbox" value="ayuda_alimentaria"> Ayuda alimentaria</label>
+      </div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="cerrarModal('loginModal')">Cancelar</button>
-        <button class="btn-confirm" onclick="iniciarSesion()">Entrar</button>
+        <button class="btn-confirm" onclick="iniciarSesion()">Entrar / Registrarse</button>
       </div>
     </div>
   </div>
@@ -1112,29 +1189,6 @@
     </div>
   </div>
 
-  <!-- Modal Admin (configuración IA) -->
-  <div class="modal-overlay" id="adminModal">
-    <div class="modal-box">
-      <h3><i class="fas fa-user-shield"></i> Administración</h3>
-      <div id="adminPanel">
-        <h4 style="font-size:15px; margin-bottom:6px;">Configuración IA (OpenRouter)</h4>
-        <label>API Key</label>
-        <input type="text" id="openrouterKey" placeholder="sk-or-...">
-        <label>URL del modelo</label>
-        <input type="text" id="openrouterModel" placeholder="https://openrouter.ai/api/v1/chat/completions" value="https://openrouter.ai/api/v1/chat/completions">
-        <button class="btn-primary" onclick="guardarConfigIA()" style="margin-top:4px;">Guardar clave</button>
-        <p style="font-size:11px; color:var(--text-secondary); margin-top:2px;">La clave se almacena localmente.</p>
-        <hr style="margin:8px 0; border-color:var(--border-color);">
-        <h4 style="font-size:15px; margin-bottom:6px;">Entrenar agente (contexto)</h4>
-        <textarea id="iaContexto" placeholder="Instrucciones adicionales para el asistente (contexto histórico, teología, etc.)" rows="3" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary);"></textarea>
-        <button class="btn-primary" onclick="guardarContextoIA()" style="margin-top:4px;">Guardar contexto</button>
-      </div>
-      <div class="modal-actions">
-        <button class="btn-cancel" onclick="cerrarModal('adminModal')">Cerrar</button>
-      </div>
-    </div>
-  </div>
-
 </div><!-- /app -->
 
 <!-- ============================================================ -->
@@ -1174,7 +1228,7 @@ const STORAGE = {
   carrusel: 'iglesia_carrusel'
 };
 
-let usuarioActual = '';
+let usuarioActual = ''; // solo el nombre (string) para compatibilidad
 let isAdmin = false;
 let carruselInterval = null;
 
@@ -1184,25 +1238,58 @@ function getData(key, def) {
 function setData(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
 // ================================================================
-// 2. USUARIOS Y LOGIN (normal)
+// 2. USUARIOS Y LOGIN (con campos extendidos)
 // ================================================================
 function iniciarSesion() {
-  const name = document.getElementById('loginName').value.trim();
-  if (!name) { alert('Ingresa tu nombre'); return; }
-  usuarioActual = name;
+  const nombre = document.getElementById('loginName').value.trim();
+  const telefono = document.getElementById('loginTelefono').value.trim();
+  const edad = parseInt(document.getElementById('loginEdad').value.trim());
+  // Obtener apoyos seleccionados
+  const apoyos = [];
+  document.querySelectorAll('#loginModal .checkbox-group input[type="checkbox"]:checked').forEach(cb => {
+    apoyos.push(cb.value);
+  });
+
+  if (!nombre || !telefono || isNaN(edad) || edad <= 0) {
+    alert('Por favor completa todos los campos obligatorios: Nombre, Teléfono y Edad.');
+    return;
+  }
+
   let usuarios = getData(STORAGE.usuarios, []);
-  if (!usuarios.includes(name)) usuarios.push(name);
+  // Buscar si el nombre ya existe
+  let usuarioExistente = usuarios.find(u => u.nombre === nombre);
+  if (usuarioExistente) {
+    // Actualizar datos (excepto nombre)
+    usuarioExistente.telefono = telefono;
+    usuarioExistente.edad = edad;
+    usuarioExistente.apoyos = apoyos;
+  } else {
+    // Nuevo usuario
+    usuarios.push({
+      nombre: nombre,
+      telefono: telefono,
+      edad: edad,
+      apoyos: apoyos
+    });
+  }
   setData(STORAGE.usuarios, usuarios);
-  document.getElementById('userNameDisplay').textContent = name;
+
+  // Establecer sesión
+  usuarioActual = nombre;
+  document.getElementById('userNameDisplay').textContent = nombre;
   document.getElementById('loginBtn').textContent = 'Cambiar';
   cerrarModal('loginModal');
+
+  // Refrescar vistas que dependen del usuario
   renderFeed();
   renderGrupos();
   renderDiscipulados();
   renderNecesidades();
   renderOraciones();
+  if (isAdmin) renderAdminPanel();
 }
 
+// Manejo del botón de login
 document.getElementById('loginBtn').addEventListener('click', function() {
   if (usuarioActual) {
     if (confirm('¿Cerrar sesión de usuario?')) {
@@ -1213,15 +1300,23 @@ document.getElementById('loginBtn').addEventListener('click', function() {
       renderOraciones();
     }
   } else {
+    // Abrir modal con campos vacíos (o cargar datos si ya existe)
+    // Limpiar campos
+    document.getElementById('loginName').value = '';
+    document.getElementById('loginTelefono').value = '';
+    document.getElementById('loginEdad').value = '';
+    document.querySelectorAll('#loginModal .checkbox-group input[type="checkbox"]').forEach(cb => cb.checked = false);
     abrirModal('loginModal');
   }
 });
 
-// Cargar usuario normal guardado
+// Cargar usuario normal guardado (último)
 (function cargarUsuario() {
   const users = getData(STORAGE.usuarios, []);
   if (users.length > 0) {
-    usuarioActual = users[users.length - 1];
+    // Tomar el último usuario activo (o el primero)
+    const ultimo = users[users.length - 1];
+    usuarioActual = ultimo.nombre;
     document.getElementById('userNameDisplay').textContent = usuarioActual;
     document.getElementById('loginBtn').textContent = 'Cambiar';
   }
@@ -1244,14 +1339,13 @@ auth.onAuthStateChanged(user => {
     adminLogoutBtn.style.display = 'inline-block';
     adminBadge.textContent = ` Admin (${user.email})`;
     gestionarCarruselBtn.style.display = 'inline-block';
-    adminTab.style.display = 'inline-block'; // Mostrar pestaña Admin
+    adminTab.style.display = 'inline-block';
     document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
     renderGrupos();
     renderDiscipulados();
     renderNecesidades();
     document.getElementById('btnEditarVersos').style.display = 'inline-block';
     renderCarrusel();
-    // Cargar datos del panel admin si está visible
     if (document.getElementById('panel-admin').classList.contains('active')) {
       renderAdminPanel();
     }
@@ -1261,7 +1355,7 @@ auth.onAuthStateChanged(user => {
     adminBadge.style.display = 'none';
     adminLogoutBtn.style.display = 'none';
     gestionarCarruselBtn.style.display = 'none';
-    adminTab.style.display = 'none'; // Ocultar pestaña Admin
+    adminTab.style.display = 'none';
     document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
     renderGrupos();
     renderDiscipulados();
@@ -1299,6 +1393,11 @@ adminLoginBtn.addEventListener('click', () => {
   if (!isAdmin) abrirModal('adminLoginModal');
 });
 adminLogoutBtn.addEventListener('click', logoutAdmin);
+
+// Al hacer clic en la insignia Admin, ir a la pestaña Admin
+adminBadge.addEventListener('click', function() {
+  if (isAdmin) switchPanel('admin');
+});
 
 // ================================================================
 // 4. CARRUSEL
@@ -2174,24 +2273,21 @@ function preguntarIA() {
 }
 
 // ================================================================
-// 17. ADMIN - CONFIGURACIÓN IA
+// 17. ADMIN - CONFIGURACIÓN IA (desde el panel admin)
 // ================================================================
-document.getElementById('adminBadge').addEventListener('click', function() {
-  if (!isAdmin) return;
-  abrirModal('adminModal');
-  document.getElementById('openrouterKey').value = localStorage.getItem(STORAGE.iaKey) || '';
-  document.getElementById('iaContexto').value = localStorage.getItem(STORAGE.iaContexto) || '';
-});
-
 function guardarConfigIA() {
   if (!isAdmin) return;
   const key = document.getElementById('openrouterKey').value.trim();
+  const model = document.getElementById('openrouterModel').value.trim() || 'https://openrouter.ai/api/v1/chat/completions';
   if (key) {
     localStorage.setItem(STORAGE.iaKey, key);
+    localStorage.setItem(STORAGE.iaModel, model);
     document.getElementById('iaStatus').textContent = '✅ API configurada correctamente.';
+    alert('Clave y URL guardadas.');
   } else {
     localStorage.removeItem(STORAGE.iaKey);
     document.getElementById('iaStatus').textContent = '⚠️ API no configurada.';
+    alert('Clave eliminada.');
   }
 }
 
@@ -2202,11 +2298,22 @@ function guardarContextoIA() {
   alert('Contexto guardado.');
 }
 
+// Cargar valores existentes en el panel admin cuando se renderiza
+function cargarConfigIA() {
+  document.getElementById('openrouterKey').value = localStorage.getItem(STORAGE.iaKey) || '';
+  document.getElementById('iaContexto').value = localStorage.getItem(STORAGE.iaContexto) || '';
+  // El modelo lo cargamos desde el input (ya tiene valor por defecto)
+}
+// Llamar a cargarConfigIA al renderizar admin
+
 // ================================================================
-// 18. ADMIN PANEL - ESTADÍSTICAS Y MODERACIÓN (NUEVO)
+// 18. ADMIN PANEL - ESTADÍSTICAS Y MODERACIÓN
 // ================================================================
 function renderAdminPanel() {
   if (!isAdmin) return;
+  // Cargar configuración IA
+  cargarConfigIA();
+
   // Estadísticas
   const usuarios = getData(STORAGE.usuarios, []);
   const posts = getData(STORAGE.posts, []);
@@ -2226,16 +2333,19 @@ function renderAdminPanel() {
   document.getElementById('statDiscipulados').textContent = discipulados.length;
   document.getElementById('statMisioneros').textContent = misioneros.length;
 
-  // Lista de usuarios
+  // Lista de usuarios (con datos extendidos)
   const userList = document.getElementById('adminUserList');
   if (usuarios.length === 0) {
     userList.innerHTML = '<p style="color:var(--text-secondary);">No hay usuarios registrados.</p>';
   } else {
     userList.innerHTML = usuarios.map(u => `
       <div class="admin-list-item">
-        <span class="info"><i class="fas fa-user"></i> ${u}</span>
+        <span class="info">
+          <strong>${u.nombre}</strong> · 📞 ${u.telefono} · Edad: ${u.edad}
+          ${u.apoyos && u.apoyos.length ? ' · Apoyos: ' + u.apoyos.join(', ') : ''}
+        </span>
         <div class="actions">
-          <button class="btn-danger" onclick="eliminarUsuario('${u}')">Eliminar</button>
+          <button class="btn-danger" onclick="eliminarUsuario('${u.nombre}')">Eliminar</button>
         </div>
       </div>
     `).join('');
@@ -2307,7 +2417,7 @@ function eliminarUsuario(nombre) {
   if (!isAdmin) return;
   if (!confirm(`¿Eliminar al usuario "${nombre}"?`)) return;
   let usuarios = getData(STORAGE.usuarios, []);
-  usuarios = usuarios.filter(u => u !== nombre);
+  usuarios = usuarios.filter(u => u.nombre !== nombre);
   setData(STORAGE.usuarios, usuarios);
   renderAdminPanel();
 }
@@ -2353,20 +2463,12 @@ function eliminarServicio(id) {
 }
 
 // ================================================================
-// 19. MODO NOCTURNO Y PANTALLA COMPLETA
+// 19. MODO NOCTURNO (fullscreen eliminado)
 // ================================================================
 document.getElementById('themeToggle').addEventListener('click', function() {
   document.body.classList.toggle('dark');
   this.querySelector('i').classList.toggle('fa-moon');
   this.querySelector('i').classList.toggle('fa-sun');
-});
-
-document.getElementById('fullscreenToggle').addEventListener('click', function() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(e => {});
-  } else {
-    document.exitFullscreen();
-  }
 });
 
 // ================================================================
@@ -2483,7 +2585,4 @@ if (localStorage.getItem(STORAGE.iaKey)) {
   document.getElementById('iaStatus').textContent = '✅ API configurada.';
 }
 
-console.log('✅ SAL Y LUZ cargada con Firebase, carrusel y panel de administración completo.');
-</script>
-</body>
-</html>
+console.log('✅ SAL Y LUZ cargada con Firebase, carrusel,

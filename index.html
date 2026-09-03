@@ -796,7 +796,7 @@
 
   <!-- ===== HEADER ===== -->
   <header class="header">
-    <div class="logo" onclick="switchPanel('inicio')">
+    <div class="logo" onclick="window.switchPanel('inicio')">
       <div class="logo-icon"><i class="fas fa-church"></i></div>
       <div>
         <div class="logo-text">SAL <span>Y</span> LUZ</div>
@@ -805,7 +805,6 @@
     </div>
     <div class="header-actions">
       <button class="btn-icon" id="themeToggle" title="Modo nocturno"><i class="fas fa-moon"></i></button>
-      <!-- Botón de pantalla completa ELIMINADO -->
       <span class="user-badge" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span></span>
       <button class="btn-primary" id="loginBtn">Entrar</button>
       <span id="adminSection">
@@ -837,11 +836,11 @@
     <!-- Carrusel -->
     <div class="carousel-container" id="carouselContainer">
       <div id="carouselSlides"></div>
-      <button class="carousel-control prev" onclick="cambiarSlide(-1)">❮</button>
-      <button class="carousel-control next" onclick="cambiarSlide(1)">❯</button>
+      <button class="carousel-control prev" onclick="window.cambiarSlide(-1)">❮</button>
+      <button class="carousel-control next" onclick="window.cambiarSlide(1)">❯</button>
       <div class="carousel-indicators" id="carouselIndicators"></div>
       <div style="position:absolute; top:8px; right:8px; z-index:10;">
-        <button class="btn-primary" id="gestionarCarruselBtn" style="background:var(--orange); font-size:11px; padding:2px 12px;" onclick="abrirModalCarrusel()"><i class="fas fa-cog"></i> Gestionar</button>
+        <button class="btn-primary" id="gestionarCarruselBtn" style="background:var(--orange); font-size:11px; padding:2px 12px;" onclick="window.abrirModalCarrusel()"><i class="fas fa-cog"></i> Gestionar</button>
       </div>
     </div>
 
@@ -850,17 +849,17 @@
       <h2 style="font-size:22px; margin-bottom:6px;">Bienvenido a <span style="color:var(--teal);">SAL Y LUZ</span></h2>
       <p style="color:var(--text-secondary); max-width:400px; margin:0 auto 12px;">Una comunidad cristiana para crecer en fe, servir y compartir. Conéctate, ora y transforma vidas.</p>
       <div style="display:flex; gap:6px; justify-content:center; flex-wrap:wrap;">
-        <button class="btn-primary" onclick="switchPanel('biblia')"><i class="fas fa-bible"></i> Leer Biblia</button>
-        <button class="btn-primary" style="background:var(--orange);" onclick="switchPanel('muro')"><i class="fas fa-newspaper"></i> Ver Muro</button>
-        <button class="btn-primary" style="background:var(--teal-dark);" onclick="switchPanel('oracion')"><i class="fas fa-pray"></i> Oración</button>
+        <button class="btn-primary" onclick="window.switchPanel('biblia')"><i class="fas fa-bible"></i> Leer Biblia</button>
+        <button class="btn-primary" style="background:var(--orange);" onclick="window.switchPanel('muro')"><i class="fas fa-newspaper"></i> Ver Muro</button>
+        <button class="btn-primary" style="background:var(--teal-dark);" onclick="window.switchPanel('oracion')"><i class="fas fa-pray"></i> Oración</button>
       </div>
     </div>
 
     <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(110px,1fr)); gap:8px;">
-      <div class="card" style="text-align:center; cursor:pointer;" onclick="switchPanel('grupos')"><i class="fas fa-users" style="font-size:24px; color:var(--teal);"></i><br><strong>Grupos</strong><br><small class="text-secondary">Conexión</small></div>
-      <div class="card" style="text-align:center; cursor:pointer;" onclick="switchPanel('discipulado')"><i class="fas fa-user-friends" style="font-size:24px; color:var(--orange);"></i><br><strong>Discipulado</strong><br><small class="text-secondary">Mentoría</small></div>
-      <div class="card" style="text-align:center; cursor:pointer;" onclick="switchPanel('oracion')"><i class="fas fa-pray" style="font-size:24px; color:#6a1b9a;"></i><br><strong>Oración</strong><br><small class="text-secondary">Peticiones</small></div>
-      <div class="card" style="text-align:center; cursor:pointer;" onclick="switchPanel('necesidades')"><i class="fas fa-hand-holding-heart" style="font-size:24px; color:#e74c3c;"></i><br><strong>Ayuda</strong><br><small class="text-secondary">Necesidades</small></div>
+      <div class="card" style="text-align:center; cursor:pointer;" onclick="window.switchPanel('grupos')"><i class="fas fa-users" style="font-size:24px; color:var(--teal);"></i><br><strong>Grupos</strong><br><small class="text-secondary">Conexión</small></div>
+      <div class="card" style="text-align:center; cursor:pointer;" onclick="window.switchPanel('discipulado')"><i class="fas fa-user-friends" style="font-size:24px; color:var(--orange);"></i><br><strong>Discipulado</strong><br><small class="text-secondary">Mentoría</small></div>
+      <div class="card" style="text-align:center; cursor:pointer;" onclick="window.switchPanel('oracion')"><i class="fas fa-pray" style="font-size:24px; color:#6a1b9a;"></i><br><strong>Oración</strong><br><small class="text-secondary">Peticiones</small></div>
+      <div class="card" style="text-align:center; cursor:pointer;" onclick="window.switchPanel('necesidades')"><i class="fas fa-hand-holding-heart" style="font-size:24px; color:#e74c3c;"></i><br><strong>Ayuda</strong><br><small class="text-secondary">Necesidades</small></div>
     </div>
   </div>
 
@@ -893,7 +892,7 @@
       <div class="historial-tags" id="historialContainer"></div>
       <div style="display:flex; gap:6px; margin-top:6px;">
         <input type="text" id="bibliaSearchInput" placeholder="Ej: Juan 3:16, amor..." style="flex:1; padding:8px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
-        <button class="btn-primary" onclick="buscarBiblia()"><i class="fas fa-search"></i></button>
+        <button class="btn-primary" onclick="window.buscarBiblia()"><i class="fas fa-search"></i></button>
       </div>
       <div id="resultadoBiblia" style="margin-top:6px; line-height:1.6; font-size:14px;"></div>
     </div>
@@ -902,7 +901,7 @@
       <h3><i class="fas fa-robot"></i> Asistente IA (contexto histórico)</h3>
       <div style="display:flex; gap:6px;">
         <input type="text" id="iaPregunta" placeholder="Pregunta sobre el pasaje..." style="flex:1; padding:8px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
-        <button class="btn-primary" onclick="preguntarIA()"><i class="fas fa-paper-plane"></i></button>
+        <button class="btn-primary" onclick="window.preguntarIA()"><i class="fas fa-paper-plane"></i></button>
       </div>
       <div class="ia-chat" id="iaChat"></div>
       <div style="margin-top:4px; font-size:11px; color:var(--text-secondary);">
@@ -922,7 +921,7 @@
         <input type="file" id="postVideo" accept="video/*" style="display:none;">
         <button class="btn-outline" onclick="document.getElementById('postVideo').click()"><i class="fas fa-video"></i> Video</button>
         <input type="url" id="postLink" placeholder="Enlace..." style="flex:1; min-width:120px; padding:6px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
-        <button class="btn-primary" onclick="crearPublicacion()">Publicar</button>
+        <button class="btn-primary" onclick="window.crearPublicacion()">Publicar</button>
       </div>
     </div>
     <div id="feedContainer"></div>
@@ -932,7 +931,7 @@
   <div class="panel" id="panel-grupos">
     <div class="card">
       <h3><i class="fas fa-users"></i> Grupos de Conexión (máx 15)</h3>
-      <button class="btn-primary" onclick="abrirModalGrupo()"><i class="fas fa-plus"></i> Crear Grupo</button>
+      <button class="btn-primary" onclick="window.abrirModalGrupo()"><i class="fas fa-plus"></i> Crear Grupo</button>
     </div>
     <div id="gruposContainer"></div>
   </div>
@@ -941,7 +940,7 @@
   <div class="panel" id="panel-discipulado">
     <div class="card">
       <h3><i class="fas fa-chalkboard-teacher"></i> Discipulados</h3>
-      <button class="btn-primary" onclick="abrirModalDiscipulado()"><i class="fas fa-plus"></i> Nuevo Discipulado</button>
+      <button class="btn-primary" onclick="window.abrirModalDiscipulado()"><i class="fas fa-plus"></i> Nuevo Discipulado</button>
     </div>
     <div id="discipuladoContainer"></div>
   </div>
@@ -951,7 +950,7 @@
     <div class="card">
       <h3><i class="fas fa-pray"></i> Publicar petición de oración</h3>
       <textarea id="oracionInput" placeholder="Comparte tu petición de oración..." rows="3" style="width:100%; border-radius:10px; border:1px solid var(--border-color); padding:8px; background:var(--bg-body); color:var(--text-primary); resize:vertical; font-size:13px;"></textarea>
-      <button class="btn-primary" onclick="publicarOracion()" style="margin-top:6px;"><i class="fas fa-upload"></i> Publicar oración</button>
+      <button class="btn-primary" onclick="window.publicarOracion()" style="margin-top:6px;"><i class="fas fa-upload"></i> Publicar oración</button>
     </div>
     <div id="oracionesContainer"></div>
   </div>
@@ -960,7 +959,7 @@
   <div class="panel" id="panel-mapa">
     <div class="card">
       <h3><i class="fas fa-map-marked-alt"></i> Misioneros en el mundo</h3>
-      <button class="btn-primary" onclick="registrarMisionero()"><i class="fas fa-user-plus"></i> Registrarme como Misionero</button>
+      <button class="btn-primary" onclick="window.registrarMisionero()"><i class="fas fa-user-plus"></i> Registrarme como Misionero</button>
       <div id="misionerosList" style="margin-top:10px;"></div>
     </div>
     <div class="card">
@@ -990,7 +989,7 @@
       <input type="tel" id="needTelefono" placeholder="Teléfono de contacto" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
       <label style="font-size:12px; color:var(--text-secondary);">Fotos (opcional):</label>
       <input type="file" id="needFotos" accept="image/*" multiple style="margin:2px 0 8px;">
-      <button class="btn-primary" onclick="publicarNecesidad()"><i class="fas fa-upload"></i> Publicar</button>
+      <button class="btn-primary" onclick="window.publicarNecesidad()"><i class="fas fa-upload"></i> Publicar</button>
     </div>
     <div id="necesidadesContainer"></div>
   </div>
@@ -1008,12 +1007,12 @@
         <option value="3 tiempos">3 tiempos (desayuno, almuerzo, cena)</option>
       </select>
       <input type="number" id="servicioPersonas" placeholder="Número de personas" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
-      <button class="btn-primary" onclick="ofrecerServicio()"><i class="fas fa-plus"></i> Ofrecer ayuda</button>
+      <button class="btn-primary" onclick="window.ofrecerServicio()"><i class="fas fa-plus"></i> Ofrecer ayuda</button>
     </div>
     <div id="serviciosContainer"></div>
   </div>
 
-  <!-- ===== PANEL: ADMIN (NUEVO) ===== -->
+  <!-- ===== PANEL: ADMIN ===== -->
   <div class="panel" id="panel-admin">
     <div class="card">
       <h3><i class="fas fa-tachometer-alt"></i> Panel de Administración</h3>
@@ -1059,7 +1058,7 @@
       <div id="adminServicioList"></div>
     </div>
 
-    <!-- Configuración de IA (movida aquí) -->
+    <!-- Configuración de IA -->
     <div class="card">
       <h3><i class="fas fa-robot"></i> Configuración de IA (OpenRouter)</h3>
       <div class="admin-ia-config">
@@ -1067,11 +1066,11 @@
         <input type="text" id="openrouterKey" placeholder="sk-or-...">
         <label>URL del modelo</label>
         <input type="text" id="openrouterModel" placeholder="https://openrouter.ai/api/v1/chat/completions" value="https://openrouter.ai/api/v1/chat/completions">
-        <button class="btn-primary" onclick="guardarConfigIA()" style="margin-top:6px;">Guardar clave y URL</button>
+        <button class="btn-primary" onclick="window.guardarConfigIA()" style="margin-top:6px;">Guardar clave y URL</button>
         <hr style="border-color:var(--border-color); margin:12px 0;">
         <label>Entrenar agente (contexto histórico / teológico)</label>
         <textarea id="iaContexto" placeholder="Instrucciones adicionales para el asistente..." rows="3"></textarea>
-        <button class="btn-primary" onclick="guardarContextoIA()" style="margin-top:6px;">Guardar contexto</button>
+        <button class="btn-primary" onclick="window.guardarContextoIA()" style="margin-top:6px;">Guardar contexto</button>
         <p style="font-size:11px; color:var(--text-secondary); margin-top:4px;">La clave y el contexto se almacenan localmente.</p>
       </div>
     </div>
@@ -1080,7 +1079,7 @@
   <!-- ============================================================ -->
   <!-- MODALES -->
 
-  <!-- Modal Login de usuario (con campos adicionales) -->
+  <!-- Modal Login de usuario -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
       <h3><i class="fas fa-user"></i> Registro / Inicio de sesión</h3>
@@ -1102,8 +1101,8 @@
         <label><input type="checkbox" value="ayuda_alimentaria"> Ayuda alimentaria</label>
       </div>
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="cerrarModal('loginModal')">Cancelar</button>
-        <button class="btn-confirm" onclick="iniciarSesion()">Entrar / Registrarse</button>
+        <button class="btn-cancel" onclick="window.cerrarModal('loginModal')">Cancelar</button>
+        <button class="btn-confirm" onclick="window.iniciarSesion()">Entrar / Registrarse</button>
       </div>
     </div>
   </div>
@@ -1118,8 +1117,8 @@
       <input type="password" id="adminPassword" placeholder="••••••••">
       <div id="adminLoginError" style="color:#e74c3c; font-size:13px; margin-top:4px;"></div>
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="cerrarModal('adminLoginModal')">Cancelar</button>
-        <button class="btn-confirm" onclick="loginAdmin()">Ingresar</button>
+        <button class="btn-cancel" onclick="window.cerrarModal('adminLoginModal')">Cancelar</button>
+        <button class="btn-confirm" onclick="window.loginAdmin()">Ingresar</button>
       </div>
     </div>
   </div>
@@ -1143,8 +1142,8 @@
       <label>Descripción (opcional)</label>
       <input type="text" id="carruselDesc" placeholder="Descripción">
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="cerrarModal('carruselModal')">Cerrar</button>
-        <button class="btn-confirm" onclick="agregarElementoCarrusel()">Agregar</button>
+        <button class="btn-cancel" onclick="window.cerrarModal('carruselModal')">Cerrar</button>
+        <button class="btn-confirm" onclick="window.agregarElementoCarrusel()">Agregar</button>
       </div>
     </div>
   </div>
@@ -1164,8 +1163,8 @@
       <label>Teléfono del facilitador</label>
       <input type="tel" id="grupoTelefono" placeholder="+506 8888-8888">
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="cerrarModal('grupoModal')">Cancelar</button>
-        <button class="btn-confirm" onclick="crearGrupo()">Crear</button>
+        <button class="btn-cancel" onclick="window.cerrarModal('grupoModal')">Cancelar</button>
+        <button class="btn-confirm" onclick="window.crearGrupo()">Crear</button>
       </div>
     </div>
   </div>
@@ -1183,1406 +1182,1343 @@
       <label>Descripción</label>
       <textarea id="discDesc" placeholder="Contenido, días, etc."></textarea>
       <div class="modal-actions">
-        <button class="btn-cancel" onclick="cerrarModal('discipuladoModal')">Cancelar</button>
-        <button class="btn-confirm" onclick="crearDiscipulado()">Crear</button>
+        <button class="btn-cancel" onclick="window.cerrarModal('discipuladoModal')">Cancelar</button>
+        <button class="btn-confirm" onclick="window.crearDiscipulado()">Crear</button>
       </div>
     </div>
   </div>
 
 </div><!-- /app -->
 
-<!-- ============================================================ -->
 <script>
-// ================================================================
-// 0. FIREBASE CONFIG (credentiales proporcionadas)
-// ================================================================
-const firebaseConfig = {
-  apiKey: "AIzaSyCpCtxZqnj6HyjfjAfkgiJcEB5dMxwtmwc",
-  authDomain: "bibliarv60-5bbc5.firebaseapp.com",
-  projectId: "bibliarv60-5bbc5",
-  storageBucket: "bibliarv60-5bbc5.firebasestorage.app",
-  messagingSenderId: "445409342174",
-  appId: "1:445409342174:web:0ce65b2f6bc935ba2c884f",
-  measurementId: "G-DQ56JYDPN0"
-};
+document.addEventListener('DOMContentLoaded', function() {
+  'use strict';
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
+  // ================================================================
+  // 0. FIREBASE CONFIG (credentiales proporcionadas)
+  // ================================================================
+  const firebaseConfig = {
+    apiKey: "AIzaSyCpCtxZqnj6HyjfjAfkgiJcEB5dMxwtmwc",
+    authDomain: "bibliarv60-5bbc5.firebaseapp.com",
+    projectId: "bibliarv60-5bbc5",
+    storageBucket: "bibliarv60-5bbc5.firebasestorage.app",
+    messagingSenderId: "445409342174",
+    appId: "1:445409342174:web:0ce65b2f6bc935ba2c884f",
+    measurementId: "G-DQ56JYDPN0"
+  };
 
-// ================================================================
-// 1. ESTADO GLOBAL Y LOCALSTORAGE
-// ================================================================
-const STORAGE = {
-  usuarios: 'iglesia_usuarios',
-  posts: 'iglesia_posts',
-  grupos: 'iglesia_grupos',
-  discipulados: 'iglesia_discipulados',
-  misioneros: 'iglesia_misioneros',
-  necesidades: 'iglesia_necesidades',
-  servicios: 'iglesia_servicios',
-  oraciones: 'iglesia_oraciones',
-  historialBiblia: 'iglesia_historial_biblia',
-  iaKey: 'iglesia_ia_key',
-  iaModel: 'iglesia_ia_model',
-  iaContexto: 'iglesia_ia_contexto',
-  carrusel: 'iglesia_carrusel'
-};
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-let usuarioActual = ''; // solo el nombre (string) para compatibilidad
-let isAdmin = false;
-let carruselInterval = null;
+  // ================================================================
+  // 1. ESTADO GLOBAL Y LOCALSTORAGE
+  // ================================================================
+  const STORAGE = {
+    usuarios: 'iglesia_usuarios',
+    posts: 'iglesia_posts',
+    grupos: 'iglesia_grupos',
+    discipulados: 'iglesia_discipulados',
+    misioneros: 'iglesia_misioneros',
+    necesidades: 'iglesia_necesidades',
+    servicios: 'iglesia_servicios',
+    oraciones: 'iglesia_oraciones',
+    historialBiblia: 'iglesia_historial_biblia',
+    iaKey: 'iglesia_ia_key',
+    iaModel: 'iglesia_ia_model',
+    iaContexto: 'iglesia_ia_contexto',
+    carrusel: 'iglesia_carrusel'
+  };
 
-function getData(key, def) {
-  try { return JSON.parse(localStorage.getItem(key)) || def; } catch(e) { return def; }
-}
-function setData(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+  let usuarioActual = '';
+  let isAdmin = false;
+  let carruselInterval = null;
+  let editModeActivo = false;
 
-// ================================================================
-// 2. USUARIOS Y LOGIN (con campos extendidos)
-// ================================================================
-function iniciarSesion() {
-  const nombre = document.getElementById('loginName').value.trim();
-  const telefono = document.getElementById('loginTelefono').value.trim();
-  const edad = parseInt(document.getElementById('loginEdad').value.trim());
-  // Obtener apoyos seleccionados
-  const apoyos = [];
-  document.querySelectorAll('#loginModal .checkbox-group input[type="checkbox"]:checked').forEach(cb => {
-    apoyos.push(cb.value);
-  });
-
-  if (!nombre || !telefono || isNaN(edad) || edad <= 0) {
-    alert('Por favor completa todos los campos obligatorios: Nombre, Teléfono y Edad.');
-    return;
+  function getData(key, def) {
+    try { return JSON.parse(localStorage.getItem(key)) || def; } catch(e) { return def; }
   }
+  function setData(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
-  let usuarios = getData(STORAGE.usuarios, []);
-  // Buscar si el nombre ya existe
-  let usuarioExistente = usuarios.find(u => u.nombre === nombre);
-  if (usuarioExistente) {
-    // Actualizar datos (excepto nombre)
-    usuarioExistente.telefono = telefono;
-    usuarioExistente.edad = edad;
-    usuarioExistente.apoyos = apoyos;
-  } else {
-    // Nuevo usuario
-    usuarios.push({
-      nombre: nombre,
-      telefono: telefono,
-      edad: edad,
-      apoyos: apoyos
+  // ================================================================
+  // 2. USUARIOS Y LOGIN (con campos extendidos)
+  // ================================================================
+  window.iniciarSesion = function() {
+    const nombre = document.getElementById('loginName').value.trim();
+    const telefono = document.getElementById('loginTelefono').value.trim();
+    const edad = parseInt(document.getElementById('loginEdad').value.trim());
+    const apoyos = [];
+    document.querySelectorAll('#loginModal .checkbox-group input[type="checkbox"]:checked').forEach(cb => {
+      apoyos.push(cb.value);
     });
-  }
-  setData(STORAGE.usuarios, usuarios);
 
-  // Establecer sesión
-  usuarioActual = nombre;
-  document.getElementById('userNameDisplay').textContent = nombre;
-  document.getElementById('loginBtn').textContent = 'Cambiar';
-  cerrarModal('loginModal');
-
-  // Refrescar vistas que dependen del usuario
-  renderFeed();
-  renderGrupos();
-  renderDiscipulados();
-  renderNecesidades();
-  renderOraciones();
-  if (isAdmin) renderAdminPanel();
-}
-
-// Manejo del botón de login
-document.getElementById('loginBtn').addEventListener('click', function() {
-  if (usuarioActual) {
-    if (confirm('¿Cerrar sesión de usuario?')) {
-      usuarioActual = '';
-      document.getElementById('userNameDisplay').textContent = 'Invitado';
-      this.textContent = 'Entrar';
-      renderFeed();
-      renderOraciones();
+    if (!nombre || !telefono || isNaN(edad) || edad <= 0) {
+      alert('Por favor completa todos los campos obligatorios: Nombre, Teléfono y Edad.');
+      return;
     }
-  } else {
-    // Abrir modal con campos vacíos (o cargar datos si ya existe)
-    // Limpiar campos
-    document.getElementById('loginName').value = '';
-    document.getElementById('loginTelefono').value = '';
-    document.getElementById('loginEdad').value = '';
-    document.querySelectorAll('#loginModal .checkbox-group input[type="checkbox"]').forEach(cb => cb.checked = false);
-    abrirModal('loginModal');
-  }
-});
 
-// Cargar usuario normal guardado (último)
-(function cargarUsuario() {
-  const users = getData(STORAGE.usuarios, []);
-  if (users.length > 0) {
-    // Tomar el último usuario activo (o el primero)
-    const ultimo = users[users.length - 1];
-    usuarioActual = ultimo.nombre;
-    document.getElementById('userNameDisplay').textContent = usuarioActual;
+    let usuarios = getData(STORAGE.usuarios, []);
+    let usuarioExistente = usuarios.find(u => u.nombre === nombre);
+    if (usuarioExistente) {
+      usuarioExistente.telefono = telefono;
+      usuarioExistente.edad = edad;
+      usuarioExistente.apoyos = apoyos;
+    } else {
+      usuarios.push({ nombre, telefono, edad, apoyos });
+    }
+    setData(STORAGE.usuarios, usuarios);
+
+    usuarioActual = nombre;
+    document.getElementById('userNameDisplay').textContent = nombre;
     document.getElementById('loginBtn').textContent = 'Cambiar';
-  }
-})();
+    window.cerrarModal('loginModal');
 
-// ================================================================
-// 3. ADMIN - FIREBASE AUTH
-// ================================================================
-const adminLoginBtn = document.getElementById('adminLoginBtn');
-const adminBadge = document.getElementById('adminBadge');
-const adminLogoutBtn = document.getElementById('adminLogoutBtn');
-const gestionarCarruselBtn = document.getElementById('gestionarCarruselBtn');
-const adminTab = document.getElementById('adminTab');
-
-auth.onAuthStateChanged(user => {
-  if (user) {
-    isAdmin = true;
-    adminLoginBtn.style.display = 'none';
-    adminBadge.style.display = 'inline-block';
-    adminLogoutBtn.style.display = 'inline-block';
-    adminBadge.textContent = ` Admin (${user.email})`;
-    gestionarCarruselBtn.style.display = 'inline-block';
-    adminTab.style.display = 'inline-block';
-    document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+    renderFeed();
     renderGrupos();
     renderDiscipulados();
     renderNecesidades();
-    document.getElementById('btnEditarVersos').style.display = 'inline-block';
-    renderCarrusel();
-    if (document.getElementById('panel-admin').classList.contains('active')) {
-      renderAdminPanel();
-    }
-  } else {
-    isAdmin = false;
-    adminLoginBtn.style.display = 'inline-block';
-    adminBadge.style.display = 'none';
-    adminLogoutBtn.style.display = 'none';
-    gestionarCarruselBtn.style.display = 'none';
-    adminTab.style.display = 'none';
-    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-    renderGrupos();
-    renderDiscipulados();
-    renderNecesidades();
-    document.getElementById('btnEditarVersos').style.display = 'none';
-    renderCarrusel();
-  }
-});
+    renderOraciones();
+    if (isAdmin) renderAdminPanel();
+  };
 
-function loginAdmin() {
-  const email = document.getElementById('adminEmail').value.trim();
-  const password = document.getElementById('adminPassword').value.trim();
-  const errorDiv = document.getElementById('adminLoginError');
-  errorDiv.textContent = '';
-  if (!email || !password) {
-    errorDiv.textContent = 'Correo y contraseña requeridos.';
-    return;
-  }
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      cerrarModal('adminLoginModal');
-      document.getElementById('adminEmail').value = '';
-      document.getElementById('adminPassword').value = '';
-    })
-    .catch(err => {
-      errorDiv.textContent = 'Error: ' + err.message;
-    });
-}
-
-function logoutAdmin() {
-  auth.signOut().then(() => {});
-}
-
-adminLoginBtn.addEventListener('click', () => {
-  if (!isAdmin) abrirModal('adminLoginModal');
-});
-adminLogoutBtn.addEventListener('click', logoutAdmin);
-
-// Al hacer clic en la insignia Admin, ir a la pestaña Admin
-adminBadge.addEventListener('click', function() {
-  if (isAdmin) switchPanel('admin');
-});
-
-// ================================================================
-// 4. CARRUSEL
-// ================================================================
-function getCarrusel() { return getData(STORAGE.carrusel, []); }
-function setCarrusel(data) { setData(STORAGE.carrusel, data); }
-
-function renderCarrusel() {
-  const slides = getCarrusel();
-  const container = document.getElementById('carouselSlides');
-  const indicators = document.getElementById('carouselIndicators');
-  if (slides.length === 0) {
-    container.innerHTML = `<div class="carousel-slide active" style="display:flex; align-items:center; justify-content:center; background:var(--teal-light); color:var(--text-secondary); height:260px;">
-      <p style="text-align:center;">Sin contenido en el carrusel.<br>El administrador puede agregar imágenes o videos.</p>
-    </div>`;
-    indicators.innerHTML = '';
-    return;
-  }
-  let html = '';
-  let indHtml = '';
-  slides.forEach((item, index) => {
-    const active = index === 0 ? 'active' : '';
-    let content = '';
-    if (item.type === 'image') {
-      content = `<img src="${item.url}" alt="${item.title || 'Imagen'}">`;
-    } else if (item.type === 'video') {
-      if (item.url.includes('youtube.com/embed') || item.url.includes('vimeo.com')) {
-        content = `<iframe src="${item.url}" allowfullscreen></iframe>`;
-      } else {
-        content = `<video controls><source src="${item.url}" type="video/mp4"></video>`;
+  // Botón Login
+  document.getElementById('loginBtn').addEventListener('click', function() {
+    if (usuarioActual) {
+      if (confirm('¿Cerrar sesión de usuario?')) {
+        usuarioActual = '';
+        document.getElementById('userNameDisplay').textContent = 'Invitado';
+        this.textContent = 'Entrar';
+        renderFeed();
+        renderOraciones();
       }
+    } else {
+      document.getElementById('loginName').value = '';
+      document.getElementById('loginTelefono').value = '';
+      document.getElementById('loginEdad').value = '';
+      document.querySelectorAll('#loginModal .checkbox-group input[type="checkbox"]').forEach(cb => cb.checked = false);
+      window.abrirModal('loginModal');
     }
-    html += `<div class="carousel-slide ${active}">
-      ${content}
-      <div class="carousel-caption">
-        ${item.title ? `<h5>${item.title}</h5>` : ''}
-        ${item.description ? `<p>${item.description}</p>` : ''}
-      </div>
-    </div>`;
-    indHtml += `<span class="${active}" data-index="${index}" onclick="irSlide(${index})"></span>`;
   });
-  container.innerHTML = html;
-  indicators.innerHTML = indHtml;
-  if (carruselInterval) clearInterval(carruselInterval);
-  carruselInterval = setInterval(() => cambiarSlide(1), 5000);
-}
 
-function cambiarSlide(dir) {
-  const slides = document.querySelectorAll('#carouselSlides .carousel-slide');
-  if (slides.length === 0) return;
-  let current = 0;
-  slides.forEach((s, i) => { if (s.classList.contains('active')) current = i; });
-  let next = (current + dir + slides.length) % slides.length;
-  irSlide(next);
-}
+  // Cargar usuario guardado
+  (function cargarUsuario() {
+    const users = getData(STORAGE.usuarios, []);
+    if (users.length > 0) {
+      const ultimo = users[users.length - 1];
+      usuarioActual = ultimo.nombre;
+      document.getElementById('userNameDisplay').textContent = usuarioActual;
+      document.getElementById('loginBtn').textContent = 'Cambiar';
+    }
+  })();
 
-function irSlide(index) {
-  const slides = document.querySelectorAll('#carouselSlides .carousel-slide');
-  const indicators = document.querySelectorAll('#carouselIndicators span');
-  if (slides.length === 0) return;
-  slides.forEach((s, i) => s.classList.toggle('active', i === index));
-  indicators.forEach((s, i) => s.classList.toggle('active', i === index));
-}
+  // ================================================================
+  // 3. ADMIN - FIREBASE AUTH
+  // ================================================================
+  const adminLoginBtn = document.getElementById('adminLoginBtn');
+  const adminBadge = document.getElementById('adminBadge');
+  const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+  const gestionarCarruselBtn = document.getElementById('gestionarCarruselBtn');
+  const adminTab = document.getElementById('adminTab');
 
-// ================================================================
-// 5. GESTIÓN CARRUSEL (solo admin)
-// ================================================================
-function abrirModalCarrusel() {
-  if (!isAdmin) { alert('Solo el administrador puede gestionar el carrusel.'); return; }
-  abrirModal('carruselModal');
-  renderListaCarrusel();
-}
-
-function renderListaCarrusel() {
-  const items = getCarrusel();
-  const container = document.getElementById('carruselList');
-  if (items.length === 0) {
-    container.innerHTML = '<p style="color:var(--text-secondary);">No hay elementos.</p>';
-    return;
-  }
-  let html = '';
-  items.forEach((item, idx) => {
-    html += `<div class="carrusel-item-admin">
-      <span><strong>${item.title || 'Sin título'}</strong> (${item.type})</span>
-      <button class="btn-danger" onclick="eliminarElementoCarrusel(${idx})">Eliminar</button>
-    </div>`;
+  auth.onAuthStateChanged(function(user) {
+    if (user) {
+      isAdmin = true;
+      adminLoginBtn.style.display = 'none';
+      adminBadge.style.display = 'inline-block';
+      adminLogoutBtn.style.display = 'inline-block';
+      adminBadge.textContent = ' Admin (' + user.email + ')';
+      gestionarCarruselBtn.style.display = 'inline-block';
+      adminTab.style.display = 'inline-block';
+      document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+      renderGrupos();
+      renderDiscipulados();
+      renderNecesidades();
+      document.getElementById('btnEditarVersos').style.display = 'inline-block';
+      renderCarrusel();
+      if (document.getElementById('panel-admin').classList.contains('active')) {
+        renderAdminPanel();
+      }
+    } else {
+      isAdmin = false;
+      adminLoginBtn.style.display = 'inline-block';
+      adminBadge.style.display = 'none';
+      adminLogoutBtn.style.display = 'none';
+      gestionarCarruselBtn.style.display = 'none';
+      adminTab.style.display = 'none';
+      document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+      renderGrupos();
+      renderDiscipulados();
+      renderNecesidades();
+      document.getElementById('btnEditarVersos').style.display = 'none';
+      renderCarrusel();
+    }
   });
-  container.innerHTML = html;
-}
 
-function agregarElementoCarrusel() {
-  const tipo = document.getElementById('carruselTipo').value;
-  const url = document.getElementById('carruselUrl').value.trim();
-  const titulo = document.getElementById('carruselTitulo').value.trim();
-  const desc = document.getElementById('carruselDesc').value.trim();
-  if (!url) { alert('La URL es obligatoria.'); return; }
-  const items = getCarrusel();
-  items.push({ id: Date.now(), type: tipo, url, title: titulo, description: desc });
-  setCarrusel(items);
-  document.getElementById('carruselUrl').value = '';
-  document.getElementById('carruselTitulo').value = '';
-  document.getElementById('carruselDesc').value = '';
-  renderListaCarrusel();
-  renderCarrusel();
-}
+  window.loginAdmin = function() {
+    const email = document.getElementById('adminEmail').value.trim();
+    const password = document.getElementById('adminPassword').value.trim();
+    const errorDiv = document.getElementById('adminLoginError');
+    errorDiv.textContent = '';
+    if (!email || !password) {
+      errorDiv.textContent = 'Correo y contraseña requeridos.';
+      return;
+    }
+    auth.signInWithEmailAndPassword(email, password)
+      .then(function() {
+        window.cerrarModal('adminLoginModal');
+        document.getElementById('adminEmail').value = '';
+        document.getElementById('adminPassword').value = '';
+      })
+      .catch(function(err) {
+        errorDiv.textContent = 'Error: ' + err.message;
+      });
+  };
 
-function eliminarElementoCarrusel(index) {
-  if (!confirm('¿Eliminar este elemento?')) return;
-  const items = getCarrusel();
-  items.splice(index, 1);
-  setCarrusel(items);
-  renderListaCarrusel();
-  renderCarrusel();
-}
-
-// ================================================================
-// 6. PANELES Y NAVEGACIÓN
-// ================================================================
-function switchPanel(name) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const panel = document.getElementById('panel-' + name);
-  if (panel) panel.classList.add('active');
-  const tab = document.querySelector(`.tab[data-panel="${name}"]`);
-  if (tab) tab.classList.add('active');
-  if (name === 'muro') renderFeed();
-  if (name === 'grupos') renderGrupos();
-  if (name === 'discipulado') renderDiscipulados();
-  if (name === 'oracion') renderOraciones();
-  if (name === 'mapa') renderMisioneros();
-  if (name === 'necesidades') renderNecesidades();
-  if (name === 'servicio') renderServicios();
-  if (name === 'biblia') cargarHistorial();
-  if (name === 'inicio') renderCarrusel();
-  if (name === 'admin' && isAdmin) renderAdminPanel();
-}
-
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => switchPanel(tab.dataset.panel));
-});
-
-function abrirModal(id) { document.getElementById(id).classList.add('show'); }
-function cerrarModal(id) { document.getElementById(id).classList.remove('show'); }
-
-// ================================================================
-// 7. MURO (FEED)
-// ================================================================
-function crearPublicacion() {
-  if (!usuarioActual) { alert('Ingresa con tu nombre primero.'); return; }
-  const texto = document.getElementById('postInput').value.trim();
-  const link = document.getElementById('postLink').value.trim();
-  const imgFile = document.getElementById('postImage').files[0];
-  const vidFile = document.getElementById('postVideo').files[0];
-  if (!texto && !link && !imgFile && !vidFile) { alert('Escribe algo o adjunta contenido.'); return; }
-
-  let media = null;
-  if (imgFile) {
-    const reader = new FileReader();
-    reader.onload = function(e) { media = { type: 'image', data: e.target.result }; publicar(media); };
-    reader.readAsDataURL(imgFile);
-  } else if (vidFile) {
-    const reader = new FileReader();
-    reader.onload = function(e) { media = { type: 'video', data: e.target.result }; publicar(media); };
-    reader.readAsDataURL(vidFile);
-  } else {
-    publicar(null);
+  function logoutAdmin() {
+    auth.signOut().then(function() {});
   }
 
-  function publicar(media) {
+  adminLoginBtn.addEventListener('click', function() {
+    if (!isAdmin) window.abrirModal('adminLoginModal');
+  });
+  adminLogoutBtn.addEventListener('click', logoutAdmin);
+
+  adminBadge.addEventListener('click', function() {
+    if (isAdmin) window.switchPanel('admin');
+  });
+
+  // ================================================================
+  // 4. CARRUSEL
+  // ================================================================
+  function getCarrusel() { return getData(STORAGE.carrusel, []); }
+  function setCarrusel(data) { setData(STORAGE.carrusel, data); }
+
+  function renderCarrusel() {
+    const slides = getCarrusel();
+    const container = document.getElementById('carouselSlides');
+    const indicators = document.getElementById('carouselIndicators');
+    if (slides.length === 0) {
+      container.innerHTML = '<div class="carousel-slide active" style="display:flex; align-items:center; justify-content:center; background:var(--teal-light); color:var(--text-secondary); height:260px;"><p style="text-align:center;">Sin contenido en el carrusel.<br>El administrador puede agregar imágenes o videos.</p></div>';
+      indicators.innerHTML = '';
+      return;
+    }
+    let html = '';
+    let indHtml = '';
+    slides.forEach(function(item, index) {
+      const active = index === 0 ? 'active' : '';
+      let content = '';
+      if (item.type === 'image') {
+        content = '<img src="' + item.url + '" alt="' + (item.title || 'Imagen') + '">';
+      } else if (item.type === 'video') {
+        if (item.url.includes('youtube.com/embed') || item.url.includes('vimeo.com')) {
+          content = '<iframe src="' + item.url + '" allowfullscreen></iframe>';
+        } else {
+          content = '<video controls><source src="' + item.url + '" type="video/mp4"></video>';
+        }
+      }
+      html += '<div class="carousel-slide ' + active + '">' +
+        content +
+        '<div class="carousel-caption">' +
+        (item.title ? '<h5>' + item.title + '</h5>' : '') +
+        (item.description ? '<p>' + item.description + '</p>' : '') +
+        '</div></div>';
+      indHtml += '<span class="' + active + '" data-index="' + index + '" onclick="window.irSlide(' + index + ')"></span>';
+    });
+    container.innerHTML = html;
+    indicators.innerHTML = indHtml;
+    if (carruselInterval) clearInterval(carruselInterval);
+    carruselInterval = setInterval(function() { window.cambiarSlide(1); }, 5000);
+  }
+
+  window.cambiarSlide = function(dir) {
+    const slides = document.querySelectorAll('#carouselSlides .carousel-slide');
+    if (slides.length === 0) return;
+    let current = 0;
+    slides.forEach(function(s, i) { if (s.classList.contains('active')) current = i; });
+    let next = (current + dir + slides.length) % slides.length;
+    window.irSlide(next);
+  };
+
+  window.irSlide = function(index) {
+    const slides = document.querySelectorAll('#carouselSlides .carousel-slide');
+    const indicators = document.querySelectorAll('#carouselIndicators span');
+    if (slides.length === 0) return;
+    slides.forEach(function(s, i) { s.classList.toggle('active', i === index); });
+    indicators.forEach(function(s, i) { s.classList.toggle('active', i === index); });
+  };
+
+  // ================================================================
+  // 5. GESTIÓN CARRUSEL (solo admin)
+  // ================================================================
+  window.abrirModalCarrusel = function() {
+    if (!isAdmin) { alert('Solo el administrador puede gestionar el carrusel.'); return; }
+    window.abrirModal('carruselModal');
+    renderListaCarrusel();
+  };
+
+  function renderListaCarrusel() {
+    const items = getCarrusel();
+    const container = document.getElementById('carruselList');
+    if (items.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No hay elementos.</p>';
+      return;
+    }
+    let html = '';
+    items.forEach(function(item, idx) {
+      html += '<div class="carrusel-item-admin">' +
+        '<span><strong>' + (item.title || 'Sin título') + '</strong> (' + item.type + ')</span>' +
+        '<button class="btn-danger" onclick="window.eliminarElementoCarrusel(' + idx + ')">Eliminar</button>' +
+        '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  window.agregarElementoCarrusel = function() {
+    const tipo = document.getElementById('carruselTipo').value;
+    const url = document.getElementById('carruselUrl').value.trim();
+    const titulo = document.getElementById('carruselTitulo').value.trim();
+    const desc = document.getElementById('carruselDesc').value.trim();
+    if (!url) { alert('La URL es obligatoria.'); return; }
+    const items = getCarrusel();
+    items.push({ id: Date.now(), type: tipo, url, title: titulo, description: desc });
+    setCarrusel(items);
+    document.getElementById('carruselUrl').value = '';
+    document.getElementById('carruselTitulo').value = '';
+    document.getElementById('carruselDesc').value = '';
+    renderListaCarrusel();
+    renderCarrusel();
+  };
+
+  window.eliminarElementoCarrusel = function(index) {
+    if (!confirm('¿Eliminar este elemento?')) return;
+    const items = getCarrusel();
+    items.splice(index, 1);
+    setCarrusel(items);
+    renderListaCarrusel();
+    renderCarrusel();
+  };
+
+  // ================================================================
+  // 6. PANELES Y NAVEGACIÓN
+  // ================================================================
+  window.switchPanel = function(name) {
+    document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+    document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+    const panel = document.getElementById('panel-' + name);
+    if (panel) panel.classList.add('active');
+    const tab = document.querySelector('.tab[data-panel="' + name + '"]');
+    if (tab) tab.classList.add('active');
+    if (name === 'muro') renderFeed();
+    if (name === 'grupos') renderGrupos();
+    if (name === 'discipulado') renderDiscipulados();
+    if (name === 'oracion') renderOraciones();
+    if (name === 'mapa') renderMisioneros();
+    if (name === 'necesidades') renderNecesidades();
+    if (name === 'servicio') renderServicios();
+    if (name === 'biblia') cargarHistorial();
+    if (name === 'inicio') renderCarrusel();
+    if (name === 'admin' && isAdmin) renderAdminPanel();
+  };
+
+  document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      window.switchPanel(this.dataset.panel);
+    });
+  });
+
+  window.abrirModal = function(id) { document.getElementById(id).classList.add('show'); };
+  window.cerrarModal = function(id) { document.getElementById(id).classList.remove('show'); };
+
+  // ================================================================
+  // 7. MURO (FEED)
+  // ================================================================
+  window.crearPublicacion = function() {
+    if (!usuarioActual) { alert('Ingresa con tu nombre primero.'); return; }
+    const texto = document.getElementById('postInput').value.trim();
+    const link = document.getElementById('postLink').value.trim();
+    const imgFile = document.getElementById('postImage').files[0];
+    const vidFile = document.getElementById('postVideo').files[0];
+    if (!texto && !link && !imgFile && !vidFile) { alert('Escribe algo o adjunta contenido.'); return; }
+
+    let media = null;
+    if (imgFile) {
+      const reader = new FileReader();
+      reader.onload = function(e) { media = { type: 'image', data: e.target.result }; publicar(media); };
+      reader.readAsDataURL(imgFile);
+    } else if (vidFile) {
+      const reader = new FileReader();
+      reader.onload = function(e) { media = { type: 'video', data: e.target.result }; publicar(media); };
+      reader.readAsDataURL(vidFile);
+    } else {
+      publicar(null);
+    }
+
+    function publicar(media) {
+      const posts = getData(STORAGE.posts, []);
+      posts.unshift({
+        id: Date.now(),
+        autor: usuarioActual,
+        texto: texto,
+        link: link,
+        media: media,
+        fecha: new Date().toLocaleString(),
+        likes: [],
+        comentarios: []
+      });
+      setData(STORAGE.posts, posts);
+      document.getElementById('postInput').value = '';
+      document.getElementById('postLink').value = '';
+      document.getElementById('postImage').value = '';
+      document.getElementById('postVideo').value = '';
+      renderFeed();
+    }
+  };
+
+  function renderFeed() {
+    const container = document.getElementById('feedContainer');
     const posts = getData(STORAGE.posts, []);
-    posts.unshift({
+    if (posts.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones aún. ¡Sé el primero!</p>'; return; }
+    let html = '';
+    posts.forEach(function(post) {
+      const liked = post.likes && post.likes.includes(usuarioActual);
+      html += '<div class="post">' +
+        '<div class="post-header">' +
+        '<div class="post-avatar">' + post.autor.charAt(0).toUpperCase() + '</div>' +
+        '<div><div class="post-author">' + post.autor + '</div><div class="post-time">' + post.fecha + '</div></div>' +
+        '</div>' +
+        '<div class="post-content">' + post.texto + '</div>';
+      if (post.media) {
+        if (post.media.type === 'image') html += '<img src="' + post.media.data + '" class="post-media" alt="imagen">';
+        else if (post.media.type === 'video') html += '<video controls class="post-media" src="' + post.media.data + '"></video>';
+      }
+      if (post.link) html += '<div style="margin:4px 0;"><a href="' + post.link + '" target="_blank" style="color:var(--teal);">' + post.link + '</a></div>';
+      html += '<div class="post-actions">' +
+        '<button onclick="window.likePost(' + post.id + ')" class="' + (liked ? 'liked' : '') + '"><i class="fas fa-heart"></i> ' + (post.likes ? post.likes.length : 0) + '</button>' +
+        '<button onclick="window.toggleComentarios(' + post.id + ')"><i class="fas fa-comment"></i> ' + (post.comentarios ? post.comentarios.length : 0) + '</button>' +
+        '<button onclick="window.compartirPost(\'' + post.id + '\')"><i class="fas fa-share"></i> Compartir</button>' +
+        '</div>' +
+        '<div class="comments" id="comments-' + post.id + '" style="display:none;">' +
+        (post.comentarios ? post.comentarios.map(function(c) { return '<div><strong>' + c.autor + '</strong>: ' + c.texto + '</div>'; }).join('') : '') +
+        '<div class="comment-box">' +
+        '<input type="text" id="commentInput-' + post.id + '" placeholder="Escribe un comentario...">' +
+        '<button onclick="window.comentarPost(' + post.id + ')"><i class="fas fa-paper-plane"></i></button>' +
+        '</div></div></div>';
+    });
+    container.innerHTML = html;
+  }
+
+  window.likePost = function(id) {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    const posts = getData(STORAGE.posts, []);
+    const post = posts.find(function(p) { return p.id === id; });
+    if (!post) return;
+    if (!post.likes) post.likes = [];
+    const idx = post.likes.indexOf(usuarioActual);
+    if (idx > -1) post.likes.splice(idx, 1);
+    else post.likes.push(usuarioActual);
+    setData(STORAGE.posts, posts);
+    renderFeed();
+  };
+
+  window.toggleComentarios = function(id) {
+    const div = document.getElementById('comments-' + id);
+    if (div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
+  };
+
+  window.comentarPost = function(id) {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    const input = document.getElementById('commentInput-' + id);
+    const texto = input.value.trim();
+    if (!texto) return;
+    const posts = getData(STORAGE.posts, []);
+    const post = posts.find(function(p) { return p.id === id; });
+    if (!post) return;
+    if (!post.comentarios) post.comentarios = [];
+    post.comentarios.push({ autor: usuarioActual, texto: texto });
+    setData(STORAGE.posts, posts);
+    renderFeed();
+  };
+
+  window.compartirPost = function(id) {
+    const url = window.location.href + '?post=' + id;
+    if (navigator.share) {
+      navigator.share({ title: 'Publicación', text: 'Mira esta publicación', url: url });
+    } else {
+      navigator.clipboard.writeText(url).then(function() { alert('Enlace copiado al portapapeles.'); });
+    }
+  };
+
+  // ================================================================
+  // 8. GRUPOS
+  // ================================================================
+  window.abrirModalGrupo = function() {
+    if (!isAdmin) { alert('Solo el administrador puede crear grupos.'); return; }
+    document.getElementById('grupoNombre').value = '';
+    document.getElementById('grupoFacilitador').value = '';
+    document.getElementById('grupoAsistente').value = '';
+    document.getElementById('grupoAnfitrion').value = '';
+    document.getElementById('grupoTelefono').value = '';
+    window.abrirModal('grupoModal');
+  };
+
+  window.crearGrupo = function() {
+    if (!isAdmin) { alert('No autorizado'); return; }
+    const nombre = document.getElementById('grupoNombre').value.trim();
+    const facilitador = document.getElementById('grupoFacilitador').value.trim();
+    const asistente = document.getElementById('grupoAsistente').value.trim();
+    const anfitrion = document.getElementById('grupoAnfitrion').value.trim();
+    const telefono = document.getElementById('grupoTelefono').value.trim();
+    if (!nombre || !facilitador) { alert('Nombre y facilitador son obligatorios.'); return; }
+    const grupos = getData(STORAGE.grupos, []);
+    grupos.push({
+      id: Date.now(),
+      nombre: nombre,
+      facilitador: facilitador,
+      asistente: asistente,
+      anfitrion: anfitrion,
+      telefono: telefono,
+      miembros: [facilitador],
+      max: 15
+    });
+    setData(STORAGE.grupos, grupos);
+    window.cerrarModal('grupoModal');
+    renderGrupos();
+  };
+
+  function renderGrupos() {
+    const container = document.getElementById('gruposContainer');
+    const grupos = getData(STORAGE.grupos, []);
+    if (grupos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos creados.</p>'; return; }
+    let html = '';
+    grupos.forEach(function(g) {
+      html += '<div class="grupo-item">' +
+        '<div class="grupo-info">' +
+        '<strong>' + g.nombre + '</strong>' +
+        '<small>Facilitador: ' + g.facilitador + (g.telefono ? ' 📞 ' + g.telefono : '') + ' | Asist: ' + (g.asistente || 'N/A') + ' | Anfit: ' + (g.anfitrion || 'N/A') + '</small>' +
+        '<br><small>Miembros: ' + g.miembros.length + '/' + g.max + '</small>' +
+        '</div>' +
+        (isAdmin ? '<button class="btn-danger" onclick="window.eliminarGrupo(' + g.id + ')">Eliminar</button>' : '') +
+        '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  window.eliminarGrupo = function(id) {
+    if (!isAdmin) return;
+    if (confirm('¿Eliminar este grupo?')) {
+      let grupos = getData(STORAGE.grupos, []);
+      grupos = grupos.filter(function(g) { return g.id !== id; });
+      setData(STORAGE.grupos, grupos);
+      renderGrupos();
+    }
+  };
+
+  // ================================================================
+  // 9. DISCIPULADOS
+  // ================================================================
+  window.abrirModalDiscipulado = function() {
+    if (!isAdmin) { alert('Solo el administrador puede crear discipulados.'); return; }
+    document.getElementById('discTitulo').value = '';
+    document.getElementById('discFacilitador').value = '';
+    document.getElementById('discTelefono').value = '';
+    document.getElementById('discDesc').value = '';
+    window.abrirModal('discipuladoModal');
+  };
+
+  window.crearDiscipulado = function() {
+    if (!isAdmin) { alert('No autorizado'); return; }
+    const titulo = document.getElementById('discTitulo').value.trim();
+    const facilitador = document.getElementById('discFacilitador').value.trim();
+    const telefono = document.getElementById('discTelefono').value.trim();
+    const desc = document.getElementById('discDesc').value.trim();
+    if (!titulo || !facilitador) { alert('Título y facilitador son obligatorios.'); return; }
+    const disc = getData(STORAGE.discipulados, []);
+    disc.push({ id: Date.now(), titulo: titulo, facilitador: facilitador, telefono: telefono, desc: desc, inscritos: [] });
+    setData(STORAGE.discipulados, disc);
+    window.cerrarModal('discipuladoModal');
+    renderDiscipulados();
+  };
+
+  function renderDiscipulados() {
+    const container = document.getElementById('discipuladoContainer');
+    const disc = getData(STORAGE.discipulados, []);
+    if (disc.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay discipulados disponibles.</p>'; return; }
+    let html = '';
+    disc.forEach(function(d) {
+      html += '<div class="disc-card">' +
+        '<h4>' + d.titulo + '</h4>' +
+        '<p><i class="fas fa-user"></i> Facilitador: ' + d.facilitador + (d.telefono ? ' 📞 ' + d.telefono : '') + '</p>' +
+        '<p class="desc">' + (d.desc || '') + '</p>' +
+        '<p><small>Inscritos: ' + d.inscritos.length + '</small></p>' +
+        (usuarioActual && !d.inscritos.includes(usuarioActual) ? '<button class="btn-primary" onclick="window.inscribirDiscipulado(' + d.id + ')">Inscribirme</button>' : '') +
+        (isAdmin ? '<button class="btn-danger" onclick="window.eliminarDiscipulado(' + d.id + ')">Eliminar</button>' : '') +
+        '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  window.inscribirDiscipulado = function(id) {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    const disc = getData(STORAGE.discipulados, []);
+    const d = disc.find(function(item) { return item.id === id; });
+    if (!d) return;
+    if (d.inscritos.includes(usuarioActual)) return;
+    d.inscritos.push(usuarioActual);
+    setData(STORAGE.discipulados, disc);
+    renderDiscipulados();
+  };
+
+  window.eliminarDiscipulado = function(id) {
+    if (!isAdmin) return;
+    if (confirm('¿Eliminar este discipulado?')) {
+      let disc = getData(STORAGE.discipulados, []);
+      disc = disc.filter(function(d) { return d.id !== id; });
+      setData(STORAGE.discipulados, disc);
+      renderDiscipulados();
+    }
+  };
+
+  // ================================================================
+  // 10. ORACIONES
+  // ================================================================
+  window.publicarOracion = function() {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    const texto = document.getElementById('oracionInput').value.trim();
+    if (!texto) { alert('Escribe tu petición de oración.'); return; }
+    const oraciones = getData(STORAGE.oraciones, []);
+    oraciones.unshift({
       id: Date.now(),
       autor: usuarioActual,
       texto: texto,
-      link: link,
-      media: media,
       fecha: new Date().toLocaleString(),
-      likes: [],
-      comentarios: []
+      orado: []
     });
-    setData(STORAGE.posts, posts);
-    document.getElementById('postInput').value = '';
-    document.getElementById('postLink').value = '';
-    document.getElementById('postImage').value = '';
-    document.getElementById('postVideo').value = '';
-    renderFeed();
-  }
-}
-
-function renderFeed() {
-  const container = document.getElementById('feedContainer');
-  const posts = getData(STORAGE.posts, []);
-  if (posts.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones aún. ¡Sé el primero!</p>'; return; }
-  let html = '';
-  posts.forEach((post) => {
-    const liked = post.likes && post.likes.includes(usuarioActual);
-    html += `<div class="post">
-      <div class="post-header">
-        <div class="post-avatar">${post.autor.charAt(0).toUpperCase()}</div>
-        <div><div class="post-author">${post.autor}</div><div class="post-time">${post.fecha}</div></div>
-      </div>
-      <div class="post-content">${post.texto}</div>`;
-    if (post.media) {
-      if (post.media.type === 'image') html += `<img src="${post.media.data}" class="post-media" alt="imagen">`;
-      else if (post.media.type === 'video') html += `<video controls class="post-media" src="${post.media.data}"></video>`;
-    }
-    if (post.link) html += `<div style="margin:4px 0;"><a href="${post.link}" target="_blank" style="color:var(--teal);">${post.link}</a></div>`;
-    html += `<div class="post-actions">
-      <button onclick="likePost(${post.id})" class="${liked?'liked':''}"><i class="fas fa-heart"></i> ${post.likes?post.likes.length:0}</button>
-      <button onclick="toggleComentarios(${post.id})"><i class="fas fa-comment"></i> ${post.comentarios?post.comentarios.length:0}</button>
-      <button onclick="compartirPost('${post.id}')"><i class="fas fa-share"></i> Compartir</button>
-    </div>
-    <div class="comments" id="comments-${post.id}" style="display:none;">
-      ${post.comentarios ? post.comentarios.map(c => `<div><strong>${c.autor}</strong>: ${c.texto}</div>`).join('') : ''}
-      <div class="comment-box">
-        <input type="text" id="commentInput-${post.id}" placeholder="Escribe un comentario...">
-        <button onclick="comentarPost(${post.id})"><i class="fas fa-paper-plane"></i></button>
-      </div>
-    </div>
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function likePost(id) {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const posts = getData(STORAGE.posts, []);
-  const post = posts.find(p => p.id === id);
-  if (!post) return;
-  if (!post.likes) post.likes = [];
-  const idx = post.likes.indexOf(usuarioActual);
-  if (idx > -1) post.likes.splice(idx, 1);
-  else post.likes.push(usuarioActual);
-  setData(STORAGE.posts, posts);
-  renderFeed();
-}
-
-function toggleComentarios(id) {
-  const div = document.getElementById('comments-' + id);
-  if (div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
-}
-
-function comentarPost(id) {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const input = document.getElementById('commentInput-' + id);
-  const texto = input.value.trim();
-  if (!texto) return;
-  const posts = getData(STORAGE.posts, []);
-  const post = posts.find(p => p.id === id);
-  if (!post) return;
-  if (!post.comentarios) post.comentarios = [];
-  post.comentarios.push({ autor: usuarioActual, texto: texto });
-  setData(STORAGE.posts, posts);
-  renderFeed();
-}
-
-function compartirPost(id) {
-  const url = window.location.href + '?post=' + id;
-  if (navigator.share) {
-    navigator.share({ title: 'Publicación', text: 'Mira esta publicación', url: url });
-  } else {
-    navigator.clipboard.writeText(url).then(() => alert('Enlace copiado al portapapeles.'));
-  }
-}
-
-// ================================================================
-// 8. GRUPOS
-// ================================================================
-function abrirModalGrupo() {
-  if (!isAdmin) { alert('Solo el administrador puede crear grupos.'); return; }
-  document.getElementById('grupoNombre').value = '';
-  document.getElementById('grupoFacilitador').value = '';
-  document.getElementById('grupoAsistente').value = '';
-  document.getElementById('grupoAnfitrion').value = '';
-  document.getElementById('grupoTelefono').value = '';
-  abrirModal('grupoModal');
-}
-
-function crearGrupo() {
-  if (!isAdmin) { alert('No autorizado'); return; }
-  const nombre = document.getElementById('grupoNombre').value.trim();
-  const facilitador = document.getElementById('grupoFacilitador').value.trim();
-  const asistente = document.getElementById('grupoAsistente').value.trim();
-  const anfitrion = document.getElementById('grupoAnfitrion').value.trim();
-  const telefono = document.getElementById('grupoTelefono').value.trim();
-  if (!nombre || !facilitador) { alert('Nombre y facilitador son obligatorios.'); return; }
-  const grupos = getData(STORAGE.grupos, []);
-  grupos.push({
-    id: Date.now(),
-    nombre,
-    facilitador,
-    asistente,
-    anfitrion,
-    telefono,
-    miembros: [facilitador],
-    max: 15
-  });
-  setData(STORAGE.grupos, grupos);
-  cerrarModal('grupoModal');
-  renderGrupos();
-}
-
-function renderGrupos() {
-  const container = document.getElementById('gruposContainer');
-  const grupos = getData(STORAGE.grupos, []);
-  if (grupos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos creados.</p>'; return; }
-  let html = '';
-  grupos.forEach(g => {
-    html += `<div class="grupo-item">
-      <div class="grupo-info">
-        <strong>${g.nombre}</strong>
-        <small>Facilitador: ${g.facilitador} ${g.telefono ? '📞 '+g.telefono : ''} | Asist: ${g.asistente||'N/A'} | Anfit: ${g.anfitrion||'N/A'}</small>
-        <br><small>Miembros: ${g.miembros.length}/${g.max}</small>
-      </div>
-      ${isAdmin ? `<button class="btn-danger" onclick="eliminarGrupo(${g.id})">Eliminar</button>` : ''}
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function eliminarGrupo(id) {
-  if (!isAdmin) return;
-  if (confirm('¿Eliminar este grupo?')) {
-    let grupos = getData(STORAGE.grupos, []);
-    grupos = grupos.filter(g => g.id !== id);
-    setData(STORAGE.grupos, grupos);
-    renderGrupos();
-  }
-}
-
-// ================================================================
-// 9. DISCIPULADOS
-// ================================================================
-function abrirModalDiscipulado() {
-  if (!isAdmin) { alert('Solo el administrador puede crear discipulados.'); return; }
-  document.getElementById('discTitulo').value = '';
-  document.getElementById('discFacilitador').value = '';
-  document.getElementById('discTelefono').value = '';
-  document.getElementById('discDesc').value = '';
-  abrirModal('discipuladoModal');
-}
-
-function crearDiscipulado() {
-  if (!isAdmin) { alert('No autorizado'); return; }
-  const titulo = document.getElementById('discTitulo').value.trim();
-  const facilitador = document.getElementById('discFacilitador').value.trim();
-  const telefono = document.getElementById('discTelefono').value.trim();
-  const desc = document.getElementById('discDesc').value.trim();
-  if (!titulo || !facilitador) { alert('Título y facilitador son obligatorios.'); return; }
-  const disc = getData(STORAGE.discipulados, []);
-  disc.push({ id: Date.now(), titulo, facilitador, telefono, desc, inscritos: [] });
-  setData(STORAGE.discipulados, disc);
-  cerrarModal('discipuladoModal');
-  renderDiscipulados();
-}
-
-function renderDiscipulados() {
-  const container = document.getElementById('discipuladoContainer');
-  const disc = getData(STORAGE.discipulados, []);
-  if (disc.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay discipulados disponibles.</p>'; return; }
-  let html = '';
-  disc.forEach(d => {
-    html += `<div class="disc-card">
-      <h4>${d.titulo}</h4>
-      <p><i class="fas fa-user"></i> Facilitador: ${d.facilitador} ${d.telefono ? '📞 '+d.telefono : ''}</p>
-      <p class="desc">${d.desc || ''}</p>
-      <p><small>Inscritos: ${d.inscritos.length}</small></p>
-      ${usuarioActual && !d.inscritos.includes(usuarioActual) ? `<button class="btn-primary" onclick="inscribirDiscipulado(${d.id})">Inscribirme</button>` : ''}
-      ${isAdmin ? `<button class="btn-danger" onclick="eliminarDiscipulado(${d.id})">Eliminar</button>` : ''}
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function inscribirDiscipulado(id) {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const disc = getData(STORAGE.discipulados, []);
-  const d = disc.find(item => item.id === id);
-  if (!d) return;
-  if (d.inscritos.includes(usuarioActual)) return;
-  d.inscritos.push(usuarioActual);
-  setData(STORAGE.discipulados, disc);
-  renderDiscipulados();
-}
-
-function eliminarDiscipulado(id) {
-  if (!isAdmin) return;
-  if (confirm('¿Eliminar este discipulado?')) {
-    let disc = getData(STORAGE.discipulados, []);
-    disc = disc.filter(d => d.id !== id);
-    setData(STORAGE.discipulados, disc);
-    renderDiscipulados();
-  }
-}
-
-// ================================================================
-// 10. ORACIONES
-// ================================================================
-function publicarOracion() {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const texto = document.getElementById('oracionInput').value.trim();
-  if (!texto) { alert('Escribe tu petición de oración.'); return; }
-  const oraciones = getData(STORAGE.oraciones, []);
-  oraciones.unshift({
-    id: Date.now(),
-    autor: usuarioActual,
-    texto: texto,
-    fecha: new Date().toLocaleString(),
-    orado: []
-  });
-  setData(STORAGE.oraciones, oraciones);
-  document.getElementById('oracionInput').value = '';
-  renderOraciones();
-}
-
-function renderOraciones() {
-  const container = document.getElementById('oracionesContainer');
-  const oraciones = getData(STORAGE.oraciones, []);
-  if (oraciones.length === 0) {
-    container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones de oración. ¡Sé el primero en compartir una!</p>';
-    return;
-  }
-  let html = '';
-  oraciones.forEach(o => {
-    const yaOro = o.orado && o.orado.includes(usuarioActual);
-    html += `<div class="oracion-item">
-      <div class="oracion-header">
-        <div class="oracion-avatar">${o.autor.charAt(0).toUpperCase()}</div>
-        <div>
-          <span class="oracion-autor">${o.autor}</span>
-          <span class="oracion-time"> · ${o.fecha}</span>
-        </div>
-      </div>
-      <div class="oracion-texto">${o.texto}</div>
-      <div class="oracion-actions">
-        <button onclick="orarOracion(${o.id})" class="${yaOro?'orado':''}">
-          <i class="fas fa-hands-praying"></i> ${yaOro ? 'Oré' : 'Orar'} (${o.orado ? o.orado.length : 0})
-        </button>
-      </div>
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function orarOracion(id) {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const oraciones = getData(STORAGE.oraciones, []);
-  const o = oraciones.find(item => item.id === id);
-  if (!o) return;
-  if (!o.orado) o.orado = [];
-  const idx = o.orado.indexOf(usuarioActual);
-  if (idx > -1) {
-    o.orado.splice(idx, 1);
-  } else {
-    o.orado.push(usuarioActual);
-  }
-  setData(STORAGE.oraciones, oraciones);
-  renderOraciones();
-}
-
-// ================================================================
-// 11. MAPA Y MISIONEROS
-// ================================================================
-function registrarMisionero() {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const nombre = prompt('Nombre del misionero (o tu nombre):', usuarioActual);
-  if (!nombre) return;
-  const ubicacion = prompt('Ubicación (ciudad, país):');
-  if (!ubicacion) return;
-  const misioneros = getData(STORAGE.misioneros, []);
-  misioneros.push({ nombre, ubicacion, usuario: usuarioActual });
-  setData(STORAGE.misioneros, misioneros);
-  renderMisioneros();
-}
-
-function renderMisioneros() {
-  const container = document.getElementById('misionerosList');
-  const misioneros = getData(STORAGE.misioneros, []);
-  if (misioneros.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay misioneros registrados.</p>'; return; }
-  let html = '';
-  misioneros.forEach(m => {
-    html += `<div class="misionero-item">
-      <i class="fas fa-user-circle" style="font-size:24px; color:var(--teal);"></i>
-      <div><strong>${m.nombre}</strong> <span style="color:var(--text-secondary);">${m.ubicacion}</span></div>
-      <div style="margin-left:auto; font-size:11px; color:var(--text-secondary);">${m.usuario}</div>
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-// ================================================================
-// 12. NECESIDADES
-// ================================================================
-function publicarNecesidad() {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const categoria = document.getElementById('needCategoria').value;
-  const desc = document.getElementById('needDesc').value.trim();
-  const telefono = document.getElementById('needTelefono').value.trim();
-  if (!desc || !telefono) { alert('Descripción y teléfono son obligatorios.'); return; }
-  const fotos = [];
-  const files = document.getElementById('needFotos').files;
-  if (files.length > 0) {
-    for (let f of files) {
-      const reader = new FileReader();
-      reader.onload = function(e) { fotos.push(e.target.result); if (fotos.length === files.length) guardarNeed(); };
-      reader.readAsDataURL(f);
-    }
-  } else {
-    guardarNeed();
-  }
-  function guardarNeed() {
-    const needs = getData(STORAGE.necesidades, []);
-    needs.unshift({
-      id: Date.now(),
-      usuario: usuarioActual,
-      categoria,
-      desc,
-      telefono,
-      fotos: fotos,
-      fecha: new Date().toLocaleString(),
-      ayudas: []
-    });
-    setData(STORAGE.necesidades, needs);
-    document.getElementById('needDesc').value = '';
-    document.getElementById('needTelefono').value = '';
-    document.getElementById('needFotos').value = '';
-    renderNecesidades();
-  }
-}
-
-function renderNecesidades() {
-  const container = document.getElementById('necesidadesContainer');
-  const needs = getData(STORAGE.necesidades, []);
-  if (needs.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades publicadas.</p>'; return; }
-  let html = '';
-  needs.forEach(n => {
-    html += `<div class="need-item">
-      <div><span class="need-cat">${n.categoria}</span> <span style="font-size:11px; color:var(--text-secondary);">${n.fecha}</span></div>
-      <p style="font-size:14px;">${n.desc}</p>
-      <p style="font-size:12px;"><i class="fas fa-phone"></i> ${n.telefono}</p>
-      ${n.fotos && n.fotos.length ? `<div class="need-fotos">${n.fotos.map(f => `<img src="${f}" alt="foto">`).join('')}</div>` : ''}
-      ${isAdmin ? `<div style="margin-top:4px;">
-        <label style="font-size:11px;">Subir foto de ayuda recibida:</label>
-        <input type="file" accept="image/*" onchange="subirAyuda(${n.id}, this)">
-        ${n.ayudas && n.ayudas.length ? `<div class="need-fotos">${n.ayudas.map(f => `<img src="${f}" alt="ayuda">`).join('')}</div>` : ''}
-      </div>` : ''}
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-function subirAyuda(id, input) {
-  if (!isAdmin) return;
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const needs = getData(STORAGE.necesidades, []);
-    const n = needs.find(item => item.id === id);
-    if (!n) return;
-    if (!n.ayudas) n.ayudas = [];
-    n.ayudas.push(e.target.result);
-    setData(STORAGE.necesidades, needs);
-    renderNecesidades();
+    setData(STORAGE.oraciones, oraciones);
+    document.getElementById('oracionInput').value = '';
+    renderOraciones();
   };
-  reader.readAsDataURL(file);
-}
 
-// ================================================================
-// 13. SERVICIO ALIMENTARIO
-// ================================================================
-function ofrecerServicio() {
-  if (!usuarioActual) { alert('Ingresa primero.'); return; }
-  const nombre = document.getElementById('servicioNombre').value.trim();
-  const direccion = document.getElementById('servicioDireccion').value.trim();
-  const horario = document.getElementById('servicioHorario').value.trim();
-  const comidas = document.getElementById('servicioComidas').value;
-  const personas = parseInt(document.getElementById('servicioPersonas').value);
-  if (!nombre || !direccion || !horario || !personas) { alert('Completa todos los campos.'); return; }
-  const servicios = getData(STORAGE.servicios, []);
-  servicios.push({
-    id: Date.now(),
-    nombre,
-    direccion,
-    horario,
-    comidas,
-    personas,
-    usuario: usuarioActual,
-    fecha: new Date().toLocaleString()
-  });
-  setData(STORAGE.servicios, servicios);
-  document.getElementById('servicioNombre').value = '';
-  document.getElementById('servicioDireccion').value = '';
-  document.getElementById('servicioHorario').value = '';
-  document.getElementById('servicioPersonas').value = '';
-  renderServicios();
-}
-
-function renderServicios() {
-  const container = document.getElementById('serviciosContainer');
-  const servicios = getData(STORAGE.servicios, []);
-  if (servicios.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay ofertas de servicio.</p>'; return; }
-  let html = '';
-  servicios.forEach(s => {
-    html += `<div class="serv-item">
-      <strong>${s.nombre}</strong> <span style="font-size:12px; color:var(--text-secondary);">(${s.usuario})</span>
-      <p><i class="fas fa-map-pin"></i> ${s.direccion}</p>
-      <p><i class="fas fa-clock"></i> ${s.horario} · ${s.comidas} · ${s.personas} personas</p>
-    </div>`;
-  });
-  container.innerHTML = html;
-}
-
-// ================================================================
-// 14. BIBLIA - CARGA DESDE JSON
-// ================================================================
-const libroSelect = document.getElementById('libro');
-const capituloSelect = document.getElementById('capitulo');
-const versiculoContainer = document.getElementById('versiculoContainer');
-let textosBiblicos = {};
-let libroActual = '';
-let capituloActual = '';
-
-fetch('textos-biblicos.json')
-  .then(response => response.json())
-  .then(data => {
-    textosBiblicos = data;
-    const todosLosLibros = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
-    Object.keys(todosLosLibros).forEach(libro => {
-      const option = document.createElement('option');
-      option.value = libro;
-      option.textContent = libro;
-      libroSelect.appendChild(option);
-    });
-  })
-  .catch(err => {
-    console.error('Error cargando índice:', err);
-    const fallback = ['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'];
-    fallback.forEach(l => {
-      const option = document.createElement('option');
-      option.value = l;
-      option.textContent = l;
-      libroSelect.appendChild(option);
-    });
-    textosBiblicos = { antiguoTestamento: {}, nuevoTestamento: {} };
-    fallback.forEach(l => {
-      const isNT = ['Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'].includes(l);
-      if (isNT) textosBiblicos.nuevoTestamento[l] = `biblia/nuevo/${l.toLowerCase().replace(/ /g,'')}.json`;
-      else textosBiblicos.antiguoTestamento[l] = `biblia/antiguo/${l.toLowerCase().replace(/ /g,'')}.json`;
-    });
-  });
-
-libroSelect.addEventListener('change', function() {
-  const libro = this.value;
-  if (!libro) return;
-  libroActual = libro;
-  cargarCapitulos(libro);
-});
-
-capituloSelect.addEventListener('change', function() {
-  const capitulo = this.value;
-  if (!capitulo) return;
-  capituloActual = capitulo;
-  mostrarVersiculos(libroActual, capitulo);
-});
-
-function cargarCapitulos(libro) {
-  const testamento = textosBiblicos.antiguoTestamento && textosBiblicos.antiguoTestamento[libro] ? 'antiguoTestamento' :
-                     (textosBiblicos.nuevoTestamento && textosBiblicos.nuevoTestamento[libro] ? 'nuevoTestamento' : null);
-  if (!testamento) { capituloSelect.innerHTML = '<option value="">No disponible</option>'; return; }
-  const ruta = textosBiblicos[testamento][libro];
-  fetch(ruta).then(res => res.json()).then(data => {
-    capituloSelect.innerHTML = '<option value="">Selecciona capítulo</option>';
-    Object.keys(data).forEach(cap => {
-      const option = document.createElement('option');
-      option.value = cap;
-      option.textContent = `Capítulo ${cap}`;
-      capituloSelect.appendChild(option);
-    });
-  }).catch(() => { capituloSelect.innerHTML = '<option value="">Error</option>'; });
-}
-
-function mostrarVersiculos(libro, capitulo) {
-  const testamento = textosBiblicos.antiguoTestamento && textosBiblicos.antiguoTestamento[libro] ? 'antiguoTestamento' :
-                     (textosBiblicos.nuevoTestamento && textosBiblicos.nuevoTestamento[libro] ? 'nuevoTestamento' : null);
-  if (!testamento) { versiculoContainer.innerHTML = '<p>Libro no encontrado.</p>'; return; }
-  const ruta = textosBiblicos[testamento][libro];
-  fetch(ruta).then(res => res.json()).then(data => {
-    const contenido = data[capitulo];
-    if (!contenido) { versiculoContainer.innerHTML = '<p>Capítulo no encontrado.</p>'; return; }
-    const clave = `biblia_edit_${libro}_${capitulo}`;
-    const editado = localStorage.getItem(clave);
-    let versiculosData = contenido;
-    if (editado) {
-      try { const parsed = JSON.parse(editado); if (typeof parsed === 'object' && !Array.isArray(parsed)) versiculosData = parsed; } catch(e) {}
+  function renderOraciones() {
+    const container = document.getElementById('oracionesContainer');
+    const oraciones = getData(STORAGE.oraciones, []);
+    if (oraciones.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones de oración. ¡Sé el primero en compartir una!</p>';
+      return;
     }
-    renderVersiculos(versiculosData, libro, capitulo);
-  }).catch(() => { versiculoContainer.innerHTML = '<p>Error al cargar.</p>'; });
-}
+    let html = '';
+    oraciones.forEach(function(o) {
+      const yaOro = o.orado && o.orado.includes(usuarioActual);
+      html += '<div class="oracion-item">' +
+        '<div class="oracion-header">' +
+        '<div class="oracion-avatar">' + o.autor.charAt(0).toUpperCase() + '</div>' +
+        '<div><span class="oracion-autor">' + o.autor + '</span><span class="oracion-time"> · ' + o.fecha + '</span></div>' +
+        '</div>' +
+        '<div class="oracion-texto">' + o.texto + '</div>' +
+        '<div class="oracion-actions">' +
+        '<button onclick="window.orarOracion(' + o.id + ')" class="' + (yaOro ? 'orado' : '') + '">' +
+        '<i class="fas fa-hands-praying"></i> ' + (yaOro ? 'Oré' : 'Orar') + ' (' + (o.orado ? o.orado.length : 0) + ')' +
+        '</button></div></div>';
+    });
+    container.innerHTML = html;
+  }
 
-function renderVersiculos(versiculosObj, libro, capitulo) {
-  const editMode = window.editModeActivo || false;
-  let html = '';
-  const keys = Object.keys(versiculosObj);
-  if (keys.length === 0) { html = '<p>No hay versículos.</p>'; }
-  else {
-    keys.forEach(num => {
-      const texto = versiculosObj[num];
-      if (editMode && isAdmin) {
-        html += `<div class="edit-mode" style="margin-bottom:6px;">
-          <span class="num">${num}.</span>
-          <textarea data-verso="${num}" style="width:100%; border-radius:6px; border:1px solid var(--teal); padding:4px 8px; font-size:13px; resize:vertical;">${texto}</textarea>
-          <button class="btn-guardar-verso" data-libro="${libro}" data-cap="${capitulo}" data-num="${num}" style="margin-top:2px; padding:2px 12px; background:var(--teal); color:white; border:none; border-radius:20px; font-size:11px; cursor:pointer;">Guardar</button>
-        </div>`;
-      } else {
-        html += `<p><span class="num">${num}.</span> ${texto}</p>`;
+  window.orarOracion = function(id) {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    const oraciones = getData(STORAGE.oraciones, []);
+    const o = oraciones.find(function(item) { return item.id === id; });
+    if (!o) return;
+    if (!o.orado) o.orado = [];
+    const idx = o.orado.indexOf(usuarioActual);
+    if (idx > -1) o.orado.splice(idx, 1);
+    else o.orado.push(usuarioActual);
+    setData(STORAGE.oraciones, oraciones);
+    renderOraciones();
+  };
+
+  // ================================================================
+  // 11. MAPA Y MISIONEROS
+  // ================================================================
+  window.registrarMisionero = function() {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    const nombre = prompt('Nombre del misionero (o tu nombre):', usuarioActual);
+    if (!nombre) return;
+    const ubicacion = prompt('Ubicación (ciudad, país):');
+    if (!ubicacion) return;
+    const misioneros = getData(STORAGE.misioneros, []);
+    misioneros.push({ nombre: nombre, ubicacion: ubicacion, usuario: usuarioActual });
+    setData(STORAGE.misioneros, misioneros);
+    renderMisioneros();
+  };
+
+  function renderMisioneros() {
+    const container = document.getElementById('misionerosList');
+    const misioneros = getData(STORAGE.misioneros, []);
+    if (misioneros.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay misioneros registrados.</p>'; return; }
+    let html = '';
+    misioneros.forEach(function(m) {
+      html += '<div class="misionero-item">' +
+        '<i class="fas fa-user-circle" style="font-size:24px; color:var(--teal);"></i>' +
+        '<div><strong>' + m.nombre + '</strong> <span style="color:var(--text-secondary);">' + m.ubicacion + '</span></div>' +
+        '<div style="margin-left:auto; font-size:11px; color:var(--text-secondary);">' + m.usuario + '</div>' +
+        '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  // ================================================================
+  // 12. NECESIDADES
+  // ================================================================
+  window.publicarNecesidad = function() {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    const categoria = document.getElementById('needCategoria').value;
+    const desc = document.getElementById('needDesc').value.trim();
+    const telefono = document.getElementById('needTelefono').value.trim();
+    if (!desc || !telefono) { alert('Descripción y teléfono son obligatorios.'); return; }
+    const fotos = [];
+    const files = document.getElementById('needFotos').files;
+    if (files.length > 0) {
+      for (let f of files) {
+        const reader = new FileReader();
+        reader.onload = function(e) { fotos.push(e.target.result); if (fotos.length === files.length) guardarNeed(); };
+        reader.readAsDataURL(f);
       }
+    } else {
+      guardarNeed();
+    }
+    function guardarNeed() {
+      const needs = getData(STORAGE.necesidades, []);
+      needs.unshift({
+        id: Date.now(),
+        usuario: usuarioActual,
+        categoria: categoria,
+        desc: desc,
+        telefono: telefono,
+        fotos: fotos,
+        fecha: new Date().toLocaleString(),
+        ayudas: []
+      });
+      setData(STORAGE.necesidades, needs);
+      document.getElementById('needDesc').value = '';
+      document.getElementById('needTelefono').value = '';
+      document.getElementById('needFotos').value = '';
+      renderNecesidades();
+    }
+  };
+
+  function renderNecesidades() {
+    const container = document.getElementById('necesidadesContainer');
+    const needs = getData(STORAGE.necesidades, []);
+    if (needs.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades publicadas.</p>'; return; }
+    let html = '';
+    needs.forEach(function(n) {
+      html += '<div class="need-item">' +
+        '<div><span class="need-cat">' + n.categoria + '</span> <span style="font-size:11px; color:var(--text-secondary);">' + n.fecha + '</span></div>' +
+        '<p style="font-size:14px;">' + n.desc + '</p>' +
+        '<p style="font-size:12px;"><i class="fas fa-phone"></i> ' + n.telefono + '</p>';
+      if (n.fotos && n.fotos.length) {
+        html += '<div class="need-fotos">' + n.fotos.map(function(f) { return '<img src="' + f + '" alt="foto">'; }).join('') + '</div>';
+      }
+      if (isAdmin) {
+        html += '<div style="margin-top:4px;">' +
+          '<label style="font-size:11px;">Subir foto de ayuda recibida:</label>' +
+          '<input type="file" accept="image/*" onchange="window.subirAyuda(' + n.id + ', this)">';
+        if (n.ayudas && n.ayudas.length) {
+          html += '<div class="need-fotos">' + n.ayudas.map(function(f) { return '<img src="' + f + '" alt="ayuda">'; }).join('') + '</div>';
+        }
+        html += '</div>';
+      }
+      html += '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  window.subirAyuda = function(id, input) {
+    if (!isAdmin) return;
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const needs = getData(STORAGE.necesidades, []);
+      const n = needs.find(function(item) { return item.id === id; });
+      if (!n) return;
+      if (!n.ayudas) n.ayudas = [];
+      n.ayudas.push(e.target.result);
+      setData(STORAGE.necesidades, needs);
+      renderNecesidades();
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // ================================================================
+  // 13. SERVICIO ALIMENTARIO
+  // ================================================================
+  window.ofrecerServicio = function() {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    const nombre = document.getElementById('servicioNombre').value.trim();
+    const direccion = document.getElementById('servicioDireccion').value.trim();
+    const horario = document.getElementById('servicioHorario').value.trim();
+    const comidas = document.getElementById('servicioComidas').value;
+    const personas = parseInt(document.getElementById('servicioPersonas').value);
+    if (!nombre || !direccion || !horario || !personas) { alert('Completa todos los campos.'); return; }
+    const servicios = getData(STORAGE.servicios, []);
+    servicios.push({
+      id: Date.now(),
+      nombre: nombre,
+      direccion: direccion,
+      horario: horario,
+      comidas: comidas,
+      personas: personas,
+      usuario: usuarioActual,
+      fecha: new Date().toLocaleString()
+    });
+    setData(STORAGE.servicios, servicios);
+    document.getElementById('servicioNombre').value = '';
+    document.getElementById('servicioDireccion').value = '';
+    document.getElementById('servicioHorario').value = '';
+    document.getElementById('servicioPersonas').value = '';
+    renderServicios();
+  };
+
+  function renderServicios() {
+    const container = document.getElementById('serviciosContainer');
+    const servicios = getData(STORAGE.servicios, []);
+    if (servicios.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay ofertas de servicio.</p>'; return; }
+    let html = '';
+    servicios.forEach(function(s) {
+      html += '<div class="serv-item">' +
+        '<strong>' + s.nombre + '</strong> <span style="font-size:12px; color:var(--text-secondary);">(' + s.usuario + ')</span>' +
+        '<p><i class="fas fa-map-pin"></i> ' + s.direccion + '</p>' +
+        '<p><i class="fas fa-clock"></i> ' + s.horario + ' · ' + s.comidas + ' · ' + s.personas + ' personas</p>' +
+        '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  // ================================================================
+  // 14. BIBLIA - CARGA DESDE JSON
+  // ================================================================
+  const libroSelect = document.getElementById('libro');
+  const capituloSelect = document.getElementById('capitulo');
+  const versiculoContainer = document.getElementById('versiculoContainer');
+  let textosBiblicos = {};
+  let libroActual = '';
+  let capituloActual = '';
+
+  fetch('textos-biblicos.json')
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      textosBiblicos = data;
+      const todosLosLibros = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
+      Object.keys(todosLosLibros).forEach(function(libro) {
+        const option = document.createElement('option');
+        option.value = libro;
+        option.textContent = libro;
+        libroSelect.appendChild(option);
+      });
+    })
+    .catch(function(err) {
+      console.error('Error cargando índice:', err);
+      const fallback = ['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'];
+      fallback.forEach(function(l) {
+        const option = document.createElement('option');
+        option.value = l;
+        option.textContent = l;
+        libroSelect.appendChild(option);
+      });
+      textosBiblicos = { antiguoTestamento: {}, nuevoTestamento: {} };
+      fallback.forEach(function(l) {
+        const isNT = ['Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'].includes(l);
+        if (isNT) textosBiblicos.nuevoTestamento[l] = 'biblia/nuevo/' + l.toLowerCase().replace(/ /g,'') + '.json';
+        else textosBiblicos.antiguoTestamento[l] = 'biblia/antiguo/' + l.toLowerCase().replace(/ /g,'') + '.json';
+      });
+    });
+
+  libroSelect.addEventListener('change', function() {
+    const libro = this.value;
+    if (!libro) return;
+    libroActual = libro;
+    cargarCapitulos(libro);
+  });
+
+  capituloSelect.addEventListener('change', function() {
+    const capitulo = this.value;
+    if (!capitulo) return;
+    capituloActual = capitulo;
+    mostrarVersiculos(libroActual, capitulo);
+  });
+
+  function cargarCapitulos(libro) {
+    const testamento = textosBiblicos.antiguoTestamento && textosBiblicos.antiguoTestamento[libro] ? 'antiguoTestamento' :
+                       (textosBiblicos.nuevoTestamento && textosBiblicos.nuevoTestamento[libro] ? 'nuevoTestamento' : null);
+    if (!testamento) { capituloSelect.innerHTML = '<option value="">No disponible</option>'; return; }
+    const ruta = textosBiblicos[testamento][libro];
+    fetch(ruta).then(function(res) { return res.json(); }).then(function(data) {
+      capituloSelect.innerHTML = '<option value="">Selecciona capítulo</option>';
+      Object.keys(data).forEach(function(cap) {
+        const option = document.createElement('option');
+        option.value = cap;
+        option.textContent = 'Capítulo ' + cap;
+        capituloSelect.appendChild(option);
+      });
+    }).catch(function() { capituloSelect.innerHTML = '<option value="">Error</option>'; });
+  }
+
+  function mostrarVersiculos(libro, capitulo) {
+    const testamento = textosBiblicos.antiguoTestamento && textosBiblicos.antiguoTestamento[libro] ? 'antiguoTestamento' :
+                       (textosBiblicos.nuevoTestamento && textosBiblicos.nuevoTestamento[libro] ? 'nuevoTestamento' : null);
+    if (!testamento) { versiculoContainer.innerHTML = '<p>Libro no encontrado.</p>'; return; }
+    const ruta = textosBiblicos[testamento][libro];
+    fetch(ruta).then(function(res) { return res.json(); }).then(function(data) {
+      const contenido = data[capitulo];
+      if (!contenido) { versiculoContainer.innerHTML = '<p>Capítulo no encontrado.</p>'; return; }
+      const clave = 'biblia_edit_' + libro + '_' + capitulo;
+      const editado = localStorage.getItem(clave);
+      let versiculosData = contenido;
+      if (editado) {
+        try { const parsed = JSON.parse(editado); if (typeof parsed === 'object' && !Array.isArray(parsed)) versiculosData = parsed; } catch(e) {}
+      }
+      renderVersiculos(versiculosData, libro, capitulo);
+    }).catch(function() { versiculoContainer.innerHTML = '<p>Error al cargar.</p>'; });
+  }
+
+  function renderVersiculos(versiculosObj, libro, capitulo) {
+    const editMode = editModeActivo || false;
+    let html = '';
+    const keys = Object.keys(versiculosObj);
+    if (keys.length === 0) { html = '<p>No hay versículos.</p>'; }
+    else {
+      keys.forEach(function(num) {
+        const texto = versiculosObj[num];
+        if (editMode && isAdmin) {
+          html += '<div class="edit-mode" style="margin-bottom:6px;">' +
+            '<span class="num">' + num + '.</span>' +
+            '<textarea data-verso="' + num + '" style="width:100%; border-radius:6px; border:1px solid var(--teal); padding:4px 8px; font-size:13px; resize:vertical;">' + texto + '</textarea>' +
+            '<button class="btn-guardar-verso" data-libro="' + libro + '" data-cap="' + capitulo + '" data-num="' + num + '" style="margin-top:2px; padding:2px 12px; background:var(--teal); color:white; border:none; border-radius:20px; font-size:11px; cursor:pointer;">Guardar</button>' +
+            '</div>';
+        } else {
+          html += '<p><span class="num">' + num + '.</span> ' + texto + '</p>';
+        }
+      });
+    }
+    versiculoContainer.innerHTML = html;
+
+    const btnEditar = document.getElementById('btnEditarVersos');
+    const btnGuardar = document.getElementById('btnGuardarVersos');
+    if (isAdmin) {
+      btnEditar.style.display = 'inline-block';
+      btnEditar.textContent = editMode ? 'Cancelar edición' : 'Editar versículos';
+      btnGuardar.classList.toggle('show', editMode);
+    } else {
+      btnEditar.style.display = 'none';
+      btnGuardar.classList.remove('show');
+    }
+
+    document.querySelectorAll('.btn-guardar-verso').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const libro = this.dataset.libro;
+        const cap = this.dataset.cap;
+        const num = this.dataset.num;
+        const textarea = this.parentElement.querySelector('textarea');
+        const nuevoTexto = textarea.value.trim();
+        if (!nuevoTexto) return;
+        guardarVerso(libro, cap, num, nuevoTexto);
+        mostrarVersiculos(libro, cap);
+      });
     });
   }
-  versiculoContainer.innerHTML = html;
 
-  const btnEditar = document.getElementById('btnEditarVersos');
-  const btnGuardar = document.getElementById('btnGuardarVersos');
-  if (isAdmin) {
-    btnEditar.style.display = 'inline-block';
-    btnEditar.textContent = editMode ? 'Cancelar edición' : 'Editar versículos';
-    btnGuardar.classList.toggle('show', editMode);
-  } else {
-    btnEditar.style.display = 'none';
-    btnGuardar.classList.remove('show');
+  function guardarVerso(libro, capitulo, num, texto) {
+    const clave = 'biblia_edit_' + libro + '_' + capitulo;
+    let datos = {};
+    const existente = localStorage.getItem(clave);
+    if (existente) { try { datos = JSON.parse(existente); } catch(e) {} }
+    datos[num] = texto;
+    localStorage.setItem(clave, JSON.stringify(datos));
   }
 
-  document.querySelectorAll('.btn-guardar-verso').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      const libro = this.dataset.libro;
-      const cap = this.dataset.cap;
-      const num = this.dataset.num;
-      const textarea = this.parentElement.querySelector('textarea');
-      const nuevoTexto = textarea.value.trim();
-      if (!nuevoTexto) return;
-      guardarVerso(libro, cap, num, nuevoTexto);
-      mostrarVersiculos(libro, cap);
+  function guardarTodosVersos() {
+    const textareas = document.querySelectorAll('#versiculoContainer .edit-mode textarea');
+    if (textareas.length === 0) return;
+    const clave = 'biblia_edit_' + libroActual + '_' + capituloActual;
+    let datos = {};
+    textareas.forEach(function(ta) {
+      const num = ta.dataset.verso;
+      const texto = ta.value.trim();
+      if (texto) datos[num] = texto;
     });
-  });
-}
-
-function guardarVerso(libro, capitulo, num, texto) {
-  const clave = `biblia_edit_${libro}_${capitulo}`;
-  let datos = {};
-  const existente = localStorage.getItem(clave);
-  if (existente) { try { datos = JSON.parse(existente); } catch(e) {} }
-  datos[num] = texto;
-  localStorage.setItem(clave, JSON.stringify(datos));
-}
-
-function guardarTodosVersos() {
-  const textareas = document.querySelectorAll('#versiculoContainer .edit-mode textarea');
-  if (textareas.length === 0) return;
-  const clave = `biblia_edit_${libroActual}_${capituloActual}`;
-  let datos = {};
-  textareas.forEach(ta => {
-    const num = ta.dataset.verso;
-    const texto = ta.value.trim();
-    if (texto) datos[num] = texto;
-  });
-  localStorage.setItem(clave, JSON.stringify(datos));
-  mostrarVersiculos(libroActual, capituloActual);
-  window.editModeActivo = false;
-  document.getElementById('btnEditarVersos').textContent = 'Editar versículos';
-  document.getElementById('btnGuardarVersos').classList.remove('show');
-}
-
-document.getElementById('btnEditarVersos').addEventListener('click', function() {
-  if (!isAdmin) return;
-  window.editModeActivo = !window.editModeActivo;
-  if (window.editModeActivo) {
-    this.textContent = 'Cancelar edición';
-    document.getElementById('btnGuardarVersos').classList.add('show');
-  } else {
-    this.textContent = 'Editar versículos';
+    localStorage.setItem(clave, JSON.stringify(datos));
+    mostrarVersiculos(libroActual, capituloActual);
+    editModeActivo = false;
+    document.getElementById('btnEditarVersos').textContent = 'Editar versículos';
     document.getElementById('btnGuardarVersos').classList.remove('show');
   }
-  if (libroActual && capituloActual) mostrarVersiculos(libroActual, capituloActual);
-});
 
-document.getElementById('btnGuardarVersos').addEventListener('click', guardarTodosVersos);
-
-// ================================================================
-// 15. BIBLIA - BÚSQUEDA E HISTORIAL
-// ================================================================
-function cargarHistorial() {
-  const historial = getData(STORAGE.historialBiblia, []);
-  const container = document.getElementById('historialContainer');
-  if (historial.length === 0) { container.innerHTML = ''; return; }
-  container.innerHTML = historial.map(t => `<span class="tag" onclick="buscarTexto('${t}')">${t}</span>`).join('');
-}
-
-function buscarBiblia() {
-  const query = document.getElementById('bibliaSearchInput').value.trim();
-  if (!query) return;
-  buscarTexto(query);
-}
-
-function buscarTexto(query) {
-  const resultados = {
-    'Juan 3:16': 'Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree no se pierda, mas tenga vida eterna.',
-    'amor': 'El amor es sufrido, es benigno... (1 Corintios 13:4)',
-    'fe': 'Es, pues, la fe la certeza de lo que se espera, la convicción de lo que no se ve. (Hebreos 11:1)',
-    'gracia': 'Porque por gracia sois salvos por medio de la fe; y esto no de vosotros, pues es don de Dios. (Efesios 2:8)',
-    'salvación': 'Porque de tal manera amó Dios al mundo... (Juan 3:16)',
-    'oración': 'Orad sin cesar. (1 Tesalonicenses 5:17)',
-    'esperanza': 'Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal, para daros el fin que esperáis. (Jeremías 29:11)'
-  };
-  const result = resultados[query] || resultados[query.toLowerCase()] || 'No se encontró un versículo exacto. Intenta con "Juan 3:16", "amor", "fe", "gracia", "salvación".';
-  document.getElementById('resultadoBiblia').innerHTML = `<p><strong>Resultado:</strong> ${result}</p>`;
-  let historial = getData(STORAGE.historialBiblia, []);
-  if (!historial.includes(query)) {
-    historial.unshift(query);
-    if (historial.length > 10) historial.pop();
-    setData(STORAGE.historialBiblia, historial);
-    cargarHistorial();
-  }
-  document.getElementById('bibliaSearchInput').value = query;
-}
-
-// ================================================================
-// 16. ASISTENTE IA (OpenRouter)
-// ================================================================
-function preguntarIA() {
-  const pregunta = document.getElementById('iaPregunta').value.trim();
-  if (!pregunta) return;
-  const chat = document.getElementById('iaChat');
-  chat.innerHTML += `<div class="msg user"><strong>Tú:</strong> ${pregunta}</div>`;
-  document.getElementById('iaPregunta').value = '';
-
-  const key = localStorage.getItem(STORAGE.iaKey);
-  const model = localStorage.getItem(STORAGE.iaModel) || 'https://openrouter.ai/api/v1/chat/completions';
-  const contexto = localStorage.getItem(STORAGE.iaContexto) || '';
-
-  if (!key) {
-    chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> ⚠️ La clave API de OpenRouter no está configurada. El administrador debe ingresarla.</div>`;
-    chat.scrollTop = chat.scrollHeight;
-    return;
-  }
-
-  const prompt = `Eres un asistente para ayudar a entender el contexto histórico y teológico de pasajes bíblicos. ${contexto ? 'Instrucciones adicionales: '+contexto : ''} Responde a esta pregunta de manera clara y concisa: ${pregunta}`;
-
-  fetch(model, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${key}`,
-      'HTTP-Referer': window.location.origin,
-      'X-Title': 'Sal y Luz'
-    },
-    body: JSON.stringify({
-      model: 'openai/gpt-3.5-turbo',
-      messages: [{ role: 'user', content: prompt }],
-      max_tokens: 500
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    const reply = data.choices?.[0]?.message?.content || 'No pude obtener una respuesta.';
-    chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> ${reply}</div>`;
-    chat.scrollTop = chat.scrollHeight;
-  })
-  .catch(err => {
-    chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> Error: ${err.message}</div>`;
-    chat.scrollTop = chat.scrollHeight;
+  document.getElementById('btnEditarVersos').addEventListener('click', function() {
+    if (!isAdmin) return;
+    editModeActivo = !editModeActivo;
+    if (editModeActivo) {
+      this.textContent = 'Cancelar edición';
+      document.getElementById('btnGuardarVersos').classList.add('show');
+    } else {
+      this.textContent = 'Editar versículos';
+      document.getElementById('btnGuardarVersos').classList.remove('show');
+    }
+    if (libroActual && capituloActual) mostrarVersiculos(libroActual, capituloActual);
   });
-}
 
-// ================================================================
-// 17. ADMIN - CONFIGURACIÓN IA (desde el panel admin)
-// ================================================================
-function guardarConfigIA() {
-  if (!isAdmin) return;
-  const key = document.getElementById('openrouterKey').value.trim();
-  const model = document.getElementById('openrouterModel').value.trim() || 'https://openrouter.ai/api/v1/chat/completions';
-  if (key) {
-    localStorage.setItem(STORAGE.iaKey, key);
-    localStorage.setItem(STORAGE.iaModel, model);
-    document.getElementById('iaStatus').textContent = '✅ API configurada correctamente.';
-    alert('Clave y URL guardadas.');
-  } else {
-    localStorage.removeItem(STORAGE.iaKey);
-    document.getElementById('iaStatus').textContent = '⚠️ API no configurada.';
-    alert('Clave eliminada.');
-  }
-}
+  document.getElementById('btnGuardarVersos').addEventListener('click', guardarTodosVersos);
 
-function guardarContextoIA() {
-  if (!isAdmin) return;
-  const ctx = document.getElementById('iaContexto').value.trim();
-  localStorage.setItem(STORAGE.iaContexto, ctx);
-  alert('Contexto guardado.');
-}
-
-// Cargar valores existentes en el panel admin cuando se renderiza
-function cargarConfigIA() {
-  document.getElementById('openrouterKey').value = localStorage.getItem(STORAGE.iaKey) || '';
-  document.getElementById('iaContexto').value = localStorage.getItem(STORAGE.iaContexto) || '';
-  // El modelo lo cargamos desde el input (ya tiene valor por defecto)
-}
-// Llamar a cargarConfigIA al renderizar admin
-
-// ================================================================
-// 18. ADMIN PANEL - ESTADÍSTICAS Y MODERACIÓN
-// ================================================================
-function renderAdminPanel() {
-  if (!isAdmin) return;
-  // Cargar configuración IA
-  cargarConfigIA();
-
-  // Estadísticas
-  const usuarios = getData(STORAGE.usuarios, []);
-  const posts = getData(STORAGE.posts, []);
-  const oraciones = getData(STORAGE.oraciones, []);
-  const necesidades = getData(STORAGE.necesidades, []);
-  const servicios = getData(STORAGE.servicios, []);
-  const grupos = getData(STORAGE.grupos, []);
-  const discipulados = getData(STORAGE.discipulados, []);
-  const misioneros = getData(STORAGE.misioneros, []);
-
-  document.getElementById('statUsers').textContent = usuarios.length;
-  document.getElementById('statPosts').textContent = posts.length;
-  document.getElementById('statOraciones').textContent = oraciones.length;
-  document.getElementById('statNecesidades').textContent = necesidades.length;
-  document.getElementById('statServicios').textContent = servicios.length;
-  document.getElementById('statGrupos').textContent = grupos.length;
-  document.getElementById('statDiscipulados').textContent = discipulados.length;
-  document.getElementById('statMisioneros').textContent = misioneros.length;
-
-  // Lista de usuarios (con datos extendidos)
-  const userList = document.getElementById('adminUserList');
-  if (usuarios.length === 0) {
-    userList.innerHTML = '<p style="color:var(--text-secondary);">No hay usuarios registrados.</p>';
-  } else {
-    userList.innerHTML = usuarios.map(u => `
-      <div class="admin-list-item">
-        <span class="info">
-          <strong>${u.nombre}</strong> · 📞 ${u.telefono} · Edad: ${u.edad}
-          ${u.apoyos && u.apoyos.length ? ' · Apoyos: ' + u.apoyos.join(', ') : ''}
-        </span>
-        <div class="actions">
-          <button class="btn-danger" onclick="eliminarUsuario('${u.nombre}')">Eliminar</button>
-        </div>
-      </div>
-    `).join('');
+  // ================================================================
+  // 15. BIBLIA - BÚSQUEDA E HISTORIAL
+  // ================================================================
+  function cargarHistorial() {
+    const historial = getData(STORAGE.historialBiblia, []);
+    const container = document.getElementById('historialContainer');
+    if (historial.length === 0) { container.innerHTML = ''; return; }
+    container.innerHTML = historial.map(function(t) { return '<span class="tag" onclick="window.buscarTexto(\'' + t + '\')">' + t + '</span>'; }).join('');
   }
 
-  // Lista de publicaciones
-  const postList = document.getElementById('adminPostList');
-  if (posts.length === 0) {
-    postList.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones.</p>';
-  } else {
-    postList.innerHTML = posts.map(p => `
-      <div class="admin-list-item">
-        <span class="info"><strong>${p.autor}</strong>: ${p.texto.substring(0,60)}${p.texto.length>60?'...':''} <small style="color:var(--text-secondary);">${p.fecha}</small></span>
-        <div class="actions">
-          <button class="btn-danger" onclick="eliminarPublicacion(${p.id})">Eliminar</button>
-        </div>
-      </div>
-    `).join('');
+  window.buscarBiblia = function() {
+    const query = document.getElementById('bibliaSearchInput').value.trim();
+    if (!query) return;
+    window.buscarTexto(query);
+  };
+
+  window.buscarTexto = function(query) {
+    const resultados = {
+      'Juan 3:16': 'Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree no se pierda, mas tenga vida eterna.',
+      'amor': 'El amor es sufrido, es benigno... (1 Corintios 13:4)',
+      'fe': 'Es, pues, la fe la certeza de lo que se espera, la convicción de lo que no se ve. (Hebreos 11:1)',
+      'gracia': 'Porque por gracia sois salvos por medio de la fe; y esto no de vosotros, pues es don de Dios. (Efesios 2:8)',
+      'salvación': 'Porque de tal manera amó Dios al mundo... (Juan 3:16)',
+      'oración': 'Orad sin cesar. (1 Tesalonicenses 5:17)',
+      'esperanza': 'Porque yo sé los pensamientos que tengo acerca de vosotros, dice Jehová, pensamientos de paz, y no de mal, para daros el fin que esperáis. (Jeremías 29:11)'
+    };
+    const result = resultados[query] || resultados[query.toLowerCase()] || 'No se encontró un versículo exacto. Intenta con "Juan 3:16", "amor", "fe", "gracia", "salvación".';
+    document.getElementById('resultadoBiblia').innerHTML = '<p><strong>Resultado:</strong> ' + result + '</p>';
+    let historial = getData(STORAGE.historialBiblia, []);
+    if (!historial.includes(query)) {
+      historial.unshift(query);
+      if (historial.length > 10) historial.pop();
+      setData(STORAGE.historialBiblia, historial);
+      cargarHistorial();
+    }
+    document.getElementById('bibliaSearchInput').value = query;
+  };
+
+  // ================================================================
+  // 16. ASISTENTE IA (OpenRouter)
+  // ================================================================
+  window.preguntarIA = function() {
+    const pregunta = document.getElementById('iaPregunta').value.trim();
+    if (!pregunta) return;
+    const chat = document.getElementById('iaChat');
+    chat.innerHTML += '<div class="msg user"><strong>Tú:</strong> ' + pregunta + '</div>';
+    document.getElementById('iaPregunta').value = '';
+
+    const key = localStorage.getItem(STORAGE.iaKey);
+    const model = localStorage.getItem(STORAGE.iaModel) || 'https://openrouter.ai/api/v1/chat/completions';
+    const contexto = localStorage.getItem(STORAGE.iaContexto) || '';
+
+    if (!key) {
+      chat.innerHTML += '<div class="msg bot"><strong>Asistente:</strong> ⚠️ La clave API de OpenRouter no está configurada. El administrador debe ingresarla.</div>';
+      chat.scrollTop = chat.scrollHeight;
+      return;
+    }
+
+    const prompt = 'Eres un asistente para ayudar a entender el contexto histórico y teológico de pasajes bíblicos. ' + (contexto ? 'Instrucciones adicionales: ' + contexto : '') + ' Responde a esta pregunta de manera clara y concisa: ' + pregunta;
+
+    fetch(model, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + key,
+        'HTTP-Referer': window.location.origin,
+        'X-Title': 'Sal y Luz'
+      },
+      body: JSON.stringify({
+        model: 'openai/gpt-3.5-turbo',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 500
+      })
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      const reply = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : 'No pude obtener una respuesta.';
+      chat.innerHTML += '<div class="msg bot"><strong>Asistente:</strong> ' + reply + '</div>';
+      chat.scrollTop = chat.scrollHeight;
+    })
+    .catch(function(err) {
+      chat.innerHTML += '<div class="msg bot"><strong>Asistente:</strong> Error: ' + err.message + '</div>';
+      chat.scrollTop = chat.scrollHeight;
+    });
+  };
+
+  // ================================================================
+  // 17. ADMIN - CONFIGURACIÓN IA (desde el panel admin)
+  // ================================================================
+  window.guardarConfigIA = function() {
+    if (!isAdmin) return;
+    const key = document.getElementById('openrouterKey').value.trim();
+    const model = document.getElementById('openrouterModel').value.trim() || 'https://openrouter.ai/api/v1/chat/completions';
+    if (key) {
+      localStorage.setItem(STORAGE.iaKey, key);
+      localStorage.setItem(STORAGE.iaModel, model);
+      document.getElementById('iaStatus').textContent = '✅ API configurada correctamente.';
+      alert('Clave y URL guardadas.');
+    } else {
+      localStorage.removeItem(STORAGE.iaKey);
+      document.getElementById('iaStatus').textContent = '⚠️ API no configurada.';
+      alert('Clave eliminada.');
+    }
+  };
+
+  window.guardarContextoIA = function() {
+    if (!isAdmin) return;
+    const ctx = document.getElementById('iaContexto').value.trim();
+    localStorage.setItem(STORAGE.iaContexto, ctx);
+    alert('Contexto guardado.');
+  };
+
+  function cargarConfigIA() {
+    document.getElementById('openrouterKey').value = localStorage.getItem(STORAGE.iaKey) || '';
+    document.getElementById('iaContexto').value = localStorage.getItem(STORAGE.iaContexto) || '';
   }
 
-  // Lista de oraciones
-  const oracList = document.getElementById('adminOracionList');
-  if (oraciones.length === 0) {
-    oracList.innerHTML = '<p style="color:var(--text-secondary);">No hay oraciones.</p>';
-  } else {
-    oracList.innerHTML = oraciones.map(o => `
-      <div class="admin-list-item">
-        <span class="info"><strong>${o.autor}</strong>: ${o.texto.substring(0,60)}${o.texto.length>60?'...':''} <small style="color:var(--text-secondary);">${o.fecha}</small></span>
-        <div class="actions">
-          <button class="btn-danger" onclick="eliminarOracion(${o.id})">Eliminar</button>
-        </div>
-      </div>
-    `).join('');
+  // ================================================================
+  // 18. ADMIN PANEL - ESTADÍSTICAS Y MODERACIÓN
+  // ================================================================
+  function renderAdminPanel() {
+    if (!isAdmin) return;
+    cargarConfigIA();
+
+    const usuarios = getData(STORAGE.usuarios, []);
+    const posts = getData(STORAGE.posts, []);
+    const oraciones = getData(STORAGE.oraciones, []);
+    const necesidades = getData(STORAGE.necesidades, []);
+    const servicios = getData(STORAGE.servicios, []);
+    const grupos = getData(STORAGE.grupos, []);
+    const discipulados = getData(STORAGE.discipulados, []);
+    const misioneros = getData(STORAGE.misioneros, []);
+
+    document.getElementById('statUsers').textContent = usuarios.length;
+    document.getElementById('statPosts').textContent = posts.length;
+    document.getElementById('statOraciones').textContent = oraciones.length;
+    document.getElementById('statNecesidades').textContent = necesidades.length;
+    document.getElementById('statServicios').textContent = servicios.length;
+    document.getElementById('statGrupos').textContent = grupos.length;
+    document.getElementById('statDiscipulados').textContent = discipulados.length;
+    document.getElementById('statMisioneros').textContent = misioneros.length;
+
+    // Usuarios
+    const userList = document.getElementById('adminUserList');
+    if (usuarios.length === 0) {
+      userList.innerHTML = '<p style="color:var(--text-secondary);">No hay usuarios registrados.</p>';
+    } else {
+      userList.innerHTML = usuarios.map(function(u) {
+        return '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + u.nombre + '</strong> · 📞 ' + u.telefono + ' · Edad: ' + u.edad +
+          (u.apoyos && u.apoyos.length ? ' · Apoyos: ' + u.apoyos.join(', ') : '') +
+          '</span>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarUsuario(\'' + u.nombre + '\')">Eliminar</button></div>' +
+          '</div>';
+      }).join('');
+    }
+
+    // Publicaciones
+    const postList = document.getElementById('adminPostList');
+    if (posts.length === 0) {
+      postList.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones.</p>';
+    } else {
+      postList.innerHTML = posts.map(function(p) {
+        return '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + p.autor + '</strong>: ' + p.texto.substring(0,60) + (p.texto.length > 60 ? '...' : '') + ' <small style="color:var(--text-secondary);">' + p.fecha + '</small></span>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarPublicacion(' + p.id + ')">Eliminar</button></div>' +
+          '</div>';
+      }).join('');
+    }
+
+    // Oraciones
+    const oracList = document.getElementById('adminOracionList');
+    if (oraciones.length === 0) {
+      oracList.innerHTML = '<p style="color:var(--text-secondary);">No hay oraciones.</p>';
+    } else {
+      oracList.innerHTML = oraciones.map(function(o) {
+        return '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + o.autor + '</strong>: ' + o.texto.substring(0,60) + (o.texto.length > 60 ? '...' : '') + ' <small style="color:var(--text-secondary);">' + o.fecha + '</small></span>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarOracion(' + o.id + ')">Eliminar</button></div>' +
+          '</div>';
+      }).join('');
+    }
+
+    // Necesidades
+    const needList = document.getElementById('adminNeedList');
+    if (necesidades.length === 0) {
+      needList.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades.</p>';
+    } else {
+      needList.innerHTML = necesidades.map(function(n) {
+        return '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + n.usuario + '</strong> [' + n.categoria + ']: ' + n.desc.substring(0,40) + (n.desc.length > 40 ? '...' : '') + '</span>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarNecesidad(' + n.id + ')">Eliminar</button></div>' +
+          '</div>';
+      }).join('');
+    }
+
+    // Servicios
+    const servList = document.getElementById('adminServicioList');
+    if (servicios.length === 0) {
+      servList.innerHTML = '<p style="color:var(--text-secondary);">No hay servicios.</p>';
+    } else {
+      servList.innerHTML = servicios.map(function(s) {
+        return '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + s.nombre + '</strong> (' + s.usuario + ') - ' + s.direccion + '</span>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarServicio(' + s.id + ')">Eliminar</button></div>' +
+          '</div>';
+      }).join('');
+    }
   }
 
-  // Lista de necesidades
-  const needList = document.getElementById('adminNeedList');
-  if (necesidades.length === 0) {
-    needList.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades.</p>';
-  } else {
-    needList.innerHTML = necesidades.map(n => `
-      <div class="admin-list-item">
-        <span class="info"><strong>${n.usuario}</strong> [${n.categoria}]: ${n.desc.substring(0,40)}${n.desc.length>40?'...':''}</span>
-        <div class="actions">
-          <button class="btn-danger" onclick="eliminarNecesidad(${n.id})">Eliminar</button>
-        </div>
-      </div>
-    `).join('');
+  // Funciones de eliminación para el panel admin
+  window.eliminarUsuario = function(nombre) {
+    if (!isAdmin) return;
+    if (!confirm('¿Eliminar al usuario "' + nombre + '"?')) return;
+    let usuarios = getData(STORAGE.usuarios, []);
+    usuarios = usuarios.filter(function(u) { return u.nombre !== nombre; });
+    setData(STORAGE.usuarios, usuarios);
+    renderAdminPanel();
+  };
+
+  window.eliminarPublicacion = function(id) {
+    if (!isAdmin) return;
+    if (!confirm('¿Eliminar esta publicación?')) return;
+    let posts = getData(STORAGE.posts, []);
+    posts = posts.filter(function(p) { return p.id !== id; });
+    setData(STORAGE.posts, posts);
+    renderFeed();
+    renderAdminPanel();
+  };
+
+  window.eliminarOracion = function(id) {
+    if (!isAdmin) return;
+    if (!confirm('¿Eliminar esta oración?')) return;
+    let oraciones = getData(STORAGE.oraciones, []);
+    oraciones = oraciones.filter(function(o) { return o.id !== id; });
+    setData(STORAGE.oraciones, oraciones);
+    renderOraciones();
+    renderAdminPanel();
+  };
+
+  window.eliminarNecesidad = function(id) {
+    if (!isAdmin) return;
+    if (!confirm('¿Eliminar esta necesidad?')) return;
+    let necesidades = getData(STORAGE.necesidades, []);
+    necesidades = necesidades.filter(function(n) { return n.id !== id; });
+    setData(STORAGE.necesidades, necesidades);
+    renderNecesidades();
+    renderAdminPanel();
+  };
+
+  window.eliminarServicio = function(id) {
+    if (!isAdmin) return;
+    if (!confirm('¿Eliminar este servicio?')) return;
+    let servicios = getData(STORAGE.servicios, []);
+    servicios = servicios.filter(function(s) { return s.id !== id; });
+    setData(STORAGE.servicios, servicios);
+    renderServicios();
+    renderAdminPanel();
+  };
+
+  // ================================================================
+  // 19. MODO NOCTURNO
+  // ================================================================
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    document.body.classList.toggle('dark');
+    this.querySelector('i').classList.toggle('fa-moon');
+    this.querySelector('i').classList.toggle('fa-sun');
+  });
+
+  // ================================================================
+  // 20. DATOS DE EJEMPLO (precargados)
+  // ================================================================
+  function cargarEjemplos() {
+    if (!getData(STORAGE.posts, []).length) {
+      setData(STORAGE.posts, [
+        { id: 1001, autor: 'Pastor José', texto: '¡Bendecido domingo! "El Señor es mi pastor, nada me faltará." (Salmo 23:1) 🙏', link: '', media: null, fecha: 'Hoy, 10:30am', likes: ['María', 'Carlos', 'Ana'], comentarios: [{ autor: 'María', texto: 'Amén, pastor!' }, { autor: 'Carlos', texto: 'Gloria a Dios.' }] },
+        { id: 1002, autor: 'María Rodríguez', texto: 'Comparto este video de la alabanza de hoy. ¡Dios es bueno!', link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', media: null, fecha: 'Hoy, 9:15am', likes: ['Pastor José', 'Ana'], comentarios: [{ autor: 'Ana', texto: 'Hermoso, gracias por compartir.' }] },
+        { id: 1003, autor: 'Carlos López', texto: 'Necesito oración por mi familia. Estamos pasando por un momento difícil. 🙏', link: '', media: null, fecha: 'Ayer, 8:00pm', likes: ['María', 'Pastor José', 'Luis'], comentarios: [{ autor: 'Pastor José', texto: 'Estamos orando por ti, Carlos.' }] }
+      ]);
+    }
+    if (!getData(STORAGE.grupos, []).length) {
+      setData(STORAGE.grupos, [
+        { id: 2001, nombre: 'Jóvenes Unidos', facilitador: 'David Pérez', asistente: 'Laura Mora', anfitrion: 'Casa de los Pérez', telefono: '+506 8888-1234', miembros: ['David Pérez', 'Laura Mora', 'Carlos', 'Ana', 'Luis'], max: 15 },
+        { id: 2002, nombre: 'Mujeres de Fe', facilitador: 'Sofía Méndez', asistente: 'Ruth González', anfitrion: 'Salón de la iglesia', telefono: '+506 8877-5678', miembros: ['Sofía Méndez', 'Ruth González', 'María', 'Elena', 'Patricia'], max: 15 },
+        { id: 2003, nombre: 'Hombres de Valor', facilitador: 'José Castillo', asistente: 'Miguel Ángel', anfitrion: 'Casa de José', telefono: '+506 8866-9012', miembros: ['José Castillo', 'Miguel Ángel', 'Pedro', 'Andrés', 'Santiago'], max: 15 }
+      ]);
+    }
+    if (!getData(STORAGE.discipulados, []).length) {
+      setData(STORAGE.discipulados, [
+        { id: 3001, titulo: 'Fundamentos de la Fe', facilitador: 'Pastor José Castillo', telefono: '+506 8888-1111', desc: 'Un curso de 8 semanas sobre los fundamentos bíblicos. Martes 7pm.', inscritos: ['María', 'Carlos'] },
+        { id: 3002, titulo: 'Vida en el Espíritu', facilitador: 'David Pérez', telefono: '+506 8877-2222', desc: 'Descubre los dones del Espíritu Santo. Jueves 6pm.', inscritos: ['Ana', 'Luis', 'Sofía'] },
+        { id: 3003, titulo: 'Liderazgo Cristiano', facilitador: 'Miguel Ángel', telefono: '+506 8866-3333', desc: 'Formación para líderes. Sábados 9am.', inscritos: ['Pedro', 'Andrés'] }
+      ]);
+    }
+    if (!getData(STORAGE.oraciones, []).length) {
+      setData(STORAGE.oraciones, [
+        { id: 7001, autor: 'Ana Núñez', texto: 'Mi hijo está pasando por una situación difícil en la escuela. Pido oración por sabiduría.', fecha: 'Hoy, 11:30am', orado: ['María', 'Pastor José', 'Carlos'] },
+        { id: 7002, autor: 'Carlos López', texto: 'Perdí mi empleo esta semana. Pido oración por paz y provisión.', fecha: 'Ayer, 6:45pm', orado: ['Ana', 'Luis', 'Sofía'] },
+        { id: 7003, autor: 'Laura Méndez', texto: 'Mi mamá fue diagnosticada con cáncer. Pido oración por su sanidad.', fecha: 'Hace 2 días, 9:00am', orado: ['Pastor José', 'María', 'David', 'Elena'] }
+      ]);
+    }
+    if (!getData(STORAGE.necesidades, []).length) {
+      setData(STORAGE.necesidades, [
+        { id: 4001, usuario: 'Familia González', categoria: 'Alimentos', desc: 'Necesitamos ayuda con una canasta básica para 5 personas.', telefono: '+506 8888-4444', fotos: [], ayudas: [], fecha: 'Hoy, 11:00am' },
+        { id: 4002, usuario: 'Señora Elena', categoria: 'Medicamentos', desc: 'Necesito insulina para mi mamá de 72 años.', telefono: '+506 8877-5555', fotos: [], ayudas: [], fecha: 'Ayer, 3:30pm' },
+        { id: 4003, usuario: 'Carlos Méndez', categoria: 'Útiles escolares', desc: 'Busco ayuda con útiles escolares para mis 2 hijos.', telefono: '+506 8866-6666', fotos: [], ayudas: [], fecha: 'Hace 2 días' }
+      ]);
+    }
+    if (!getData(STORAGE.servicios, []).length) {
+      setData(STORAGE.servicios, [
+        { id: 5001, nombre: 'Comedor Esperanza', direccion: 'Calle 7, San José', horario: 'Lun-Vie 12pm-2pm', comidas: '1 tiempo', personas: 80, usuario: 'Pastor José', fecha: 'Activo' },
+        { id: 5002, nombre: 'Hogar de los Pérez', direccion: 'Barrio Los Ángeles, casa #15', horario: 'Sábados 1pm-3pm', comidas: '2 tiempos', personas: 20, usuario: 'Familia Pérez', fecha: 'Activo' },
+        { id: 5003, nombre: 'Iglesia Viva - Comedor', direccion: 'Avenida 2, frente al parque', horario: 'Miércoles 11am-1pm', comidas: '3 tiempos', personas: 50, usuario: 'Iglesia Viva', fecha: 'Activo' }
+      ]);
+    }
+    if (!getData(STORAGE.misioneros, []).length) {
+      setData(STORAGE.misioneros, [
+        { nombre: 'Ana y Pedro Martínez', ubicacion: 'Guatemala', usuario: 'AnaM' },
+        { nombre: 'Misión África', ubicacion: 'Kenia', usuario: 'MisionAfrica' },
+        { nombre: 'Juan Carlos Ruiz', ubicacion: 'Colombia', usuario: 'JCRuiz' }
+      ]);
+    }
+    if (!getData(STORAGE.carrusel, []).length) {
+      setData(STORAGE.carrusel, [
+        { id: 1, type: 'image', url: 'https://images.unsplash.com/photo-1504052434569-70ad5836ab23?w=800', title: 'Bienvenidos a Sal y Luz', description: 'Una comunidad en crecimiento' },
+        { id: 2, type: 'image', url: 'https://images.unsplash.com/photo-1529078155058-5d716f45d7f0?w=800', title: 'Jóvenes en adoración', description: 'Culto juvenil todos los viernes' },
+        { id: 3, type: 'video', url: 'https://www.youtube.com/embed/3t8sWnF5j4k', title: 'Alabanza en vivo', description: 'Música y adoración' }
+      ]);
+    }
   }
 
-  // Lista de servicios
-  const servList = document.getElementById('adminServicioList');
-  if (servicios.length === 0) {
-    servList.innerHTML = '<p style="color:var(--text-secondary);">No hay servicios.</p>';
-  } else {
-    servList.innerHTML = servicios.map(s => `
-      <div class="admin-list-item">
-        <span class="info"><strong>${s.nombre}</strong> (${s.usuario}) - ${s.direccion}</span>
-        <div class="actions">
-          <button class="btn-danger" onclick="eliminarServicio(${s.id})">Eliminar</button>
-        </div>
-      </div>
-    `).join('');
-  }
-}
-
-// Funciones de eliminación para el panel admin
-function eliminarUsuario(nombre) {
-  if (!isAdmin) return;
-  if (!confirm(`¿Eliminar al usuario "${nombre}"?`)) return;
-  let usuarios = getData(STORAGE.usuarios, []);
-  usuarios = usuarios.filter(u => u.nombre !== nombre);
-  setData(STORAGE.usuarios, usuarios);
-  renderAdminPanel();
-}
-
-function eliminarPublicacion(id) {
-  if (!isAdmin) return;
-  if (!confirm('¿Eliminar esta publicación?')) return;
-  let posts = getData(STORAGE.posts, []);
-  posts = posts.filter(p => p.id !== id);
-  setData(STORAGE.posts, posts);
+  // ================================================================
+  // 21. INICIALIZACIÓN
+  // ================================================================
+  cargarEjemplos();
   renderFeed();
-  renderAdminPanel();
-}
-
-function eliminarOracion(id) {
-  if (!isAdmin) return;
-  if (!confirm('¿Eliminar esta oración?')) return;
-  let oraciones = getData(STORAGE.oraciones, []);
-  oraciones = oraciones.filter(o => o.id !== id);
-  setData(STORAGE.oraciones, oraciones);
+  renderGrupos();
+  renderDiscipulados();
   renderOraciones();
-  renderAdminPanel();
-}
-
-function eliminarNecesidad(id) {
-  if (!isAdmin) return;
-  if (!confirm('¿Eliminar esta necesidad?')) return;
-  let necesidades = getData(STORAGE.necesidades, []);
-  necesidades = necesidades.filter(n => n.id !== id);
-  setData(STORAGE.necesidades, necesidades);
+  renderMisioneros();
   renderNecesidades();
-  renderAdminPanel();
-}
-
-function eliminarServicio(id) {
-  if (!isAdmin) return;
-  if (!confirm('¿Eliminar este servicio?')) return;
-  let servicios = getData(STORAGE.servicios, []);
-  servicios = servicios.filter(s => s.id !== id);
-  setData(STORAGE.servicios, servicios);
   renderServicios();
-  renderAdminPanel();
-}
+  cargarHistorial();
+  renderCarrusel();
 
-// ================================================================
-// 19. MODO NOCTURNO (fullscreen eliminado)
-// ================================================================
-document.getElementById('themeToggle').addEventListener('click', function() {
-  document.body.classList.toggle('dark');
-  this.querySelector('i').classList.toggle('fa-moon');
-  this.querySelector('i').classList.toggle('fa-sun');
+  if (localStorage.getItem(STORAGE.iaKey)) {
+    document.getElementById('iaStatus').textContent = '✅ API configurada.';
+  }
+
+  console.log('✅ SAL Y LUZ cargada correctamente.');
 });
-
-// ================================================================
-// 20. DATOS DE EJEMPLO (precargados)
-// ================================================================
-function cargarEjemplos() {
-  if (!getData(STORAGE.posts, []).length) {
-    setData(STORAGE.posts, [
-      {
-        id: 1001,
-        autor: 'Pastor José',
-        texto: '¡Bendecido domingo! "El Señor es mi pastor, nada me faltará." (Salmo 23:1) 🙏',
-        link: '',
-        media: null,
-        fecha: 'Hoy, 10:30am',
-        likes: ['María', 'Carlos', 'Ana'],
-        comentarios: [{ autor: 'María', texto: 'Amén, pastor!' }, { autor: 'Carlos', texto: 'Gloria a Dios.' }]
-      },
-      {
-        id: 1002,
-        autor: 'María Rodríguez',
-        texto: 'Comparto este video de la alabanza de hoy. ¡Dios es bueno!',
-        link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-        media: null,
-        fecha: 'Hoy, 9:15am',
-        likes: ['Pastor José', 'Ana'],
-        comentarios: [{ autor: 'Ana', texto: 'Hermoso, gracias por compartir.' }]
-      },
-      {
-        id: 1003,
-        autor: 'Carlos López',
-        texto: 'Necesito oración por mi familia. Estamos pasando por un momento difícil. 🙏',
-        link: '',
-        media: null,
-        fecha: 'Ayer, 8:00pm',
-        likes: ['María', 'Pastor José', 'Luis'],
-        comentarios: [{ autor: 'Pastor José', texto: 'Estamos orando por ti, Carlos.' }]
-      }
-    ]);
-  }
-
-  if (!getData(STORAGE.grupos, []).length) {
-    setData(STORAGE.grupos, [
-      { id: 2001, nombre: 'Jóvenes Unidos', facilitador: 'David Pérez', asistente: 'Laura Mora', anfitrion: 'Casa de los Pérez', telefono: '+506 8888-1234', miembros: ['David Pérez', 'Laura Mora', 'Carlos', 'Ana', 'Luis'], max: 15 },
-      { id: 2002, nombre: 'Mujeres de Fe', facilitador: 'Sofía Méndez', asistente: 'Ruth González', anfitrion: 'Salón de la iglesia', telefono: '+506 8877-5678', miembros: ['Sofía Méndez', 'Ruth González', 'María', 'Elena', 'Patricia'], max: 15 },
-      { id: 2003, nombre: 'Hombres de Valor', facilitador: 'José Castillo', asistente: 'Miguel Ángel', anfitrion: 'Casa de José', telefono: '+506 8866-9012', miembros: ['José Castillo', 'Miguel Ángel', 'Pedro', 'Andrés', 'Santiago'], max: 15 }
-    ]);
-  }
-
-  if (!getData(STORAGE.discipulados, []).length) {
-    setData(STORAGE.discipulados, [
-      { id: 3001, titulo: 'Fundamentos de la Fe', facilitador: 'Pastor José Castillo', telefono: '+506 8888-1111', desc: 'Un curso de 8 semanas sobre los fundamentos bíblicos. Martes 7pm.', inscritos: ['María', 'Carlos'] },
-      { id: 3002, titulo: 'Vida en el Espíritu', facilitador: 'David Pérez', telefono: '+506 8877-2222', desc: 'Descubre los dones del Espíritu Santo. Jueves 6pm.', inscritos: ['Ana', 'Luis', 'Sofía'] },
-      { id: 3003, titulo: 'Liderazgo Cristiano', facilitador: 'Miguel Ángel', telefono: '+506 8866-3333', desc: 'Formación para líderes. Sábados 9am.', inscritos: ['Pedro', 'Andrés'] }
-    ]);
-  }
-
-  if (!getData(STORAGE.oraciones, []).length) {
-    setData(STORAGE.oraciones, [
-      { id: 7001, autor: 'Ana Núñez', texto: 'Mi hijo está pasando por una situación difícil en la escuela. Pido oración por sabiduría.', fecha: 'Hoy, 11:30am', orado: ['María', 'Pastor José', 'Carlos'] },
-      { id: 7002, autor: 'Carlos López', texto: 'Perdí mi empleo esta semana. Pido oración por paz y provisión.', fecha: 'Ayer, 6:45pm', orado: ['Ana', 'Luis', 'Sofía'] },
-      { id: 7003, autor: 'Laura Méndez', texto: 'Mi mamá fue diagnosticada con cáncer. Pido oración por su sanidad.', fecha: 'Hace 2 días, 9:00am', orado: ['Pastor José', 'María', 'David', 'Elena'] }
-    ]);
-  }
-
-  if (!getData(STORAGE.necesidades, []).length) {
-    setData(STORAGE.necesidades, [
-      { id: 4001, usuario: 'Familia González', categoria: 'Alimentos', desc: 'Necesitamos ayuda con una canasta básica para 5 personas.', telefono: '+506 8888-4444', fotos: [], ayudas: [], fecha: 'Hoy, 11:00am' },
-      { id: 4002, usuario: 'Señora Elena', categoria: 'Medicamentos', desc: 'Necesito insulina para mi mamá de 72 años.', telefono: '+506 8877-5555', fotos: [], ayudas: [], fecha: 'Ayer, 3:30pm' },
-      { id: 4003, usuario: 'Carlos Méndez', categoria: 'Útiles escolares', desc: 'Busco ayuda con útiles escolares para mis 2 hijos.', telefono: '+506 8866-6666', fotos: [], ayudas: [], fecha: 'Hace 2 días' }
-    ]);
-  }
-
-  if (!getData(STORAGE.servicios, []).length) {
-    setData(STORAGE.servicios, [
-      { id: 5001, nombre: 'Comedor Esperanza', direccion: 'Calle 7, San José', horario: 'Lun-Vie 12pm-2pm', comidas: '1 tiempo', personas: 80, usuario: 'Pastor José', fecha: 'Activo' },
-      { id: 5002, nombre: 'Hogar de los Pérez', direccion: 'Barrio Los Ángeles, casa #15', horario: 'Sábados 1pm-3pm', comidas: '2 tiempos', personas: 20, usuario: 'Familia Pérez', fecha: 'Activo' },
-      { id: 5003, nombre: 'Iglesia Viva - Comedor', direccion: 'Avenida 2, frente al parque', horario: 'Miércoles 11am-1pm', comidas: '3 tiempos', personas: 50, usuario: 'Iglesia Viva', fecha: 'Activo' }
-    ]);
-  }
-
-  if (!getData(STORAGE.misioneros, []).length) {
-    setData(STORAGE.misioneros, [
-      { nombre: 'Ana y Pedro Martínez', ubicacion: 'Guatemala', usuario: 'AnaM' },
-      { nombre: 'Misión África', ubicacion: 'Kenia', usuario: 'MisionAfrica' },
-      { nombre: 'Juan Carlos Ruiz', ubicacion: 'Colombia', usuario: 'JCRuiz' }
-    ]);
-  }
-
-  if (!getData(STORAGE.carrusel, []).length) {
-    setData(STORAGE.carrusel, [
-      { id: 1, type: 'image', url: 'https://images.unsplash.com/photo-1504052434569-70ad5836ab23?w=800', title: 'Bienvenidos a Sal y Luz', description: 'Una comunidad en crecimiento' },
-      { id: 2, type: 'image', url: 'https://images.unsplash.com/photo-1529078155058-5d716f45d7f0?w=800', title: 'Jóvenes en adoración', description: 'Culto juvenil todos los viernes' },
-      { id: 3, type: 'video', url: 'https://www.youtube.com/embed/3t8sWnF5j4k', title: 'Alabanza en vivo', description: 'Música y adoración' }
-    ]);
-  }
-}
-
-// ================================================================
-// 21. INICIALIZACIÓN
-// ================================================================
-cargarEjemplos();
-renderFeed();
-renderGrupos();
-renderDiscipulados();
-renderOraciones();
-renderMisioneros();
-renderNecesidades();
-renderServicios();
-cargarHistorial();
-renderCarrusel();
-
-if (localStorage.getItem(STORAGE.iaKey)) {
-  document.getElementById('iaStatus').textContent = '✅ API configurada.';
-}
-
-console.log('✅ SAL Y LUZ cargada con Firebase, carrusel,
+</script>
+</body>
+</html>

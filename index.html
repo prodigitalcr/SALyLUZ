@@ -8,8 +8,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <style>
-    /* ===== ESTILOS GENERALES (sin cambios relevantes) ===== */
+    /* ===== ESTILOS GENERALES (sin cambios) ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --teal: #1D9E75;
@@ -907,7 +908,7 @@
     </div>
   </header>
 
-  <!-- ===== TABS (menú compacto) ===== -->
+  <!-- ===== TABS ===== -->
   <nav class="tabs" id="mainTabs">
     <button class="tab active" data-panel="inicio"><i class="fas fa-home"></i><span> Inicio</span></button>
     <button class="tab" data-panel="biblia"><i class="fas fa-bible"></i><span> Biblia</span></button>
@@ -922,8 +923,7 @@
     <button class="tab" data-panel="admin" id="adminTab" style="display:none;"><i class="fas fa-cog"></i><span> Admin</span></button>
   </nav>
 
-  <!-- ============================================================ -->
-  <!-- PANEL: INICIO (sin cambios) -->
+  <!-- ===== PANEL INICIO ===== -->
   <div class="panel active" id="panel-inicio">
     <div class="carousel-container" id="carouselContainer">
       <div id="carouselSlides"></div>
@@ -951,7 +951,7 @@
     </div>
   </div>
 
-  <!-- ===== PANEL: BIBLIA (sin cambios) ===== -->
+  <!-- ===== PANEL BIBLIA ===== -->
   <div class="panel" id="panel-biblia">
     <div class="card">
       <h3><i class="fas fa-bible"></i> Lectura Bíblica</h3>
@@ -996,7 +996,7 @@
     </div>
   </div>
 
-  <!-- ===== PANEL: MURO (sin cambios) ===== -->
+  <!-- ===== PANEL MURO ===== -->
   <div class="panel" id="panel-muro">
     <div class="card">
       <h3><i class="fas fa-edit"></i> Publicar</h3>
@@ -1013,7 +1013,7 @@
     <div id="feedContainer"></div>
   </div>
 
-  <!-- ===== PANEL: GRUPOS (con chat) ===== -->
+  <!-- ===== PANEL GRUPOS ===== -->
   <div class="panel" id="panel-grupos">
     <div class="card">
       <h3><i class="fas fa-users"></i> Grupos de Conexión (máx 15)</h3>
@@ -1022,7 +1022,7 @@
     <div id="gruposContainer"></div>
   </div>
 
-  <!-- ===== PANEL: DISCIPULADO (sin cambios) ===== -->
+  <!-- ===== PANEL DISCIPULADO ===== -->
   <div class="panel" id="panel-discipulado">
     <div class="card">
       <h3><i class="fas fa-chalkboard-teacher"></i> Discipulados</h3>
@@ -1031,7 +1031,7 @@
     <div id="discipuladoContainer"></div>
   </div>
 
-  <!-- ===== PANEL: ORACIÓN (sin cambios) ===== -->
+  <!-- ===== PANEL ORACIÓN ===== -->
   <div class="panel" id="panel-oracion">
     <div class="card">
       <h3><i class="fas fa-pray"></i> Publicar petición de oración</h3>
@@ -1041,7 +1041,7 @@
     <div id="oracionesContainer"></div>
   </div>
 
-  <!-- ===== PANEL: MAPA (sin cambios relevantes) ===== -->
+  <!-- ===== PANEL MAPA ===== -->
   <div class="panel" id="panel-mapa">
     <div class="card">
       <h3><i class="fas fa-church"></i> Grupos de conexión con ubicación</h3>
@@ -1063,7 +1063,7 @@
     </div>
   </div>
 
-  <!-- ===== PANEL: NECESIDADES (sin cambios) ===== -->
+  <!-- ===== PANEL NECESIDADES ===== -->
   <div class="panel" id="panel-necesidades">
     <div class="card">
       <h3><i class="fas fa-hand-holding-heart"></i> Publicar necesidad</h3>
@@ -1084,7 +1084,7 @@
     <div id="necesidadesContainer"></div>
   </div>
 
-  <!-- ===== PANEL: SERVICIO (con fecha, solicitudes y mis servicios) ===== -->
+  <!-- ===== PANEL SERVICIO ===== -->
   <div class="panel" id="panel-servicio">
     <div class="card">
       <h3><i class="fas fa-utensils"></i> Ofrecer ayuda alimentaria</h3>
@@ -1105,7 +1105,7 @@
       <p id="servicioMensaje" style="font-size:12px; color:var(--text-secondary);">Si eres servidor o tienes ayuda alimentaria, verás el formulario para ofrecer servicio.</p>
     </div>
 
-    <!-- Mis servicios (solo para servidores y admin) -->
+    <!-- Mis servicios -->
     <div id="misServiciosContainer" style="display:none;">
       <div class="card">
         <h3><i class="fas fa-user-cog"></i> Mis servicios</h3>
@@ -1113,14 +1113,14 @@
       </div>
     </div>
 
-    <!-- Todos los servicios disponibles -->
+    <!-- Todos los servicios -->
     <div class="card">
       <h3><i class="fas fa-list"></i> Servicios disponibles</h3>
       <div id="serviciosContainer"></div>
     </div>
   </div>
 
-  <!-- ===== PANEL: CONSEJERÍA (sin cambios) ===== -->
+  <!-- ===== PANEL CONSEJERÍA ===== -->
   <div class="panel" id="panel-consejeria">
     <div class="card">
       <h3><i class="fas fa-comment-dots"></i> Consejería Bíblica</h3>
@@ -1132,7 +1132,7 @@
     <div id="consejosContainer"></div>
   </div>
 
-  <!-- ===== PANEL: ADMIN (sin cambios) ===== -->
+  <!-- ===== PANEL ADMIN ===== -->
   <div class="panel" id="panel-admin">
     <div class="card">
       <h3><i class="fas fa-tachometer-alt"></i> Panel de Administración</h3>
@@ -1185,10 +1185,8 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- MODALES -->
-
-  <!-- Modal Login -->
+  <!-- ===== MODALES ===== -->
+  <!-- Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
       <h3><i class="fas fa-user"></i> Registro / Inicio de sesión</h3>
@@ -1216,7 +1214,7 @@
     </div>
   </div>
 
-  <!-- Modal Editar Perfil -->
+  <!-- Editar Perfil -->
   <div class="modal-overlay" id="editarPerfilModal">
     <div class="modal-box">
       <h3><i class="fas fa-user-edit"></i> Editar Perfil</h3>
@@ -1244,7 +1242,7 @@
     </div>
   </div>
 
-  <!-- Modal Login Admin -->
+  <!-- Login Admin -->
   <div class="modal-overlay" id="adminLoginModal">
     <div class="modal-box">
       <h3><i class="fas fa-user-shield"></i> Administrador</h3>
@@ -1260,7 +1258,7 @@
     </div>
   </div>
 
-  <!-- Modal Carrusel -->
+  <!-- Carrusel -->
   <div class="modal-overlay" id="carruselModal">
     <div class="modal-box">
       <h3><i class="fas fa-images"></i> Gestionar Carrusel</h3>
@@ -1285,7 +1283,7 @@
     </div>
   </div>
 
-  <!-- Modal Grupo -->
+  <!-- Grupo -->
   <div class="modal-overlay" id="grupoModal">
     <div class="modal-box">
       <h3><i class="fas fa-users"></i> Nuevo Grupo</h3>
@@ -1308,7 +1306,7 @@
     </div>
   </div>
 
-  <!-- Modal Discipulado -->
+  <!-- Discipulado -->
   <div class="modal-overlay" id="discipuladoModal">
     <div class="modal-box">
       <h3><i class="fas fa-chalkboard-teacher"></i> Nuevo Discipulado</h3>
@@ -1327,7 +1325,7 @@
     </div>
   </div>
 
-  <!-- Modal Chat del Grupo -->
+  <!-- Chat Grupo -->
   <div class="modal-overlay" id="chatGrupoModal">
     <div class="modal-box">
       <h3><i class="fas fa-comments"></i> <span id="chatGrupoTitulo">Chat del grupo</span></h3>
@@ -1363,6 +1361,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // --- Autenticación anónima para todos los usuarios ---
+  auth.signInAnonymously().catch(function(err) {
+    console.warn('Error en autenticación anónima:', err);
+  });
 
   // ================================================================
   // 1. ESTADO GLOBAL Y LOCALSTORAGE
@@ -1374,7 +1378,6 @@ document.addEventListener('DOMContentLoaded', function() {
     discipulados: 'iglesia_discipulados',
     misioneros: 'iglesia_misioneros',
     necesidades: 'iglesia_necesidades',
-    servicios: 'iglesia_servicios',
     oraciones: 'iglesia_oraciones',
     historialBiblia: 'iglesia_historial_biblia',
     iaKey: 'iglesia_ia_key',
@@ -1389,7 +1392,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let isAdmin = false;
   let carruselInterval = null;
   let editModeActivo = false;
-  let chatGrupoActual = null; // id del grupo para el chat
+  let chatGrupoActual = null;
 
   function getData(key, def) {
     try { return JSON.parse(localStorage.getItem(key)) || def; } catch(e) { return def; }
@@ -1447,8 +1450,8 @@ document.addEventListener('DOMContentLoaded', function() {
     renderNecesidades();
     renderOraciones();
     renderServicios();
-    renderConsejos();
     renderMisServicios();
+    renderConsejos();
     actualizarBotonesPorRol();
     if (isAdmin) renderAdminPanel();
   };
@@ -1462,8 +1465,8 @@ document.addEventListener('DOMContentLoaded', function() {
         renderFeed();
         renderOraciones();
         renderServicios();
-        renderConsejos();
         renderMisServicios();
+        renderConsejos();
         actualizarBotonesPorRol();
       }
     } else {
@@ -1852,7 +1855,6 @@ document.addEventListener('DOMContentLoaded', function() {
       btnDiscipulado.style.display = 'none';
     }
 
-    // Servicio: solo servidores, ayuda_alimentaria o admin pueden ofrecer
     if (isAdmin || tieneRol('servidor') || tieneRol('ayuda_alimentaria')) {
       servicioForm.style.display = 'block';
       servicioMsg.style.display = 'none';
@@ -2255,15 +2257,26 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 13. SERVICIO (con fecha, solicitudes y mis servicios)
+  // 13. SERVICIO CON FIRESTORE (CORREGIDO)
   // ================================================================
   function puedeOfrecerServicio() {
     return isAdmin || tieneRol('servidor') || tieneRol('ayuda_alimentaria');
   }
 
-  window.ofrecerServicio = function() {
-    if (!puedeOfrecerServicio()) { alert('No tienes permisos para ofrecer servicio.'); return; }
-    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+  function getServiciosRef() {
+    return db.collection('servicios');
+  }
+
+  window.ofrecerServicio = async function() {
+    if (!puedeOfrecerServicio()) {
+      alert('No tienes permisos para ofrecer servicio.');
+      return;
+    }
+    if (!usuarioActual) {
+      alert('Ingresa primero.');
+      return;
+    }
+
     const nombre = document.getElementById('servicioNombre').value.trim();
     const direccion = document.getElementById('servicioDireccion').value.trim();
     const fecha = document.getElementById('servicioFecha').value;
@@ -2271,133 +2284,200 @@ document.addEventListener('DOMContentLoaded', function() {
     const comidas = document.getElementById('servicioComidas').value;
     const personas = parseInt(document.getElementById('servicioPersonas').value);
     const telefono = document.getElementById('servicioTelefono').value.trim();
+
     if (!nombre || !direccion || !fecha || !horario || !personas || !telefono) {
       alert('Completa todos los campos.');
       return;
     }
-    const servicios = getData(STORAGE.servicios, []);
-    servicios.push({
-      id: Date.now(),
-      nombre: nombre,
-      direccion: direccion,
-      fecha: fecha,
-      horario: horario,
-      comidas: comidas,
-      personas: personas,
-      telefono: telefono,
+
+    const data = {
+      nombre,
+      direccion,
+      fecha,
+      horario,
+      comidas,
+      personas,
+      telefono,
       usuario: usuarioActual,
-      fechaRegistro: new Date().toLocaleString(),
-      solicitantes: [] // { nombre, telefono, estado: 'pendiente'|'confirmado'|'cancelado' }
-    });
-    setData(STORAGE.servicios, servicios);
-    document.getElementById('servicioNombre').value = '';
-    document.getElementById('servicioDireccion').value = '';
-    document.getElementById('servicioFecha').value = '';
-    document.getElementById('servicioHorario').value = '';
-    document.getElementById('servicioPersonas').value = '';
-    document.getElementById('servicioTelefono').value = '';
-    renderServicios();
-    renderMisServicios();
+      fechaRegistro: new Date().toISOString(),
+      solicitantes: []
+    };
+
+    try {
+      await getServiciosRef().add(data);
+      alert('✅ Servicio ofrecido correctamente.');
+      document.getElementById('servicioNombre').value = '';
+      document.getElementById('servicioDireccion').value = '';
+      document.getElementById('servicioFecha').value = '';
+      document.getElementById('servicioHorario').value = '';
+      document.getElementById('servicioPersonas').value = '';
+      document.getElementById('servicioTelefono').value = '';
+      renderServicios();
+      renderMisServicios();
+    } catch (error) {
+      console.error('Error al guardar en Firestore:', error);
+      alert('❌ Error al guardar: ' + error.message);
+    }
   };
 
-  function renderServicios() {
+  window.renderServicios = async function() {
     const container = document.getElementById('serviciosContainer');
-    const servicios = getData(STORAGE.servicios, []);
-    if (servicios.length === 0) {
-      container.innerHTML = '<p style="color:var(--text-secondary);">No hay ofertas de servicio disponibles.</p>';
-      return;
-    }
-    let html = '';
-    servicios.forEach(function(s) {
-      const yaSolicito = s.solicitantes && s.solicitantes.find(sol => sol.nombre === usuarioActual);
-      const estadoSolicitud = yaSolicito ? yaSolicito.estado : null;
-      html += '<div class="serv-item">' +
-        '<strong>' + s.nombre + '</strong> <span style="font-size:12px; color:var(--text-secondary);">(' + s.usuario + ')</span>' +
-        '<p><i class="fas fa-calendar-day"></i> ' + s.fecha + ' · <i class="fas fa-clock"></i> ' + s.horario + '</p>' +
-        '<p><i class="fas fa-map-pin"></i> ' + s.direccion + '</p>' +
-        '<p><i class="fas fa-utensils"></i> ' + s.comidas + ' · <i class="fas fa-users"></i> ' + s.personas + ' personas</p>' +
-        '<p><i class="fas fa-phone"></i> ' + s.telefono + ' <a href="https://wa.me/' + s.telefono.replace(/\s/g, '') + '?text=Hola, vi tu oferta de ayuda alimentaria "' + s.nombre + '" y me gustaría reservar un lugar." target="_blank" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a></p>';
-      if (usuarioActual && usuarioActual !== s.usuario) {
-        if (!yaSolicito) {
-          html += '<button class="btn-primary" onclick="window.solicitarServicio(' + s.id + ')"><i class="fas fa-hand-paper"></i> Solicitar lugar</button>';
-        } else if (estadoSolicitud === 'pendiente') {
-          html += '<span class="estado-solicitud estado-pendiente">Solicitud pendiente</span>';
-        } else if (estadoSolicitud === 'confirmado') {
-          html += '<span class="estado-solicitud estado-confirmado">Confirmado</span>';
-        } else if (estadoSolicitud === 'cancelado') {
-          html += '<span class="estado-solicitud estado-cancelado">Cancelado</span>';
-        }
-      }
-      html += '</div>';
-    });
-    container.innerHTML = html;
-  }
+    container.innerHTML = '<p style="color:var(--text-secondary);">Cargando servicios...</p>';
 
-  window.solicitarServicio = function(id) {
-    if (!usuarioActual) { alert('Ingresa primero.'); return; }
-    const servicios = getData(STORAGE.servicios, []);
-    const s = servicios.find(function(item) { return item.id === id; });
-    if (!s) return;
-    if (s.solicitantes && s.solicitantes.find(sol => sol.nombre === usuarioActual)) {
-      alert('Ya has solicitado este servicio.');
-      return;
+    try {
+      const snapshot = await getServiciosRef().orderBy('fechaRegistro', 'desc').get();
+      if (snapshot.empty) {
+        container.innerHTML = '<p style="color:var(--text-secondary);">No hay ofertas de servicio disponibles.</p>';
+        return;
+      }
+
+      let html = '';
+      snapshot.forEach(doc => {
+        const s = { id: doc.id, ...doc.data() };
+        const yaSolicito = s.solicitantes && s.solicitantes.find(sol => sol.nombre === usuarioActual);
+        const estadoSolicitud = yaSolicito ? yaSolicito.estado : null;
+
+        html += `<div class="serv-item">
+          <strong>${s.nombre}</strong> <span style="font-size:12px; color:var(--text-secondary);">(${s.usuario})</span>
+          <p><i class="fas fa-calendar-day"></i> ${s.fecha} · <i class="fas fa-clock"></i> ${s.horario}</p>
+          <p><i class="fas fa-map-pin"></i> ${s.direccion}</p>
+          <p><i class="fas fa-utensils"></i> ${s.comidas} · <i class="fas fa-users"></i> ${s.personas} personas</p>
+          <p><i class="fas fa-phone"></i> ${s.telefono} <a href="https://wa.me/${s.telefono.replace(/\s/g, '')}?text=Hola, vi tu oferta de ayuda alimentaria "${s.nombre}" y me gustaría reservar un lugar." target="_blank" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a></p>`;
+
+        if (usuarioActual && usuarioActual !== s.usuario) {
+          if (!yaSolicito) {
+            html += `<button class="btn-primary" onclick="window.solicitarServicio('${s.id}')"><i class="fas fa-hand-paper"></i> Solicitar lugar</button>`;
+          } else if (estadoSolicitud === 'pendiente') {
+            html += `<span class="estado-solicitud estado-pendiente">Solicitud pendiente</span>`;
+          } else if (estadoSolicitud === 'confirmado') {
+            html += `<span class="estado-solicitud estado-confirmado">Confirmado</span>`;
+          } else if (estadoSolicitud === 'cancelado') {
+            html += `<span class="estado-solicitud estado-cancelado">Cancelado</span>`;
+          }
+        }
+        html += `</div>`;
+      });
+      container.innerHTML = html;
+    } catch (error) {
+      console.error('Error al cargar servicios:', error);
+      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar servicios.</p>';
     }
-    if (!s.solicitantes) s.solicitantes = [];
-    s.solicitantes.push({ nombre: usuarioActual, telefono: getUsuarioActual()?.telefono || '', estado: 'pendiente' });
-    setData(STORAGE.servicios, servicios);
-    renderServicios();
-    renderMisServicios();
   };
 
-  // Mis servicios (para servidores y admin)
-  function renderMisServicios() {
+  window.renderMisServicios = async function() {
     const container = document.getElementById('misServiciosLista');
     if (!container) return;
-    const servicios = getData(STORAGE.servicios, []);
-    const misServicios = servicios.filter(s => s.usuario === usuarioActual || isAdmin);
-    if (misServicios.length === 0) {
-      container.innerHTML = '<p style="color:var(--text-secondary);">No has ofrecido servicios aún.</p>';
-      return;
-    }
-    let html = '';
-    misServicios.forEach(function(s) {
-      html += '<div class="serv-item" style="border:1px solid var(--border-color); border-radius:10px; padding:10px; margin-bottom:10px;">' +
-        '<strong>' + s.nombre + '</strong> <span style="font-size:12px; color:var(--text-secondary);">(' + s.fecha + ' ' + s.horario + ')</span>' +
-        '<p><i class="fas fa-map-pin"></i> ' + s.direccion + ' · <i class="fas fa-utensils"></i> ' + s.comidas + ' · ' + s.personas + ' personas</p>' +
-        '<p><i class="fas fa-phone"></i> ' + s.telefono + '</p>' +
-        '<div><strong>Solicitudes:</strong></div>';
-      if (s.solicitantes && s.solicitantes.length) {
-        s.solicitantes.forEach(function(sol) {
-          html += '<div class="solicitante-item">' +
-            '<span>' + sol.nombre + ' (📞 ' + (sol.telefono || 'N/A') + ')</span>' +
-            '<span style="display:flex; gap:4px;">' +
-            '<span class="estado-solicitud estado-' + sol.estado + '">' + sol.estado.toUpperCase() + '</span>' +
-            (sol.estado === 'pendiente' ? '<button class="btn-primary" onclick="window.actualizarSolicitud(' + s.id + ', \'' + sol.nombre + '\', \'confirmado\')" style="font-size:10px; padding:0 6px;">Confirmar</button><button class="btn-danger" onclick="window.actualizarSolicitud(' + s.id + ', \'' + sol.nombre + '\', \'cancelado\')" style="font-size:10px; padding:0 6px;">Cancelar</button>' : '') +
-            '</span>' +
-            '</div>';
-        });
-      } else {
-        html += '<p style="font-size:12px; color:var(--text-secondary);">Sin solicitudes aún.</p>';
-      }
-      html += '</div>';
-    });
-    container.innerHTML = html;
-  }
 
-  window.actualizarSolicitud = function(servicioId, solicitanteNombre, nuevoEstado) {
-    if (!isAdmin && getUsuarioActual()?.nombre !== getData(STORAGE.servicios, []).find(s => s.id === servicioId)?.usuario) {
-      alert('No autorizado.');
+    if (!usuarioActual) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">Inicia sesión para ver tus servicios.</p>';
       return;
     }
-    const servicios = getData(STORAGE.servicios, []);
-    const s = servicios.find(item => item.id === servicioId);
-    if (!s) return;
-    const sol = s.solicitantes.find(sol => sol.nombre === solicitanteNombre);
-    if (!sol) return;
-    sol.estado = nuevoEstado;
-    setData(STORAGE.servicios, servicios);
-    renderMisServicios();
-    renderServicios();
+
+    try {
+      const snapshot = await getServiciosRef().where('usuario', '==', usuarioActual).orderBy('fechaRegistro', 'desc').get();
+      if (snapshot.empty) {
+        container.innerHTML = '<p style="color:var(--text-secondary);">No has ofrecido servicios aún.</p>';
+        return;
+      }
+
+      let html = '';
+      snapshot.forEach(doc => {
+        const s = { id: doc.id, ...doc.data() };
+        html += `<div class="serv-item" style="border:1px solid var(--border-color); border-radius:10px; padding:10px; margin-bottom:10px;">
+          <strong>${s.nombre}</strong> <span style="font-size:12px; color:var(--text-secondary);">(${s.fecha} ${s.horario})</span>
+          <p><i class="fas fa-map-pin"></i> ${s.direccion} · <i class="fas fa-utensils"></i> ${s.comidas} · ${s.personas} personas</p>
+          <p><i class="fas fa-phone"></i> ${s.telefono}</p>
+          <div><strong>Solicitudes:</strong></div>`;
+
+        if (s.solicitantes && s.solicitantes.length) {
+          s.solicitantes.forEach(sol => {
+            html += `<div class="solicitante-item">
+              <span>${sol.nombre} (📞 ${sol.telefono || 'N/A'})</span>
+              <span style="display:flex; gap:4px;">
+                <span class="estado-solicitud estado-${sol.estado}">${sol.estado.toUpperCase()}</span>
+                ${sol.estado === 'pendiente' ? `<button class="btn-primary" onclick="window.actualizarSolicitud('${s.id}', '${sol.nombre}', 'confirmado')" style="font-size:10px; padding:0 6px;">Confirmar</button><button class="btn-danger" onclick="window.actualizarSolicitud('${s.id}', '${sol.nombre}', 'cancelado')" style="font-size:10px; padding:0 6px;">Cancelar</button>` : ''}
+              </span>
+            </div>`;
+          });
+        } else {
+          html += `<p style="font-size:12px; color:var(--text-secondary);">Sin solicitudes aún.</p>`;
+        }
+        html += `</div>`;
+      });
+      container.innerHTML = html;
+    } catch (error) {
+      console.error('Error al cargar mis servicios:', error);
+      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar.</p>';
+    }
+  };
+
+  window.solicitarServicio = async function(id) {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    const perfil = getUsuarioActual();
+    if (!perfil) { alert('No se encontró tu perfil.'); return; }
+
+    try {
+      const docRef = getServiciosRef().doc(id);
+      const doc = await docRef.get();
+      if (!doc.exists) { alert('Servicio no encontrado.'); return; }
+
+      const data = doc.data();
+      if (data.solicitantes && data.solicitantes.find(sol => sol.nombre === usuarioActual)) {
+        alert('Ya has solicitado este servicio.');
+        return;
+      }
+
+      const solicitantes = data.solicitantes || [];
+      solicitantes.push({ nombre: usuarioActual, telefono: perfil.telefono || '', estado: 'pendiente' });
+
+      await docRef.update({ solicitantes });
+      alert('Solicitud enviada.');
+      renderServicios();
+      renderMisServicios();
+    } catch (error) {
+      console.error('Error al solicitar:', error);
+      alert('Error al solicitar: ' + error.message);
+    }
+  };
+
+  window.actualizarSolicitud = async function(servicioId, solicitanteNombre, nuevoEstado) {
+    try {
+      const docRef = getServiciosRef().doc(servicioId);
+      const doc = await docRef.get();
+      if (!doc.exists) return;
+
+      const data = doc.data();
+      if (!isAdmin && data.usuario !== usuarioActual) {
+        alert('No autorizado.');
+        return;
+      }
+
+      const solicitantes = data.solicitantes || [];
+      const idx = solicitantes.findIndex(sol => sol.nombre === solicitanteNombre);
+      if (idx === -1) { alert('Solicitante no encontrado.'); return; }
+
+      solicitantes[idx].estado = nuevoEstado;
+      await docRef.update({ solicitantes });
+      renderMisServicios();
+      renderServicios();
+    } catch (error) {
+      console.error('Error al actualizar:', error);
+      alert('Error al actualizar: ' + error.message);
+    }
+  };
+
+  window.eliminarServicio = async function(id) {
+    if (!isAdmin) return;
+    if (!confirm('¿Eliminar este servicio?')) return;
+    try {
+      await getServiciosRef().doc(id).delete();
+      renderServicios();
+      renderMisServicios();
+      renderAdminPanel();
+    } catch (error) {
+      console.error('Error al eliminar:', error);
+      alert('Error al eliminar: ' + error.message);
+    }
   };
 
   // ================================================================
@@ -2770,7 +2850,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ================================================================
-  // 19. ADMIN PANEL (sin cambios)
+  // 19. ADMIN PANEL (sin cambios, pero ahora servicios desde Firestore)
   // ================================================================
   function renderAdminPanel() {
     if (!isAdmin) return;
@@ -2780,7 +2860,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const posts = getData(STORAGE.posts, []);
     const oraciones = getData(STORAGE.oraciones, []);
     const necesidades = getData(STORAGE.necesidades, []);
-    const servicios = getData(STORAGE.servicios, []);
     const grupos = getData(STORAGE.grupos, []);
     const discipulados = getData(STORAGE.discipulados, []);
     const misioneros = getData(STORAGE.misioneros, []);
@@ -2790,11 +2869,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('statPosts').textContent = posts.length;
     document.getElementById('statOraciones').textContent = oraciones.length;
     document.getElementById('statNecesidades').textContent = necesidades.length;
-    document.getElementById('statServicios').textContent = servicios.length;
+    document.getElementById('statServicios').textContent = '...';
     document.getElementById('statGrupos').textContent = grupos.length;
     document.getElementById('statDiscipulados').textContent = discipulados.length;
     document.getElementById('statMisioneros').textContent = misioneros.length;
     document.getElementById('statConsejos').textContent = consejos.length;
+
+    // Obtener conteo de servicios desde Firestore
+    getServiciosRef().get().then(function(snapshot) {
+      document.getElementById('statServicios').textContent = snapshot.size;
+    }).catch(function() {
+      document.getElementById('statServicios').textContent = '?';
+    });
 
     const userList = document.getElementById('adminUserList');
     if (usuarios.length === 0) {
@@ -2846,17 +2932,26 @@ document.addEventListener('DOMContentLoaded', function() {
       }).join('');
     }
 
+    // Servicios desde Firestore
     const servList = document.getElementById('adminServicioList');
-    if (servicios.length === 0) {
-      servList.innerHTML = '<p style="color:var(--text-secondary);">No hay servicios.</p>';
-    } else {
-      servList.innerHTML = servicios.map(function(s) {
-        return '<div class="admin-list-item">' +
+    servList.innerHTML = '<p style="color:var(--text-secondary);">Cargando servicios...</p>';
+    getServiciosRef().orderBy('fechaRegistro', 'desc').get().then(function(snapshot) {
+      if (snapshot.empty) {
+        servList.innerHTML = '<p style="color:var(--text-secondary);">No hay servicios.</p>';
+        return;
+      }
+      let html = '';
+      snapshot.forEach(function(doc) {
+        const s = doc.data();
+        html += '<div class="admin-list-item">' +
           '<span class="info"><strong>' + s.nombre + '</strong> (' + s.usuario + ') - ' + s.direccion + ' ' + s.fecha + ' ' + s.horario + '</span>' +
-          '<div class="actions"><button class="btn-danger" onclick="window.eliminarServicio(' + s.id + ')">Eliminar</button></div>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarServicio(\'' + doc.id + '\')">Eliminar</button></div>' +
           '</div>';
-      }).join('');
-    }
+      });
+      servList.innerHTML = html;
+    }).catch(function() {
+      servList.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar servicios.</p>';
+    });
   }
 
   window.eliminarUsuario = function(nombre) {
@@ -2895,17 +2990,6 @@ document.addEventListener('DOMContentLoaded', function() {
     necesidades = necesidades.filter(function(n) { return n.id !== id; });
     setData(STORAGE.necesidades, necesidades);
     renderNecesidades();
-    renderAdminPanel();
-  };
-
-  window.eliminarServicio = function(id) {
-    if (!isAdmin) return;
-    if (!confirm('¿Eliminar este servicio?')) return;
-    let servicios = getData(STORAGE.servicios, []);
-    servicios = servicios.filter(function(s) { return s.id !== id; });
-    setData(STORAGE.servicios, servicios);
-    renderServicios();
-    renderMisServicios();
     renderAdminPanel();
   };
 
@@ -2964,9 +3048,6 @@ document.addEventListener('DOMContentLoaded', function() {
       let necesidades = getData(STORAGE.necesidades, []);
       necesidades.forEach(function(n) { if (n.usuario === oldName) n.usuario = nombre; });
       setData(STORAGE.necesidades, necesidades);
-      let servicios = getData(STORAGE.servicios, []);
-      servicios.forEach(function(s) { if (s.usuario === oldName) s.usuario = nombre; });
-      setData(STORAGE.servicios, servicios);
       let consejos = getData(STORAGE.consejos, []);
       consejos.forEach(function(c) {
         if (c.autor === oldName) c.autor = nombre;
@@ -2975,7 +3056,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
       setData(STORAGE.consejos, consejos);
-      // Actualizar miembros en grupos
       let grupos = getData(STORAGE.grupos, []);
       grupos.forEach(function(g) {
         if (g.miembros) {
@@ -3030,7 +3110,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ================================================================
-  // 23. DATOS DE EJEMPLO (actualizados con fecha)
+  // 23. DATOS DE EJEMPLO (sin cambios)
   // ================================================================
   function cargarEjemplos() {
     if (!getData(STORAGE.posts, []).length) {
@@ -3066,14 +3146,6 @@ document.addEventListener('DOMContentLoaded', function() {
         { id: 4001, usuario: 'Familia González', categoria: 'Alimentos', desc: 'Necesitamos ayuda con una canasta básica para 5 personas.', telefono: '+506 8888-4444', fotos: [], ayudas: [], fecha: 'Hoy, 11:00am' },
         { id: 4002, usuario: 'Señora Elena', categoria: 'Medicamentos', desc: 'Necesito insulina para mi mamá de 72 años.', telefono: '+506 8877-5555', fotos: [], ayudas: [], fecha: 'Ayer, 3:30pm' },
         { id: 4003, usuario: 'Carlos Méndez', categoria: 'Útiles escolares', desc: 'Busco ayuda con útiles escolares para mis 2 hijos.', telefono: '+506 8866-6666', fotos: [], ayudas: [], fecha: 'Hace 2 días' }
-      ]);
-    }
-    if (!getData(STORAGE.servicios, []).length) {
-      const hoy = new Date().toISOString().split('T')[0];
-      setData(STORAGE.servicios, [
-        { id: 5001, nombre: 'Comedor Esperanza', direccion: 'Calle 7, San José', fecha: hoy, horario: '12pm-2pm', comidas: '1 tiempo', personas: 80, telefono: '+506 2222-3333', usuario: 'Pastor José', fechaRegistro: 'Activo', solicitantes: [] },
-        { id: 5002, nombre: 'Hogar de los Pérez', direccion: 'Barrio Los Ángeles, casa #15', fecha: hoy, horario: '1pm-3pm', comidas: '2 tiempos', personas: 20, telefono: '+506 4444-5555', usuario: 'Familia Pérez', fechaRegistro: 'Activo', solicitantes: [] },
-        { id: 5003, nombre: 'Iglesia Viva - Comedor', direccion: 'Avenida 2, frente al parque', fecha: hoy, horario: '11am-1pm', comidas: '3 tiempos', personas: 50, telefono: '+506 6666-7777', usuario: 'Iglesia Viva', fechaRegistro: 'Activo', solicitantes: [] }
       ]);
     }
     if (!getData(STORAGE.misioneros, []).length) {
@@ -3123,5 +3195,27 @@ document.addEventListener('DOMContentLoaded', function() {
   console.log('✅ SAL Y LUZ cargada con todas las funcionalidades actualizadas.');
 });
 </script>
+
+<!--
+  ================================================================
+  REGLAS DE SEGURIDAD PARA FIRESTORE (OBLIGATORIAS)
+  ================================================================
+  Ve a la consola de Firebase → Firestore → Reglas y pega esto:
+
+  rules_version = '2';
+  service cloud.firestore {
+    match /databases/{database}/documents {
+      match /servicios/{document} {
+        allow read, write: if true;   // ⚠️ ABRE PUESTO QUE USAMOS AUTENTICACIÓN ANÓNIMA
+        // Si prefieres mayor seguridad, usa:
+        // allow read, write: if request.auth != null;
+      }
+    }
+  }
+
+  NOTA: Con autenticación anónima, request.auth no es null,
+  por lo que puedes usar "if request.auth != null" sin problemas.
+  ================================================================
+-->
 </body>
 </html>

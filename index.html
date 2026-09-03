@@ -4,13 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>SAL Y LUZ · Comunidad Cristiana</title>
+  <!-- Bootstrap, FontAwesome, Firebase (Auth + Firestore) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- Leaflet CSS y JS para mapas interactivos -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <style>
-    /* ===== ESTILOS GENERALES (sin cambios) ===== */
+    /* ===== ESTILOS GENERALES (sin cambios relevantes) ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --teal: #1D9E75;
@@ -731,8 +737,8 @@
       background: white;
       border-radius: var(--radius);
       padding: 20px 24px;
-      max-width: 480px;
-      width: 92%;
+      max-width: 520px;
+      width: 95%;
       max-height: 90vh;
       overflow-y: auto;
       border: 1px solid var(--border-color);
@@ -858,6 +864,41 @@
     body.dark .admin-ia-config input, body.dark .admin-ia-config textarea {
       background: #1a1a2e;
     }
+    /* ===== MAPA INTERACTIVO (Leaflet) ===== */
+    .map-wrapper {
+      height: 200px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      margin: 6px 0;
+    }
+    .map-wrapper .leaflet-container {
+      height: 100%;
+      width: 100%;
+      border-radius: 10px;
+    }
+    .map-search {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .map-search input {
+      flex: 1;
+      padding: 6px 12px;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-body);
+      color: var(--text-primary);
+      font-size: 13px;
+    }
+    .map-search button {
+      padding: 6px 14px;
+      border-radius: 30px;
+      border: none;
+      background: var(--teal);
+      color: white;
+      cursor: pointer;
+    }
+    .map-search button:hover { background: var(--teal-dark); }
     /* ===== RESPONSIVE ===== */
     @media (max-width: 600px) {
       .header { padding: 8px 10px; }
@@ -872,6 +913,8 @@
       .admin-stats { grid-template-columns: repeat(3,1fr); }
       .grupo-item { flex-direction: column; align-items: stretch; }
       .grupo-actions { justify-content: flex-start; margin-top: 4px; }
+      .modal-box { padding: 16px; }
+      .map-wrapper { height: 160px; }
     }
     .text-secondary { color: var(--text-secondary); }
     .fw-500 { font-weight: 500; }
@@ -1049,7 +1092,7 @@
     </div>
     <div class="card">
       <h3><i class="fas fa-globe-americas"></i> Ubicación de misioneros</h3>
-      <button class="btn-primary" id="btnRegistrarMisionero" style="display:none;" onclick="window.registrarMisionero()"><i class="fas fa-user-plus"></i> Registrar Misionero</button>
+      <button class="btn-primary" id="btnRegistrarMisionero" style="display:none;" onclick="window.abrirModalMisionero()"><i class="fas fa-user-plus"></i> Registrar Misionero</button>
       <div id="misionerosMapaList" style="margin-top:10px;"></div>
     </div>
     <div class="card">
@@ -1101,21 +1144,33 @@
         <input type="number" id="servicioPersonas" placeholder="Número de personas" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
         <input type="tel" id="servicioTelefono" placeholder="Teléfono de contacto" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
         <button class="btn-primary" onclick="window.ofrecerServicio()"><i class="fas fa-plus"></i> Ofrecer ayuda</button>
+        <!-- Mapa interactivo para ubicación -->
+        <div style="margin-top:10px;">
+          <label style="font-size:13px; font-weight:500;">Ubicación en mapa (buscar o arrastrar marcador)</label>
+          <div class="map-search">
+            <input type="text" id="servicioMapSearch" placeholder="Buscar dirección..." />
+            <button onclick="window.buscarEnMapa('servicioMap')"><i class="fas fa-search"></i></button>
+          </div>
+          <div id="servicioMap" class="map-wrapper"></div>
+          <input type="hidden" id="servicioLat" value="">
+          <input type="hidden" id="servicioLng" value="">
+          <p style="font-size:11px; color:var(--text-secondary);">Puedes buscar una dirección o arrastrar el marcador para ajustar la ubicación.</p>
+        </div>
       </div>
-      <p id="servicioMensaje" style="font-size:12px; color:var(--text-secondary);">Si eres servidor o tienes ayuda alimentaria, verás el formulario para ofrecer servicio.</p>
+      <p id="servicioMensaje" style="font-size:12px; color:var(--text-secondary);">Solo los servidores y colaboradores de ayuda alimentaria pueden ofrecer servicios.</p>
     </div>
 
     <!-- Mis servicios -->
     <div id="misServiciosContainer" style="display:none;">
       <div class="card">
-        <h3><i class="fas fa-user-cog"></i> Mis servicios</h3>
+        <h3><i class="fas fa-user-cog"></i> Mis servicios ofrecidos</h3>
         <div id="misServiciosLista"></div>
       </div>
     </div>
 
-    <!-- Todos los servicios -->
+    <!-- Todos los servicios (públicos) -->
     <div class="card">
-      <h3><i class="fas fa-list"></i> Servicios disponibles</h3>
+      <h3><i class="fas fa-list"></i> Servicios disponibles (todos)</h3>
       <div id="serviciosContainer"></div>
     </div>
   </div>
@@ -1186,6 +1241,7 @@
   </div>
 
   <!-- ===== MODALES ===== -->
+
   <!-- Login -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
@@ -1299,6 +1355,17 @@
       <input type="tel" id="grupoTelefono" placeholder="+506 8888-8888">
       <label>Ubicación (dirección, opcional)</label>
       <input type="text" id="grupoUbicacion" placeholder="Ej: Calle 5, San José">
+      <!-- Mapa interactivo -->
+      <div style="margin-top:10px;">
+        <div class="map-search">
+          <input type="text" id="grupoMapSearch" placeholder="Buscar dirección..." />
+          <button onclick="window.buscarEnMapa('grupoMap')"><i class="fas fa-search"></i></button>
+        </div>
+        <div id="grupoMap" class="map-wrapper"></div>
+        <input type="hidden" id="grupoLat" value="">
+        <input type="hidden" id="grupoLng" value="">
+        <p style="font-size:11px; color:var(--text-secondary);">Busca una dirección o arrastra el marcador para fijar la ubicación.</p>
+      </div>
       <div class="modal-actions">
         <button class="btn-cancel" onclick="window.cerrarModal('grupoModal')">Cancelar</button>
         <button class="btn-confirm" onclick="window.crearGrupo()">Crear</button>
@@ -1340,6 +1407,36 @@
     </div>
   </div>
 
+  <!-- Misionero (NUEVO MODAL) -->
+  <div class="modal-overlay" id="misioneroModal">
+    <div class="modal-box">
+      <h3><i class="fas fa-globe-americas"></i> Registrar Misionero</h3>
+      <label>Nombre completo *</label>
+      <input type="text" id="misioneroNombre" placeholder="Nombre del misionero">
+      <label>Ciudad *</label>
+      <input type="text" id="misioneroCiudad" placeholder="Ciudad o región">
+      <label>Ubicación (dirección detallada, opcional)</label>
+      <input type="text" id="misioneroUbicacion" placeholder="Dirección o punto de referencia">
+      <!-- Mapa interactivo -->
+      <div style="margin-top:10px;">
+        <div class="map-search">
+          <input type="text" id="misioneroMapSearch" placeholder="Buscar dirección..." />
+          <button onclick="window.buscarEnMapa('misioneroMap')"><i class="fas fa-search"></i></button>
+        </div>
+        <div id="misioneroMap" class="map-wrapper"></div>
+        <input type="hidden" id="misioneroLat" value="">
+        <input type="hidden" id="misioneroLng" value="">
+        <p style="font-size:11px; color:var(--text-secondary);">Busca una dirección o arrastra el marcador para fijar la ubicación.</p>
+      </div>
+      <label>WhatsApp *</label>
+      <input type="tel" id="misioneroWhatsapp" placeholder="+506 8888-8888">
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="window.cerrarModal('misioneroModal')">Cancelar</button>
+        <button class="btn-confirm" onclick="window.registrarMisionero()">Registrar</button>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /app -->
 
 <script>
@@ -1363,7 +1460,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  // --- Autenticación anónima para todos los usuarios ---
+  // Autenticación anónima para todos
   auth.signInAnonymously().catch(function(err) {
     console.warn('Error en autenticación anónima:', err);
   });
@@ -1393,6 +1490,9 @@ document.addEventListener('DOMContentLoaded', function() {
   let carruselInterval = null;
   let editModeActivo = false;
   let chatGrupoActual = null;
+
+  // Mapas interactivos (Leaflet)
+  let mapInstances = {};
 
   function getData(key, def) {
     try { return JSON.parse(localStorage.getItem(key)) || def; } catch(e) { return def; }
@@ -1855,13 +1955,19 @@ document.addEventListener('DOMContentLoaded', function() {
       btnDiscipulado.style.display = 'none';
     }
 
-    if (isAdmin || tieneRol('servidor') || tieneRol('ayuda_alimentaria')) {
+    // Ofrecer servicio: solo servidor o ayuda_alimentaria (no admin)
+    if (tieneRol('servidor') || tieneRol('ayuda_alimentaria')) {
       servicioForm.style.display = 'block';
       servicioMsg.style.display = 'none';
-      misServicios.style.display = 'block';
     } else {
       servicioForm.style.display = 'none';
       servicioMsg.style.display = 'block';
+    }
+
+    // Mis servicios: visible para todos los que tengan algún rol (para que vean sus propios servicios)
+    if (usuarioActual) {
+      misServicios.style.display = 'block';
+    } else {
       misServicios.style.display = 'none';
     }
 
@@ -1872,6 +1978,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  // ===== ABRIR MODAL DE GRUPO CON MAPA =====
   window.abrirModalGrupo = function() {
     if (!puedeCrearGrupo()) { alert('Solo los facilitadores y el administrador pueden crear grupos.'); return; }
     document.getElementById('grupoNombre').value = '';
@@ -1880,6 +1987,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('grupoAnfitrion').value = '';
     document.getElementById('grupoTelefono').value = '';
     document.getElementById('grupoUbicacion').value = '';
+    document.getElementById('grupoLat').value = '';
+    document.getElementById('grupoLng').value = '';
+    // Inicializar mapa en el modal
+    setTimeout(function() {
+      initMap('grupoMap', 'grupoMapSearch', 'grupoLat', 'grupoLng');
+    }, 200);
     window.abrirModal('grupoModal');
   };
 
@@ -1890,8 +2003,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const asistente = document.getElementById('grupoAsistente').value.trim();
     const anfitrion = document.getElementById('grupoAnfitrion').value.trim();
     const telefono = document.getElementById('grupoTelefono').value.trim();
-    const ubicacion = document.getElementById('grupoUbicacion').value.trim();
+    let ubicacion = document.getElementById('grupoUbicacion').value.trim();
+    const lat = document.getElementById('grupoLat').value;
+    const lng = document.getElementById('grupoLng').value;
     if (!nombre || !facilitador) { alert('Nombre y facilitador son obligatorios.'); return; }
+    // Si no hay ubicación pero sí lat/lng, generar dirección a partir de coords (opcional)
+    if (lat && lng && !ubicacion) {
+      ubicacion = `Lat: ${lat}, Lng: ${lng}`;
+    }
     const grupos = getData(STORAGE.grupos, []);
     grupos.push({
       id: Date.now(),
@@ -1901,6 +2020,8 @@ document.addEventListener('DOMContentLoaded', function() {
       anfitrion: anfitrion,
       telefono: telefono,
       ubicacion: ubicacion,
+      lat: lat || '',
+      lng: lng || '',
       miembros: [facilitador],
       max: 15
     });
@@ -1916,11 +2037,17 @@ document.addEventListener('DOMContentLoaded', function() {
     let html = '';
     grupos.forEach(function(g) {
       const esMiembro = g.miembros && g.miembros.includes(usuarioActual);
+      let ubicacionLink = '';
+      if (g.lat && g.lng) {
+        ubicacionLink = `<br><small><i class="fas fa-map-pin"></i> <a href="https://www.google.com/maps?q=${g.lat},${g.lng}" target="_blank" style="color:var(--teal);">Ver en mapa</a></small>`;
+      } else if (g.ubicacion) {
+        ubicacionLink = `<br><small><i class="fas fa-map-pin"></i> ${g.ubicacion} <a href="https://www.google.com/maps?q=${encodeURIComponent(g.ubicacion)}" target="_blank" style="color:var(--teal);">Ver en mapa</a></small>`;
+      }
       html += '<div class="grupo-item">' +
         '<div class="grupo-info">' +
         '<strong>' + g.nombre + '</strong>' +
         '<small>Facilitador: ' + g.facilitador + (g.telefono ? ' 📞 ' + g.telefono : '') + ' | Asist: ' + (g.asistente || 'N/A') + ' | Anfit: ' + (g.anfitrion || 'N/A') + '</small>' +
-        (g.ubicacion ? '<br><small><i class="fas fa-map-pin"></i> ' + g.ubicacion + ' <a href="https://maps.google.com/?q=' + encodeURIComponent(g.ubicacion) + '" target="_blank" style="color:var(--teal);">Ver en mapa</a></small>' : '') +
+        ubicacionLink +
         '<br><small>Miembros: ' + g.miembros.length + '/' + g.max + '</small>' +
         '</div>' +
         '<div class="grupo-actions">' +
@@ -1943,7 +2070,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
-  // ===== CHAT DEL GRUPO =====
+  // ===== CHAT DEL GRUPO (sin cambios) =====
   window.abrirChatGrupo = function(grupoId) {
     if (!usuarioActual) { alert('Inicia sesión primero.'); return; }
     const grupos = getData(STORAGE.grupos, []);
@@ -2119,55 +2246,100 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 11. MAPA Y MISIONEROS (sin cambios)
+  // 11. MAPA Y MISIONEROS (con nuevo modal)
   // ================================================================
-  window.registrarMisionero = function() {
+  window.abrirModalMisionero = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
     if (!isAdmin && !tieneRol('misionero')) { alert('Solo los misioneros y el administrador pueden registrar misioneros.'); return; }
-    const nombre = prompt('Nombre del misionero:', '');
-    if (!nombre) return;
-    const ubicacion = prompt('Ubicación (ciudad, país):');
-    if (!ubicacion) return;
+    document.getElementById('misioneroNombre').value = '';
+    document.getElementById('misioneroCiudad').value = '';
+    document.getElementById('misioneroUbicacion').value = '';
+    document.getElementById('misioneroWhatsapp').value = '';
+    document.getElementById('misioneroLat').value = '';
+    document.getElementById('misioneroLng').value = '';
+    setTimeout(function() {
+      initMap('misioneroMap', 'misioneroMapSearch', 'misioneroLat', 'misioneroLng');
+    }, 200);
+    window.abrirModal('misioneroModal');
+  };
+
+  window.registrarMisionero = function() {
+    if (!usuarioActual) { alert('Ingresa primero.'); return; }
+    if (!isAdmin && !tieneRol('misionero')) { alert('No autorizado.'); return; }
+    const nombre = document.getElementById('misioneroNombre').value.trim();
+    const ciudad = document.getElementById('misioneroCiudad').value.trim();
+    const ubicacion = document.getElementById('misioneroUbicacion').value.trim();
+    const whatsapp = document.getElementById('misioneroWhatsapp').value.trim();
+    const lat = document.getElementById('misioneroLat').value;
+    const lng = document.getElementById('misioneroLng').value;
+
+    if (!nombre || !ciudad || !whatsapp) {
+      alert('Nombre, ciudad y WhatsApp son obligatorios.');
+      return;
+    }
+
     const misioneros = getData(STORAGE.misioneros, []);
-    misioneros.push({ nombre: nombre, ubicacion: ubicacion, usuario: usuarioActual });
+    misioneros.push({
+      nombre: nombre,
+      ciudad: ciudad,
+      ubicacion: ubicacion || '',
+      whatsapp: whatsapp,
+      lat: lat || '',
+      lng: lng || '',
+      usuario: usuarioActual
+    });
     setData(STORAGE.misioneros, misioneros);
+    window.cerrarModal('misioneroModal');
     renderMisionerosMapa();
     actualizarBotonesPorRol();
+    alert('Misionero registrado correctamente.');
   };
 
   function renderMisionerosMapa() {
     const container = document.getElementById('misionerosMapaList');
     const misioneros = getData(STORAGE.misioneros, []);
-    const conUbicacion = misioneros.filter(m => m.ubicacion);
-    if (conUbicacion.length === 0) {
-      container.innerHTML = '<p style="color:var(--text-secondary);">No hay misioneros con ubicación registrada.</p>';
+    if (misioneros.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No hay misioneros registrados.</p>';
       return;
     }
     let html = '';
-    conUbicacion.forEach(function(m) {
-      html += '<div style="padding:4px 0; border-bottom:1px solid var(--border-color);">' +
-        '<strong>' + m.nombre + '</strong> - <i class="fas fa-map-pin"></i> ' + m.ubicacion +
-        ' <a href="https://maps.google.com/?q=' + encodeURIComponent(m.ubicacion) + '" target="_blank" style="color:var(--teal);">Ver en mapa</a>' +
-        '</div>';
+    misioneros.forEach(function(m) {
+      let ubicacionDisplay = '';
+      if (m.lat && m.lng) {
+        ubicacionDisplay = `<a href="https://www.google.com/maps?q=${m.lat},${m.lng}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
+      } else if (m.ubicacion) {
+        ubicacionDisplay = `<a href="https://www.google.com/maps?q=${encodeURIComponent(m.ubicacion)}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
+      }
+      html += `<div class="misionero-item" style="padding:6px 0; border-bottom:1px solid var(--border-color);">
+        <div>
+          <strong>${m.nombre}</strong> (${m.ciudad || 'Ubicación no especificada'})
+          ${m.whatsapp ? ` · <i class="fab fa-whatsapp"></i> <a href="https://wa.me/${m.whatsapp.replace(/\s/g, '')}" target="_blank" style="color:var(--teal);">${m.whatsapp}</a>` : ''}
+          ${ubicacionDisplay ? ` · ${ubicacionDisplay}` : ''}
+        </div>
+      </div>`;
     });
     container.innerHTML = html;
-    actualizarBotonesPorRol();
   }
 
   function renderGruposMapa() {
     const container = document.getElementById('gruposMapaList');
     const grupos = getData(STORAGE.grupos, []);
-    const conUbicacion = grupos.filter(g => g.ubicacion);
+    const conUbicacion = grupos.filter(g => g.ubicacion || (g.lat && g.lng));
     if (conUbicacion.length === 0) {
       container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos con ubicación registrada.</p>';
       return;
     }
     let html = '';
     conUbicacion.forEach(function(g) {
-      html += '<div style="padding:4px 0; border-bottom:1px solid var(--border-color);">' +
-        '<strong>' + g.nombre + '</strong> - <i class="fas fa-map-pin"></i> ' + g.ubicacion +
-        ' <a href="https://maps.google.com/?q=' + encodeURIComponent(g.ubicacion) + '" target="_blank" style="color:var(--teal);">Ver en mapa</a>' +
-        '</div>';
+      let link = '';
+      if (g.lat && g.lng) {
+        link = `<a href="https://www.google.com/maps?q=${g.lat},${g.lng}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
+      } else if (g.ubicacion) {
+        link = `<a href="https://www.google.com/maps?q=${encodeURIComponent(g.ubicacion)}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
+      }
+      html += `<div style="padding:4px 0; border-bottom:1px solid var(--border-color);">
+        <strong>${g.nombre}</strong> - ${link}
+      </div>`;
     });
     container.innerHTML = html;
   }
@@ -2257,9 +2429,13 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 13. SERVICIO CON FIRESTORE (CORREGIDO)
+  // 13. SERVICIO CON FIRESTORE (con mapa)
   // ================================================================
   function puedeOfrecerServicio() {
+    return tieneRol('servidor') || tieneRol('ayuda_alimentaria');
+  }
+
+  function puedeGestionarServicio() {
     return isAdmin || tieneRol('servidor') || tieneRol('ayuda_alimentaria');
   }
 
@@ -2267,9 +2443,18 @@ document.addEventListener('DOMContentLoaded', function() {
     return db.collection('servicios');
   }
 
+  // Al abrir el panel de servicio, inicializar mapa si el formulario está visible
+  document.getElementById('servicioFormContainer').addEventListener('DOMNodeInserted', function(e) {
+    if (e.target.id === 'servicioFormContainer') {
+      setTimeout(function() {
+        initMap('servicioMap', 'servicioMapSearch', 'servicioLat', 'servicioLng');
+      }, 300);
+    }
+  });
+
   window.ofrecerServicio = async function() {
     if (!puedeOfrecerServicio()) {
-      alert('No tienes permisos para ofrecer servicio.');
+      alert('No tienes permisos para ofrecer servicio. Solo servidores o ayuda alimentaria.');
       return;
     }
     if (!usuarioActual) {
@@ -2284,6 +2469,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const comidas = document.getElementById('servicioComidas').value;
     const personas = parseInt(document.getElementById('servicioPersonas').value);
     const telefono = document.getElementById('servicioTelefono').value.trim();
+    const lat = document.getElementById('servicioLat').value;
+    const lng = document.getElementById('servicioLng').value;
 
     if (!nombre || !direccion || !fecha || !horario || !personas || !telefono) {
       alert('Completa todos los campos.');
@@ -2300,7 +2487,9 @@ document.addEventListener('DOMContentLoaded', function() {
       telefono,
       usuario: usuarioActual,
       fechaRegistro: new Date().toISOString(),
-      solicitantes: []
+      solicitantes: [],
+      lat: lat || '',
+      lng: lng || ''
     };
 
     try {
@@ -2312,6 +2501,11 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('servicioHorario').value = '';
       document.getElementById('servicioPersonas').value = '';
       document.getElementById('servicioTelefono').value = '';
+      document.getElementById('servicioLat').value = '';
+      document.getElementById('servicioLng').value = '';
+      if (mapInstances['servicioMap']) {
+        mapInstances['servicioMap'].setView([0,0], 2); // reset
+      }
       renderServicios();
       renderMisServicios();
     } catch (error) {
@@ -2336,11 +2530,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const s = { id: doc.id, ...doc.data() };
         const yaSolicito = s.solicitantes && s.solicitantes.find(sol => sol.nombre === usuarioActual);
         const estadoSolicitud = yaSolicito ? yaSolicito.estado : null;
+        const esGestor = puedeGestionarServicio();
+
+        let ubicacionLink = '';
+        if (s.lat && s.lng) {
+          ubicacionLink = `<a href="https://www.google.com/maps?q=${s.lat},${s.lng}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
+        } else if (s.direccion) {
+          ubicacionLink = `<a href="https://www.google.com/maps?q=${encodeURIComponent(s.direccion)}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
+        }
 
         html += `<div class="serv-item">
           <strong>${s.nombre}</strong> <span style="font-size:12px; color:var(--text-secondary);">(${s.usuario})</span>
           <p><i class="fas fa-calendar-day"></i> ${s.fecha} · <i class="fas fa-clock"></i> ${s.horario}</p>
-          <p><i class="fas fa-map-pin"></i> ${s.direccion}</p>
+          <p><i class="fas fa-map-pin"></i> ${s.direccion} ${ubicacionLink ? '· ' + ubicacionLink : ''}</p>
           <p><i class="fas fa-utensils"></i> ${s.comidas} · <i class="fas fa-users"></i> ${s.personas} personas</p>
           <p><i class="fas fa-phone"></i> ${s.telefono} <a href="https://wa.me/${s.telefono.replace(/\s/g, '')}?text=Hola, vi tu oferta de ayuda alimentaria "${s.nombre}" y me gustaría reservar un lugar." target="_blank" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a></p>`;
 
@@ -2355,6 +2557,26 @@ document.addEventListener('DOMContentLoaded', function() {
             html += `<span class="estado-solicitud estado-cancelado">Cancelado</span>`;
           }
         }
+
+        if (esGestor) {
+          if (s.solicitantes && s.solicitantes.length) {
+            html += `<div style="margin-top:6px;"><strong>Solicitudes:</strong>`;
+            s.solicitantes.forEach(sol => {
+              html += `<div class="solicitante-item">
+                <span>${sol.nombre} (📞 ${sol.telefono || 'N/A'})</span>
+                <span style="display:flex; gap:4px;">
+                  <span class="estado-solicitud estado-${sol.estado}">${sol.estado.toUpperCase()}</span>
+                  ${sol.estado === 'pendiente' ? `<button class="btn-primary" onclick="window.actualizarSolicitud('${s.id}', '${sol.nombre}', 'confirmado')" style="font-size:10px; padding:0 6px;">Confirmar</button><button class="btn-danger" onclick="window.actualizarSolicitud('${s.id}', '${sol.nombre}', 'cancelado')" style="font-size:10px; padding:0 6px;">Cancelar</button>` : ''}
+                </span>
+              </div>`;
+            });
+            html += `</div>`;
+          } else {
+            html += `<p style="font-size:12px; color:var(--text-secondary); margin-top:4px;">Sin solicitudes aún.</p>`;
+          }
+          html += `<button class="btn-danger" onclick="window.eliminarServicio('${s.id}')" style="margin-top:6px;">Eliminar servicio</button>`;
+        }
+
         html += `</div>`;
       });
       container.innerHTML = html;
@@ -2441,25 +2663,25 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   window.actualizarSolicitud = async function(servicioId, solicitanteNombre, nuevoEstado) {
+    if (!puedeGestionarServicio()) {
+      alert('No tienes permisos para gestionar solicitudes.');
+      return;
+    }
+
     try {
       const docRef = getServiciosRef().doc(servicioId);
       const doc = await docRef.get();
       if (!doc.exists) return;
 
       const data = doc.data();
-      if (!isAdmin && data.usuario !== usuarioActual) {
-        alert('No autorizado.');
-        return;
-      }
-
       const solicitantes = data.solicitantes || [];
       const idx = solicitantes.findIndex(sol => sol.nombre === solicitanteNombre);
       if (idx === -1) { alert('Solicitante no encontrado.'); return; }
 
       solicitantes[idx].estado = nuevoEstado;
       await docRef.update({ solicitantes });
-      renderMisServicios();
       renderServicios();
+      renderMisServicios();
     } catch (error) {
       console.error('Error al actualizar:', error);
       alert('Error al actualizar: ' + error.message);
@@ -2467,13 +2689,16 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   window.eliminarServicio = async function(id) {
-    if (!isAdmin) return;
-    if (!confirm('¿Eliminar este servicio?')) return;
+    if (!puedeGestionarServicio()) {
+      alert('No tienes permisos para eliminar servicios.');
+      return;
+    }
+    if (!confirm('¿Eliminar este servicio? Esta acción no se puede deshacer.')) return;
     try {
       await getServiciosRef().doc(id).delete();
       renderServicios();
       renderMisServicios();
-      renderAdminPanel();
+      if (isAdmin) renderAdminPanel();
     } catch (error) {
       console.error('Error al eliminar:', error);
       alert('Error al eliminar: ' + error.message);
@@ -2850,7 +3075,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ================================================================
-  // 19. ADMIN PANEL (sin cambios, pero ahora servicios desde Firestore)
+  // 19. ADMIN PANEL (sin cambios)
   // ================================================================
   function renderAdminPanel() {
     if (!isAdmin) return;
@@ -2932,7 +3157,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }).join('');
     }
 
-    // Servicios desde Firestore
     const servList = document.getElementById('adminServicioList');
     servList.innerHTML = '<p style="color:var(--text-secondary);">Cargando servicios...</p>';
     getServiciosRef().orderBy('fechaRegistro', 'desc').get().then(function(snapshot) {
@@ -3091,7 +3315,98 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 21. EXPANDIR PANTALLA (sin cambios)
+  // 21. MAPA INTERACTIVO (Leaflet)
+  // ================================================================
+  window.initMap = function(mapId, searchId, latId, lngId) {
+    // Destruir mapa anterior si existe
+    if (mapInstances[mapId]) {
+      mapInstances[mapId].remove();
+      delete mapInstances[mapId];
+    }
+
+    var container = document.getElementById(mapId);
+    if (!container) return;
+    // Asegurar que el contenedor tenga tamaño
+    container.style.height = '200px';
+    container.style.width = '100%';
+
+    var map = L.map(mapId).setView([0, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var marker = L.marker([0, 0], { draggable: true }).addTo(map);
+
+    // Actualizar campos ocultos cuando se arrastra el marcador
+    marker.on('dragend', function(e) {
+      var pos = marker.getLatLng();
+      document.getElementById(latId).value = pos.lat;
+      document.getElementById(lngId).value = pos.lng;
+      // También actualizar el campo de búsqueda con las coordenadas (opcional)
+      var searchInput = document.getElementById(searchId);
+      if (searchInput) {
+        searchInput.value = pos.lat.toFixed(6) + ', ' + pos.lng.toFixed(6);
+      }
+    });
+
+    // Función de búsqueda (geocodificación con Nominatim)
+    var searchInput = document.getElementById(searchId);
+    if (searchInput) {
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          window.buscarEnMapa(mapId);
+        }
+      });
+    }
+
+    mapInstances[mapId] = map;
+    // Guardar referencia al marcador y campos para usarlos en búsqueda
+    mapInstances[mapId + '_marker'] = marker;
+    mapInstances[mapId + '_lat'] = latId;
+    mapInstances[mapId + '_lng'] = lngId;
+    mapInstances[mapId + '_search'] = searchId;
+
+    // Si el mapa se abre con una ubicación ya guardada (edición), no lo tenemos, pero se puede implementar
+    // Por ahora solo inicializamos en 0,0.
+  };
+
+  window.buscarEnMapa = function(mapId) {
+    var searchInput = document.getElementById(mapInstances[mapId + '_search']);
+    if (!searchInput) return;
+    var query = searchInput.value.trim();
+    if (!query) return;
+
+    // Usar Nominatim para geocodificar
+    fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query))
+      .then(function(response) { return response.json(); })
+      .then(function(data) {
+        if (data && data.length > 0) {
+          var lat = parseFloat(data[0].lat);
+          var lng = parseFloat(data[0].lon);
+          var map = mapInstances[mapId];
+          var marker = mapInstances[mapId + '_marker'];
+          if (map && marker) {
+            map.setView([lat, lng], 15);
+            marker.setLatLng([lat, lng]);
+            document.getElementById(mapInstances[mapId + '_lat']).value = lat;
+            document.getElementById(mapInstances[mapId + '_lng']).value = lng;
+          }
+        } else {
+          alert('No se encontró la ubicación. Intenta con más detalles.');
+        }
+      })
+      .catch(function(err) {
+        console.error('Error en geocodificación:', err);
+        alert('Error al buscar la dirección.');
+      });
+  };
+
+  // Exponer funciones al scope global
+  window.initMap = initMap;
+  window.buscarEnMapa = buscarEnMapa;
+
+  // ================================================================
+  // 22. EXPANDIR PANTALLA (sin cambios)
   // ================================================================
   document.getElementById('expandToggle').addEventListener('click', function() {
     const app = document.getElementById('appContainer');
@@ -3101,7 +3416,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ================================================================
-  // 22. MODO NOCTURNO (sin cambios)
+  // 23. MODO NOCTURNO (sin cambios)
   // ================================================================
   document.getElementById('themeToggle').addEventListener('click', function() {
     document.body.classList.toggle('dark');
@@ -3110,7 +3425,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ================================================================
-  // 23. DATOS DE EJEMPLO (sin cambios)
+  // 24. DATOS DE EJEMPLO (sin cambios)
   // ================================================================
   function cargarEjemplos() {
     if (!getData(STORAGE.posts, []).length) {
@@ -3150,9 +3465,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (!getData(STORAGE.misioneros, []).length) {
       setData(STORAGE.misioneros, [
-        { nombre: 'Ana y Pedro Martínez', ubicacion: 'Guatemala', usuario: 'AnaM' },
-        { nombre: 'Misión África', ubicacion: 'Kenia', usuario: 'MisionAfrica' },
-        { nombre: 'Juan Carlos Ruiz', ubicacion: 'Colombia', usuario: 'JCRuiz' }
+        { nombre: 'Ana y Pedro Martínez', ciudad: 'Guatemala', ubicacion: 'Zona 10', whatsapp: '+502 1234-5678', usuario: 'AnaM' },
+        { nombre: 'Misión África', ciudad: 'Kenia', ubicacion: 'Nairobi', whatsapp: '+254 700-000-000', usuario: 'MisionAfrica' },
+        { nombre: 'Juan Carlos Ruiz', ciudad: 'Colombia', ubicacion: 'Bogotá', whatsapp: '+57 300-123-4567', usuario: 'JCRuiz' }
       ]);
     }
     if (!getData(STORAGE.carrusel, []).length) {
@@ -3171,7 +3486,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // ================================================================
-  // 24. INICIALIZACIÓN
+  // 25. INICIALIZACIÓN
   // ================================================================
   cargarEjemplos();
   renderFeed();
@@ -3198,23 +3513,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!--
   ================================================================
-  REGLAS DE SEGURIDAD PARA FIRESTORE (OBLIGATORIAS)
+  REGLAS DE SEGURIDAD PARA FIRESTORE (NECESARIAS)
   ================================================================
-  Ve a la consola de Firebase → Firestore → Reglas y pega esto:
+  Aplica estas reglas en la consola de Firebase → Firestore → Reglas:
 
   rules_version = '2';
   service cloud.firestore {
     match /databases/{database}/documents {
       match /servicios/{document} {
-        allow read, write: if true;   // ⚠️ ABRE PUESTO QUE USAMOS AUTENTICACIÓN ANÓNIMA
-        // Si prefieres mayor seguridad, usa:
-        // allow read, write: if request.auth != null;
+        allow read, write: if request.auth != null;
       }
     }
   }
 
-  NOTA: Con autenticación anónima, request.auth no es null,
-  por lo que puedes usar "if request.auth != null" sin problemas.
+  Esto permite que cualquier usuario autenticado (anónimo) lea y escriba.
+  La lógica de permisos de creación/gestión está en el frontend.
   ================================================================
 -->
 </body>

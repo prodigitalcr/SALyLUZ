@@ -9,6 +9,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <!-- Leaflet para mapas -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
@@ -44,18 +45,13 @@
       transition: background var(--transition), color var(--transition);
       min-height: 100vh;
       padding: 0;
-      margin: 0;
     }
     .app {
       max-width: 100% !important;
       margin: 0 !important;
-      padding: 0 10px;
+      padding: 0 12px;
       background: var(--bg-body);
-      padding-bottom: 0;
-      transition: none;
     }
-    .app .header { padding-left: 20px; padding-right: 20px; }
-    .app .panel { padding: 12px 20px; }
     /* ===== HEADER ===== */
     .header {
       display: flex;
@@ -297,10 +293,9 @@
     .consejo-actions button { background: none; border: none; display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-secondary); font-size: 12px; padding: 2px 8px; border-radius: 30px; }
     .consejo-actions button.orado { color: var(--teal); }
     .consejo-actions button:hover { background: var(--border-color); }
-    /* ===== ORACIÓN ===== */
-    .oracion-actions button {
-      background: none; border: none; display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-secondary); font-size: 12px; padding: 2px 8px; border-radius: 30px;
-    }
+    /* ===== ORACIÓN (botones iguales a consejería) ===== */
+    .oracion-actions { display: flex; gap: 12px; margin: 6px 0; }
+    .oracion-actions button { background: none; border: none; display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-secondary); font-size: 12px; padding: 2px 8px; border-radius: 30px; }
     .oracion-actions button.orado { color: var(--teal); }
     .oracion-actions button:hover { background: var(--border-color); }
     /* ===== SERVICIOS ===== */
@@ -317,19 +312,30 @@
     .btn-editar:hover { background: var(--orange-dark); }
     .btn-guardar-todo { margin-top: 8px; padding: 6px 18px; background: var(--teal); color: white; border: none; border-radius: 30px; font-weight: 500; cursor: pointer; transition: 0.2s; display: none; font-size: 13px; }
     .btn-guardar-todo.show { display: inline-block; }
-    .historial-tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
-    .historial-tags .tag {
-      background: var(--teal-light);
-      color: var(--teal-dark);
-      padding: 4px 12px;
+    /* Historial de búsqueda estilo botones suaves */
+    .historial-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .historial-tag {
+      background: var(--bg-body);
+      border: 1px solid var(--border-color);
+      padding: 4px 14px;
       border-radius: 30px;
       font-size: 12px;
       cursor: pointer;
       transition: 0.2s;
-      border: 1px solid var(--teal);
+      color: var(--text-primary);
       font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     }
-    .historial-tags .tag:hover { background: var(--teal); color: white; transform: scale(1.05); }
+    .historial-tag:hover {
+      background: var(--teal-light);
+      border-color: var(--teal);
+      transform: translateY(-1px);
+    }
     /* ===== MAPA ===== */
     .map-wrapper { height: 200px; border-radius: 10px; border: 1px solid var(--border-color); margin: 6px 0; }
     .map-wrapper .leaflet-container { height: 100%; width: 100%; border-radius: 10px; }
@@ -407,7 +413,7 @@
 
 <div class="app" id="appContainer">
 
-  <!-- ===== HEADER ===== -->
+  <!-- ===== HEADER (sin botón de expandir) ===== -->
   <header class="header">
     <div class="logo" onclick="window.switchPanel('inicio')">
       <div class="logo-icon"><i class="fas fa-church"></i></div>
@@ -474,7 +480,7 @@
     </div>
   </div>
 
-  <!-- ===== PANEL BIBLIA ===== -->
+  <!-- ===== PANEL BIBLIA (con buscador mejorado y botones de historial) ===== -->
   <div class="panel" id="panel-biblia">
     <div class="card">
       <h3><i class="fas fa-bible"></i> Lectura Bíblica</h3>
@@ -560,7 +566,7 @@
     <div id="discipuladoContainer"></div>
   </div>
 
-  <!-- ===== PANEL ORACIÓN ===== -->
+  <!-- ===== PANEL ORACIÓN (con botones estilo consejería) ===== -->
   <div class="panel" id="panel-oracion">
     <div class="card">
       <h3><i class="fas fa-pray"></i> Publicar petición de oración</h3>
@@ -1037,20 +1043,29 @@ document.addEventListener('DOMContentLoaded', function() {
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  // Autenticación anónima para permitir escritura
+  // Autenticación anónima (opcional)
   auth.signInAnonymously().catch(function(err) {
     console.warn('Error en autenticación anónima:', err);
   });
 
   // ================================================================
-  // 1. ESTADO GLOBAL (eliminamos localStorage para datos, solo IA y carrusel)
+  // 1. ESTADO GLOBAL Y LOCALSTORAGE
   // ================================================================
   const STORAGE = {
+    usuarios: 'iglesia_usuarios',
+    posts: 'iglesia_posts',
+    grupos: 'iglesia_grupos',
+    discipulados: 'iglesia_discipulados',
+    misioneros: 'iglesia_misioneros',
+    necesidades: 'iglesia_necesidades',
+    oraciones: 'iglesia_oraciones',
+    historialBiblia: 'iglesia_historial_biblia',
     iaKey: 'iglesia_ia_key',
     iaModel: 'iglesia_ia_model',
     iaContexto: 'iglesia_ia_contexto',
     carrusel: 'iglesia_carrusel',
-    historialBiblia: 'iglesia_historial_biblia'  // historial local
+    consejos: 'iglesia_consejos',
+    chatGrupos: 'iglesia_chat_grupos'
   };
 
   let usuarioActual = '';
@@ -1065,34 +1080,27 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   function setData(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
-  // Función para obtener el usuario actual de Firestore
-  async function getUsuarioActualFS() {
+  function getUsuarioActual() {
     if (!usuarioActual) return null;
-    try {
-      const doc = await db.collection('usuarios').doc(usuarioActual).get();
-      if (doc.exists) return doc.data();
-      return null;
-    } catch { return null; }
+    const usuarios = getData(STORAGE.usuarios, []);
+    return usuarios.find(u => u.nombre === usuarioActual) || null;
   }
 
-  async function tieneRol(rol) {
-    const perfil = await getUsuarioActualFS();
+  function tieneRol(rol) {
+    const perfil = getUsuarioActual();
     if (!perfil) return false;
     return perfil.apoyos && perfil.apoyos.includes(rol);
   }
 
-  async function tieneAlgunRolApoyo() {
+  function tieneAlgunRolApoyo() {
     const roles = ['facilitador','asistente','anfitrion','misionero','servidor','consejero','oracion','ayuda_alimentaria'];
-    for (let r of roles) {
-      if (await tieneRol(r)) return true;
-    }
-    return isAdmin;
+    return roles.some(r => tieneRol(r)) || isAdmin;
   }
 
   // ================================================================
-  // 2. USUARIOS EN FIRESTORE
+  // 2. USUARIOS Y LOGIN
   // ================================================================
-  window.iniciarSesion = async function() {
+  window.iniciarSesion = function() {
     const nombre = document.getElementById('loginName').value.trim();
     const telefono = document.getElementById('loginTelefono').value.trim();
     const edad = parseInt(document.getElementById('loginEdad').value.trim());
@@ -1106,24 +1114,36 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    try {
-      const docRef = db.collection('usuarios').doc(nombre);
-      const doc = await docRef.get();
-      if (doc.exists) {
-        await docRef.update({ telefono, edad, apoyos });
-      } else {
-        await docRef.set({ nombre, telefono, edad, apoyos });
-      }
-      usuarioActual = nombre;
-      document.getElementById('userNameDisplay').textContent = nombre;
-      document.getElementById('loginBtn').textContent = 'Cambiar';
-      window.cerrarModal('loginModal');
-
-      renderAll();
-    } catch (error) {
-      console.error('Error en login:', error);
-      alert('Error al iniciar sesión. Revisa la consola.');
+    let usuarios = getData(STORAGE.usuarios, []);
+    let usuarioExistente = usuarios.find(u => u.nombre === nombre);
+    if (usuarioExistente) {
+      usuarioExistente.telefono = telefono;
+      usuarioExistente.edad = edad;
+      usuarioExistente.apoyos = apoyos;
+    } else {
+      usuarios.push({ nombre, telefono, edad, apoyos });
     }
+    setData(STORAGE.usuarios, usuarios);
+
+    usuarioActual = nombre;
+    document.getElementById('userNameDisplay').textContent = nombre;
+    document.getElementById('loginBtn').textContent = 'Cambiar';
+    window.cerrarModal('loginModal');
+
+    renderFeed();
+    renderGrupos();
+    renderDiscipulados();
+    renderNecesidades();
+    renderOraciones();
+    renderServicios();
+    renderMisServicios();
+    renderConsejos();
+    renderReportes();
+    renderChatAdmin();
+    renderChatEquipo();
+    actualizarBotonesPorRol();
+    actualizarTabs();
+    if (isAdmin) renderAdminPanel();
   };
 
   document.getElementById('loginBtn').addEventListener('click', function() {
@@ -1132,7 +1152,16 @@ document.addEventListener('DOMContentLoaded', function() {
         usuarioActual = '';
         document.getElementById('userNameDisplay').textContent = 'Invitado';
         this.textContent = 'Entrar';
-        renderAll();
+        renderFeed();
+        renderOraciones();
+        renderServicios();
+        renderMisServicios();
+        renderConsejos();
+        renderReportes();
+        renderChatAdmin();
+        renderChatEquipo();
+        actualizarBotonesPorRol();
+        actualizarTabs();
       }
     } else {
       document.getElementById('loginName').value = '';
@@ -1143,10 +1172,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Cargar último usuario
-  (async function cargarUsuario() {
-    // No hay persistencia, pero podemos intentar obtener el último desde una variable local
-    // Podríamos guardar en localStorage el último nombre, pero lo dejamos simple.
+  (function cargarUsuario() {
+    const users = getData(STORAGE.usuarios, []);
+    if (users.length > 0) {
+      const ultimo = users[users.length - 1];
+      usuarioActual = ultimo.nombre;
+      document.getElementById('userNameDisplay').textContent = usuarioActual;
+      document.getElementById('loginBtn').textContent = 'Cambiar';
+    }
   })();
 
   // ================================================================
@@ -1168,9 +1201,19 @@ document.addEventListener('DOMContentLoaded', function() {
       gestionarCarruselBtn.style.display = 'inline-block';
       adminTab.style.display = 'inline-block';
       document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
-      renderAll();
+      renderGrupos();
+      renderDiscipulados();
+      renderNecesidades();
+      document.getElementById('btnEditarVersos').style.display = 'inline-block';
+      renderCarrusel();
+      actualizarBotonesPorRol();
+      actualizarTabs();
+      if (document.getElementById('panel-admin').classList.contains('active')) {
+        renderAdminPanel();
+      }
       listenChatAdmin();
       listenChatEquipo();
+      listenReportes();
     } else {
       isAdmin = false;
       adminLoginBtn.style.display = 'inline-block';
@@ -1179,7 +1222,13 @@ document.addEventListener('DOMContentLoaded', function() {
       gestionarCarruselBtn.style.display = 'none';
       adminTab.style.display = 'none';
       document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
-      renderAll();
+      renderGrupos();
+      renderDiscipulados();
+      renderNecesidades();
+      document.getElementById('btnEditarVersos').style.display = 'none';
+      renderCarrusel();
+      actualizarBotonesPorRol();
+      actualizarTabs();
     }
   });
 
@@ -1217,7 +1266,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ================================================================
-  // 4. CARRUSEL (localStorage)
+  // 4. CARRUSEL
   // ================================================================
   function getCarrusel() { return getData(STORAGE.carrusel, []); }
   function setCarrusel(data) { setData(STORAGE.carrusel, data); }
@@ -1363,18 +1412,15 @@ document.addEventListener('DOMContentLoaded', function() {
   window.cerrarModal = function(id) { document.getElementById(id).classList.remove('show'); };
 
   // ================================================================
-  // 7. MURO (Firestore)
+  // 7. MURO
   // ================================================================
-  function getPostsRef() { return db.collection('posts'); }
-
-  window.crearPublicacion = async function() {
+  window.crearPublicacion = function() {
     if (!usuarioActual) { alert('Ingresa con tu nombre primero.'); return; }
     const texto = document.getElementById('postInput').value.trim();
     const link = document.getElementById('postLink').value.trim();
     const categoria = document.getElementById('postCategoria').value;
     const imgFile = document.getElementById('postImage').files[0];
     const vidFile = document.getElementById('postVideo').files[0];
-
     if (!texto && !link && !imgFile && !vidFile) { alert('Escribe algo o adjunta contenido.'); return; }
 
     let media = null;
@@ -1390,119 +1436,97 @@ document.addEventListener('DOMContentLoaded', function() {
       publicar(null);
     }
 
-    async function publicar(media) {
-      try {
-        await getPostsRef().add({
-          autor: usuarioActual,
-          texto: texto,
-          link: link,
-          media: media,
-          categoria: categoria,
-          fecha: new Date().toISOString(),
-          likes: [],
-          orando: [],
-          comentarios: []
-        });
-        document.getElementById('postInput').value = '';
-        document.getElementById('postLink').value = '';
-        document.getElementById('postImage').value = '';
-        document.getElementById('postVideo').value = '';
-        renderFeed();
-      } catch (error) {
-        console.error('Error al publicar:', error);
-        alert('Error al publicar: ' + error.message);
-      }
-    }
-  };
-
-  window.renderFeed = async function() {
-    const container = document.getElementById('feedContainer');
-    container.innerHTML = '<p style="color:var(--text-secondary);">Cargando...</p>';
-    try {
-      const snapshot = await getPostsRef().orderBy('fecha', 'desc').get();
-      if (snapshot.empty) {
-        container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones aún. ¡Sé el primero!</p>';
-        return;
-      }
-      let html = '';
-      snapshot.forEach(doc => {
-        const post = { id: doc.id, ...doc.data() };
-        const liked = post.likes && post.likes.includes(usuarioActual);
-        const orando = post.orando && post.orando.includes(usuarioActual);
-        const categoriaLabels = {
-          testimonio: '<span class="post-categoria" style="background:#d4edda;color:#155724;">Testimonio</span>',
-          obra: '<span class="post-categoria" style="background:#cce5ff;color:#004085;">Obra</span>',
-          oracion: '<span class="post-categoria" style="background:#f8d7da;color:#721c24;">Petición de Oración</span>',
-          otro: '<span class="post-categoria" style="background:#e2e3e5;color:#383d41;">Otro</span>'
-        };
-        const categoriaHtml = post.categoria ? categoriaLabels[post.categoria] || categoriaLabels.otro : '';
-
-        html += '<div class="post">' +
-          '<div class="post-header">' +
-          '<div class="post-avatar">' + post.autor.charAt(0).toUpperCase() + '</div>' +
-          '<div><div class="post-author">' + post.autor + '</div><div class="post-time">' + new Date(post.fecha).toLocaleString() + '</div></div>' +
-          '</div>' +
-          categoriaHtml +
-          '<div class="post-content">' + post.texto + '</div>';
-        if (post.media) {
-          if (post.media.type === 'image') html += '<img src="' + post.media.data + '" class="post-media" alt="imagen">';
-          else if (post.media.type === 'video') html += '<video controls class="post-media" src="' + post.media.data + '"></video>';
-        }
-        if (post.link) html += '<div style="margin:4px 0;"><a href="' + post.link + '" target="_blank" style="color:var(--teal);">' + post.link + '</a></div>';
-        html += '<div class="post-actions">' +
-          '<button onclick="window.likePost(\'' + post.id + '\')" class="' + (liked ? 'liked' : '') + '"><i class="fas fa-heart"></i> ' + (post.likes ? post.likes.length : 0) + '</button>' +
-          '<button onclick="window.orandoPost(\'' + post.id + '\')" class="' + (orando ? 'orando' : '') + '"><i class="fas fa-pray"></i> Orando ' + (post.orando ? post.orando.length : 0) + '</button>' +
-          '<button onclick="window.toggleComentarios(\'' + post.id + '\')"><i class="fas fa-comment"></i> ' + (post.comentarios ? post.comentarios.length : 0) + '</button>' +
-          '<button onclick="window.compartirPost(\'' + post.id + '\')"><i class="fas fa-share"></i> Compartir</button>' +
-          '</div>' +
-          '<div class="comments" id="comments-' + post.id + '" style="display:none;">' +
-          (post.comentarios ? post.comentarios.map(function(c) { return '<div><strong>' + c.autor + '</strong>: ' + c.texto + '</div>'; }).join('') : '') +
-          '<div class="comment-box">' +
-          '<input type="text" id="commentInput-' + post.id + '" placeholder="Escribe un comentario...">' +
-          '<button onclick="window.comentarPost(\'' + post.id + '\')"><i class="fas fa-paper-plane"></i></button>' +
-          '</div></div></div>';
+    function publicar(media) {
+      const posts = getData(STORAGE.posts, []);
+      posts.unshift({
+        id: Date.now(),
+        autor: usuarioActual,
+        texto: texto,
+        link: link,
+        media: media,
+        categoria: categoria,
+        fecha: new Date().toLocaleString(),
+        likes: [],
+        orando: [],
+        comentarios: []
       });
-      container.innerHTML = html;
-    } catch (error) {
-      console.error('Error cargando posts:', error);
-      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar publicaciones.</p>';
+      setData(STORAGE.posts, posts);
+      document.getElementById('postInput').value = '';
+      document.getElementById('postLink').value = '';
+      document.getElementById('postImage').value = '';
+      document.getElementById('postVideo').value = '';
+      renderFeed();
     }
   };
 
-  window.likePost = async function(id) {
+  function renderFeed() {
+    const container = document.getElementById('feedContainer');
+    const posts = getData(STORAGE.posts, []);
+    if (posts.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones aún. ¡Sé el primero!</p>'; return; }
+    let html = '';
+    posts.forEach(function(post) {
+      const liked = post.likes && post.likes.includes(usuarioActual);
+      const orando = post.orando && post.orando.includes(usuarioActual);
+      const categoriaLabels = {
+        testimonio: '<span class="post-categoria" style="background:#d4edda;color:#155724;">Testimonio</span>',
+        obra: '<span class="post-categoria" style="background:#cce5ff;color:#004085;">Obra</span>',
+        oracion: '<span class="post-categoria" style="background:#f8d7da;color:#721c24;">Petición de Oración</span>',
+        otro: '<span class="post-categoria" style="background:#e2e3e5;color:#383d41;">Otro</span>'
+      };
+      const categoriaHtml = post.categoria ? categoriaLabels[post.categoria] || categoriaLabels.otro : '';
+
+      html += '<div class="post">' +
+        '<div class="post-header">' +
+        '<div class="post-avatar">' + post.autor.charAt(0).toUpperCase() + '</div>' +
+        '<div><div class="post-author">' + post.autor + '</div><div class="post-time">' + post.fecha + '</div></div>' +
+        '</div>' +
+        categoriaHtml +
+        '<div class="post-content">' + post.texto + '</div>';
+      if (post.media) {
+        if (post.media.type === 'image') html += '<img src="' + post.media.data + '" class="post-media" alt="imagen">';
+        else if (post.media.type === 'video') html += '<video controls class="post-media" src="' + post.media.data + '"></video>';
+      }
+      if (post.link) html += '<div style="margin:4px 0;"><a href="' + post.link + '" target="_blank" style="color:var(--teal);">' + post.link + '</a></div>';
+      html += '<div class="post-actions">' +
+        '<button onclick="window.likePost(' + post.id + ')" class="' + (liked ? 'liked' : '') + '"><i class="fas fa-heart"></i> ' + (post.likes ? post.likes.length : 0) + '</button>' +
+        '<button onclick="window.orandoPost(' + post.id + ')" class="' + (orando ? 'orando' : '') + '"><i class="fas fa-pray"></i> Orando ' + (post.orando ? post.orando.length : 0) + '</button>' +
+        '<button onclick="window.toggleComentarios(' + post.id + ')"><i class="fas fa-comment"></i> ' + (post.comentarios ? post.comentarios.length : 0) + '</button>' +
+        '<button onclick="window.compartirPost(\'' + post.id + '\')"><i class="fas fa-share"></i> Compartir</button>' +
+        '</div>' +
+        '<div class="comments" id="comments-' + post.id + '" style="display:none;">' +
+        (post.comentarios ? post.comentarios.map(function(c) { return '<div><strong>' + c.autor + '</strong>: ' + c.texto + '</div>'; }).join('') : '') +
+        '<div class="comment-box">' +
+        '<input type="text" id="commentInput-' + post.id + '" placeholder="Escribe un comentario...">' +
+        '<button onclick="window.comentarPost(' + post.id + ')"><i class="fas fa-paper-plane"></i></button>' +
+        '</div></div></div>';
+    });
+    container.innerHTML = html;
+  }
+
+  window.likePost = function(id) {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
-    try {
-      const docRef = getPostsRef().doc(id);
-      const doc = await docRef.get();
-      if (!doc.exists) return;
-      const data = doc.data();
-      const likes = data.likes || [];
-      const idx = likes.indexOf(usuarioActual);
-      if (idx > -1) likes.splice(idx, 1);
-      else likes.push(usuarioActual);
-      await docRef.update({ likes });
-      renderFeed();
-    } catch (error) {
-      console.error('Error en like:', error);
-    }
+    const posts = getData(STORAGE.posts, []);
+    const post = posts.find(function(p) { return p.id === id; });
+    if (!post) return;
+    if (!post.likes) post.likes = [];
+    const idx = post.likes.indexOf(usuarioActual);
+    if (idx > -1) post.likes.splice(idx, 1);
+    else post.likes.push(usuarioActual);
+    setData(STORAGE.posts, posts);
+    renderFeed();
   };
 
-  window.orandoPost = async function(id) {
+  window.orandoPost = function(id) {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
-    try {
-      const docRef = getPostsRef().doc(id);
-      const doc = await docRef.get();
-      if (!doc.exists) return;
-      const data = doc.data();
-      const orando = data.orando || [];
-      const idx = orando.indexOf(usuarioActual);
-      if (idx > -1) orando.splice(idx, 1);
-      else orando.push(usuarioActual);
-      await docRef.update({ orando });
-      renderFeed();
-    } catch (error) {
-      console.error('Error en orando:', error);
-    }
+    const posts = getData(STORAGE.posts, []);
+    const post = posts.find(function(p) { return p.id === id; });
+    if (!post) return;
+    if (!post.orando) post.orando = [];
+    const idx = post.orando.indexOf(usuarioActual);
+    if (idx > -1) post.orando.splice(idx, 1);
+    else post.orando.push(usuarioActual);
+    setData(STORAGE.posts, posts);
+    renderFeed();
   };
 
   window.toggleComentarios = function(id) {
@@ -1510,23 +1534,18 @@ document.addEventListener('DOMContentLoaded', function() {
     if (div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
   };
 
-  window.comentarPost = async function(id) {
+  window.comentarPost = function(id) {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
     const input = document.getElementById('commentInput-' + id);
     const texto = input.value.trim();
     if (!texto) return;
-    try {
-      const docRef = getPostsRef().doc(id);
-      const doc = await docRef.get();
-      if (!doc.exists) return;
-      const data = doc.data();
-      const comentarios = data.comentarios || [];
-      comentarios.push({ autor: usuarioActual, texto: texto });
-      await docRef.update({ comentarios });
-      renderFeed();
-    } catch (error) {
-      console.error('Error al comentar:', error);
-    }
+    const posts = getData(STORAGE.posts, []);
+    const post = posts.find(function(p) { return p.id === id; });
+    if (!post) return;
+    if (!post.comentarios) post.comentarios = [];
+    post.comentarios.push({ autor: usuarioActual, texto: texto });
+    setData(STORAGE.posts, posts);
+    renderFeed();
   };
 
   window.compartirPost = function(id) {
@@ -1539,15 +1558,13 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 8. GRUPOS (Firestore)
+  // 8. GRUPOS
   // ================================================================
-  function getGruposRef() { return db.collection('grupos'); }
-
-  async function puedeCrearGrupo() {
-    return isAdmin || (await tieneRol('facilitador'));
+  function puedeCrearGrupo() {
+    return isAdmin || tieneRol('facilitador');
   }
 
-  async function actualizarBotonesPorRol() {
+  function actualizarBotonesPorRol() {
     const btnGrupo = document.getElementById('btnCrearGrupo');
     const btnDiscipulado = document.getElementById('btnCrearDiscipulado');
     const servicioForm = document.getElementById('servicioFormContainer');
@@ -1555,20 +1572,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnMisionero = document.getElementById('btnRegistrarMisionero');
     const misServicios = document.getElementById('misServiciosContainer');
 
-    if (await puedeCrearGrupo()) {
+    if (puedeCrearGrupo()) {
       btnGrupo.style.display = 'inline-block';
     } else {
       btnGrupo.style.display = 'none';
     }
 
-    if (await puedeCrearGrupo()) {
+    if (puedeCrearGrupo()) {
       btnDiscipulado.style.display = 'inline-block';
     } else {
       btnDiscipulado.style.display = 'none';
     }
 
-    const esServidor = await tieneRol('servidor') || await tieneRol('ayuda_alimentaria');
-    if (esServidor) {
+    if (tieneRol('servidor') || tieneRol('ayuda_alimentaria')) {
       servicioForm.style.display = 'block';
       servicioMsg.style.display = 'none';
     } else {
@@ -1582,16 +1598,16 @@ document.addEventListener('DOMContentLoaded', function() {
       misServicios.style.display = 'none';
     }
 
-    if (isAdmin || (await tieneRol('misionero'))) {
+    if (isAdmin || tieneRol('misionero')) {
       btnMisionero.style.display = 'inline-block';
     } else {
       btnMisionero.style.display = 'none';
     }
   }
 
-  async function actualizarTabs() {
+  function actualizarTabs() {
     const tabEquipo = document.getElementById('tabChatEquipo');
-    if (await tieneAlgunRolApoyo() || isAdmin) {
+    if (tieneAlgunRolApoyo() || isAdmin) {
       tabEquipo.style.display = 'inline-block';
     } else {
       tabEquipo.style.display = 'none';
@@ -1621,8 +1637,8 @@ document.addEventListener('DOMContentLoaded', function() {
     window.abrirModal('grupoModal');
   };
 
-  window.crearGrupo = async function() {
-    if (!await puedeCrearGrupo()) { alert('No autorizado'); return; }
+  window.crearGrupo = function() {
+    if (!puedeCrearGrupo()) { alert('No autorizado'); return; }
     const nombre = document.getElementById('grupoNombre').value.trim();
     const facilitador = document.getElementById('grupoFacilitador').value.trim();
     const asistente = document.getElementById('grupoAsistente').value.trim();
@@ -1636,93 +1652,83 @@ document.addEventListener('DOMContentLoaded', function() {
     if (lat && lng && !ubicacion) {
       ubicacion = `Lat: ${lat}, Lng: ${lng}`;
     }
-    try {
-      await getGruposRef().add({
-        nombre, facilitador, asistente, anfitrion, telefono, ubicacion,
-        lat: lat || '', lng: lng || '', hora: hora || '',
-        miembros: [facilitador],
-        max: 15,
-        fecha: new Date().toISOString()
-      });
-      window.cerrarModal('grupoModal');
-      renderGrupos();
-    } catch (error) {
-      console.error('Error al crear grupo:', error);
-      alert('Error al crear grupo: ' + error.message);
-    }
+    const grupos = getData(STORAGE.grupos, []);
+    grupos.push({
+      id: Date.now(),
+      nombre: nombre,
+      facilitador: facilitador,
+      asistente: asistente,
+      anfitrion: anfitrion,
+      telefono: telefono,
+      ubicacion: ubicacion,
+      lat: lat || '',
+      lng: lng || '',
+      hora: hora || '',
+      miembros: [facilitador],
+      max: 15
+    });
+    setData(STORAGE.grupos, grupos);
+    window.cerrarModal('grupoModal');
+    renderGrupos();
   };
 
-  window.renderGrupos = async function() {
+  function renderGrupos() {
     const container = document.getElementById('gruposContainer');
-    container.innerHTML = '<p style="color:var(--text-secondary);">Cargando...</p>';
-    try {
-      const snapshot = await getGruposRef().orderBy('fecha', 'desc').get();
-      if (snapshot.empty) {
-        container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos creados.</p>';
-        return;
+    const grupos = getData(STORAGE.grupos, []);
+    if (grupos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos creados.</p>'; return; }
+    let html = '';
+    grupos.forEach(function(g) {
+      const esMiembro = g.miembros && g.miembros.includes(usuarioActual);
+      let ubicacionLink = '';
+      if (g.lat && g.lng) {
+        ubicacionLink = `<br><small><i class="fas fa-map-pin"></i> <a href="https://www.google.com/maps?q=${g.lat},${g.lng}" target="_blank" style="color:var(--teal);">Ver en mapa</a></small>`;
+      } else if (g.ubicacion) {
+        ubicacionLink = `<br><small><i class="fas fa-map-pin"></i> ${g.ubicacion} <a href="https://www.google.com/maps?q=${encodeURIComponent(g.ubicacion)}" target="_blank" style="color:var(--teal);">Ver en mapa</a></small>`;
       }
-      let html = '';
-      snapshot.forEach(doc => {
-        const g = { id: doc.id, ...doc.data() };
-        const esMiembro = g.miembros && g.miembros.includes(usuarioActual);
-        let ubicacionLink = '';
-        if (g.lat && g.lng) {
-          ubicacionLink = `<br><small><i class="fas fa-map-pin"></i> <a href="https://www.google.com/maps?q=${g.lat},${g.lng}" target="_blank" style="color:var(--teal);">Ver en mapa</a></small>`;
-        } else if (g.ubicacion) {
-          ubicacionLink = `<br><small><i class="fas fa-map-pin"></i> ${g.ubicacion} <a href="https://www.google.com/maps?q=${encodeURIComponent(g.ubicacion)}" target="_blank" style="color:var(--teal);">Ver en mapa</a></small>`;
-        }
-        html += '<div class="grupo-item">' +
-          '<div class="grupo-info">' +
-          '<strong>' + g.nombre + '</strong>' +
-          '<small>Facilitador: ' + g.facilitador + (g.telefono ? ' 📞 ' + g.telefono : '') + ' | Asist: ' + (g.asistente || 'N/A') + ' | Anfit: ' + (g.anfitrion || 'N/A') + '</small>' +
-          (g.hora ? '<br><small><i class="fas fa-clock"></i> Hora: ' + g.hora + '</small>' : '') +
-          ubicacionLink +
-          '<br><small>Miembros: ' + g.miembros.length + '/' + g.max + '</small>' +
-          '</div>' +
-          '<div class="grupo-actions">' +
-          (esMiembro ? '<button class="btn-primary" onclick="window.abrirChatGrupo(\'' + g.id + '\')"><i class="fas fa-comments"></i> Chat</button>' : '') +
-          (isAdmin || (usuarioActual === g.facilitador) ? '<button class="btn-danger" onclick="window.eliminarGrupo(\'' + g.id + '\')">Eliminar</button>' : '') +
-          '</div>' +
-          '</div>';
-      });
-      container.innerHTML = html;
-      await actualizarBotonesPorRol();
-    } catch (error) {
-      console.error('Error cargando grupos:', error);
-      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar grupos.</p>';
-    }
-  };
+      html += '<div class="grupo-item">' +
+        '<div class="grupo-info">' +
+        '<strong>' + g.nombre + '</strong>' +
+        '<small>Facilitador: ' + g.facilitador + (g.telefono ? ' 📞 ' + g.telefono : '') + ' | Asist: ' + (g.asistente || 'N/A') + ' | Anfit: ' + (g.anfitrion || 'N/A') + '</small>' +
+        (g.hora ? '<br><small><i class="fas fa-clock"></i> Hora: ' + g.hora + '</small>' : '') +
+        ubicacionLink +
+        '<br><small>Miembros: ' + g.miembros.length + '/' + g.max + '</small>' +
+        '</div>' +
+        '<div class="grupo-actions">' +
+        (esMiembro ? '<button class="btn-primary" onclick="window.abrirChatGrupo(' + g.id + ')"><i class="fas fa-comments"></i> Chat</button>' : '') +
+        (isAdmin || (usuarioActual === g.facilitador) ? '<button class="btn-danger" onclick="window.eliminarGrupo(' + g.id + ')">Eliminar</button>' : '') +
+        '</div>' +
+        '</div>';
+    });
+    container.innerHTML = html;
+    actualizarBotonesPorRol();
+  }
 
-  window.eliminarGrupo = async function(id) {
-    if (!isAdmin && !await tieneRol('facilitador')) return;
-    if (!confirm('¿Eliminar este grupo?')) return;
-    try {
-      await getGruposRef().doc(id).delete();
+  window.eliminarGrupo = function(id) {
+    if (!isAdmin && !tieneRol('facilitador')) return;
+    if (confirm('¿Eliminar este grupo?')) {
+      let grupos = getData(STORAGE.grupos, []);
+      grupos = grupos.filter(function(g) { return g.id !== id; });
+      setData(STORAGE.grupos, grupos);
       renderGrupos();
-    } catch (error) {
-      console.error('Error al eliminar grupo:', error);
-      alert('Error al eliminar: ' + error.message);
     }
   };
 
-  // ===== CHAT DEL GRUPO (localStorage por simplicidad, pero se puede migrar a Firestore) =====
+  // ===== CHAT DEL GRUPO =====
   window.abrirChatGrupo = function(grupoId) {
     if (!usuarioActual) { alert('Inicia sesión primero.'); return; }
+    const grupos = getData(STORAGE.grupos, []);
+    const grupo = grupos.find(g => g.id === grupoId);
+    if (!grupo) { alert('Grupo no encontrado.'); return; }
+    if (!grupo.miembros.includes(usuarioActual)) { alert('No eres miembro de este grupo.'); return; }
     chatGrupoActual = grupoId;
-    // Obtener nombre del grupo desde Firestore
-    getGruposRef().doc(grupoId).get().then(doc => {
-      if (doc.exists) {
-        document.getElementById('chatGrupoTitulo').textContent = 'Chat: ' + doc.data().nombre;
-      }
-    });
+    document.getElementById('chatGrupoTitulo').textContent = 'Chat: ' + grupo.nombre;
     renderChatMensajes(grupoId);
     window.abrirModal('chatGrupoModal');
   };
 
   function renderChatMensajes(grupoId) {
     const container = document.getElementById('chatMensajesContainer');
-    // Usamos localStorage para los chats de grupo (simplificado)
-    const chats = getData('iglesia_chat_grupos', {});
+    const chats = getData(STORAGE.chatGrupos, {});
     const mensajes = chats[grupoId] || [];
     if (mensajes.length === 0) {
       container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No hay mensajes aún. ¡Sé el primero en enviar un mensaje!</p>';
@@ -1747,25 +1753,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const input = document.getElementById('chatMensajeInput');
     const texto = input.value.trim();
     if (!texto) return;
-    const chats = getData('iglesia_chat_grupos', {});
+    const chats = getData(STORAGE.chatGrupos, {});
     if (!chats[chatGrupoActual]) chats[chatGrupoActual] = [];
     chats[chatGrupoActual].push({
       autor: usuarioActual,
       texto: texto,
       hora: new Date().toLocaleString()
     });
-    setData('iglesia_chat_grupos', chats);
+    setData(STORAGE.chatGrupos, chats);
     input.value = '';
     renderChatMensajes(chatGrupoActual);
   };
 
   // ================================================================
-  // 9. DISCIPULADOS (Firestore)
+  // 9. DISCIPULADOS
   // ================================================================
-  function getDiscipuladosRef() { return db.collection('discipulados'); }
-
-  window.abrirModalDiscipulado = async function() {
-    if (!await puedeCrearGrupo()) { alert('Solo los facilitadores y el administrador pueden crear discipulados.'); return; }
+  window.abrirModalDiscipulado = function() {
+    if (!puedeCrearGrupo()) { alert('Solo los facilitadores y el administrador pueden crear discipulados.'); return; }
     document.getElementById('discTitulo').value = '';
     document.getElementById('discFacilitador').value = '';
     document.getElementById('discTelefono').value = '';
@@ -1773,164 +1777,120 @@ document.addEventListener('DOMContentLoaded', function() {
     window.abrirModal('discipuladoModal');
   };
 
-  window.crearDiscipulado = async function() {
-    if (!await puedeCrearGrupo()) { alert('No autorizado'); return; }
+  window.crearDiscipulado = function() {
+    if (!puedeCrearGrupo()) { alert('No autorizado'); return; }
     const titulo = document.getElementById('discTitulo').value.trim();
     const facilitador = document.getElementById('discFacilitador').value.trim();
     const telefono = document.getElementById('discTelefono').value.trim();
     const desc = document.getElementById('discDesc').value.trim();
     if (!titulo || !facilitador) { alert('Título y facilitador son obligatorios.'); return; }
-    try {
-      await getDiscipuladosRef().add({
-        titulo, facilitador, telefono, desc,
-        inscritos: [],
-        fecha: new Date().toISOString()
-      });
-      window.cerrarModal('discipuladoModal');
-      renderDiscipulados();
-    } catch (error) {
-      console.error('Error al crear discipulado:', error);
-      alert('Error al crear: ' + error.message);
-    }
+    const disc = getData(STORAGE.discipulados, []);
+    disc.push({ id: Date.now(), titulo: titulo, facilitador: facilitador, telefono: telefono, desc: desc, inscritos: [] });
+    setData(STORAGE.discipulados, disc);
+    window.cerrarModal('discipuladoModal');
+    renderDiscipulados();
   };
 
-  window.renderDiscipulados = async function() {
+  function renderDiscipulados() {
     const container = document.getElementById('discipuladoContainer');
-    container.innerHTML = '<p style="color:var(--text-secondary);">Cargando...</p>';
-    try {
-      const snapshot = await getDiscipuladosRef().orderBy('fecha', 'desc').get();
-      if (snapshot.empty) {
-        container.innerHTML = '<p style="color:var(--text-secondary);">No hay discipulados disponibles.</p>';
-        return;
-      }
-      let html = '';
-      snapshot.forEach(doc => {
-        const d = { id: doc.id, ...doc.data() };
-        html += '<div class="disc-card">' +
-          '<h4>' + d.titulo + '</h4>' +
-          '<p><i class="fas fa-user"></i> Facilitador: ' + d.facilitador + (d.telefono ? ' 📞 ' + d.telefono : '') + '</p>' +
-          '<p class="desc">' + (d.desc || '') + '</p>' +
-          '<p><small>Inscritos: ' + d.inscritos.length + '</small></p>' +
-          (usuarioActual && !d.inscritos.includes(usuarioActual) ? '<button class="btn-primary" onclick="window.inscribirDiscipulado(\'' + d.id + '\')">Inscribirme</button>' : '') +
-          (isAdmin || (usuarioActual === d.facilitador) ? '<button class="btn-danger" onclick="window.eliminarDiscipulado(\'' + d.id + '\')">Eliminar</button>' : '') +
-          '</div>';
-      });
-      container.innerHTML = html;
-      await actualizarBotonesPorRol();
-    } catch (error) {
-      console.error('Error cargando discipulados:', error);
-      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar discipulados.</p>';
-    }
-  };
+    const disc = getData(STORAGE.discipulados, []);
+    if (disc.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay discipulados disponibles.</p>'; return; }
+    let html = '';
+    disc.forEach(function(d) {
+      html += '<div class="disc-card">' +
+        '<h4>' + d.titulo + '</h4>' +
+        '<p><i class="fas fa-user"></i> Facilitador: ' + d.facilitador + (d.telefono ? ' 📞 ' + d.telefono : '') + '</p>' +
+        '<p class="desc">' + (d.desc || '') + '</p>' +
+        '<p><small>Inscritos: ' + d.inscritos.length + '</small></p>' +
+        (usuarioActual && !d.inscritos.includes(usuarioActual) ? '<button class="btn-primary" onclick="window.inscribirDiscipulado(' + d.id + ')">Inscribirme</button>' : '') +
+        (isAdmin || (usuarioActual === d.facilitador) ? '<button class="btn-danger" onclick="window.eliminarDiscipulado(' + d.id + ')">Eliminar</button>' : '') +
+        '</div>';
+    });
+    container.innerHTML = html;
+    actualizarBotonesPorRol();
+  }
 
-  window.inscribirDiscipulado = async function(id) {
+  window.inscribirDiscipulado = function(id) {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
-    try {
-      const docRef = getDiscipuladosRef().doc(id);
-      const doc = await docRef.get();
-      if (!doc.exists) return;
-      const data = doc.data();
-      const inscritos = data.inscritos || [];
-      if (inscritos.includes(usuarioActual)) return;
-      inscritos.push(usuarioActual);
-      await docRef.update({ inscritos });
-      renderDiscipulados();
-    } catch (error) {
-      console.error('Error al inscribir:', error);
-      alert('Error al inscribir: ' + error.message);
-    }
+    const disc = getData(STORAGE.discipulados, []);
+    const d = disc.find(function(item) { return item.id === id; });
+    if (!d) return;
+    if (d.inscritos.includes(usuarioActual)) return;
+    d.inscritos.push(usuarioActual);
+    setData(STORAGE.discipulados, disc);
+    renderDiscipulados();
   };
 
-  window.eliminarDiscipulado = async function(id) {
-    if (!isAdmin && !await tieneRol('facilitador')) return;
-    if (!confirm('¿Eliminar este discipulado?')) return;
-    try {
-      await getDiscipuladosRef().doc(id).delete();
+  window.eliminarDiscipulado = function(id) {
+    if (!isAdmin && !tieneRol('facilitador')) return;
+    if (confirm('¿Eliminar este discipulado?')) {
+      let disc = getData(STORAGE.discipulados, []);
+      disc = disc.filter(function(d) { return d.id !== id; });
+      setData(STORAGE.discipulados, disc);
       renderDiscipulados();
-    } catch (error) {
-      console.error('Error al eliminar discipulado:', error);
-      alert('Error al eliminar: ' + error.message);
     }
   };
 
   // ================================================================
-  // 10. ORACIONES (Firestore)
+  // 10. ORACIONES (con botones estilo consejería)
   // ================================================================
-  function getOracionesRef() { return db.collection('oraciones'); }
-
-  window.publicarOracion = async function() {
+  window.publicarOracion = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
     const texto = document.getElementById('oracionInput').value.trim();
     if (!texto) { alert('Escribe tu petición de oración.'); return; }
-    try {
-      await getOracionesRef().add({
-        autor: usuarioActual,
-        texto: texto,
-        fecha: new Date().toISOString(),
-        orado: []
-      });
-      document.getElementById('oracionInput').value = '';
-      renderOraciones();
-    } catch (error) {
-      console.error('Error al publicar oración:', error);
-      alert('Error al publicar: ' + error.message);
-    }
+    const oraciones = getData(STORAGE.oraciones, []);
+    oraciones.unshift({
+      id: Date.now(),
+      autor: usuarioActual,
+      texto: texto,
+      fecha: new Date().toLocaleString(),
+      orado: []
+    });
+    setData(STORAGE.oraciones, oraciones);
+    document.getElementById('oracionInput').value = '';
+    renderOraciones();
   };
 
-  window.renderOraciones = async function() {
+  function renderOraciones() {
     const container = document.getElementById('oracionesContainer');
-    container.innerHTML = '<p style="color:var(--text-secondary);">Cargando...</p>';
-    try {
-      const snapshot = await getOracionesRef().orderBy('fecha', 'desc').get();
-      if (snapshot.empty) {
-        container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones de oración. ¡Sé el primero en compartir una!</p>';
-        return;
-      }
-      let html = '';
-      snapshot.forEach(doc => {
-        const o = { id: doc.id, ...doc.data() };
-        const yaOro = o.orado && o.orado.includes(usuarioActual);
-        html += '<div class="oracion-item">' +
-          '<div class="oracion-header">' +
-          '<div class="oracion-avatar">' + o.autor.charAt(0).toUpperCase() + '</div>' +
-          '<div><span class="oracion-autor">' + o.autor + '</span><span class="oracion-time"> · ' + new Date(o.fecha).toLocaleString() + '</span></div>' +
-          '</div>' +
-          '<div class="oracion-texto">' + o.texto + '</div>' +
-          '<div class="oracion-actions">' +
-          '<button onclick="window.orarOracion(\'' + o.id + '\')" class="' + (yaOro ? 'orado' : '') + '">' +
-          '<i class="fas fa-hands-praying"></i> ' + (yaOro ? 'Oré' : 'Orar') + ' (' + (o.orado ? o.orado.length : 0) + ')' +
-          '</button></div></div>';
-      });
-      container.innerHTML = html;
-    } catch (error) {
-      console.error('Error cargando oraciones:', error);
-      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar oraciones.</p>';
+    const oraciones = getData(STORAGE.oraciones, []);
+    if (oraciones.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones de oración. ¡Sé el primero en compartir una!</p>';
+      return;
     }
-  };
+    let html = '';
+    oraciones.forEach(function(o) {
+      const yaOro = o.orado && o.orado.includes(usuarioActual);
+      const numOraciones = o.orado ? o.orado.length : 0;
+      html += '<div class="oracion-item">' +
+        '<div class="oracion-header">' +
+        '<div class="oracion-avatar">' + o.autor.charAt(0).toUpperCase() + '</div>' +
+        '<div><span class="oracion-autor">' + o.autor + '</span><span class="oracion-time"> · ' + o.fecha + '</span></div>' +
+        '</div>' +
+        '<div class="oracion-texto">' + o.texto + '</div>' +
+        '<div class="oracion-actions">' +
+        '<button onclick="window.orarOracion(' + o.id + ')" class="' + (yaOro ? 'orado' : '') + '"><i class="fas fa-hands-praying"></i> ' + (yaOro ? 'Oré' : 'Orar') + ' (' + numOraciones + ')</button>' +
+        '</div></div>';
+    });
+    container.innerHTML = html;
+  }
 
-  window.orarOracion = async function(id) {
+  window.orarOracion = function(id) {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
-    try {
-      const docRef = getOracionesRef().doc(id);
-      const doc = await docRef.get();
-      if (!doc.exists) return;
-      const data = doc.data();
-      const orado = data.orado || [];
-      const idx = orado.indexOf(usuarioActual);
-      if (idx > -1) orado.splice(idx, 1);
-      else orado.push(usuarioActual);
-      await docRef.update({ orado });
-      renderOraciones();
-    } catch (error) {
-      console.error('Error al orar:', error);
-    }
+    const oraciones = getData(STORAGE.oraciones, []);
+    const o = oraciones.find(function(item) { return item.id === id; });
+    if (!o) return;
+    if (!o.orado) o.orado = [];
+    const idx = o.orado.indexOf(usuarioActual);
+    if (idx > -1) o.orado.splice(idx, 1);
+    else o.orado.push(usuarioActual);
+    setData(STORAGE.oraciones, oraciones);
+    renderOraciones();
   };
 
   // ================================================================
-  // 11. MAPA Y MISIONEROS (Firestore)
+  // 11. MAPA Y MISIONEROS
   // ================================================================
-  function getMisionerosRef() { return db.collection('misioneros'); }
-
   window.abrirModalMisionero = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
     if (!isAdmin && !tieneRol('misionero')) { alert('Solo los misioneros y el administrador pueden registrar misioneros.'); return; }
@@ -1946,9 +1906,9 @@ document.addEventListener('DOMContentLoaded', function() {
     window.abrirModal('misioneroModal');
   };
 
-  window.registrarMisionero = async function() {
+  window.registrarMisionero = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
-    if (!isAdmin && !await tieneRol('misionero')) { alert('No autorizado.'); return; }
+    if (!isAdmin && !tieneRol('misionero')) { alert('No autorizado.'); return; }
     const nombre = document.getElementById('misioneroNombre').value.trim();
     const ciudad = document.getElementById('misioneroCiudad').value.trim();
     const ubicacion = document.getElementById('misioneroUbicacion').value.trim();
@@ -1960,114 +1920,95 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Nombre, ciudad y WhatsApp son obligatorios.');
       return;
     }
-    try {
-      await getMisionerosRef().add({
-        nombre, ciudad, ubicacion: ubicacion || '', whatsapp,
-        lat: lat || '', lng: lng || '',
-        usuario: usuarioActual,
-        fecha: new Date().toISOString()
-      });
-      window.cerrarModal('misioneroModal');
-      renderMisionerosMapa();
-      await actualizarBotonesPorRol();
-      alert('Misionero registrado correctamente.');
-    } catch (error) {
-      console.error('Error al registrar misionero:', error);
-      alert('Error al registrar: ' + error.message);
-    }
+
+    const misioneros = getData(STORAGE.misioneros, []);
+    misioneros.push({
+      nombre: nombre,
+      ciudad: ciudad,
+      ubicacion: ubicacion || '',
+      whatsapp: whatsapp,
+      lat: lat || '',
+      lng: lng || '',
+      usuario: usuarioActual
+    });
+    setData(STORAGE.misioneros, misioneros);
+    window.cerrarModal('misioneroModal');
+    renderMisionerosMapa();
+    actualizarBotonesPorRol();
+    alert('Misionero registrado correctamente.');
   };
 
-  window.renderMisionerosMapa = async function() {
+  function renderMisionerosMapa() {
     const container = document.getElementById('misionerosMapaList');
-    container.innerHTML = '<p style="color:var(--text-secondary);">Cargando...</p>';
-    try {
-      const snapshot = await getMisionerosRef().orderBy('fecha', 'desc').get();
-      if (snapshot.empty) {
-        container.innerHTML = '<p style="color:var(--text-secondary);">No hay misioneros registrados.</p>';
-        return;
-      }
-      let html = '';
-      let idx = 0;
-      snapshot.forEach(doc => {
-        const m = { id: doc.id, ...doc.data() };
-        let ubicacionDisplay = '';
-        if (m.lat && m.lng) {
-          ubicacionDisplay = `<a href="https://www.google.com/maps?q=${m.lat},${m.lng}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
-        } else if (m.ubicacion) {
-          ubicacionDisplay = `<a href="https://www.google.com/maps?q=${encodeURIComponent(m.ubicacion)}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
-        }
-        const puedeEliminar = (usuarioActual === m.usuario) || isAdmin;
-        html += `<div class="misionero-item" style="padding:6px 0; border-bottom:1px solid var(--border-color);">
-          <div>
-            <strong>${m.nombre}</strong> (${m.ciudad || 'Ubicación no especificada'})
-            ${m.whatsapp ? ` · <i class="fab fa-whatsapp"></i> <a href="https://wa.me/${m.whatsapp.replace(/\s/g, '')}" target="_blank" style="color:var(--teal);">${m.whatsapp}</a>` : ''}
-            ${ubicacionDisplay ? ` · ${ubicacionDisplay}` : ''}
-            ${puedeEliminar ? `<button class="btn-danger" onclick="window.eliminarMisionero('${m.id}')" style="margin-left:8px; font-size:10px;">Eliminar</button>` : ''}
-          </div>
-        </div>`;
-        idx++;
-      });
-      container.innerHTML = html;
-    } catch (error) {
-      console.error('Error cargando misioneros:', error);
-      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar misioneros.</p>';
+    const misioneros = getData(STORAGE.misioneros, []);
+    if (misioneros.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No hay misioneros registrados.</p>';
+      return;
     }
-  };
+    let html = '';
+    misioneros.forEach(function(m, idx) {
+      let ubicacionDisplay = '';
+      if (m.lat && m.lng) {
+        ubicacionDisplay = `<a href="https://www.google.com/maps?q=${m.lat},${m.lng}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
+      } else if (m.ubicacion) {
+        ubicacionDisplay = `<a href="https://www.google.com/maps?q=${encodeURIComponent(m.ubicacion)}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
+      }
+      const puedeEliminar = (usuarioActual === m.usuario) || isAdmin;
+      html += `<div class="misionero-item" style="padding:6px 0; border-bottom:1px solid var(--border-color);">
+        <div>
+          <strong>${m.nombre}</strong> (${m.ciudad || 'Ubicación no especificada'})
+          ${m.whatsapp ? ` · <i class="fab fa-whatsapp"></i> <a href="https://wa.me/${m.whatsapp.replace(/\s/g, '')}" target="_blank" style="color:var(--teal);">${m.whatsapp}</a>` : ''}
+          ${ubicacionDisplay ? ` · ${ubicacionDisplay}` : ''}
+          ${puedeEliminar ? `<button class="btn-danger" onclick="window.eliminarMisionero(${idx})" style="margin-left:8px; font-size:10px;">Eliminar</button>` : ''}
+        </div>
+      </div>`;
+    });
+    container.innerHTML = html;
+  }
 
-  window.eliminarMisionero = async function(id) {
+  window.eliminarMisionero = function(index) {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
-    try {
-      const doc = await getMisionerosRef().doc(id).get();
-      if (!doc.exists) return;
-      const data = doc.data();
-      if (data.usuario !== usuarioActual && !isAdmin) {
-        alert('No tienes permiso para eliminar este misionero.');
-        return;
-      }
-      if (!confirm('¿Eliminar a ' + data.nombre + '?')) return;
-      await getMisionerosRef().doc(id).delete();
-      renderMisionerosMapa();
-    } catch (error) {
-      console.error('Error al eliminar misionero:', error);
-      alert('Error al eliminar: ' + error.message);
+    const misioneros = getData(STORAGE.misioneros, []);
+    const m = misioneros[index];
+    if (!m) return;
+    if (m.usuario !== usuarioActual && !isAdmin) {
+      alert('No tienes permiso para eliminar este misionero.');
+      return;
     }
+    if (!confirm('¿Eliminar a ' + m.nombre + '?')) return;
+    misioneros.splice(index, 1);
+    setData(STORAGE.misioneros, misioneros);
+    renderMisionerosMapa();
+    actualizarBotonesPorRol();
   };
 
   function renderGruposMapa() {
-    // Similar a antes, pero desde Firestore
     const container = document.getElementById('gruposMapaList');
-    getGruposRef().get().then(snapshot => {
-      if (snapshot.empty) {
-        container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos con ubicación registrada.</p>';
-        return;
+    const grupos = getData(STORAGE.grupos, []);
+    const conUbicacion = grupos.filter(g => g.ubicacion || (g.lat && g.lng));
+    if (conUbicacion.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos con ubicación registrada.</p>';
+      return;
+    }
+    let html = '';
+    conUbicacion.forEach(function(g) {
+      let link = '';
+      if (g.lat && g.lng) {
+        link = `<a href="https://www.google.com/maps?q=${g.lat},${g.lng}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
+      } else if (g.ubicacion) {
+        link = `<a href="https://www.google.com/maps?q=${encodeURIComponent(g.ubicacion)}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
       }
-      let html = '';
-      snapshot.forEach(doc => {
-        const g = doc.data();
-        if (g.ubicacion || (g.lat && g.lng)) {
-          let link = '';
-          if (g.lat && g.lng) {
-            link = `<a href="https://www.google.com/maps?q=${g.lat},${g.lng}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
-          } else if (g.ubicacion) {
-            link = `<a href="https://www.google.com/maps?q=${encodeURIComponent(g.ubicacion)}" target="_blank" style="color:var(--teal);">Ver en mapa</a>`;
-          }
-          html += `<div style="padding:4px 0; border-bottom:1px solid var(--border-color);">
-            <strong>${g.nombre}</strong> - ${link}
-          </div>`;
-        }
-      });
-      container.innerHTML = html || '<p style="color:var(--text-secondary);">No hay grupos con ubicación.</p>';
-    }).catch(() => {
-      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar grupos.</p>';
+      html += `<div style="padding:4px 0; border-bottom:1px solid var(--border-color);">
+        <strong>${g.nombre}</strong> - ${link}
+      </div>`;
     });
+    container.innerHTML = html;
   }
 
   // ================================================================
-  // 12. NECESIDADES (Firestore)
+  // 12. NECESIDADES
   // ================================================================
-  function getNecesidadesRef() { return db.collection('necesidades'); }
-
-  window.publicarNecesidad = async function() {
+  window.publicarNecesidad = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
     const categoria = document.getElementById('needCategoria').value;
     const desc = document.getElementById('needDesc').value.trim();
@@ -2084,101 +2025,88 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       guardarNeed();
     }
-    async function guardarNeed() {
-      try {
-        await getNecesidadesRef().add({
-          usuario: usuarioActual,
-          categoria, desc, telefono,
-          fotos: fotos,
-          ayudas: [],
-          fecha: new Date().toISOString()
-        });
-        document.getElementById('needDesc').value = '';
-        document.getElementById('needTelefono').value = '';
-        document.getElementById('needFotos').value = '';
-        renderNecesidades();
-      } catch (error) {
-        console.error('Error al publicar necesidad:', error);
-        alert('Error al publicar: ' + error.message);
-      }
+    function guardarNeed() {
+      const needs = getData(STORAGE.necesidades, []);
+      needs.unshift({
+        id: Date.now(),
+        usuario: usuarioActual,
+        categoria: categoria,
+        desc: desc,
+        telefono: telefono,
+        fotos: fotos,
+        fecha: new Date().toLocaleString(),
+        ayudas: []
+      });
+      setData(STORAGE.necesidades, needs);
+      document.getElementById('needDesc').value = '';
+      document.getElementById('needTelefono').value = '';
+      document.getElementById('needFotos').value = '';
+      renderNecesidades();
     }
   };
 
-  window.renderNecesidades = async function() {
+  function renderNecesidades() {
     const container = document.getElementById('necesidadesContainer');
-    container.innerHTML = '<p style="color:var(--text-secondary);">Cargando...</p>';
-    try {
-      const snapshot = await getNecesidadesRef().orderBy('fecha', 'desc').get();
-      if (snapshot.empty) {
-        container.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades publicadas.</p>';
-        return;
+    const needs = getData(STORAGE.necesidades, []);
+    if (needs.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades publicadas.</p>'; return; }
+    let html = '';
+    needs.forEach(function(n) {
+      html += '<div class="need-item">' +
+        '<div><span class="need-cat">' + n.categoria + '</span> <span style="font-size:11px; color:var(--text-secondary);">' + n.fecha + '</span></div>' +
+        '<p style="font-size:14px;">' + n.desc + '</p>' +
+        '<p style="font-size:12px;"><i class="fas fa-phone"></i> ' + n.telefono + '</p>';
+      if (n.fotos && n.fotos.length) {
+        html += '<div class="need-fotos">' + n.fotos.map(function(f) { return '<img src="' + f + '" alt="foto">'; }).join('') + '</div>';
       }
-      let html = '';
-      snapshot.forEach(doc => {
-        const n = { id: doc.id, ...doc.data() };
-        html += '<div class="need-item">' +
-          '<div><span class="need-cat">' + n.categoria + '</span> <span style="font-size:11px; color:var(--text-secondary);">' + new Date(n.fecha).toLocaleString() + '</span></div>' +
-          '<p style="font-size:14px;">' + n.desc + '</p>' +
-          '<p style="font-size:12px;"><i class="fas fa-phone"></i> ' + n.telefono + '</p>';
-        if (n.fotos && n.fotos.length) {
-          html += '<div class="need-fotos">' + n.fotos.map(function(f) { return '<img src="' + f + '" alt="foto">'; }).join('') + '</div>';
-        }
-        if (isAdmin) {
-          html += '<div style="margin-top:4px;">' +
-            '<label style="font-size:11px;">Subir foto de ayuda recibida:</label>' +
-            '<input type="file" accept="image/*" onchange="window.subirAyuda(\'' + n.id + '\', this)">';
-          if (n.ayudas && n.ayudas.length) {
-            html += '<div class="need-fotos">' + n.ayudas.map(function(f) { return '<img src="' + f + '" alt="ayuda">'; }).join('') + '</div>';
-          }
-          html += '</div>';
+      if (isAdmin) {
+        html += '<div style="margin-top:4px;">' +
+          '<label style="font-size:11px;">Subir foto de ayuda recibida:</label>' +
+          '<input type="file" accept="image/*" onchange="window.subirAyuda(' + n.id + ', this)">';
+        if (n.ayudas && n.ayudas.length) {
+          html += '<div class="need-fotos">' + n.ayudas.map(function(f) { return '<img src="' + f + '" alt="ayuda">'; }).join('') + '</div>';
         }
         html += '</div>';
-      });
-      container.innerHTML = html;
-    } catch (error) {
-      console.error('Error cargando necesidades:', error);
-      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar necesidades.</p>';
-    }
-  };
+      }
+      html += '</div>';
+    });
+    container.innerHTML = html;
+  }
 
-  window.subirAyuda = async function(id, input) {
+  window.subirAyuda = function(id, input) {
     if (!isAdmin) return;
     const file = input.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = async function(e) {
-      try {
-        const docRef = getNecesidadesRef().doc(id);
-        const doc = await docRef.get();
-        if (!doc.exists) return;
-        const data = doc.data();
-        const ayudas = data.ayudas || [];
-        ayudas.push(e.target.result);
-        await docRef.update({ ayudas });
-        renderNecesidades();
-      } catch (error) {
-        console.error('Error al subir ayuda:', error);
-        alert('Error: ' + error.message);
-      }
+    reader.onload = function(e) {
+      const needs = getData(STORAGE.necesidades, []);
+      const n = needs.find(function(item) { return item.id === id; });
+      if (!n) return;
+      if (!n.ayudas) n.ayudas = [];
+      n.ayudas.push(e.target.result);
+      setData(STORAGE.necesidades, needs);
+      renderNecesidades();
     };
     reader.readAsDataURL(file);
   };
 
   // ================================================================
-  // 13. SERVICIO (Firestore)
+  // 13. SERVICIO CON FIRESTORE (corregido mapa)
   // ================================================================
-  function getServiciosRef() { return db.collection('servicios'); }
-
-  async function puedeOfrecerServicio() {
-    return await tieneRol('servidor') || await tieneRol('ayuda_alimentaria');
+  function puedeOfrecerServicio() {
+    return tieneRol('servidor') || tieneRol('ayuda_alimentaria');
   }
 
-  async function puedeGestionarServicio() {
-    return isAdmin || await tieneRol('servidor') || await tieneRol('ayuda_alimentaria');
+  function puedeGestionarServicio() {
+    return isAdmin || tieneRol('servidor') || tieneRol('ayuda_alimentaria');
   }
 
-  // Inicializar mapa en servicios
+  function getServiciosRef() {
+    return db.collection('servicios');
+  }
+
+  // Inicializar mapa en servicios cuando se abre el panel
   document.addEventListener('DOMContentLoaded', function() {
+    // Observar cambios en el panel de servicio para inicializar mapa
     const observer = new MutationObserver(function() {
       const panel = document.getElementById('panel-servicio');
       if (panel && panel.classList.contains('active')) {
@@ -2187,14 +2115,14 @@ document.addEventListener('DOMContentLoaded', function() {
           if (container && container.style.display !== 'none') {
             initMap('servicioMap', 'servicioMapSearch', 'servicioLat', 'servicioLng');
           }
-        }, 300);
+        }, 400);
       }
     });
     observer.observe(document.getElementById('panel-servicio'), { attributes: true, attributeFilter: ['class'] });
   });
 
   window.ofrecerServicio = async function() {
-    if (!await puedeOfrecerServicio()) {
+    if (!puedeOfrecerServicio()) {
       alert('No tienes permisos para ofrecer servicio. Solo servidores o ayuda alimentaria.');
       return;
     }
@@ -2218,14 +2146,23 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
+    const data = {
+      nombre,
+      direccion,
+      fecha,
+      horario,
+      comidas,
+      personas,
+      telefono,
+      usuario: usuarioActual,
+      fechaRegistro: new Date().toISOString(),
+      solicitantes: [],
+      lat: lat || '',
+      lng: lng || ''
+    };
+
     try {
-      await getServiciosRef().add({
-        nombre, direccion, fecha, horario, comidas, personas, telefono,
-        usuario: usuarioActual,
-        lat: lat || '', lng: lng || '',
-        fechaRegistro: new Date().toISOString(),
-        solicitantes: []
-      });
+      await getServiciosRef().add(data);
       alert('✅ Servicio ofrecido correctamente.');
       document.getElementById('servicioNombre').value = '';
       document.getElementById('servicioDireccion').value = '';
@@ -2263,6 +2200,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const s = { id: doc.id, ...doc.data() };
         const yaSolicito = s.solicitantes && s.solicitantes.find(sol => sol.nombre === usuarioActual);
         const estadoSolicitud = yaSolicito ? yaSolicito.estado : null;
+        const esGestor = puedeGestionarServicio();
 
         const fechaServicio = new Date(s.fecha + 'T' + (s.horario ? s.horario.split('-')[0].trim() : '00:00'));
         const finalizado = fechaServicio < ahora;
@@ -2297,7 +2235,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           }
 
-          if (await puedeGestionarServicio()) {
+          if (esGestor) {
             if (s.solicitantes && s.solicitantes.length) {
               html += `<div style="margin-top:6px;"><strong>Solicitudes:</strong>`;
               s.solicitantes.forEach(sol => {
@@ -2375,13 +2313,13 @@ document.addEventListener('DOMContentLoaded', function() {
       container.innerHTML = html;
     } catch (error) {
       console.error('Error al cargar mis servicios:', error);
-      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar mis servicios: ' + error.message + '</p>';
+      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar mis servicios.</p>';
     }
   };
 
   window.solicitarServicio = async function(id) {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
-    const perfil = await getUsuarioActualFS();
+    const perfil = getUsuarioActual();
     if (!perfil) { alert('No se encontró tu perfil.'); return; }
 
     try {
@@ -2409,7 +2347,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   window.actualizarSolicitud = async function(servicioId, solicitanteNombre, nuevoEstado) {
-    if (!await puedeGestionarServicio()) {
+    if (!puedeGestionarServicio()) {
       alert('No tienes permisos para gestionar solicitudes.');
       return;
     }
@@ -2435,7 +2373,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   window.eliminarServicio = async function(id) {
-    if (!await puedeGestionarServicio()) {
+    if (!puedeGestionarServicio()) {
       alert('No tienes permisos para eliminar servicios.');
       return;
     }
@@ -2452,116 +2390,95 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 14. CONSEJERÍA (Firestore)
+  // 14. CONSEJERÍA (con comentarios y orar)
   // ================================================================
-  function getConsejosRef() { return db.collection('consejos'); }
-
-  window.publicarConsejo = async function() {
+  window.publicarConsejo = function() {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
     const titulo = document.getElementById('consejoTitulo').value.trim();
     const descripcion = document.getElementById('consejoDescripcion').value.trim();
     if (!titulo || !descripcion) { alert('Completa título y descripción.'); return; }
-    try {
-      await getConsejosRef().add({
-        autor: usuarioActual,
-        titulo: titulo,
-        descripcion: descripcion,
-        fecha: new Date().toISOString(),
-        respuestas: [],
-        oraciones: []
-      });
-      document.getElementById('consejoTitulo').value = '';
-      document.getElementById('consejoDescripcion').value = '';
-      renderConsejos();
-    } catch (error) {
-      console.error('Error al publicar consejo:', error);
-      alert('Error al publicar: ' + error.message);
-    }
+    const consejos = getData(STORAGE.consejos, []);
+    consejos.unshift({
+      id: Date.now(),
+      autor: usuarioActual,
+      titulo: titulo,
+      descripcion: descripcion,
+      fecha: new Date().toLocaleString(),
+      respuestas: [],
+      oraciones: []
+    });
+    setData(STORAGE.consejos, consejos);
+    document.getElementById('consejoTitulo').value = '';
+    document.getElementById('consejoDescripcion').value = '';
+    renderConsejos();
   };
 
-  window.renderConsejos = async function() {
+  function renderConsejos() {
     const container = document.getElementById('consejosContainer');
-    container.innerHTML = '<p style="color:var(--text-secondary);">Cargando...</p>';
-    try {
-      const snapshot = await getConsejosRef().orderBy('fecha', 'desc').get();
-      if (snapshot.empty) {
-        container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones de consejo. Sé el primero en pedir consejo.</p>';
-        return;
-      }
-      let html = '';
-      snapshot.forEach(doc => {
-        const c = { id: doc.id, ...doc.data() };
-        const yaOro = c.oraciones && c.oraciones.includes(usuarioActual);
-        const numOraciones = c.oraciones ? c.oraciones.length : 0;
-
-        html += '<div class="consejo-item">' +
-          '<div class="consejo-titulo">' + c.titulo + '</div>' +
-          '<small style="color:var(--text-secondary);">Publicado por ' + c.autor + ' · ' + new Date(c.fecha).toLocaleString() + '</small>' +
-          '<p style="margin:4px 0;">' + c.descripcion + '</p>' +
-          '<div class="consejo-actions">' +
-          '<button onclick="window.orarConsejo(\'' + c.id + '\')" class="' + (yaOro ? 'orado' : '') + '"><i class="fas fa-hands-praying"></i> ' + (yaOro ? 'Oré' : 'Orar') + ' (' + numOraciones + ')</button>' +
-          '</div>' +
-          '<div class="consejo-respuestas">';
-        if (c.respuestas && c.respuestas.length) {
-          c.respuestas.forEach(function(r) {
-            html += '<div class="consejo-respuesta"><span class="autor">' + r.autor + '</span>: ' + r.texto + ' <small style="color:var(--text-secondary);">' + new Date(r.fecha).toLocaleString() + '</small></div>';
-          });
-        } else {
-          html += '<p style="color:var(--text-secondary); font-size:12px;">Aún no hay respuestas.</p>';
-        }
-        html += '<div style="margin-top:4px;">' +
-          '<input type="text" id="respuestaConsejo-' + c.id + '" placeholder="Escribe tu respuesta..." style="flex:1; padding:4px 10px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">' +
-          '<button class="btn-primary" onclick="window.responderConsejo(\'' + c.id + '\')" style="margin-left:4px;"><i class="fas fa-paper-plane"></i></button>' +
-          '</div>' +
-          '</div></div>';
-      });
-      container.innerHTML = html;
-    } catch (error) {
-      console.error('Error cargando consejos:', error);
-      container.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar consejos.</p>';
+    const consejos = getData(STORAGE.consejos, []);
+    if (consejos.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones de consejo. Sé el primero en pedir consejo.</p>';
+      return;
     }
-  };
+    let html = '';
+    consejos.forEach(function(c) {
+      const yaOro = c.oraciones && c.oraciones.includes(usuarioActual);
+      const numOraciones = c.oraciones ? c.oraciones.length : 0;
 
-  window.responderConsejo = async function(id) {
+      html += '<div class="consejo-item">' +
+        '<div class="consejo-titulo">' + c.titulo + '</div>' +
+        '<small style="color:var(--text-secondary);">Publicado por ' + c.autor + ' · ' + c.fecha + '</small>' +
+        '<p style="margin:4px 0;">' + c.descripcion + '</p>' +
+        '<div class="consejo-actions">' +
+        '<button onclick="window.orarConsejo(' + c.id + ')" class="' + (yaOro ? 'orado' : '') + '"><i class="fas fa-hands-praying"></i> ' + (yaOro ? 'Oré' : 'Orar') + ' (' + numOraciones + ')</button>' +
+        '</div>' +
+        '<div class="consejo-respuestas">';
+      if (c.respuestas && c.respuestas.length) {
+        c.respuestas.forEach(function(r) {
+          html += '<div class="consejo-respuesta"><span class="autor">' + r.autor + '</span>: ' + r.texto + ' <small style="color:var(--text-secondary);">' + r.fecha + '</small></div>';
+        });
+      } else {
+        html += '<p style="color:var(--text-secondary); font-size:12px;">Aún no hay respuestas.</p>';
+      }
+      // Todos pueden comentar
+      html += '<div style="margin-top:4px;">' +
+        '<input type="text" id="respuestaConsejo-' + c.id + '" placeholder="Escribe tu respuesta..." style="flex:1; padding:4px 10px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">' +
+        '<button class="btn-primary" onclick="window.responderConsejo(' + c.id + ')" style="margin-left:4px;"><i class="fas fa-paper-plane"></i></button>' +
+        '</div>' +
+        '</div></div>';
+    });
+    container.innerHTML = html;
+  }
+
+  window.responderConsejo = function(id) {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
     const input = document.getElementById('respuestaConsejo-' + id);
     const texto = input.value.trim();
     if (!texto) return;
-    try {
-      const docRef = getConsejosRef().doc(id);
-      const doc = await docRef.get();
-      if (!doc.exists) return;
-      const data = doc.data();
-      const respuestas = data.respuestas || [];
-      respuestas.push({ autor: usuarioActual, texto: texto, fecha: new Date().toISOString() });
-      await docRef.update({ respuestas });
-      renderConsejos();
-    } catch (error) {
-      console.error('Error al responder:', error);
-      alert('Error al responder: ' + error.message);
-    }
+    const consejos = getData(STORAGE.consejos, []);
+    const c = consejos.find(function(item) { return item.id === id; });
+    if (!c) return;
+    if (!c.respuestas) c.respuestas = [];
+    c.respuestas.push({ autor: usuarioActual, texto: texto, fecha: new Date().toLocaleString() });
+    setData(STORAGE.consejos, consejos);
+    renderConsejos();
   };
 
-  window.orarConsejo = async function(id) {
+  window.orarConsejo = function(id) {
     if (!usuarioActual) { alert('Ingresa primero.'); return; }
-    try {
-      const docRef = getConsejosRef().doc(id);
-      const doc = await docRef.get();
-      if (!doc.exists) return;
-      const data = doc.data();
-      const oraciones = data.oraciones || [];
-      const idx = oraciones.indexOf(usuarioActual);
-      if (idx > -1) oraciones.splice(idx, 1);
-      else oraciones.push(usuarioActual);
-      await docRef.update({ oraciones });
-      renderConsejos();
-    } catch (error) {
-      console.error('Error al orar consejo:', error);
-    }
+    const consejos = getData(STORAGE.consejos, []);
+    const c = consejos.find(function(item) { return item.id === id; });
+    if (!c) return;
+    if (!c.oraciones) c.oraciones = [];
+    const idx = c.oraciones.indexOf(usuarioActual);
+    if (idx > -1) c.oraciones.splice(idx, 1);
+    else c.oraciones.push(usuarioActual);
+    setData(STORAGE.consejos, consejos);
+    renderConsejos();
   };
 
   // ================================================================
-  // 15. BIBLIA (versión original, sin selección de versículos)
+  // 15. BIBLIA (versión original, sin selección de versículos, pero con buscador mejorado)
   // ================================================================
   const libroSelect = document.getElementById('libro');
   const capituloSelect = document.getElementById('capitulo');
@@ -2748,7 +2665,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnGuardarVersos').addEventListener('click', guardarTodosVersos);
 
   // ================================================================
-  // 16. BIBLIA - BÚSQUEDA E HISTORIAL
+  // 16. BIBLIA - BÚSQUEDA E HISTORIAL (con buscador funcional y botones elegantes)
   // ================================================================
   function cargarHistorial() {
     const historial = getData(STORAGE.historialBiblia, []);
@@ -2758,7 +2675,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     container.innerHTML = historial.map(function(t) {
-      return '<span class="tag" onclick="window.buscarTexto(\'' + t.replace(/'/g, "\\'") + '\')">' + t + '</span>';
+      return '<span class="historial-tag" onclick="window.buscarTexto(\'' + t.replace(/'/g, "\\'") + '\')">' + t + '</span>';
     }).join('');
   }
 
@@ -2769,7 +2686,7 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   window.buscarTexto = function(query) {
-    // Buscar en los textos cargados
+    // Buscar en los libros cargados
     const resultados = {};
     const todosLosLibros = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
     const promesas = [];
@@ -2893,13 +2810,24 @@ document.addEventListener('DOMContentLoaded', function() {
   // ================================================================
   // 19. REPORTES (Firestore)
   // ================================================================
-  function getReportesRef() { return db.collection('reportes'); }
+  function getReportesRef() {
+    return db.collection('reportes');
+  }
+
+  function listenReportes() {
+    if (!isAdmin) return;
+  }
 
   window.abrirModalReporte = function() {
     if (!usuarioActual) { alert('Debes iniciar sesión.'); return; }
     document.getElementById('reporteTitulo').value = '';
     document.getElementById('reporteDescripcion').value = '';
-    document.getElementById('reporteRol').value = '';
+    const perfil = getUsuarioActual();
+    if (perfil && perfil.apoyos && perfil.apoyos.length > 0) {
+      document.getElementById('reporteRol').value = perfil.apoyos[0];
+    } else {
+      document.getElementById('reporteRol').value = '';
+    }
     window.abrirModal('reporteModal');
   };
 
@@ -2914,7 +2842,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     try {
       await getReportesRef().add({
-        titulo, descripcion, rol,
+        titulo: titulo,
+        descripcion: descripcion,
+        rol: rol,
         usuario: usuarioActual,
         uid: usuarioActual, // simplificación
         fecha: new Date().toISOString()
@@ -2997,7 +2927,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     try {
       await getReportesRef().doc(id).update({
-        titulo, descripcion, rol,
+        titulo: titulo,
+        descripcion: descripcion,
+        rol: rol,
         fecha: new Date().toISOString()
       });
       alert('Reporte actualizado.');
@@ -3034,7 +2966,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // ================================================================
   // 20. CHAT ADMIN (Firestore)
   // ================================================================
-  function getChatAdminRef() { return db.collection('chat_admin'); }
+  function getChatAdminRef() {
+    return db.collection('chat_admin');
+  }
 
   let chatAdminListener = null;
 
@@ -3095,7 +3029,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // ================================================================
   // 21. CHAT EQUIPO (Firestore)
   // ================================================================
-  function getChatEquipoRef() { return db.collection('chat_equipo'); }
+  function getChatEquipoRef() {
+    return db.collection('chat_equipo');
+  }
 
   let chatEquipoListener = null;
 
@@ -3137,7 +3073,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   window.enviarChatEquipo = async function() {
     if (!usuarioActual) { alert('Debes iniciar sesión.'); return; }
-    if (!await tieneAlgunRolApoyo() && !isAdmin) {
+    if (!tieneAlgunRolApoyo() && !isAdmin) {
       alert('No tienes permisos para escribir en el chat de equipo.');
       return;
     }
@@ -3160,200 +3096,143 @@ document.addEventListener('DOMContentLoaded', function() {
   // ================================================================
   // 22. ADMIN PANEL
   // ================================================================
-  async function renderAdminPanel() {
+  function renderAdminPanel() {
     if (!isAdmin) return;
     cargarConfigIA();
 
-    try {
-      const [usersSnap, postsSnap, oracionesSnap, necesidadesSnap, gruposSnap, discipuladosSnap, misionerosSnap, consejosSnap, reportesSnap, serviciosSnap] = await Promise.all([
-        db.collection('usuarios').get(),
-        db.collection('posts').get(),
-        db.collection('oraciones').get(),
-        db.collection('necesidades').get(),
-        db.collection('grupos').get(),
-        db.collection('discipulados').get(),
-        db.collection('misioneros').get(),
-        db.collection('consejos').get(),
-        db.collection('reportes').get(),
-        db.collection('servicios').get()
-      ]);
+    const usuarios = getData(STORAGE.usuarios, []);
+    const posts = getData(STORAGE.posts, []);
+    const oraciones = getData(STORAGE.oraciones, []);
+    const necesidades = getData(STORAGE.necesidades, []);
+    const grupos = getData(STORAGE.grupos, []);
+    const discipulados = getData(STORAGE.discipulados, []);
+    const misioneros = getData(STORAGE.misioneros, []);
+    const consejos = getData(STORAGE.consejos, []);
 
-      document.getElementById('statUsers').textContent = usersSnap.size;
-      document.getElementById('statPosts').textContent = postsSnap.size;
-      document.getElementById('statOraciones').textContent = oracionesSnap.size;
-      document.getElementById('statNecesidades').textContent = necesidadesSnap.size;
-      document.getElementById('statServicios').textContent = serviciosSnap.size;
-      document.getElementById('statGrupos').textContent = gruposSnap.size;
-      document.getElementById('statDiscipulados').textContent = discipuladosSnap.size;
-      document.getElementById('statMisioneros').textContent = misionerosSnap.size;
-      document.getElementById('statConsejos').textContent = consejosSnap.size;
-      document.getElementById('statReportes').textContent = reportesSnap.size;
+    document.getElementById('statUsers').textContent = usuarios.length;
+    document.getElementById('statPosts').textContent = posts.length;
+    document.getElementById('statOraciones').textContent = oraciones.length;
+    document.getElementById('statNecesidades').textContent = necesidades.length;
+    document.getElementById('statServicios').textContent = '...';
+    document.getElementById('statGrupos').textContent = grupos.length;
+    document.getElementById('statDiscipulados').textContent = discipulados.length;
+    document.getElementById('statMisioneros').textContent = misioneros.length;
+    document.getElementById('statConsejos').textContent = consejos.length;
 
-      // Lista usuarios
-      const userList = document.getElementById('adminUserList');
-      if (usersSnap.empty) {
-        userList.innerHTML = '<p style="color:var(--text-secondary);">No hay usuarios registrados.</p>';
-      } else {
-        let html = '';
-        usersSnap.forEach(doc => {
-          const u = doc.data();
-          html += '<div class="admin-list-item">' +
-            '<span class="info"><strong>' + u.nombre + '</strong> · 📞 ' + u.telefono + ' · Edad: ' + u.edad +
-            (u.apoyos && u.apoyos.length ? ' · Apoyos: ' + u.apoyos.join(', ') : '') +
-            '</span>' +
-            '<div class="actions"><button class="btn-danger" onclick="window.eliminarUsuario(\'' + u.nombre + '\')">Eliminar</button></div>' +
-            '</div>';
-        });
-        userList.innerHTML = html;
-      }
+    getServiciosRef().get().then(function(snapshot) {
+      document.getElementById('statServicios').textContent = snapshot.size;
+    }).catch(function() {
+      document.getElementById('statServicios').textContent = '?';
+    });
 
-      // Publicaciones
-      const postList = document.getElementById('adminPostList');
-      if (postsSnap.empty) {
-        postList.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones.</p>';
-      } else {
-        let html = '';
-        postsSnap.forEach(doc => {
-          const p = doc.data();
-          html += '<div class="admin-list-item">' +
-            '<span class="info"><strong>' + p.autor + '</strong>: ' + p.texto.substring(0,60) + (p.texto.length > 60 ? '...' : '') + ' <small style="color:var(--text-secondary);">' + new Date(p.fecha).toLocaleString() + '</small></span>' +
-            '<div class="actions"><button class="btn-danger" onclick="window.eliminarPublicacion(\'' + doc.id + '\')">Eliminar</button></div>' +
-            '</div>';
-        });
-        postList.innerHTML = html;
-      }
+    getReportesRef().get().then(function(snapshot) {
+      document.getElementById('statReportes').textContent = snapshot.size;
+    }).catch(function() {
+      document.getElementById('statReportes').textContent = '?';
+    });
 
-      // Oraciones
-      const oracList = document.getElementById('adminOracionList');
-      if (oracionesSnap.empty) {
-        oracList.innerHTML = '<p style="color:var(--text-secondary);">No hay oraciones.</p>';
-      } else {
-        let html = '';
-        oracionesSnap.forEach(doc => {
-          const o = doc.data();
-          html += '<div class="admin-list-item">' +
-            '<span class="info"><strong>' + o.autor + '</strong>: ' + o.texto.substring(0,60) + (o.texto.length > 60 ? '...' : '') + ' <small style="color:var(--text-secondary);">' + new Date(o.fecha).toLocaleString() + '</small></span>' +
-            '<div class="actions"><button class="btn-danger" onclick="window.eliminarOracion(\'' + doc.id + '\')">Eliminar</button></div>' +
-            '</div>';
-        });
-        oracList.innerHTML = html;
-      }
+    const userList = document.getElementById('adminUserList');
+    if (usuarios.length === 0) {
+      userList.innerHTML = '<p style="color:var(--text-secondary);">No hay usuarios registrados.</p>';
+    } else {
+      userList.innerHTML = usuarios.map(function(u) {
+        return '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + u.nombre + '</strong> · 📞 ' + u.telefono + ' · Edad: ' + u.edad +
+          (u.apoyos && u.apoyos.length ? ' · Apoyos: ' + u.apoyos.join(', ') : '') +
+          '</span>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarUsuario(\'' + u.nombre + '\')">Eliminar</button></div>' +
+          '</div>';
+      }).join('');
+    }
 
-      // Necesidades
-      const needList = document.getElementById('adminNeedList');
-      if (necesidadesSnap.empty) {
-        needList.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades.</p>';
-      } else {
-        let html = '';
-        necesidadesSnap.forEach(doc => {
-          const n = doc.data();
-          html += '<div class="admin-list-item">' +
-            '<span class="info"><strong>' + n.usuario + '</strong> [' + n.categoria + ']: ' + n.desc.substring(0,40) + (n.desc.length > 40 ? '...' : '') + '</span>' +
-            '<div class="actions"><button class="btn-danger" onclick="window.eliminarNecesidad(\'' + doc.id + '\')">Eliminar</button></div>' +
-            '</div>';
-        });
-        needList.innerHTML = html;
-      }
+    const postList = document.getElementById('adminPostList');
+    if (posts.length === 0) {
+      postList.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones.</p>';
+    } else {
+      postList.innerHTML = posts.map(function(p) {
+        return '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + p.autor + '</strong>: ' + p.texto.substring(0,60) + (p.texto.length > 60 ? '...' : '') + ' <small style="color:var(--text-secondary);">' + p.fecha + '</small></span>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarPublicacion(' + p.id + ')">Eliminar</button></div>' +
+          '</div>';
+      }).join('');
+    }
 
-      // Servicios
-      const servList = document.getElementById('adminServicioList');
-      if (serviciosSnap.empty) {
+    const oracList = document.getElementById('adminOracionList');
+    if (oraciones.length === 0) {
+      oracList.innerHTML = '<p style="color:var(--text-secondary);">No hay oraciones.</p>';
+    } else {
+      oracList.innerHTML = oraciones.map(function(o) {
+        return '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + o.autor + '</strong>: ' + o.texto.substring(0,60) + (o.texto.length > 60 ? '...' : '') + ' <small style="color:var(--text-secondary);">' + o.fecha + '</small></span>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarOracion(' + o.id + ')">Eliminar</button></div>' +
+          '</div>';
+      }).join('');
+    }
+
+    const needList = document.getElementById('adminNeedList');
+    if (necesidades.length === 0) {
+      needList.innerHTML = '<p style="color:var(--text-secondary);">No hay necesidades.</p>';
+    } else {
+      needList.innerHTML = necesidades.map(function(n) {
+        return '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + n.usuario + '</strong> [' + n.categoria + ']: ' + n.desc.substring(0,40) + (n.desc.length > 40 ? '...' : '') + '</span>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarNecesidad(' + n.id + ')">Eliminar</button></div>' +
+          '</div>';
+      }).join('');
+    }
+
+    const servList = document.getElementById('adminServicioList');
+    servList.innerHTML = '<p style="color:var(--text-secondary);">Cargando servicios...</p>';
+    getServiciosRef().orderBy('fechaRegistro', 'desc').get().then(function(snapshot) {
+      if (snapshot.empty) {
         servList.innerHTML = '<p style="color:var(--text-secondary);">No hay servicios.</p>';
-      } else {
-        let html = '';
-        serviciosSnap.forEach(doc => {
-          const s = doc.data();
-          html += '<div class="admin-list-item">' +
-            '<span class="info"><strong>' + s.nombre + '</strong> (' + s.usuario + ') - ' + s.direccion + ' ' + s.fecha + ' ' + s.horario + '</span>' +
-            '<div class="actions"><button class="btn-danger" onclick="window.eliminarServicio(\'' + doc.id + '\')">Eliminar</button></div>' +
-            '</div>';
-        });
-        servList.innerHTML = html;
+        return;
       }
+      let html = '';
+      snapshot.forEach(function(doc) {
+        const s = doc.data();
+        html += '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + s.nombre + '</strong> (' + s.usuario + ') - ' + s.direccion + ' ' + s.fecha + ' ' + s.horario + '</span>' +
+          '<div class="actions"><button class="btn-danger" onclick="window.eliminarServicio(\'' + doc.id + '\')">Eliminar</button></div>' +
+          '</div>';
+      });
+      servList.innerHTML = html;
+    }).catch(function() {
+      servList.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar servicios.</p>';
+    });
 
-      // Reportes
-      const reportesList = document.getElementById('adminReportesList');
-      if (reportesSnap.empty) {
+    const reportesList = document.getElementById('adminReportesList');
+    reportesList.innerHTML = '<p style="color:var(--text-secondary);">Cargando reportes...</p>';
+    getReportesRef().orderBy('fecha', 'desc').get().then(function(snapshot) {
+      if (snapshot.empty) {
         reportesList.innerHTML = '<p style="color:var(--text-secondary);">No hay reportes.</p>';
-      } else {
-        let html = '';
-        reportesSnap.forEach(doc => {
-          const r = doc.data();
-          html += '<div class="admin-list-item">' +
-            '<span class="info"><strong>' + r.usuario + '</strong> - ' + r.titulo + ' (' + (r.rol || 'sin rol') + ') <small style="color:var(--text-secondary);">' + new Date(r.fecha).toLocaleString() + '</small></span>' +
-            '<div class="actions">' +
-              '<button class="btn-danger" onclick="window.eliminarReporteAdmin(\'' + doc.id + '\')">Eliminar</button>' +
-            '</div>' +
-            '</div>';
-        });
-        reportesList.innerHTML = html;
+        return;
       }
-    } catch (error) {
-      console.error('Error al cargar admin panel:', error);
-    }
+      let html = '';
+      snapshot.forEach(function(doc) {
+        const r = doc.data();
+        html += '<div class="admin-list-item">' +
+          '<span class="info"><strong>' + r.usuario + '</strong> - ' + r.titulo + ' (' + (r.rol || 'sin rol') + ') <small style="color:var(--text-secondary);">' + new Date(r.fecha).toLocaleString() + '</small></span>' +
+          '<div class="actions">' +
+            '<button class="btn-danger" onclick="window.eliminarReporteAdmin(\'' + doc.id + '\')">Eliminar</button>' +
+          '</div>' +
+          '</div>';
+      });
+      reportesList.innerHTML = html;
+    }).catch(function() {
+      reportesList.innerHTML = '<p style="color:var(--text-secondary);">Error al cargar reportes.</p>';
+    });
   }
-
-  // Funciones de eliminación para admin
-  window.eliminarUsuario = async function(nombre) {
-    if (!isAdmin) return;
-    if (!confirm('¿Eliminar al usuario "' + nombre + '"?')) return;
-    try {
-      await db.collection('usuarios').doc(nombre).delete();
-      renderAdminPanel();
-    } catch (error) {
-      console.error('Error al eliminar usuario:', error);
-      alert('Error: ' + error.message);
-    }
-  };
-
-  window.eliminarPublicacion = async function(id) {
-    if (!isAdmin) return;
-    if (!confirm('¿Eliminar esta publicación?')) return;
-    try {
-      await db.collection('posts').doc(id).delete();
-      renderFeed();
-      renderAdminPanel();
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error: ' + error.message);
-    }
-  };
-
-  window.eliminarOracion = async function(id) {
-    if (!isAdmin) return;
-    if (!confirm('¿Eliminar esta oración?')) return;
-    try {
-      await db.collection('oraciones').doc(id).delete();
-      renderOraciones();
-      renderAdminPanel();
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error: ' + error.message);
-    }
-  };
-
-  window.eliminarNecesidad = async function(id) {
-    if (!isAdmin) return;
-    if (!confirm('¿Eliminar esta necesidad?')) return;
-    try {
-      await db.collection('necesidades').doc(id).delete();
-      renderNecesidades();
-      renderAdminPanel();
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error: ' + error.message);
-    }
-  };
 
   window.eliminarReporteAdmin = async function(id) {
     if (!isAdmin) return;
     if (!confirm('¿Eliminar este reporte?')) return;
     try {
-      await db.collection('reportes').doc(id).delete();
+      await getReportesRef().doc(id).delete();
       renderAdminPanel();
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error: ' + error.message);
+      console.error('Error al eliminar reporte:', error);
+      alert('Error al eliminar: ' + error.message);
     }
   };
 
@@ -3365,22 +3244,19 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Primero debes iniciar sesión.');
       return;
     }
-    // Obtener datos de Firestore
-    db.collection('usuarios').doc(usuarioActual).get().then(doc => {
-      if (!doc.exists) { alert('No se encontró tu perfil.'); return; }
-      const perfil = doc.data();
-      document.getElementById('editNombre').value = perfil.nombre || '';
-      document.getElementById('editTelefono').value = perfil.telefono || '';
-      document.getElementById('editEdad').value = perfil.edad || '';
-      const apoyos = perfil.apoyos || [];
-      document.querySelectorAll('#editApoyosContainer input[type="checkbox"]').forEach(function(cb) {
-        cb.checked = apoyos.includes(cb.value);
-      });
-      window.abrirModal('editarPerfilModal');
-    }).catch(error => {
-      console.error('Error al cargar perfil:', error);
-      alert('Error al cargar perfil.');
+    const perfil = getUsuarioActual();
+    if (!perfil) {
+      alert('No se encontró tu perfil.');
+      return;
+    }
+    document.getElementById('editNombre').value = perfil.nombre || '';
+    document.getElementById('editTelefono').value = perfil.telefono || '';
+    document.getElementById('editEdad').value = perfil.edad || '';
+    const apoyos = perfil.apoyos || [];
+    document.querySelectorAll('#editApoyosContainer input[type="checkbox"]').forEach(function(cb) {
+      cb.checked = apoyos.includes(cb.value);
     });
+    window.abrirModal('editarPerfilModal');
   };
 
   window.guardarEdicionPerfil = function() {
@@ -3398,19 +3274,64 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    // Actualizar en Firestore
-    db.collection('usuarios').doc(usuarioActual).update({
-      nombre, telefono, edad, apoyos
-    }).then(() => {
-      // Si cambia el nombre, actualizar en otras colecciones (simplificado)
-      window.cerrarModal('editarPerfilModal');
+    let usuarios = getData(STORAGE.usuarios, []);
+    const idx = usuarios.findIndex(u => u.nombre === usuarioActual);
+    if (idx === -1) {
+      alert('Error: no se encontró tu usuario.');
+      return;
+    }
+    if (usuarios[idx].nombre !== nombre) {
+      const oldName = usuarios[idx].nombre;
+      let posts = getData(STORAGE.posts, []);
+      posts.forEach(function(p) { if (p.autor === oldName) p.autor = nombre; });
+      setData(STORAGE.posts, posts);
+      let oraciones = getData(STORAGE.oraciones, []);
+      oraciones.forEach(function(o) { if (o.autor === oldName) o.autor = nombre; });
+      setData(STORAGE.oraciones, oraciones);
+      let necesidades = getData(STORAGE.necesidades, []);
+      necesidades.forEach(function(n) { if (n.usuario === oldName) n.usuario = nombre; });
+      setData(STORAGE.necesidades, necesidades);
+      let consejos = getData(STORAGE.consejos, []);
+      consejos.forEach(function(c) {
+        if (c.autor === oldName) c.autor = nombre;
+        if (c.respuestas) {
+          c.respuestas.forEach(function(r) { if (r.autor === oldName) r.autor = nombre; });
+        }
+      });
+      setData(STORAGE.consejos, consejos);
+      let grupos = getData(STORAGE.grupos, []);
+      grupos.forEach(function(g) {
+        if (g.miembros) {
+          const idxM = g.miembros.indexOf(oldName);
+          if (idxM > -1) g.miembros[idxM] = nombre;
+        }
+        if (g.facilitador === oldName) g.facilitador = nombre;
+        if (g.asistente === oldName) g.asistente = nombre;
+        if (g.anfitrion === oldName) g.anfitrion = nombre;
+      });
+      setData(STORAGE.grupos, grupos);
+      usuarioActual = nombre;
       document.getElementById('userNameDisplay').textContent = nombre;
-      alert('Perfil actualizado correctamente.');
-      renderAll();
-    }).catch(error => {
-      console.error('Error al actualizar perfil:', error);
-      alert('Error al actualizar: ' + error.message);
-    });
+      document.getElementById('loginBtn').textContent = 'Cambiar';
+    }
+    usuarios[idx].nombre = nombre;
+    usuarios[idx].telefono = telefono;
+    usuarios[idx].edad = edad;
+    usuarios[idx].apoyos = apoyos;
+    setData(STORAGE.usuarios, usuarios);
+    window.cerrarModal('editarPerfilModal');
+    renderFeed();
+    renderGrupos();
+    renderDiscipulados();
+    renderNecesidades();
+    renderOraciones();
+    renderServicios();
+    renderMisServicios();
+    renderConsejos();
+    renderMisionerosMapa();
+    actualizarBotonesPorRol();
+    actualizarTabs();
+    alert('Perfil actualizado correctamente.');
   };
 
   // ================================================================
@@ -3484,7 +3405,12 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // ================================================================
-  // 25. MODO NOCTURNO
+  // 25. EXPANDIR PANTALLA (eliminado)
+  // ================================================================
+  // No hay botón de expandir, la app siempre está en modo completo.
+
+  // ================================================================
+  // 26. MODO NOCTURNO
   // ================================================================
   document.getElementById('themeToggle').addEventListener('click', function() {
     document.body.classList.toggle('dark');
@@ -3493,67 +3419,93 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // ================================================================
-  // 26. DATOS DE EJEMPLO (solo si no existen)
+  // 27. DATOS DE EJEMPLO
   // ================================================================
-  async function cargarEjemplos() {
-    // Verificar si ya hay datos en Firestore
-    const postsSnap = await db.collection('posts').limit(1).get();
-    if (!postsSnap.empty) return;
-
-    // Crear datos de ejemplo (solo si está vacío)
-    try {
-      await db.collection('posts').add({
-        autor: 'Pastor José',
-        texto: '¡Bendecido domingo! "El Señor es mi pastor, nada me faltará." (Salmo 23:1) 🙏',
-        link: '',
-        media: null,
-        categoria: 'testimonio',
-        fecha: new Date().toISOString(),
-        likes: ['María', 'Carlos', 'Ana'],
-        orando: ['Luis'],
-        comentarios: [{ autor: 'María', texto: 'Amén, pastor!' }]
-      });
-      // ... más ejemplos simplificados
-    } catch (error) {
-      console.warn('Error al cargar ejemplos:', error);
+  function cargarEjemplos() {
+    if (!getData(STORAGE.posts, []).length) {
+      setData(STORAGE.posts, [
+        { id: 1001, autor: 'Pastor José', texto: '¡Bendecido domingo! "El Señor es mi pastor, nada me faltará." (Salmo 23:1) 🙏', link: '', media: null, fecha: 'Hoy, 10:30am', categoria: 'testimonio', likes: ['María', 'Carlos', 'Ana'], orando: ['Luis'], comentarios: [{ autor: 'María', texto: 'Amén, pastor!' }] },
+        { id: 1002, autor: 'María Rodríguez', texto: 'Comparto este video de la alabanza de hoy. ¡Dios es bueno!', link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', media: null, fecha: 'Hoy, 9:15am', categoria: 'obra', likes: ['Pastor José', 'Ana'], orando: [], comentarios: [] },
+        { id: 1003, autor: 'Carlos López', texto: 'Necesito oración por mi familia. Estamos pasando por un momento difícil. 🙏', link: '', media: null, fecha: 'Ayer, 8:00pm', categoria: 'oracion', likes: ['María', 'Pastor José', 'Luis'], orando: ['Ana', 'Sofía'], comentarios: [] }
+      ]);
     }
-  }
-
-  // ================================================================
-  // 27. RENDER ALL
-  // ================================================================
-  async function renderAll() {
-    renderCarrusel();
-    await renderFeed();
-    await renderGrupos();
-    await renderDiscipulados();
-    await renderOraciones();
-    renderGruposMapa();
-    await renderMisionerosMapa();
-    await renderNecesidades();
-    await renderServicios();
-    await renderMisServicios();
-    await renderConsejos();
-    await renderReportes();
-    renderChatAdmin();
-    renderChatEquipo();
-    cargarHistorial();
-    await actualizarBotonesPorRol();
-    await actualizarTabs();
-    if (isAdmin) await renderAdminPanel();
+    if (!getData(STORAGE.grupos, []).length) {
+      setData(STORAGE.grupos, [
+        { id: 2001, nombre: 'Jóvenes Unidos', facilitador: 'David Pérez', asistente: 'Laura Mora', anfitrion: 'Casa de los Pérez', telefono: '+506 8888-1234', ubicacion: 'San José, Costa Rica', lat: '', lng: '', hora: '19:00', miembros: ['David Pérez', 'Laura Mora', 'Carlos', 'Ana', 'Luis'], max: 15 },
+        { id: 2002, nombre: 'Mujeres de Fe', facilitador: 'Sofía Méndez', asistente: 'Ruth González', anfitrion: 'Salón de la iglesia', telefono: '+506 8877-5678', ubicacion: 'Heredia, Costa Rica', lat: '', lng: '', hora: '18:30', miembros: ['Sofía Méndez', 'Ruth González', 'María', 'Elena', 'Patricia'], max: 15 },
+        { id: 2003, nombre: 'Hombres de Valor', facilitador: 'José Castillo', asistente: 'Miguel Ángel', anfitrion: 'Casa de José', telefono: '+506 8866-9012', ubicacion: '', lat: '', lng: '', hora: '20:00', miembros: ['José Castillo', 'Miguel Ángel', 'Pedro', 'Andrés', 'Santiago'], max: 15 }
+      ]);
+    }
+    if (!getData(STORAGE.discipulados, []).length) {
+      setData(STORAGE.discipulados, [
+        { id: 3001, titulo: 'Fundamentos de la Fe', facilitador: 'Pastor José Castillo', telefono: '+506 8888-1111', desc: 'Un curso de 8 semanas sobre los fundamentos bíblicos. Martes 7pm.', inscritos: ['María', 'Carlos'] },
+        { id: 3002, titulo: 'Vida en el Espíritu', facilitador: 'David Pérez', telefono: '+506 8877-2222', desc: 'Descubre los dones del Espíritu Santo. Jueves 6pm.', inscritos: ['Ana', 'Luis', 'Sofía'] },
+        { id: 3003, titulo: 'Liderazgo Cristiano', facilitador: 'Miguel Ángel', telefono: '+506 8866-3333', desc: 'Formación para líderes. Sábados 9am.', inscritos: ['Pedro', 'Andrés'] }
+      ]);
+    }
+    if (!getData(STORAGE.oraciones, []).length) {
+      setData(STORAGE.oraciones, [
+        { id: 7001, autor: 'Ana Núñez', texto: 'Mi hijo está pasando por una situación difícil en la escuela. Pido oración por sabiduría.', fecha: 'Hoy, 11:30am', orado: ['María', 'Pastor José', 'Carlos'] },
+        { id: 7002, autor: 'Carlos López', texto: 'Perdí mi empleo esta semana. Pido oración por paz y provisión.', fecha: 'Ayer, 6:45pm', orado: ['Ana', 'Luis', 'Sofía'] },
+        { id: 7003, autor: 'Laura Méndez', texto: 'Mi mamá fue diagnosticada con cáncer. Pido oración por su sanidad.', fecha: 'Hace 2 días, 9:00am', orado: ['Pastor José', 'María', 'David', 'Elena'] }
+      ]);
+    }
+    if (!getData(STORAGE.necesidades, []).length) {
+      setData(STORAGE.necesidades, [
+        { id: 4001, usuario: 'Familia González', categoria: 'Alimentos', desc: 'Necesitamos ayuda con una canasta básica para 5 personas.', telefono: '+506 8888-4444', fotos: [], ayudas: [], fecha: 'Hoy, 11:00am' },
+        { id: 4002, usuario: 'Señora Elena', categoria: 'Medicamentos', desc: 'Necesito insulina para mi mamá de 72 años.', telefono: '+506 8877-5555', fotos: [], ayudas: [], fecha: 'Ayer, 3:30pm' },
+        { id: 4003, usuario: 'Carlos Méndez', categoria: 'Útiles escolares', desc: 'Busco ayuda con útiles escolares para mis 2 hijos.', telefono: '+506 8866-6666', fotos: [], ayudas: [], fecha: 'Hace 2 días' }
+      ]);
+    }
+    if (!getData(STORAGE.misioneros, []).length) {
+      setData(STORAGE.misioneros, [
+        { nombre: 'Ana y Pedro Martínez', ciudad: 'Guatemala', ubicacion: 'Zona 10', whatsapp: '+502 1234-5678', usuario: 'AnaM', lat: '', lng: '' },
+        { nombre: 'Misión África', ciudad: 'Kenia', ubicacion: 'Nairobi', whatsapp: '+254 700-000-000', usuario: 'MisionAfrica', lat: '', lng: '' },
+        { nombre: 'Juan Carlos Ruiz', ciudad: 'Colombia', ubicacion: 'Bogotá', whatsapp: '+57 300-123-4567', usuario: 'JCRuiz', lat: '', lng: '' }
+      ]);
+    }
+    if (!getData(STORAGE.carrusel, []).length) {
+      setData(STORAGE.carrusel, [
+        { id: 1, type: 'image', url: 'https://images.unsplash.com/photo-1504052434569-70ad5836ab23?w=800', title: 'Bienvenidos a Sal y Luz', description: 'Una comunidad en crecimiento' },
+        { id: 2, type: 'image', url: 'https://images.unsplash.com/photo-1529078155058-5d716f45d7f0?w=800', title: 'Jóvenes en adoración', description: 'Culto juvenil todos los viernes' },
+        { id: 3, type: 'video', url: 'https://www.youtube.com/embed/3t8sWnF5j4k', title: 'Alabanza en vivo', description: 'Música y adoración' }
+      ]);
+    }
+    if (!getData(STORAGE.consejos, []).length) {
+      setData(STORAGE.consejos, [
+        { id: 9001, autor: 'María', titulo: 'Angustia en el trabajo', descripcion: 'Estoy pasando por mucho estrés laboral y siento que no puedo más. Necesito consejo.', fecha: 'Hoy, 10:00am', respuestas: [], oraciones: ['Carlos'] },
+        { id: 9002, autor: 'Carlos', titulo: 'Duda sobre mi propósito', descripcion: 'No sé qué camino tomar en mi vida. Me siento perdido y necesito orientación.', fecha: 'Ayer, 8:30pm', respuestas: [], oraciones: [] }
+      ]);
+    }
   }
 
   // ================================================================
   // 28. INICIALIZACIÓN
   // ================================================================
-  cargarEjemplos().then(() => {
-    renderAll();
-    if (localStorage.getItem(STORAGE.iaKey)) {
-      document.getElementById('iaStatus').textContent = '✅ API configurada.';
-    }
-    console.log('✅ SAL Y LUZ cargada con todas las funcionalidades actualizadas y Firestore.');
-  });
+  cargarEjemplos();
+  renderFeed();
+  renderGrupos();
+  renderDiscipulados();
+  renderOraciones();
+  renderGruposMapa();
+  renderMisionerosMapa();
+  renderNecesidades();
+  renderServicios();
+  renderMisServicios();
+  renderConsejos();
+  renderReportes();
+  renderChatAdmin();
+  renderChatEquipo();
+  cargarHistorial();
+  renderCarrusel();
+  actualizarBotonesPorRol();
+  actualizarTabs();
 
+  if (localStorage.getItem(STORAGE.iaKey)) {
+    document.getElementById('iaStatus').textContent = '✅ API configurada.';
+  }
+
+  console.log('✅ SAL Y LUZ cargada con todas las funcionalidades actualizadas.');
 });
 </script>
 
@@ -3566,13 +3518,34 @@ document.addEventListener('DOMContentLoaded', function() {
   rules_version = '2';
   service cloud.firestore {
     match /databases/{database}/documents {
-      match /{document=**} {
-        allow read, write: if request.auth != null;
+      // Servicios: lectura pública, escritura autenticada
+      match /servicios/{document} {
+        allow read: if true;
+        allow write: if request.auth != null;
+      }
+
+      // Reportes: lectura pública, solo admin o autor pueden editar/eliminar
+      match /reportes/{document} {
+        allow read: if true;
+        allow create: if request.auth != null;
+        allow update, delete: if request.auth != null && 
+          (request.auth.uid == resource.data.uid || 
+           request.auth.token.email == 'salyluz@comunidad.com');
+      }
+
+      // Chat Admin: lectura pública, escritura autenticada
+      match /chat_admin/{document} {
+        allow read: if true;
+        allow write: if request.auth != null;
+      }
+
+      // Chat Equipo: lectura pública, escritura autenticada
+      match /chat_equipo/{document} {
+        allow read: if true;
+        allow write: if request.auth != null;
       }
     }
   }
-
-  O si quieres más control, especifica colecciones individuales.
   ================================================================
 -->
 </body>

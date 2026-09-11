@@ -23,6 +23,9 @@
       --orange: #EF9F27;
       --orange-light: #FAEEDA;
       --orange-dark: #633806;
+      --gold: #D4AF37;
+      --gold-dark: #A67C00;
+      --gold-light: #FFF4CC;
       --bg-body: #f4f6f9;
       --text-primary: #1a1a2e;
       --text-secondary: #4a4a6a;
@@ -102,8 +105,21 @@
     .btn-whatsapp-profile:hover { background: #1da851; color: white; }
     .perfil-close-btn { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.55); color: white; border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 16px; z-index: 30; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
     .perfil-close-btn:hover { background: rgba(0,0,0,0.85); }
-    .perfil-action-btn { width: 38px; height: 38px; padding: 0 !important; border-radius: 50% !important; display: inline-flex; align-items: center; justify-content: center; font-size: 15px !important; text-decoration: none; }
-    .perfil-action-btn i { margin: 0 !important; }
+
+    /* ===== BOTONES DORADOS DEL PERFIL ===== */
+    .perfil-action-btn {
+      width: 38px; height: 38px; padding: 0 !important;
+      border-radius: 50% !important;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 15px !important; text-decoration: none;
+      background: linear-gradient(135deg, #D4AF37, #A67C00) !important;
+      color: #fff !important; border: none !important;
+      box-shadow: 0 3px 10px rgba(212,175,55,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .perfil-action-btn:hover { transform: scale(1.08); box-shadow: 0 5px 16px rgba(212,175,55,0.65); color: #fff !important; }
+    .perfil-action-btn i { margin: 0 !important; color: #fff !important; }
+
     .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
     @media (max-width: 640px) { .info-grid { grid-template-columns: 1fr; } }
     .info-item { background: var(--bg-body); padding: 8px 12px; border-radius: 10px; font-size: 13px; display: flex; align-items: flex-start; gap: 6px; flex-wrap: wrap; }
@@ -123,9 +139,6 @@
     .tab:hover { color: var(--text-primary); }
     .tab.tab-action { color: var(--teal); }
     .tab.tab-danger { color: #e74c3c; }
-    .only-mobile-tab { display: none !important; }
-    @media (max-width: 768px) { .only-mobile-tab { display: flex !important; } }
-    body.force-hamburger .only-mobile-tab { display: flex !important; }
     @media (min-width: 769px) { #mainTabs:not(.open) { justify-content: center; } }
     #mainTabs.open, body.force-hamburger #mainTabs, body.force-hamburger #mainTabs.open { justify-content: flex-start !important; align-items: stretch !important; }
     #mainTabs.open .tab, body.force-hamburger #mainTabs .tab, body.force-hamburger #mainTabs.open .tab { justify-content: flex-start !important; text-align: left !important; }
@@ -148,23 +161,408 @@
     body.dark .card { background: #1a1a2e; }
     .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
     .card h3 i { color: var(--teal); }
-    .hero-section { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); border-radius: var(--radius); padding: 40px 20px; margin-bottom: 20px; color: white; text-align: center; position: relative; overflow: hidden; }
-    .hero-section::after { content: ''; position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; pointer-events: none; }
-    .hero-section h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
-    .hero-section p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto 1.5rem; }
-    .hero-verse { background: rgba(255,255,255,0.15); padding: 12px 20px; border-radius: 40px; display: inline-block; font-style: italic; margin-bottom: 1rem; backdrop-filter: blur(4px); }
-    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .hero-actions .btn-primary { background: white; color: var(--teal-dark); padding: 10px 24px; font-size: 1rem; border-radius: 40px; }
-    .hero-actions .btn-primary:hover { background: var(--orange-light); color: var(--orange-dark); }
-    .hero-actions .btn-outline-light { background: transparent; border: 2px solid white; color: white; padding: 10px 24px; font-size: 1rem; border-radius: 40px; }
-    .hero-actions .btn-outline-light:hover { background: white; color: var(--teal-dark); }
-    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin: 20px 0; }
-    .feature-card { background: white; border-radius: var(--radius); padding: 20px 12px; text-align: center; border: 1px solid var(--border-color); box-shadow: var(--shadow); transition: all 0.3s ease; cursor: pointer; }
-    body.dark .feature-card { background: #1a1a2e; }
-    .feature-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); border-color: var(--teal); }
-    .feature-card i { font-size: 2.2rem; color: var(--teal); margin-bottom: 8px; display: block; }
-    .feature-card h5 { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
-    .feature-card small { color: var(--text-secondary); font-size: 0.8rem; }
+
+    /* ===== HISTORIAS (STORIES) ===== */
+    .historias-bar {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 10px 6px;
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    body.dark .historias-bar { background: #1a1a2e; }
+    .historias-bar::-webkit-scrollbar { display: none; }
+    .historia-item {
+      flex-shrink: 0;
+      width: 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .historia-ring {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      padding: 3px;
+      background: linear-gradient(135deg, #D4AF37, #A67C00);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s;
+    }
+    .historia-ring.visto { background: var(--border-color); }
+    .historia-ring:hover { transform: scale(1.08); }
+    .historia-avatar {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: var(--bg-body);
+      background-size: cover;
+      background-position: center;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--teal-dark);
+      font-weight: 700; font-size: 20px;
+      border: 2px solid white;
+      overflow: hidden;
+    }
+    body.dark .historia-avatar { border-color: #1a1a2e; }
+    .historia-nombre {
+      font-size: 11px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 68px;
+      font-weight: 500;
+    }
+    .historia-add-icon {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 22px; height: 22px;
+      background: var(--teal);
+      color: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      border: 2px solid white;
+      z-index: 3;
+    }
+    body.dark .historia-add-icon { border-color: #1a1a2e; }
+    .historia-item { position: relative; }
+
+    /* Story Viewer */
+    .story-viewer {
+      position: fixed; inset: 0;
+      background: #000;
+      z-index: 9999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .story-viewer.show { display: flex; }
+    .story-progress-bar {
+      position: absolute; top: 8px; left: 8px; right: 8px;
+      height: 3px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+      z-index: 30;
+      display: flex; gap: 3px;
+    }
+    .story-progress-seg {
+      flex: 1;
+      background: rgba(255,255,255,0.35);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .story-progress-fill {
+      height: 100%;
+      background: #fff;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+    .story-header {
+      position: absolute; top: 20px; left: 16px; right: 16px;
+      display: flex; align-items: center; gap: 10px;
+      z-index: 20; color: #fff;
+    }
+    .story-header img {
+      width: 38px; height: 38px; border-radius: 50%;
+      object-fit: cover; background: var(--teal-light);
+    }
+    .story-header .info { flex: 1; }
+    .story-header .name { font-weight: 600; font-size: 14px; }
+    .story-header .time { font-size: 11px; opacity: 0.75; }
+    .story-header .close-btn {
+      background: rgba(0,0,0,0.5); border: none; color: #fff;
+      width: 36px; height: 36px; border-radius: 50%; font-size: 16px; cursor: pointer;
+    }
+    .story-content {
+      position: relative;
+      width: 100%; height: 100%;
+      max-width: 500px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .story-content img, .story-content video {
+      max-width: 100%; max-height: 80vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    .story-content .story-link {
+      background: #fff; color: #12121a; padding: 24px;
+      border-radius: 12px; max-width: 90%; text-align: center;
+    }
+    .story-content .story-link a { color: var(--teal); font-weight: 600; word-break: break-all; }
+    .story-content .story-encuesta {
+      background: #fff; color: #12121a; padding: 20px; border-radius: 12px;
+      max-width: 90%; width: 320px;
+    }
+    .story-content .story-encuesta h4 { font-size: 15px; margin-bottom: 10px; text-align: center; }
+    .story-content .story-encuesta .op {
+      display: block; width: 100%; margin: 6px 0;
+      padding: 10px; border-radius: 30px; border: 1px solid #ccc;
+      background: #f4f6f9; cursor: pointer; font-size: 13px;
+      transition: 0.2s;
+    }
+    .story-content .story-encuesta .op:hover { background: var(--teal-light); border-color: var(--teal); }
+    .story-content .story-encuesta .op .votos { font-size: 11px; color: #666; margin-left: 6px; }
+    .story-nav-left, .story-nav-right {
+      position: absolute; top: 0; bottom: 0;
+      width: 40%;
+      z-index: 10; cursor: pointer; background: transparent; border: none;
+    }
+    .story-nav-left { left: 0; }
+    .story-nav-right { right: 0; }
+    .story-delete-btn {
+      position: absolute; bottom: 20px; right: 20px; z-index: 20;
+      background: rgba(231,76,60,0.8); color: #fff; border: none;
+      padding: 8px 16px; border-radius: 30px; cursor: pointer; font-size: 13px;
+    }
+    .story-views-info {
+      position: absolute; bottom: 20px; left: 20px; z-index: 20;
+      background: rgba(0,0,0,0.5); color: #fff; padding: 6px 14px;
+      border-radius: 30px; font-size: 12px;
+    }
+
+    /* ===== CHAT PRIVADO (Messenger) ===== */
+    .chat-privado-box { max-width: 500px !important; padding: 0 !important; overflow: hidden; }
+    .chat-privado-header {
+      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      color: #fff; padding: 14px 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .chat-privado-header img {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+      background: rgba(255,255,255,0.2);
+    }
+    .chat-privado-header .info { flex: 1; }
+    .chat-privado-header .info .name { font-weight: 600; font-size: 14px; }
+    .chat-privado-header .info .status { font-size: 11px; opacity: 0.85; }
+    .chat-privado-header .close-btn {
+      background: rgba(255,255,255,0.15); border: none; color: #fff;
+      width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 14px;
+    }
+    .chat-privado-msgs {
+      height: 380px; overflow-y: auto; padding: 14px;
+      background: var(--bg-body);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    body.dark .chat-privado-msgs { background: #12121a; }
+    .chat-privado-msg {
+      max-width: 75%; padding: 8px 14px;
+      border-radius: 18px; font-size: 13px; line-height: 1.4;
+      word-wrap: break-word; position: relative;
+    }
+    .chat-privado-msg.mio {
+      background: var(--teal); color: #fff;
+      align-self: flex-end; border-bottom-right-radius: 4px;
+    }
+    .chat-privado-msg.otro {
+      background: #fff; color: #12121a;
+      align-self: flex-start; border-bottom-left-radius: 4px;
+      border: 1px solid var(--border-color);
+    }
+    body.dark .chat-privado-msg.otro { background: #2a2a3e; color: var(--text-primary); }
+    .chat-privado-msg .hora {
+      display: block; font-size: 10px; opacity: 0.7; margin-top: 3px;
+    }
+    .chat-privado-input {
+      display: flex; gap: 6px; padding: 10px;
+      background: #fff; border-top: 1px solid var(--border-color);
+    }
+    body.dark .chat-privado-input { background: #1a1a2e; }
+    .chat-privado-input input {
+      flex: 1; padding: 10px 14px; border-radius: 30px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-body); color: var(--text-primary);
+      font-size: 13px;
+    }
+    .chat-privado-input button {
+      background: var(--teal); color: #fff; border: none;
+      width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+      font-size: 16px;
+    }
+
+    /* ===== CONTROLES DEL REEL ===== */
+    .reel-controls-overlay {
+      position: absolute;
+      bottom: 90px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 15;
+      background: rgba(0,0,0,0.45);
+      padding: 8px 14px; border-radius: 40px;
+      backdrop-filter: blur(8px);
+    }
+    .reel-controls-overlay button {
+      background: transparent; border: none; color: #fff;
+      font-size: 17px; cursor: pointer; padding: 4px 8px;
+      border-radius: 50%; transition: background 0.2s;
+    }
+    .reel-controls-overlay button:hover { background: rgba(255,255,255,0.2); }
+    .reel-controls-overlay .time-info {
+      color: #fff; font-size: 11px; align-self: center; margin: 0 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ===== SECCIÓN REELS PANEL (con botón +) ===== */
+    .reels-main-actions {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      padding: 20px 0;
+    }
+    .reels-add-btn-main {
+      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      color: #fff; border: none;
+      padding: 12px 24px; border-radius: 40px;
+      font-size: 14px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px;
+      cursor: pointer; box-shadow: 0 6px 16px rgba(29,158,117,0.35);
+      transition: transform 0.2s;
+    }
+    .reels-add-btn-main:hover { transform: scale(1.05); }
+
+    /* ===== AMIGOS EN COMÚN ===== */
+    .amigos-comun {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--teal-light); color: var(--teal-dark);
+      padding: 3px 12px; border-radius: 30px; font-size: 12px; font-weight: 500;
+    }
+    .amigos-comun i { font-size: 11px; }
+
+    /* ===== REACCIONES REELS ===== */
+    .reel-info-actions button.disliked { background: #e67e22; border-color: #e67e22; }
+    .reel-info-actions button.prayed { background: #6a1b9a; border-color: #6a1b9a; }
+
+    /* ===== Reels viewer existente ===== */
+    .reels-viewer { position: fixed; inset: 0; background: #000; z-index: 9998; display: none; overflow: hidden; }
+    .reels-viewer.show { display: block; }
+    .reels-viewer-close { position: absolute; top: 16px; right: 16px; z-index: 100; background: rgba(255,255,255,0.15); color: white; border: none; width: 42px; height: 42px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); transition: background 0.2s; }
+    .reels-viewer-close:hover { background: rgba(255,255,255,0.3); }
+    .reels-scroll { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; perspective: 1500px; perspective-origin: center center; }
+    .reels-scroll::-webkit-scrollbar { display: none; }
+    .reel-slide-full { height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; position: relative; transform-origin: center center; transition: transform 0.35s ease-out, opacity 0.35s ease-out; will-change: transform, opacity; backface-visibility: hidden; background: #000; }
+    .reel-full-video { flex: 1; display: flex; align-items: center; justify-content: center; background: #000; overflow: hidden; min-height: 0; position: relative; }
+    .reel-full-video video { max-width: 100%; max-height: 100%; width: auto; height: 100%; object-fit: contain; background: #000; }
+    .reel-full-info { background: #12121a; color: white; padding: 14px 16px; max-height: 42vh; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .reel-info-author { display: flex; align-items: center; gap: 10px; }
+    .reel-info-author img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: var(--teal-light); }
+    .reel-info-author .name { font-weight: 600; font-size: 14px; cursor: pointer; }
+    .reel-info-author .name:hover { color: var(--teal); }
+    .reel-info-author .date { font-size: 11px; opacity: 0.7; }
+    .reel-info-desc { font-size: 13px; line-height: 1.5; white-space: pre-wrap; }
+    .reel-info-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .reel-info-actions button { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 6px 14px; border-radius: 30px; cursor: pointer; font-size: 12px; display: inline-flex; align-items: center; gap: 5px; transition: 0.15s; }
+    .reel-info-actions button:hover { background: rgba(255,255,255,0.2); }
+    .reel-info-actions button.liked { background: #e74c3c; border-color: #e74c3c; }
+    .reel-info-actions button.danger { background: rgba(231,76,60,0.3); border-color: #e74c3c; }
+    .reel-info-comments { flex: 1; overflow-y: auto; font-size: 13px; display: flex; flex-direction: column; gap: 5px; min-height: 40px; max-height: 25vh; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .reel-info-comments .comment-line { font-size: 13px; line-height: 1.4; }
+    .reel-info-comments .comment-line strong { color: var(--teal); margin-right: 4px; }
+    .reel-info-comment-box { display: flex; gap: 6px; }
+    .reel-info-comment-box input { flex: 1; padding: 8px 14px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); color: white; font-size: 13px; }
+    .reel-info-comment-box input::placeholder { color: rgba(255,255,255,0.5); }
+    .reel-info-comment-box button { background: var(--teal); color: white; border: none; padding: 8px 18px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 500; }
+    .reel-info-comment-box button:hover { background: var(--teal-dark); }
+    @media (min-width: 769px) {
+      .reel-slide-full { flex-direction: row; }
+      .reel-full-video { flex: 0 0 70%; }
+      .reel-full-info { flex: 1; max-height: 100vh; padding: 60px 24px 20px; border-top: none; border-left: 1px solid rgba(255,255,255,0.1); }
+      .reel-info-comments { max-height: none; min-height: 100px; }
+      .reels-viewer-close { top: 20px; right: calc(30% + 20px); }
+    }
+
+    .reels-placeholder { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
+    .reels-placeholder i { font-size: 60px; color: var(--teal); display: block; margin-bottom: 16px; }
+    .reels-placeholder h3 { font-size: 20px; margin-bottom: 8px; color: var(--text-primary); }
+    .reels-placeholder p { font-size: 14px; margin-bottom: 16px; }
+
+    .preview-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; position: relative; }
+    .preview-container img, .preview-container video { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid var(--border-color); }
+    .preview-container .file-preview { display: flex; align-items: center; gap: 4px; background: var(--bg-body); padding: 4px 8px; border-radius: 20px; border: 1px solid var(--border-color); }
+    .preview-container .remove-preview { position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+    .media-viewer { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center; padding: 20px; cursor: pointer; flex-direction: column; }
+    .media-viewer.show { display: flex; }
+    .media-viewer .media-container { max-width: 98%; max-height: 85vh; position: relative; display: flex; align-items: center; justify-content: center; }
+    .media-viewer .media-container img, .media-viewer .media-container video { max-width: 100%; max-height: 85vh; object-fit: contain; border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.5); cursor: default; }
+    .media-viewer .close-viewer { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 10; }
+    .media-viewer .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); color: white; border: none; padding: 16px 20px; font-size: 30px; cursor: pointer; border-radius: 50%; z-index: 10; transition: 0.2s; }
+    .media-viewer .nav-btn:hover { background: rgba(255,255,255,0.4); }
+    .media-viewer .nav-btn.prev { left: 10px; }
+    .media-viewer .nav-btn.next { right: 10px; }
+    .media-viewer .media-info { color: white; font-size: 14px; margin-top: 10px; text-align: center; width: 100%; max-width: 600px; }
+    .media-viewer .media-info.media-date { color: rgba(255,255,255,0.55); font-size: 11px; font-style: italic; letter-spacing: 0.3px; }
+    .footer { text-align: center; padding: 16px 12px; border-top: 1px solid var(--border-color); font-size: 13px; color: var(--text-secondary); background: var(--bg-body); margin-top: 20px; }
+    .footer span { font-weight: 600; color: var(--teal); }
+    .config-solo-admin { display: block; }
+    .config-msg { display: none; }
+    body.dark .config-solo-admin { background: #1a1a2e; }
+    .superadmin-no-config .config-solo-admin { display: none !important; }
+    .superadmin-no-config .config-msg { display: block !important; color: var(--text-secondary); font-style: italic; padding: 8px 0; }
+    .solicitud-item { padding: 8px 0; border-bottom: 1px solid var(--border-color); }
+    .solicitud-item:last-child { border-bottom: none; }
+    .devocional-card { background: var(--bg-body); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; border: 1px solid var(--border-color); transition: all 0.25s ease; }
+    .devocional-card:hover { border-color: var(--teal); box-shadow: var(--shadow); }
+    .devocional-card .dev-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .devocional-card .dev-icon { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--teal), var(--teal-dark)); display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; flex-shrink: 0; }
+    .devocional-card h5 { font-weight: 600; font-size: 15px; margin: 0; }
+    .devocional-card .dev-meta { font-size: 12px; color: var(--text-secondary); }
+    .devocional-card .dev-desc { font-size: 13px; margin: 6px 0; color: var(--text-primary); line-height: 1.5; }
+    .devocional-card .dev-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .pdf-viewer { width: 100%; height: 75vh; border: 1px solid var(--border-color); border-radius: 10px; background: #525659; margin-top: 10px; }
+    .pdf-viewer iframe { width: 100%; height: 100%; border: none; border-radius: 10px; }
+    #qrModal .modal-box { max-width: 420px; text-align: center; padding: 24px; }
+    .qr-foto-wrap { display: flex; align-items: center; gap: 12px; justify-content: center; margin: 16px 0; padding: 12px; background: var(--bg-body); border-radius: 12px; }
+    .qr-foto-wrap img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 3px solid var(--teal); background: #fff; }
+    .qr-img-wrap { background: white; padding: 12px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .qr-img-wrap img { width: 240px; height: 240px; display: block; }
+    /* Existentes varios */
+    .notificaciones-badge { background: #e74c3c; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; cursor: pointer; margin-left: 4px; }
+    .galeria-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
+    @media (min-width: 640px) { .galeria-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
+    @media (min-width: 992px) { .galeria-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
+    .galeria-item { position: relative; border-radius: 12px; overflow: hidden; background: white; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
+    body.dark .galeria-item { background: #1a1a2e; }
+    .galeria-item:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    .galeria-img-wrapper { position: relative; aspect-ratio: 1/1; overflow: hidden; cursor: pointer; background: #000; }
+    .galeria-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }
+    .galeria-img-wrapper:hover img { transform: scale(1.06); }
+    .galeria-item .foto-desc { padding: 6px 10px; font-size: 12px; color: var(--text-secondary); background: var(--bg-body); border-top: 1px solid var(--border-color); }
+    .foto-viewer-reaction-btn { background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 30px; padding: 4px 12px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; color: var(--text-secondary); transition: 0.15s; }
+    .foto-viewer-reaction-btn:hover { background: var(--border-color); }
+    .foto-viewer-reaction-btn.liked { color: #e74c3c; border-color: #e74c3c; }
+    .foto-viewer-reaction-btn.orando { color: #6a1b9a; border-color: #6a1b9a; }
+    #perfilModal .modal-box { max-width: 1080px; width: 96%; max-height: 96vh; padding: 0; overflow-y: auto; overflow-x: hidden; position: relative; }
+    @media (max-width: 640px) { #perfilModal .modal-box { width: 100%; max-width: 100%; max-height: 100vh; border-radius: 0; } }
+    .perfil-facebook .portada { border-radius: 0 !important; margin: 0; }
+    .perfil-facebook h2 { font-size: 1.6rem; }
+    @media (max-width: 640px) {
+      .perfil-facebook h2, .perfil-facebook p { padding-left: 0 !important; }
+      .perfil-facebook .foto-perfil { width: 90px !important; height: 90px !important; }
+      .perfil-facebook .portada { height: 150px !important; }
+    }
+    .post { background: var(--card-bg, white); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+    body.dark .post { background: #1a1a2e; }
+    .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .post-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--teal-dark); flex-shrink: 0; background-size: cover; background-position: center; cursor: pointer; }
+    .post-author { font-weight: 600; font-size: 15px; cursor: pointer; }
+    .post-time { font-size: 12px; color: var(--text-secondary); }
+    .post-categoria { display: inline-block; font-size: 11px; padding: 1px 10px; border-radius: 30px; background: var(--orange-light); color: var(--orange-dark); margin-bottom: 4px; }
+    .post-content { margin: 6px 0 10px; line-height: 1.6; font-size: 14px; }
+    .post-media { max-width: 100%; border-radius: 12px; margin: 6px 0; max-height: 320px; object-fit: cover; }
+    .post-actions { display: flex; gap: 16px; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; }
+    .post-actions button { background: none; border: none; display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-secondary); font-size: 12px; padding: 4px 8px; border-radius: 30px; transition: 0.15s; }
+    .post-actions button:hover { background: var(--border-color); }
+    .post-actions button.liked { color: var(--teal); }
+    .post-actions button.orando { color: #6a1b9a; }
+    .post-actions button i { font-size: 14px; }
+    .comments { margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--border-color); }
+    .comment-box { display: flex; gap: 6px; margin-top: 4px; }
+    .comment-box input { flex:1; padding: 4px 8px; border-radius: 20px; border:1px solid var(--border-color); background: var(--bg-body); color: var(--text-primary); }
+    .comment-box button { background: var(--teal); color:white; border:none; border-radius:20px; padding:4px 12px; cursor:pointer; }
     .event-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 12px; }
     .event-card { background: var(--bg-body); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border-color); transition: all 0.3s ease; }
     .event-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--teal); }
@@ -195,25 +593,23 @@
     .carousel-indicators span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: 0.2s; }
     .carousel-indicators span.active { background: white; }
     @media (max-width: 600px) { .carousel-slide { height: 200px; } .carousel-caption { padding: 10px; } .carousel-caption h5 { font-size: 14px; } .carousel-caption p { font-size: 12px; } }
-    .post { background: var(--card-bg, white); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
-    body.dark .post { background: #1a1a2e; }
-    .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .post-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--teal-dark); flex-shrink: 0; background-size: cover; background-position: center; cursor: pointer; }
-    .post-author { font-weight: 600; font-size: 15px; cursor: pointer; }
-    .post-time { font-size: 12px; color: var(--text-secondary); }
-    .post-categoria { display: inline-block; font-size: 11px; padding: 1px 10px; border-radius: 30px; background: var(--orange-light); color: var(--orange-dark); margin-bottom: 4px; }
-    .post-content { margin: 6px 0 10px; line-height: 1.6; font-size: 14px; }
-    .post-media { max-width: 100%; border-radius: 12px; margin: 6px 0; max-height: 320px; object-fit: cover; }
-    .post-actions { display: flex; gap: 16px; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; }
-    .post-actions button { background: none; border: none; display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-secondary); font-size: 12px; padding: 4px 8px; border-radius: 30px; transition: 0.15s; }
-    .post-actions button:hover { background: var(--border-color); }
-    .post-actions button.liked { color: var(--teal); }
-    .post-actions button.orando { color: #6a1b9a; }
-    .post-actions button i { font-size: 14px; }
-    .comments { margin-top: 8px; padding-left: 12px; border-left: 2px solid var(--border-color); }
-    .comment-box { display: flex; gap: 6px; margin-top: 4px; }
-    .comment-box input { flex:1; padding: 4px 8px; border-radius: 20px; border:1px solid var(--border-color); background: var(--bg-body); color: var(--text-primary); }
-    .comment-box button { background: var(--teal); color:white; border:none; border-radius:20px; padding:4px 12px; cursor:pointer; }
+    .hero-section { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); border-radius: var(--radius); padding: 40px 20px; margin-bottom: 20px; color: white; text-align: center; position: relative; overflow: hidden; }
+    .hero-section::after { content: ''; position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; pointer-events: none; }
+    .hero-section h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .hero-section p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto 1.5rem; }
+    .hero-verse { background: rgba(255,255,255,0.15); padding: 12px 20px; border-radius: 40px; display: inline-block; font-style: italic; margin-bottom: 1rem; backdrop-filter: blur(4px); }
+    .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .hero-actions .btn-primary { background: white; color: var(--teal-dark); padding: 10px 24px; font-size: 1rem; border-radius: 40px; }
+    .hero-actions .btn-primary:hover { background: var(--orange-light); color: var(--orange-dark); }
+    .hero-actions .btn-outline-light { background: transparent; border: 2px solid white; color: white; padding: 10px 24px; font-size: 1rem; border-radius: 40px; }
+    .hero-actions .btn-outline-light:hover { background: white; color: var(--teal-dark); }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin: 20px 0; }
+    .feature-card { background: white; border-radius: var(--radius); padding: 20px 12px; text-align: center; border: 1px solid var(--border-color); box-shadow: var(--shadow); transition: all 0.3s ease; cursor: pointer; }
+    body.dark .feature-card { background: #1a1a2e; }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); border-color: var(--teal); }
+    .feature-card i { font-size: 2.2rem; color: var(--teal); margin-bottom: 8px; display: block; }
+    .feature-card h5 { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
+    .feature-card small { color: var(--text-secondary); font-size: 0.8rem; }
     .grupo-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
     .grupo-info { flex: 1; }
     .grupo-actions { display: flex; gap: 6px; align-items: center; }
@@ -312,193 +708,6 @@
     .admin-ia-config label { font-weight: 500; font-size: 13px; margin-top: 6px; display: block; }
     .admin-ia-config input, .admin-ia-config textarea, .admin-ia-config select { width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: white; color: var(--text-primary); font-size: 13px; margin-top: 2px; }
     body.dark .admin-ia-config input, body.dark .admin-ia-config textarea, body.dark .admin-ia-config select { background: #1a1a2e; }
-    .notificaciones-badge { background: #e74c3c; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; cursor: pointer; margin-left: 4px; }
-    .galeria-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
-    @media (min-width: 640px) { .galeria-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
-    @media (min-width: 992px) { .galeria-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
-    .galeria-item { position: relative; border-radius: 12px; overflow: hidden; background: white; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
-    body.dark .galeria-item { background: #1a1a2e; }
-    .galeria-item:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-    .galeria-img-wrapper { position: relative; aspect-ratio: 1/1; overflow: hidden; cursor: pointer; background: #000; }
-    .galeria-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }
-    .galeria-img-wrapper:hover img { transform: scale(1.06); }
-    .galeria-item .foto-desc { padding: 6px 10px; font-size: 12px; color: var(--text-secondary); background: var(--bg-body); border-top: 1px solid var(--border-color); }
-    .foto-viewer-reaction-btn { background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 30px; padding: 4px 12px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; color: var(--text-secondary); transition: 0.15s; }
-    .foto-viewer-reaction-btn:hover { background: var(--border-color); }
-    .foto-viewer-reaction-btn.liked { color: #e74c3c; border-color: #e74c3c; }
-    .foto-viewer-reaction-btn.orando { color: #6a1b9a; border-color: #6a1b9a; }
-    #perfilModal .modal-box { max-width: 1080px; width: 96%; max-height: 96vh; padding: 0; overflow-y: auto; overflow-x: hidden; position: relative; }
-    @media (max-width: 640px) { #perfilModal .modal-box { width: 100%; max-width: 100%; max-height: 100vh; border-radius: 0; } }
-    .perfil-facebook .portada { border-radius: 0 !important; margin: 0; }
-    .perfil-facebook h2 { font-size: 1.6rem; }
-    @media (max-width: 640px) {
-      .perfil-facebook h2, .perfil-facebook p { padding-left: 0 !important; }
-      .perfil-facebook .foto-perfil { width: 90px !important; height: 90px !important; }
-      .perfil-facebook .portada { height: 150px !important; }
-    }
-
-    /* ============================================================ */
-    /* NUEVO VISOR DE REELS PANTALLA COMPLETA CON CARRUSEL 3D       */
-    /* ============================================================ */
-    .reels-viewer {
-      position: fixed; inset: 0; background: #000; z-index: 9998;
-      display: none; overflow: hidden;
-    }
-    .reels-viewer.show { display: block; }
-    .reels-viewer-close {
-      position: absolute; top: 16px; right: 16px; z-index: 100;
-      background: rgba(255,255,255,0.15); color: white; border: none;
-      width: 42px; height: 42px; border-radius: 50%; font-size: 18px;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(8px); transition: background 0.2s;
-    }
-    .reels-viewer-close:hover { background: rgba(255,255,255,0.3); }
-
-    .reels-scroll {
-      height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory;
-      scrollbar-width: none; -webkit-overflow-scrolling: touch;
-      perspective: 1500px; perspective-origin: center center;
-    }
-    .reels-scroll::-webkit-scrollbar { display: none; }
-
-    .reel-slide-full {
-      height: 100vh; scroll-snap-align: start;
-      display: flex; flex-direction: column;
-      position: relative; transform-origin: center center;
-      transition: transform 0.35s ease-out, opacity 0.35s ease-out;
-      will-change: transform, opacity; backface-visibility: hidden;
-      background: #000;
-    }
-    .reel-full-video {
-      flex: 1; display: flex; align-items: center; justify-content: center;
-      background: #000; overflow: hidden; min-height: 0;
-    }
-    .reel-full-video video {
-      max-width: 100%; max-height: 100%;
-      width: auto; height: 100%; object-fit: contain; background: #000;
-    }
-    .reel-full-info {
-      background: #12121a; color: white; padding: 14px 16px;
-      max-height: 42vh; overflow-y: auto;
-      display: flex; flex-direction: column; gap: 10px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .reel-info-author { display: flex; align-items: center; gap: 10px; }
-    .reel-info-author img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: var(--teal-light); }
-    .reel-info-author .name { font-weight: 600; font-size: 14px; cursor: pointer; }
-    .reel-info-author .name:hover { color: var(--teal); }
-    .reel-info-author .date { font-size: 11px; opacity: 0.7; }
-    .reel-info-desc { font-size: 13px; line-height: 1.5; white-space: pre-wrap; }
-    .reel-info-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-    .reel-info-actions button {
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-      color: white; padding: 6px 14px; border-radius: 30px; cursor: pointer;
-      font-size: 12px; display: inline-flex; align-items: center; gap: 5px;
-      transition: 0.15s;
-    }
-    .reel-info-actions button:hover { background: rgba(255,255,255,0.2); }
-    .reel-info-actions button.liked { background: #e74c3c; border-color: #e74c3c; }
-    .reel-info-actions button.danger { background: rgba(231,76,60,0.3); border-color: #e74c3c; }
-    .reel-info-comments {
-      flex: 1; overflow-y: auto; font-size: 13px;
-      display: flex; flex-direction: column; gap: 5px;
-      min-height: 40px; max-height: 25vh;
-      padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.1);
-    }
-    .reel-info-comments .comment-line { font-size: 13px; line-height: 1.4; }
-    .reel-info-comments .comment-line strong { color: var(--teal); margin-right: 4px; }
-    .reel-info-comment-box { display: flex; gap: 6px; }
-    .reel-info-comment-box input {
-      flex: 1; padding: 8px 14px; border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.08); color: white; font-size: 13px;
-    }
-    .reel-info-comment-box input::placeholder { color: rgba(255,255,255,0.5); }
-    .reel-info-comment-box button {
-      background: var(--teal); color: white; border: none;
-      padding: 8px 18px; border-radius: 30px; cursor: pointer;
-      font-size: 13px; font-weight: 500;
-    }
-    .reel-info-comment-box button:hover { background: var(--teal-dark); }
-
-    @media (min-width: 769px) {
-      .reel-slide-full { flex-direction: row; }
-      .reel-full-video { flex: 0 0 70%; }
-      .reel-full-info {
-        flex: 1; max-height: 100vh;
-        padding: 60px 24px 20px;
-        border-top: none;
-        border-left: 1px solid rgba(255,255,255,0.1);
-      }
-      .reel-info-comments { max-height: none; min-height: 100px; }
-      .reels-viewer-close { top: 20px; right: calc(30% + 20px); }
-    }
-
-    /* FAB flotante para subir reel */
-    .reels-fab {
-      position: fixed; bottom: 20px; right: 20px;
-      width: 56px; height: 56px; border-radius: 50%;
-      background: var(--teal); color: white; border: none;
-      font-size: 22px; cursor: pointer;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-      z-index: 9999; display: flex; align-items: center; justify-content: center;
-      transition: transform 0.2s, background 0.2s;
-    }
-    .reels-fab:hover { background: var(--teal-dark); transform: scale(1.1); }
-    .reels-fab:active { transform: scale(0.95); }
-
-    @media (max-width: 768px) {
-      .reels-fab { bottom: 16px; right: 16px; width: 52px; height: 52px; font-size: 20px; }
-    }
-
-    /* Panel reels: estado vacío / placeholder */
-    .reels-placeholder {
-      text-align: center; padding: 40px 20px;
-      color: var(--text-secondary);
-    }
-    .reels-placeholder i { font-size: 60px; color: var(--teal); display: block; margin-bottom: 16px; }
-    .reels-placeholder h3 { font-size: 20px; margin-bottom: 8px; color: var(--text-primary); }
-    .reels-placeholder p { font-size: 14px; margin-bottom: 16px; }
-
-    .preview-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; position: relative; }
-    .preview-container img, .preview-container video { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid var(--border-color); }
-    .preview-container .file-preview { display: flex; align-items: center; gap: 4px; background: var(--bg-body); padding: 4px 8px; border-radius: 20px; border: 1px solid var(--border-color); }
-    .preview-container .remove-preview { position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
-    .media-viewer { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center; padding: 20px; cursor: pointer; flex-direction: column; }
-    .media-viewer.show { display: flex; }
-    .media-viewer .media-container { max-width: 98%; max-height: 85vh; position: relative; display: flex; align-items: center; justify-content: center; }
-    .media-viewer .media-container img, .media-viewer .media-container video { max-width: 100%; max-height: 85vh; object-fit: contain; border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.5); cursor: default; }
-    .media-viewer .close-viewer { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 10; }
-    .media-viewer .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); color: white; border: none; padding: 16px 20px; font-size: 30px; cursor: pointer; border-radius: 50%; z-index: 10; transition: 0.2s; }
-    .media-viewer .nav-btn:hover { background: rgba(255,255,255,0.4); }
-    .media-viewer .nav-btn.prev { left: 10px; }
-    .media-viewer .nav-btn.next { right: 10px; }
-    .media-viewer .media-info { color: white; font-size: 14px; margin-top: 10px; text-align: center; width: 100%; max-width: 600px; }
-    .media-viewer .media-info.media-date { color: rgba(255,255,255,0.55); font-size: 11px; font-style: italic; letter-spacing: 0.3px; }
-    .footer { text-align: center; padding: 16px 12px; border-top: 1px solid var(--border-color); font-size: 13px; color: var(--text-secondary); background: var(--bg-body); margin-top: 20px; }
-    .footer span { font-weight: 600; color: var(--teal); }
-    .config-solo-admin { display: block; }
-    .config-msg { display: none; }
-    body.dark .config-solo-admin { background: #1a1a2e; }
-    .superadmin-no-config .config-solo-admin { display: none !important; }
-    .superadmin-no-config .config-msg { display: block !important; color: var(--text-secondary); font-style: italic; padding: 8px 0; }
-    .solicitud-item { padding: 8px 0; border-bottom: 1px solid var(--border-color); }
-    .solicitud-item:last-child { border-bottom: none; }
-    .devocional-card { background: var(--bg-body); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; border: 1px solid var(--border-color); transition: all 0.25s ease; }
-    .devocional-card:hover { border-color: var(--teal); box-shadow: var(--shadow); }
-    .devocional-card .dev-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .devocional-card .dev-icon { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--teal), var(--teal-dark)); display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; flex-shrink: 0; }
-    .devocional-card h5 { font-weight: 600; font-size: 15px; margin: 0; }
-    .devocional-card .dev-meta { font-size: 12px; color: var(--text-secondary); }
-    .devocional-card .dev-desc { font-size: 13px; margin: 6px 0; color: var(--text-primary); line-height: 1.5; }
-    .devocional-card .dev-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-    .pdf-viewer { width: 100%; height: 75vh; border: 1px solid var(--border-color); border-radius: 10px; background: #525659; margin-top: 10px; }
-    .pdf-viewer iframe { width: 100%; height: 100%; border: none; border-radius: 10px; }
-    #qrModal .modal-box { max-width: 420px; text-align: center; padding: 24px; }
-    .qr-foto-wrap { display: flex; align-items: center; gap: 12px; justify-content: center; margin: 16px 0; padding: 12px; background: var(--bg-body); border-radius: 12px; }
-    .qr-foto-wrap img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 3px solid var(--teal); background: #fff; }
-    .qr-img-wrap { background: white; padding: 12px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .qr-img-wrap img { width: 240px; height: 240px; display: block; }
   </style>
 </head>
 <body>
@@ -535,8 +744,6 @@
       <button class="tab" data-panel="chatadmin" id="tabChatAdmin" style="display:none;"><i class="fas fa-user-cog"></i><span> Chat Admin</span></button>
       <button class="tab" id="tabChatEquipo" data-panel="chatequipo" style="display:none;"><i class="fas fa-users-cog"></i><span> Equipo</span></button>
       <button class="tab" data-panel="admin" id="adminTab" style="display:none;"><i class="fas fa-cog"></i><span> Admin</span></button>
-
-      <!-- NUEVAS OPCIONES DE MENÚ -->
       <button class="tab tab-action" id="tabTemaToggle"><i class="fas fa-moon"></i><span> Modo nocturno</span></button>
       <button class="tab tab-danger" id="tabAuthToggle" style="display:none;"><i class="fas fa-sign-out-alt"></i><span> Cerrar sesión</span></button>
     </nav>
@@ -544,6 +751,10 @@
 
   <!-- ===== PANEL INICIO ===== -->
   <div class="panel active" id="panel-inicio">
+
+    <!-- ===== HISTORIAS ===== -->
+    <div class="historias-bar" id="historiasBar"></div>
+
     <div class="carousel-container" id="carouselContainer">
       <div id="carouselSlides"></div>
       <button class="carousel-control prev" id="carouselPrev">❮</button>
@@ -710,13 +921,19 @@
     <div id="feedContainer"></div>
   </div>
 
-  <!-- ===== PANEL REELS (ahora abre directamente el visor de pantalla completa) ===== -->
+  <!-- ===== PANEL REELS ===== -->
   <div class="panel" id="panel-reels">
     <div class="reels-placeholder">
       <i class="fas fa-video"></i>
       <h3>Reels de la comunidad</h3>
       <p>Comparte y descubre videos cortos con la comunidad.</p>
-      <button class="btn-primary" onclick="abrirReelsViewer()"><i class="fas fa-play"></i> Ver Reels</button>
+      <div class="reels-main-actions">
+        <button class="btn-primary" onclick="abrirReelsViewer()"><i class="fas fa-play"></i> Ver Reels</button>
+        <!-- BOTÓN + SOLO AQUÍ (debajo del botón Ver Reels) -->
+        <button class="reels-add-btn-main" id="btnSubirReelMain" onclick="abrirReelModal()" style="display:none;">
+          <i class="fas fa-plus"></i> Subir Reel
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1476,6 +1693,7 @@
     </div>
   </div>
 
+  <!-- ===== MODAL SUBIR REEL (CON LUGAR) ===== -->
   <div class="modal-overlay" id="reelModal">
     <div class="modal-box">
       <h3><i class="fas fa-video"></i> Subir Reel</h3>
@@ -1483,10 +1701,91 @@
       <input type="file" id="reelFile" accept="video/*" style="width:100%; margin-bottom:6px;">
       <label>Descripción (opcional)</label>
       <textarea id="reelDesc" placeholder="Descripción del reel..." rows="2" style="width:100%; border-radius:10px; border:1px solid var(--border-color); padding:8px; background:var(--bg-body); color:var(--text-primary); resize:vertical; font-size:13px;"></textarea>
+      <label>Lugar (opcional)</label>
+      <input type="text" id="reelLugar" placeholder="Ej: San José, Costa Rica" style="width:100%; padding:8px 12px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
       <div id="reelPreviewContainer" class="preview-container"></div>
       <div class="modal-actions">
         <button class="btn-cancel" id="reelModalCancel">Cancelar</button>
         <button class="btn-confirm" id="reelModalPublicar">Publicar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL SUBIR HISTORIA ===== -->
+  <div class="modal-overlay" id="historiaModal">
+    <div class="modal-box">
+      <h3><i class="fas fa-plus-circle"></i> Nueva Historia (24h)</h3>
+      <label>Tipo de historia</label>
+      <select id="historiaTipo" style="width:100%; padding:8px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
+        <option value="imagen">Foto</option>
+        <option value="video">Video (máx 60 seg)</option>
+        <option value="enlace">Enlace</option>
+        <option value="encuesta">Encuesta</option>
+      </select>
+
+      <div id="historiaFotoBlock">
+        <label>Selecciona imagen</label>
+        <input type="file" id="historiaFileImg" accept="image/*">
+        <div id="historiaPreviewImg" class="preview-container"></div>
+      </div>
+
+      <div id="historiaVideoBlock" style="display:none;">
+        <label>Selecciona video (máx 60 segundos)</label>
+        <input type="file" id="historiaFileVideo" accept="video/*">
+        <div id="historiaPreviewVideo" class="preview-container"></div>
+        <p style="font-size:11px; color:var(--text-secondary);">Los videos mayores a 60 segundos serán rechazados.</p>
+      </div>
+
+      <div id="historiaEnlaceBlock" style="display:none;">
+        <label>URL del enlace</label>
+        <input type="url" id="historiaLink" placeholder="https://ejemplo.com">
+        <label>Texto descriptivo</label>
+        <input type="text" id="historiaLinkTexto" placeholder="Ej: Mira esta noticia">
+      </div>
+
+      <div id="historiaEncuestaBlock" style="display:none;">
+        <label>Pregunta</label>
+        <input type="text" id="historiaEncuestaPregunta" placeholder="Ej: ¿Qué te parece?">
+        <label>Opciones (separadas por comas)</label>
+        <input type="text" id="historiaEncuestaOpciones" placeholder="Opción 1, Opción 2, Opción 3">
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" id="historiaCancel">Cancelar</button>
+        <button class="btn-confirm" id="historiaPublicar">Publicar Historia</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== VISOR DE HISTORIA ===== -->
+  <div class="story-viewer" id="storyViewer">
+    <div class="story-progress-bar" id="storyProgressBar"></div>
+    <div class="story-header" id="storyHeader"></div>
+    <div class="story-content" id="storyContent">
+      <button class="story-nav-left" onclick="storyAnterior()"></button>
+      <button class="story-nav-right" onclick="storySiguiente()"></button>
+    </div>
+    <div class="story-views-info" id="storyViewsInfo"></div>
+    <button class="story-delete-btn" id="storyDeleteBtn" style="display:none;" onclick="eliminarHistoriaActual()">
+      <i class="fas fa-trash"></i> Eliminar
+    </button>
+  </div>
+
+  <!-- ===== CHAT PRIVADO ===== -->
+  <div class="modal-overlay" id="chatPrivadoModal">
+    <div class="modal-box chat-privado-box">
+      <div class="chat-privado-header">
+        <img id="chatPrivadoFoto" src="" alt="">
+        <div class="info">
+          <div class="name" id="chatPrivadoNombre">Usuario</div>
+          <div class="status" id="chatPrivadoStatus">En línea</div>
+        </div>
+        <button class="close-btn" onclick="cerrarChatPrivado()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="chat-privado-msgs" id="chatPrivadoMsgs"></div>
+      <div class="chat-privado-input">
+        <input type="text" id="chatPrivadoInput" placeholder="Escribe un mensaje..." autocomplete="off">
+        <button onclick="enviarMensajePrivado()"><i class="fas fa-paper-plane"></i></button>
       </div>
     </div>
   </div>
@@ -1496,11 +1795,6 @@
     <button class="reels-viewer-close" onclick="cerrarReelsViewer()" title="Cerrar"><i class="fas fa-times"></i></button>
     <div class="reels-scroll" id="reelsScroll"></div>
   </div>
-
-  <!-- ===== FAB FLOTANTE PARA SUBIR REEL ===== -->
-  <button class="reels-fab" id="reelsFab" onclick="abrirReelModal()" title="Subir Reel" style="display:none;">
-    <i class="fas fa-plus"></i>
-  </button>
 
   <div class="media-viewer" id="mediaViewer" onclick="cerrarMediaViewer()">
     <span class="close-viewer" onclick="cerrarMediaViewer()">&times;</span>
@@ -1566,6 +1860,9 @@ const NOTICIAS = db.collection('noticias');
 const REELS = db.collection('reels');
 const SOLICITUDES_PASSWORD = db.collection('solicitudes_password');
 const DEVOCIONALES = db.collection('devocionales');
+// NUEVAS
+const HISTORIAS = db.collection('historias');
+const CHATS_PRIVADOS = db.collection('chats_privados');
 
 // ================================================================
 // 2. ESTADO GLOBAL
@@ -1589,6 +1886,12 @@ let fotoViewerActual = null;
 let reelsViewerUnsub = null;
 let reelsAll = [];
 let reelsObserverFull = null;
+let reelsCurrentVideos = {};
+let storyTimer = null;
+let storyActual = { historias: [], index: 0, uid: null };
+let storyUnsub = null;
+let chatPrivadoUnsub = null;
+let chatPrivadoActual = null;
 const STORAGE_KEYS = {
   historialBiblia: 'iglesia_historial_biblia',
   theme: 'iglesia_theme',
@@ -1621,6 +1924,17 @@ function subirArchivoStorage(file, path) {
       ref.getDownloadURL().then((url) => resolve(url));
     });
   });
+}
+
+function tiempoRelativo(fecha) {
+  if (!fecha) return '';
+  const ahora = new Date();
+  const f = fecha.seconds ? new Date(fecha.seconds * 1000) : new Date(fecha);
+  const diff = Math.floor((ahora - f) / 1000);
+  if (diff < 60) return 'Hace un momento';
+  if (diff < 3600) return 'Hace ' + Math.floor(diff/60) + ' min';
+  if (diff < 86400) return 'Hace ' + Math.floor(diff/3600) + ' h';
+  return f.toLocaleDateString();
 }
 
 // ================================================================
@@ -1715,6 +2029,7 @@ async function cargarUsuarioActual(user) {
     renderEventos();
     renderNoticias();
     renderReels();
+    renderHistorias();
     if (isSuperAdmin) renderSolicitudesPassword();
   } catch (error) { console.error('Error cargando perfil:', error); }
 }
@@ -1730,7 +2045,7 @@ window.logoutUser = async function() {
     renderNecesidades(); renderConsejos(); renderReportes(); renderChatAdmin();
     renderChatEquipo(); renderMisionerosMapa(); renderIglesiasMapa();
     renderServiciosMapa(); renderEventos(); renderNoticias(); renderReels();
-    renderDevocionales();
+    renderDevocionales(); renderHistorias();
     actualizarBotonesPorRol(); actualizarTabs();
     if (mapboxMap) { mapboxMarkers.forEach(m => m.remove()); mapboxMarkers = []; }
     if (miUbicacionWatchId !== null && navigator.geolocation) {
@@ -1738,6 +2053,7 @@ window.logoutUser = async function() {
       miUbicacionWatchId = null;
     }
     miUbicacionMarker = null;
+    cerrarChatPrivado();
   } catch (error) { console.error('Error al cerrar sesión:', error); }
 };
 
@@ -1750,11 +2066,10 @@ function actualizarUIUsuario() {
   const tabChatAdmin = document.getElementById('tabChatAdmin');
   const featureMapa = document.getElementById('featureMapa');
   const tabAuthToggle = document.getElementById('tabAuthToggle');
-  const reelsFab = document.getElementById('reelsFab');
+  const btnSubirReelMain = document.getElementById('btnSubirReelMain');
 
   if (currentUser) {
     if (userNameDisplay) userNameDisplay.textContent = currentUser.displayName;
-    // loginBtn oculto cuando logueado (Cerrar sesión está en el menú)
     loginBtn.style.display = 'none';
     if (currentUser.fotoPerfil) {
       userBadge.innerHTML = `<img src="${currentUser.fotoPerfil}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;margin-right:4px;"> <span id="userNameDisplay">${currentUser.displayName}</span>`;
@@ -1762,13 +2077,12 @@ function actualizarUIUsuario() {
       userBadge.innerHTML = `<i class="fas fa-user"></i> <span id="userNameDisplay">${currentUser.displayName}</span>`;
     }
     userBadge.style.display = 'inline-flex';
-    // Tab cerrar sesión visible
     if (tabAuthToggle) tabAuthToggle.style.display = 'flex';
     tabMapa.style.display = 'inline-block';
     tabReportes.style.display = 'inline-block';
     tabChatAdmin.style.display = 'inline-block';
     featureMapa.style.display = 'block';
-    if (reelsFab) reelsFab.style.display = 'flex';
+    if (btnSubirReelMain) btnSubirReelMain.style.display = 'inline-flex';
     document.getElementById('mapaMsgNoAuth').style.display = 'none';
     document.getElementById('mapaContent').style.display = 'block';
     if (tieneAlgunRolApoyo() || isAdmin) {
@@ -1790,7 +2104,7 @@ function actualizarUIUsuario() {
     tabReportes.style.display = 'none';
     tabChatAdmin.style.display = 'none';
     featureMapa.style.display = 'none';
-    if (reelsFab) reelsFab.style.display = 'none';
+    if (btnSubirReelMain) btnSubirReelMain.style.display = 'none';
     document.getElementById('mapaMsgNoAuth').style.display = 'block';
     document.getElementById('mapaContent').style.display = 'none';
     document.getElementById('reportesMsgNoAuth').style.display = 'block';
@@ -1863,10 +2177,7 @@ function switchPanel(name) {
   }
   switch (name) {
     case 'muro': renderFeed(); break;
-    case 'reels': 
-      // Al tocar Reels se abre directamente el visor de pantalla completa
-      setTimeout(() => abrirReelsViewer(), 80);
-      break;
+    case 'reels': setTimeout(() => abrirReelsViewer(), 80); break;
     case 'grupos': renderGrupos(); break;
     case 'discipulado': renderDiscipulados(); break;
     case 'oracion': renderOraciones(); break;
@@ -1879,7 +2190,7 @@ function switchPanel(name) {
     case 'mapa': if (currentUser) { renderGruposMapa(); renderMisionerosMapa(); renderIglesiasMapa(); renderServiciosMapa(); renderEventosMapa(); initMapboxMap(); } break;
     case 'biblia': cargarHistorial(); break;
     case 'devocionales': renderDevocionales(); break;
-    case 'inicio': renderCarrusel(); renderEventos(); renderNoticias(); break;
+    case 'inicio': renderCarrusel(); renderEventos(); renderNoticias(); renderHistorias(); break;
     case 'admin': if (isAdmin) renderAdminPanel(); break;
   }
 }
@@ -1899,13 +2210,11 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Tema toggle (nueva ubicación en menú)
 document.getElementById('tabTemaToggle').addEventListener('click', function() {
   toggleTheme();
   document.getElementById('mainTabs').classList.remove('open');
 });
 
-// Auth toggle (Entrar/Cerrar sesión en menú)
 document.getElementById('tabAuthToggle').addEventListener('click', function() {
   if (currentUser) {
     window.logoutUser();
@@ -2025,6 +2334,347 @@ function eliminarElementoCarrusel(id) {
   if (!isAdmin) return;
   if (!confirm('¿Eliminar este elemento?')) return;
   CARRUSEL.doc(id).delete().then(() => renderListaCarrusel());
+}
+
+// ================================================================
+// 6.2 HISTORIAS (24 horas)
+// ================================================================
+function renderHistorias() {
+  const bar = document.getElementById('historiasBar');
+  if (!bar) return;
+  if (!currentUser) { bar.innerHTML = ''; bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+
+  if (listeners.historias) listeners.historias();
+  listeners.historias = HISTORIAS.orderBy('fecha', 'desc').onSnapshot(async snapshot => {
+    const ahora = Date.now();
+    const porUsuario = {};
+    const todas = [];
+    snapshot.forEach(doc => {
+      const h = { id: doc.id, ...doc.data() };
+      if (!h.fecha || !h.fecha.seconds) return;
+      const expira = h.fecha.seconds * 1000 + 24 * 60 * 60 * 1000;
+      if (expira <= ahora) return; // Expirada, se oculta (sigue en storage)
+      todas.push(h);
+      if (!porUsuario[h.uid]) porUsuario[h.uid] = [];
+      porUsuario[h.uid].push(h);
+    });
+
+    // Ordenar cada usuario por fecha ascendente
+    Object.keys(porUsuario).forEach(uid => {
+      porUsuario[uid].sort((a,b) => a.fecha.seconds - b.fecha.seconds);
+    });
+
+    // Agrupar por usuario + obtener datos de usuario
+    const usuariosUnicos = Object.keys(porUsuario);
+
+    let html = '';
+    // Botón "+" para agregar historia (solo el propio usuario)
+    html += `<div class="historia-item" onclick="abrirModalHistoria()">
+      <div class="historia-ring" style="background:var(--teal); position:relative;">
+        <div class="historia-avatar" style="background-image:url('${currentUser.fotoPerfil || ''}'); background-size:cover; background-position:center;">
+          ${currentUser.fotoPerfil ? '' : '<i class="fas fa-user"></i>'}
+        </div>
+        <div class="historia-add-icon"><i class="fas fa-plus"></i></div>
+      </div>
+      <div class="historia-nombre">Mi historia</div>
+    </div>`;
+
+    // Cargar usuarios
+    const userPromises = usuariosUnicos.map(uid => USERS.doc(uid).get().then(d => ({ uid, data: d.exists ? d.data() : null })));
+    const usersInfo = await Promise.all(userPromises);
+    const userMap = {};
+    usersInfo.forEach(u => userMap[u.uid] = u.data);
+
+    usuariosUnicos.forEach(uid => {
+      const u = userMap[uid];
+      if (!u) return;
+      const historiasU = porUsuario[uid];
+      // Comprobar si ya vistas (localStorage)
+      const vistas = JSON.parse(localStorage.getItem('historias_vistas') || '{}');
+      const todasVistas = historiasU.every(h => vistas[h.id]);
+      const foto = u.fotoPerfil || '';
+      const nombre = u.displayName || 'Usuario';
+      html += `<div class="historia-item" onclick="abrirStoryViewer('${uid}')">
+        <div class="historia-ring ${todasVistas ? 'visto' : ''}">
+          <div class="historia-avatar" style="background-image:url('${foto}'); background-size:cover; background-position:center;">
+            ${foto ? '' : nombre.charAt(0).toUpperCase()}
+          </div>
+        </div>
+        <div class="historia-nombre">${nombre.split(' ')[0]}</div>
+      </div>`;
+    });
+
+    bar.innerHTML = html;
+  });
+}
+
+function abrirModalHistoria() {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  document.getElementById('historiaTipo').value = 'imagen';
+  document.getElementById('historiaFileImg').value = '';
+  document.getElementById('historiaFileVideo').value = '';
+  document.getElementById('historiaLink').value = '';
+  document.getElementById('historiaLinkTexto').value = '';
+  document.getElementById('historiaEncuestaPregunta').value = '';
+  document.getElementById('historiaEncuestaOpciones').value = '';
+  document.getElementById('historiaPreviewImg').innerHTML = '';
+  document.getElementById('historiaPreviewVideo').innerHTML = '';
+  actualizarBloquesHistoria();
+  abrirModal('historiaModal');
+}
+
+function actualizarBloquesHistoria() {
+  const tipo = document.getElementById('historiaTipo').value;
+  document.getElementById('historiaFotoBlock').style.display = tipo === 'imagen' ? 'block' : 'none';
+  document.getElementById('historiaVideoBlock').style.display = tipo === 'video' ? 'block' : 'none';
+  document.getElementById('historiaEnlaceBlock').style.display = tipo === 'enlace' ? 'block' : 'none';
+  document.getElementById('historiaEncuestaBlock').style.display = tipo === 'encuesta' ? 'block' : 'none';
+}
+
+function publicarHistoria() {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const tipo = document.getElementById('historiaTipo').value;
+  const dataBase = {
+    uid: currentUser.uid,
+    autorNombre: currentUser.displayName,
+    autorFoto: currentUser.fotoPerfil || '',
+    tipo,
+    fecha: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  if (tipo === 'imagen') {
+    const file = document.getElementById('historiaFileImg').files[0];
+    if (!file) { alert('Selecciona una imagen.'); return; }
+    const path = `historias/${currentUser.uid}/${Date.now()}_${file.name}`;
+    subirArchivoStorage(file, path).then(url => {
+      return HISTORIAS.add({ ...dataBase, url });
+    }).then(() => {
+      cerrarModal('historiaModal');
+      renderHistorias();
+      alert('✅ Historia publicada. Se ocultará en 24 horas.');
+    }).catch(err => { console.error(err); alert('Error: ' + err.message); });
+  } else if (tipo === 'video') {
+    const file = document.getElementById('historiaFileVideo').files[0];
+    if (!file) { alert('Selecciona un video.'); return; }
+    if (!file.type.startsWith('video/')) { alert('Debe ser un video.'); return; }
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    video.onloadedmetadata = () => {
+      window.URL.revokeObjectURL(video.src);
+      if (video.duration > 61) { alert('El video no puede superar 60 segundos. Duración: ' + Math.round(video.duration) + 's'); return; }
+      const path = `historias/${currentUser.uid}/${Date.now()}_${file.name}`;
+      subirArchivoStorage(file, path).then(url => {
+        return HISTORIAS.add({ ...dataBase, url, duracion: video.duration });
+      }).then(() => {
+        cerrarModal('historiaModal');
+        renderHistorias();
+        alert('✅ Historia publicada. Se ocultará en 24 horas.');
+      }).catch(err => { console.error(err); alert('Error: ' + err.message); });
+    };
+    video.src = URL.createObjectURL(file);
+  } else if (tipo === 'enlace') {
+    const link = document.getElementById('historiaLink').value.trim();
+    const texto = document.getElementById('historiaLinkTexto').value.trim();
+    if (!link) { alert('Ingresa una URL.'); return; }
+    HISTORIAS.add({ ...dataBase, link, texto: texto || 'Ver enlace' }).then(() => {
+      cerrarModal('historiaModal');
+      renderHistorias();
+      alert('✅ Historia publicada.');
+    }).catch(err => { console.error(err); alert('Error: ' + err.message); });
+  } else if (tipo === 'encuesta') {
+    const pregunta = document.getElementById('historiaEncuestaPregunta').value.trim();
+    const opcionesStr = document.getElementById('historiaEncuestaOpciones').value.trim();
+    if (!pregunta || !opcionesStr) { alert('Completa la pregunta y opciones.'); return; }
+    const opciones = opcionesStr.split(',').map(s => s.trim()).filter(s => s);
+    if (opciones.length < 2) { alert('Mínimo 2 opciones.'); return; }
+    const votos = {};
+    opciones.forEach(o => votos[o] = []);
+    HISTORIAS.add({ ...dataBase, pregunta, opciones, votos }).then(() => {
+      cerrarModal('historiaModal');
+      renderHistorias();
+      alert('✅ Historia publicada.');
+    }).catch(err => { console.error(err); alert('Error: ' + err.message); });
+  }
+}
+
+// ====== VISOR DE HISTORIA ======
+async function abrirStoryViewer(uid) {
+  const ahora = Date.now();
+  const snap = await HISTORIAS.where('uid', '==', uid).orderBy('fecha', 'asc').get();
+  const historias = [];
+  snap.forEach(doc => {
+    const h = { id: doc.id, ...doc.data() };
+    if (!h.fecha || !h.fecha.seconds) return;
+    const expira = h.fecha.seconds * 1000 + 24 * 60 * 60 * 1000;
+    if (expira <= ahora) return;
+    historias.push(h);
+  });
+  if (historias.length === 0) { alert('No hay historias activas de este usuario.'); return; }
+  storyActual = { historias, index: 0, uid };
+  document.getElementById('storyViewer').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  mostrarHistoriaActual();
+}
+
+function mostrarHistoriaActual() {
+  const { historias, index, uid } = storyActual;
+  if (!historias || historias.length === 0) { cerrarStoryViewer(); return; }
+  const h = historias[index];
+  if (!h) { cerrarStoryViewer(); return; }
+
+  // Progress bar
+  const bar = document.getElementById('storyProgressBar');
+  let barHtml = '';
+  historias.forEach((_, i) => {
+    barHtml += `<div class="story-progress-seg"><div class="story-progress-fill" style="width:${i < index ? 100 : 0}%" data-idx="${i}"></div></div>`;
+  });
+  bar.innerHTML = barHtml;
+
+  // Header
+  const header = document.getElementById('storyHeader');
+  const fechaTxt = h.fecha ? new Date(h.fecha.seconds * 1000).toLocaleString() : '';
+  header.innerHTML = `
+    <img src="${h.autorFoto || ''}" onerror="this.style.display='none'">
+    <div class="info">
+      <div class="name">${h.autorNombre || 'Usuario'}</div>
+      <div class="time">${fechaTxt}</div>
+    </div>
+    <button class="close-btn" onclick="cerrarStoryViewer()"><i class="fas fa-times"></i></button>
+  `;
+
+  // Content
+  const content = document.getElementById('storyContent');
+  let contentHtml = `
+    <button class="story-nav-left" onclick="storyAnterior()"></button>
+    <button class="story-nav-right" onclick="storySiguiente()"></button>
+  `;
+  if (h.tipo === 'imagen' || (!h.tipo && h.url)) {
+    contentHtml += `<img src="${h.url}" alt="historia">`;
+  } else if (h.tipo === 'video') {
+    contentHtml += `<video src="${h.url}" autoplay playsinline controls style="max-height:80vh;"></video>`;
+  } else if (h.tipo === 'enlace') {
+    contentHtml += `<div class="story-link">
+      <p style="font-size:15px; margin-bottom:12px;">${h.texto || 'Ver enlace'}</p>
+      <a href="${h.link}" target="_blank">${h.link}</a>
+    </div>`;
+  } else if (h.tipo === 'encuesta') {
+    const votos = h.votos || {};
+    let opsHtml = '';
+    (h.opciones || []).forEach(o => {
+      const totalVotos = (votos[o] || []).length;
+      opsHtml += `<button class="op" onclick="votarHistoria('${h.id}','${o.replace(/'/g, "\\'")}')">${o} <span class="votos">(${totalVotos})</span></button>`;
+    });
+    contentHtml += `<div class="story-encuesta">
+      <h4>${h.pregunta}</h4>
+      ${opsHtml}
+    </div>`;
+  }
+  content.innerHTML = contentHtml;
+
+  // Views info
+  const vistasInfo = document.getElementById('storyViewsInfo');
+  const vistas = h.vistas || [];
+  vistasInfo.textContent = vistas.length + ' vista' + (vistas.length !== 1 ? 's' : '');
+
+  // Delete button (si es propio o admin)
+  const deleteBtn = document.getElementById('storyDeleteBtn');
+  if (currentUser && (currentUser.uid === h.uid || isAdmin)) {
+    deleteBtn.style.display = 'block';
+  } else {
+    deleteBtn.style.display = 'none';
+  }
+
+  // Marcar como vista
+  const vistasLocales = JSON.parse(localStorage.getItem('historias_vistas') || '{}');
+  vistasLocales[h.id] = true;
+  localStorage.setItem('historias_vistas', JSON.stringify(vistasLocales));
+
+  // Registrar vista en Firestore (si no es el propio)
+  if (currentUser && currentUser.uid !== h.uid) {
+    HISTORIAS.doc(h.id).get().then(doc => {
+      if (!doc.exists) return;
+      const arr = doc.data().vistas || [];
+      if (!arr.includes(currentUser.uid)) {
+        arr.push(currentUser.uid);
+        HISTORIAS.doc(h.id).update({ vistas: arr }).catch(()=>{});
+      }
+    }).catch(()=>{});
+  }
+
+  // Auto-avance (solo para imagen / enlace / encuesta; el video avanza al terminar)
+  if (storyTimer) clearTimeout(storyTimer);
+  if (h.tipo !== 'video') {
+    const fill = document.querySelector(`#storyProgressBar .story-progress-fill[data-idx="${index}"]`);
+    if (fill) {
+      fill.style.transition = 'width 5s linear';
+      setTimeout(() => { fill.style.width = '100%'; }, 30);
+    }
+    storyTimer = setTimeout(() => storySiguiente(), 5000);
+  } else {
+    const video = content.querySelector('video');
+    if (video) {
+      video.onended = () => storySiguiente();
+    }
+  }
+}
+
+function storySiguiente() {
+  if (storyTimer) clearTimeout(storyTimer);
+  storyActual.index++;
+  if (storyActual.index >= storyActual.historias.length) {
+    cerrarStoryViewer();
+    return;
+  }
+  mostrarHistoriaActual();
+}
+
+function storyAnterior() {
+  if (storyTimer) clearTimeout(storyTimer);
+  storyActual.index--;
+  if (storyActual.index < 0) storyActual.index = 0;
+  mostrarHistoriaActual();
+}
+
+function cerrarStoryViewer() {
+  if (storyTimer) clearTimeout(storyTimer);
+  document.getElementById('storyViewer').classList.remove('show');
+  document.body.style.overflow = '';
+  storyActual = { historias: [], index: 0, uid: null };
+  renderHistorias();
+}
+
+function votarHistoria(historiaId, opcion) {
+  if (!currentUser) { alert('Inicia sesión para votar.'); return; }
+  HISTORIAS.doc(historiaId).get().then(doc => {
+    if (!doc.exists) return;
+    const data = doc.data();
+    const votos = data.votos || {};
+    // Remover voto anterior
+    Object.keys(votos).forEach(k => {
+      votos[k] = (votos[k] || []).filter(u => u !== currentUser.uid);
+    });
+    if (!votos[opcion]) votos[opcion] = [];
+    votos[opcion].push(currentUser.uid);
+    HISTORIAS.doc(historiaId).update({ votos }).then(() => {
+      // Refrescar la vista
+      const idx = storyActual.historias.findIndex(h => h.id === historiaId);
+      if (idx >= 0) storyActual.historias[idx].votos = votos;
+      mostrarHistoriaActual();
+    });
+  });
+}
+
+function eliminarHistoriaActual() {
+  const h = storyActual.historias[storyActual.index];
+  if (!h) return;
+  if (!confirm('¿Eliminar esta historia? Esta acción borrará el registro de Firestore (el archivo queda en Storage).')) return;
+  HISTORIAS.doc(h.id).delete().then(() => {
+    storyActual.historias.splice(storyActual.index, 1);
+    if (storyActual.historias.length === 0) { cerrarStoryViewer(); return; }
+    if (storyActual.index >= storyActual.historias.length) storyActual.index = 0;
+    mostrarHistoriaActual();
+  }).catch(err => { console.error(err); alert('Error: ' + err.message); });
 }
 
 // ================================================================
@@ -2297,18 +2947,18 @@ function donarCampania(postId) {
 }
 
 // ================================================================
-// 7.1 REELS (Visor pantalla completa con carrusel 3D vertical)
+// 7.1 REELS
 // ================================================================
 function abrirReelModal() {
   if (!currentUser) { alert('Inicia sesión para subir un reel.'); return; }
   document.getElementById('reelFile').value = '';
   document.getElementById('reelDesc').value = '';
+  document.getElementById('reelLugar').value = '';
   document.getElementById('reelPreviewContainer').innerHTML = '';
   abrirModal('reelModal');
 }
 
 function renderReels() {
-  // Solo mantenemos el placeholder del panel; la lista real se carga al abrir el visor
   if (listeners.reels) listeners.reels();
   listeners.reels = REELS.orderBy('fecha', 'desc').onSnapshot(snapshot => {
     reelsAll = [];
@@ -2317,7 +2967,6 @@ function renderReels() {
 }
 
 function abrirReelsViewer() {
-  // Suscribirse a reels en tiempo real
   const container = document.getElementById('reelsScroll');
   container.innerHTML = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; color:#fff;"><i class="fas fa-spinner fa-spin" style="font-size:32px;"></i></div>';
   document.getElementById('reelsViewerFull').classList.add('show');
@@ -2334,28 +2983,76 @@ function abrirReelsViewer() {
 function cerrarReelsViewer() {
   if (reelsViewerUnsub) { reelsViewerUnsub(); reelsViewerUnsub = null; }
   if (reelsObserverFull) { reelsObserverFull.disconnect(); reelsObserverFull = null; }
+  // Pausar todos los videos
+  document.querySelectorAll('#reelsScroll video').forEach(v => v.pause());
   document.getElementById('reelsScroll').innerHTML = '';
   document.getElementById('reelsViewerFull').classList.remove('show');
   document.body.style.overflow = '';
 }
 
-function renderReelsSlides(reels) {
+async function renderReelsSlides(reels) {
   const container = document.getElementById('reelsScroll');
   if (!reels || reels.length === 0) {
     container.innerHTML = '<div style="height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:20px;"><i class="fas fa-video" style="font-size:60px; opacity:0.5; margin-bottom:16px;"></i><h3 style="margin-bottom:8px;">Aún no hay reels</h3><p style="opacity:0.7; font-size:14px; margin-bottom:16px;">Sé el primero en compartir uno.</p><button class="btn-primary" onclick="abrirReelModal()"><i class="fas fa-plus"></i> Subir Reel</button></div>';
     return;
   }
+
+  // Obtener información de autores
+  const autorIds = [...new Set(reels.map(r => r.uid))];
+  const autorDocs = await Promise.all(autorIds.map(id => USERS.doc(id).get()));
+  const autorMap = {};
+  autorDocs.forEach(d => { if (d.exists) autorMap[d.id] = d.data(); });
+
+  // Contar amigos en común por usuario
+  let misSeguidos = new Set();
+  if (currentUser) {
+    const segSnap = await SEGUIDORES.where('seguidorUid', '==', currentUser.uid).get();
+    segSnap.forEach(d => misSeguidos.add(d.data().seguidoUid));
+  }
+
+  // Preparar promesas de amigos en común
+  const amigosComunMap = {};
+  for (const r of reels) {
+    if (!currentUser || r.uid === currentUser.uid) { amigosComunMap[r.uid] = 0; continue; }
+    if (amigosComunMap[r.uid] !== undefined) continue;
+    const snap = await SEGUIDORES.where('seguidoUid', '==', r.uid).get();
+    let comunes = 0;
+    snap.forEach(d => { if (misSeguidos.has(d.data().seguidorUid)) comunes++; });
+    amigosComunMap[r.uid] = comunes;
+  }
+
+  // Seguidos del usuario actual
+  let seguidosSet = misSeguidos;
+
   let html = '';
   reels.forEach(r => {
     const likes = r.likes || [];
+    const dislikes = r.dislikes || [];
+    const orando = r.orando || [];
+    const likesCount = likes.length;
+    const dislikesCount = dislikes.length;
+    const orandoCount = orando.length;
     const liked = currentUser && likes.includes(currentUser.uid);
+    const disliked = currentUser && dislikes.includes(currentUser.uid);
+    const prayed = currentUser && orando.includes(currentUser.uid);
     const comentarios = r.comentarios || [];
     const puedeEliminar = isAdmin || (currentUser && r.uid === currentUser.uid);
     const autorFoto = r.autorFoto || '';
     const fecha = r.fecha ? new Date(r.fecha.seconds * 1000).toLocaleString() : '';
+    const esSeguido = seguidosSet.has(r.uid);
+    const amigosComun = amigosComunMap[r.uid] || 0;
+    const lugar = r.lugar || '';
+
     html += `<div class="reel-slide-full" data-reel-id="${r.id}">
       <div class="reel-full-video">
         <video src="${r.url}" loop playsinline preload="metadata" data-reel-video="${r.id}"></video>
+        <div class="reel-controls-overlay" data-controls-for="${r.id}">
+          <button onclick="reelRewind('${r.id}')" title="Retroceder 5s"><i class="fas fa-backward"></i></button>
+          <button onclick="reelTogglePlay('${r.id}')" id="reel-play-btn-${r.id}" title="Pausa/Reproducir"><i class="fas fa-pause"></i></button>
+          <span class="time-info" id="reel-time-${r.id}">0:00 / 0:00</span>
+          <button onclick="reelForward('${r.id}')" title="Adelantar 5s"><i class="fas fa-forward"></i></button>
+          <button onclick="reelToggleMute('${r.id}')" id="reel-mute-btn-${r.id}" title="Silencio/Volumen"><i class="fas fa-volume-up"></i></button>
+        </div>
       </div>
       <div class="reel-full-info">
         <div class="reel-info-author">
@@ -2363,11 +3060,18 @@ function renderReelsSlides(reels) {
           <div style="flex:1;">
             <div class="name" onclick="cerrarReelsViewer(); verPerfil('${r.uid}')">${r.autorNombre}</div>
             <div class="date">${fecha}</div>
+            ${lugar ? `<div class="date"><i class="fas fa-map-pin"></i> ${lugar}</div>` : ''}
           </div>
+          ${currentUser && currentUser.uid !== r.uid ? `<button onclick="toggleSeguirReel('${r.uid}', this)" style="background:${esSeguido ? 'rgba(255,255,255,0.15)' : 'var(--teal)'}; border:none; color:#fff; padding:5px 12px; border-radius:30px; font-size:12px; cursor:pointer;" data-siguiendo="${esSeguido}">
+            <i class="fas ${esSeguido ? 'fa-user-check' : 'fa-user-plus'}"></i> ${esSeguido ? 'Siguiendo' : 'Seguir'}
+          </button>` : ''}
         </div>
+        ${amigosComun > 0 ? `<div class="amigos-comun" style="background:rgba(29,158,117,0.2); color:#fff;"><i class="fas fa-user-friends"></i> ${amigosComun} amigo${amigosComun !== 1 ? 's' : ''} en común</div>` : ''}
         ${r.desc ? `<div class="reel-info-desc">${r.desc}</div>` : ''}
         <div class="reel-info-actions">
-          <button class="${liked ? 'liked' : ''}" onclick="likeReel('${r.id}')"><i class="fas fa-heart"></i> <span>${likes.length}</span></button>
+          <button class="${liked ? 'liked' : ''}" onclick="likeReel('${r.id}')"><i class="fas fa-heart"></i> <span>${likesCount}</span></button>
+          <button class="${disliked ? 'disliked' : ''}" onclick="dislikeReel('${r.id}')"><i class="fas fa-thumbs-down"></i> <span>${dislikesCount}</span></button>
+          <button class="${prayed ? 'prayed' : ''}" onclick="orarReel('${r.id}')"><i class="fas fa-pray"></i> <span>${orandoCount}</span></button>
           <button onclick="compartirReel('${r.id}')"><i class="fas fa-share"></i> Compartir</button>
           ${puedeEliminar ? `<button class="danger" onclick="eliminarReelViewer('${r.id}')"><i class="fas fa-trash"></i> Eliminar</button>` : ''}
         </div>
@@ -2385,12 +3089,55 @@ function renderReelsSlides(reels) {
   });
   container.innerHTML = html;
 
-  // Activar autoplay por scroll (un reel a la vez)
   setupReelsFullObserver();
-  // Actualizar 3D al hacer scroll
   container.removeEventListener('scroll', onReelsScroll);
   container.addEventListener('scroll', onReelsScroll, { passive: true });
   onReelsScroll();
+
+  // Inicializar event listeners para los time-updates
+  container.querySelectorAll('video').forEach(v => {
+    const rid = v.dataset.reelVideo;
+    v.addEventListener('timeupdate', () => actualizarTiempoReel(rid, v));
+    v.addEventListener('loadedmetadata', () => actualizarTiempoReel(rid, v));
+  });
+}
+
+function actualizarTiempoReel(id, video) {
+  const el = document.getElementById('reel-time-' + id);
+  if (!el) return;
+  const fmt = (s) => { s = Math.floor(s); const m = Math.floor(s/60); const ss = s%60; return m + ':' + (ss < 10 ? '0' : '') + ss; };
+  el.textContent = fmt(video.currentTime || 0) + ' / ' + fmt(video.duration || 0);
+}
+
+function reelTogglePlay(id) {
+  const v = document.querySelector(`video[data-reel-video="${id}"]`);
+  if (!v) return;
+  const btn = document.getElementById('reel-play-btn-' + id);
+  if (v.paused) {
+    v.play(); if (btn) btn.innerHTML = '<i class="fas fa-pause"></i>';
+  } else {
+    v.pause(); if (btn) btn.innerHTML = '<i class="fas fa-play"></i>';
+  }
+}
+
+function reelRewind(id) {
+  const v = document.querySelector(`video[data-reel-video="${id}"]`);
+  if (!v) return;
+  v.currentTime = Math.max(0, (v.currentTime || 0) - 5);
+}
+
+function reelForward(id) {
+  const v = document.querySelector(`video[data-reel-video="${id}"]`);
+  if (!v) return;
+  v.currentTime = Math.min(v.duration || 0, (v.currentTime || 0) + 5);
+}
+
+function reelToggleMute(id) {
+  const v = document.querySelector(`video[data-reel-video="${id}"]`);
+  if (!v) return;
+  const btn = document.getElementById('reel-mute-btn-' + id);
+  v.muted = !v.muted;
+  if (btn) btn.innerHTML = v.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
 }
 
 function onReelsScroll() {
@@ -2416,11 +3163,16 @@ function setupReelsFullObserver() {
   reelsObserverFull = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       const video = entry.target;
+      const id = video.dataset.reelVideo;
       if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
-        // Pausar los demás
         document.querySelectorAll('#reelsScroll video').forEach(v => { if (v !== video) { v.pause(); } });
         video.muted = false;
-        video.play().catch(() => { video.muted = true; video.play().catch(()=>{}); });
+        video.play().then(() => {
+          const btn = document.getElementById('reel-play-btn-' + id);
+          if (btn) btn.innerHTML = '<i class="fas fa-pause"></i>';
+          const mb = document.getElementById('reel-mute-btn-' + id);
+          if (mb) mb.innerHTML = '<i class="fas fa-volume-up"></i>';
+        }).catch(() => { video.muted = true; video.play().catch(()=>{}); });
       } else {
         video.pause();
       }
@@ -2435,10 +3187,66 @@ function likeReel(id) {
     if (!doc.exists) return;
     const reel = doc.data();
     const likes = reel.likes || [];
+    const dislikes = reel.dislikes || [];
     const idx = likes.indexOf(currentUser.uid);
     if (idx > -1) likes.splice(idx, 1);
-    else likes.push(currentUser.uid);
-    REELS.doc(id).update({ likes });
+    else {
+      likes.push(currentUser.uid);
+      // Quitar dislike si existía
+      const di = dislikes.indexOf(currentUser.uid);
+      if (di > -1) dislikes.splice(di, 1);
+    }
+    REELS.doc(id).update({ likes, dislikes });
+  }).catch(console.error);
+}
+
+function dislikeReel(id) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  REELS.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const reel = doc.data();
+    const likes = reel.likes || [];
+    const dislikes = reel.dislikes || [];
+    const idx = dislikes.indexOf(currentUser.uid);
+    if (idx > -1) dislikes.splice(idx, 1);
+    else {
+      dislikes.push(currentUser.uid);
+      const li = likes.indexOf(currentUser.uid);
+      if (li > -1) likes.splice(li, 1);
+    }
+    REELS.doc(id).update({ dislikes, likes });
+  }).catch(console.error);
+}
+
+function orarReel(id) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  REELS.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const reel = doc.data();
+    const orando = reel.orando || [];
+    const idx = orando.indexOf(currentUser.uid);
+    if (idx > -1) orando.splice(idx, 1);
+    else orando.push(currentUser.uid);
+    REELS.doc(id).update({ orando });
+  }).catch(console.error);
+}
+
+function toggleSeguirReel(uid, btn) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  if (uid === currentUser.uid) return;
+  SEGUIDORES.where('seguidorUid', '==', currentUser.uid).where('seguidoUid', '==', uid).get().then(existing => {
+    if (!existing.empty) {
+      existing.docs[0].ref.delete();
+      btn.innerHTML = '<i class="fas fa-user-plus"></i> Seguir';
+      btn.style.background = 'var(--teal)';
+      btn.dataset.siguiendo = 'false';
+    } else {
+      SEGUIDORES.add({ seguidorUid: currentUser.uid, seguidorNombre: currentUser.displayName, seguidoUid: uid, fecha: firebase.firestore.FieldValue.serverTimestamp() });
+      NOTIFICACIONES(uid).add({ tipo: 'seguidor', emisorUid: currentUser.uid, emisorNombre: currentUser.displayName, fecha: firebase.firestore.FieldValue.serverTimestamp(), leido: false });
+      btn.innerHTML = '<i class="fas fa-user-check"></i> Siguiendo';
+      btn.style.background = 'rgba(255,255,255,0.15)';
+      btn.dataset.siguiendo = 'true';
+    }
   }).catch(console.error);
 }
 
@@ -2476,19 +3284,22 @@ function publicarReel() {
   if (!currentUser) { alert('Debes iniciar sesión.'); return; }
   const file = document.getElementById('reelFile').files[0];
   const desc = document.getElementById('reelDesc').value.trim();
+  const lugar = document.getElementById('reelLugar').value.trim();
   if (!file) { alert('Selecciona un video.'); return; }
   if (!file.type.startsWith('video/')) { alert('El archivo debe ser un video.'); return; }
   const path = `reels/${currentUser.uid}/${Date.now()}_${file.name}`;
   subirArchivoStorage(file, path).then(url => {
     return REELS.add({
       uid: currentUser.uid, autorNombre: currentUser.displayName,
-      autorFoto: currentUser.fotoPerfil || '', url: url, desc: desc || '',
+      autorFoto: currentUser.fotoPerfil || '', url: url,
+      desc: desc || '', lugar: lugar || '',
       fecha: firebase.firestore.FieldValue.serverTimestamp(),
-      likes: [], comentarios: []
+      likes: [], dislikes: [], orando: [], comentarios: []
     });
   }).then(() => {
     document.getElementById('reelFile').value = '';
     document.getElementById('reelDesc').value = '';
+    document.getElementById('reelLugar').value = '';
     document.getElementById('reelPreviewContainer').innerHTML = '';
     cerrarModal('reelModal');
     alert('Reel publicado correctamente.');
@@ -3731,7 +4542,7 @@ function eliminarReporte(id) {
 }
 
 // ================================================================
-// 16. CHATS
+// 16. CHATS (Admin / Equipo)
 // ================================================================
 function getChatAdminRef() { return db.collection('chat_admin'); }
 function getChatEquipoRef() { return db.collection('chat_equipo'); }
@@ -3843,49 +4654,96 @@ function enviarChatEquipo() {
   }
 }
 
-function setupFilePreview(fileInputId, previewContainerId) {
-  const input = document.getElementById(fileInputId);
-  const container = document.getElementById(previewContainerId);
-  if (!input || !container) return;
-  input.addEventListener('change', function(e) {
-    container.innerHTML = '';
-    const file = this.files[0];
-    if (!file) return;
-    const wrapper = document.createElement('div');
-    wrapper.style.position = 'relative';
-    wrapper.style.display = 'inline-block';
-    if (file.type.startsWith('image/')) {
-      const img = document.createElement('img');
-      img.src = URL.createObjectURL(file);
-      img.style.maxWidth = '100px';
-      img.style.maxHeight = '100px';
-      wrapper.appendChild(img);
-    } else {
-      const div = document.createElement('div');
-      div.className = 'file-preview';
-      div.innerHTML = `<i class="fas fa-file"></i> ${file.name}`;
-      wrapper.appendChild(div);
-    }
-    const removeBtn = document.createElement('button');
-    removeBtn.className = 'remove-preview';
-    removeBtn.innerHTML = '✕';
-    removeBtn.title = 'Eliminar vista previa';
-    removeBtn.onclick = function(e) {
-      e.stopPropagation();
-      input.value = '';
-      container.innerHTML = '';
-    };
-    wrapper.appendChild(removeBtn);
-    container.appendChild(wrapper);
-  });
+// ================================================================
+// 16.1 CHAT PRIVADO (Messenger)
+// ================================================================
+function getChatPrivadoId(uid1, uid2) {
+  return [uid1, uid2].sort().join('__');
 }
 
-setupFilePreview('chatAdminFile', 'chatAdminPreview');
-setupFilePreview('chatEquipoFile', 'chatEquipoPreview');
-setupFilePreview('postImage', 'postPreviewContainer');
-setupFilePreview('postVideo', 'postPreviewContainer');
-setupFilePreview('reelFile', 'reelPreviewContainer');
-setupFilePreview('devocionalPdf', 'devocionalPreview');
+function abrirChatPrivado(otroUid) {
+  if (!currentUser) { alert('Inicia sesión para enviar mensajes.'); return; }
+  if (otroUid === currentUser.uid) { alert('No puedes enviarte mensajes a ti mismo.'); return; }
+
+  chatPrivadoActual = otroUid;
+  const chatId = getChatPrivadoId(currentUser.uid, otroUid);
+
+  USERS.doc(otroUid).get().then(doc => {
+    if (doc.exists) {
+      const u = doc.data();
+      document.getElementById('chatPrivadoNombre').textContent = u.displayName || 'Usuario';
+      document.getElementById('chatPrivadoStatus').textContent = 'Conversación privada';
+      document.getElementById('chatPrivadoFoto').src = u.fotoPerfil || '';
+    }
+  });
+
+  abrirModal('chatPrivadoModal');
+
+  if (chatPrivadoUnsub) chatPrivadoUnsub();
+  chatPrivadoUnsub = CHATS_PRIVADOS.doc(chatId).collection('mensajes').orderBy('timestamp', 'asc').onSnapshot(snapshot => {
+    const container = document.getElementById('chatPrivadoMsgs');
+    if (snapshot.empty) {
+      container.innerHTML = '<p style="color:var(--text-secondary); text-align:center; font-size:13px; margin-top:20px;">Aún no hay mensajes. ¡Sé el primero en escribir!</p>';
+      return;
+    }
+    let html = '';
+    snapshot.forEach(doc => {
+      const msg = doc.data();
+      const mio = msg.uid === currentUser.uid;
+      const hora = msg.timestamp ? new Date(msg.timestamp.seconds * 1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : '';
+      html += `<div class="chat-privado-msg ${mio ? 'mio' : 'otro'}">
+        ${msg.texto}
+        <span class="hora">${hora}</span>
+      </div>`;
+    });
+    container.innerHTML = html;
+    container.scrollTop = container.scrollHeight;
+  });
+
+  // Marcar mensajes como leídos
+  CHATS_PRIVADOS.doc(chatId).set({
+    participantes: [currentUser.uid, otroUid],
+    ultimaActividad: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true }).catch(()=>{});
+
+  setTimeout(() => document.getElementById('chatPrivadoInput').focus(), 300);
+}
+
+function cerrarChatPrivado() {
+  if (chatPrivadoUnsub) { chatPrivadoUnsub(); chatPrivadoUnsub = null; }
+  chatPrivadoActual = null;
+  cerrarModal('chatPrivadoModal');
+}
+
+function enviarMensajePrivado() {
+  if (!currentUser || !chatPrivadoActual) return;
+  const input = document.getElementById('chatPrivadoInput');
+  const texto = input.value.trim();
+  if (!texto) return;
+  const chatId = getChatPrivadoId(currentUser.uid, chatPrivadoActual);
+  CHATS_PRIVADOS.doc(chatId).set({
+    participantes: [currentUser.uid, chatPrivadoActual],
+    ultimaActividad: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true }).then(() => {
+    return CHATS_PRIVADOS.doc(chatId).collection('mensajes').add({
+      uid: currentUser.uid,
+      remitente: currentUser.displayName,
+      texto,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }).then(() => {
+    input.value = '';
+    // Notificar
+    NOTIFICACIONES(chatPrivadoActual).add({
+      tipo: 'mensaje_privado',
+      emisorUid: currentUser.uid,
+      emisorNombre: currentUser.displayName,
+      texto,
+      fecha: firebase.firestore.FieldValue.serverTimestamp(),
+      leido: false
+    }).catch(()=>{});
+  }).catch(err => { console.error(err); alert('Error: ' + err.message); });
+}
 
 // ================================================================
 // 17. ADMIN PANEL
@@ -4289,7 +5147,7 @@ function eliminarNoticia(id) {
 }
 
 // ================================================================
-// 19. PERFIL PROFESIONAL
+// 19. PERFIL PROFESIONAL (con botones dorados + mensaje)
 // ================================================================
 function verPerfil(uid) {
   if (!uid) { alert('ID de usuario no válido.'); return; }
@@ -4317,7 +5175,7 @@ function verPerfil(uid) {
   });
 }
 
-function mostrarPerfilProfesional(user, esSeguidor, uid) {
+async function mostrarPerfilProfesional(user, esSeguidor, uid) {
   const privacidad = user.privacidad || {};
   const modalContent = document.getElementById('perfilModalContent');
   const esPropio = currentUser && currentUser.uid === uid;
@@ -4383,6 +5241,18 @@ function mostrarPerfilProfesional(user, esSeguidor, uid) {
     if (galeriaContainer) galeriaContainer.innerHTML = renderFotosGaleria(fotos, uid);
   });
 
+  // Amigos en común
+  let amigosComun = 0;
+  if (currentUser && !esPropio) {
+    try {
+      const misSeg = await SEGUIDORES.where('seguidorUid', '==', currentUser.uid).get();
+      const misSet = new Set();
+      misSeg.forEach(d => misSet.add(d.data().seguidoUid));
+      const susSeg = await SEGUIDORES.where('seguidoUid', '==', uid).get();
+      susSeg.forEach(d => { if (misSet.has(d.data().seguidorUid)) amigosComun++; });
+    } catch(e) { console.warn(e); }
+  }
+
   const telefonoVisible = campoVisible('telefono', user.telefono);
 
   let html = `<div class="perfil-facebook" style="position:relative;">
@@ -4392,14 +5262,16 @@ function mostrarPerfilProfesional(user, esSeguidor, uid) {
       <div style="position:absolute; bottom:10px; right:20px; display:flex; gap:8px; flex-wrap:wrap;">
         ${esPropio ? `<button class="btn-primary perfil-action-btn" onclick="abrirEditarPerfil()" title="Editar"><i class="fas fa-edit"></i></button>` : ''}
         ${!esPropio && currentUser ? `<button class="btn-primary perfil-action-btn" onclick="seguirUsuario('${uid}')" title="${esSeguidor ? 'Dejar de seguir' : 'Seguir'}"><i class="fas ${esSeguidor ? 'fa-user-minus' : 'fa-user-plus'}"></i></button>` : ''}
-        ${telefonoVisible ? `<a href="https://wa.me/${user.telefono.replace(/[^0-9]/g, '')}" target="_blank" class="btn-whatsapp-profile perfil-action-btn" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>` : ''}
-        <button class="btn-solid perfil-action-btn" onclick="compartirPerfil('${uid}')" title="Compartir"><i class="fas fa-share-alt"></i></button>
-        <button class="btn-solid perfil-action-btn" onclick="compartirPerfilQR('${uid}')" title="QR"><i class="fas fa-qrcode"></i></button>
+        ${!esPropio && currentUser ? `<button class="btn-primary perfil-action-btn" onclick="abrirChatPrivado('${uid}')" title="Enviar mensaje"><i class="fas fa-comment-dots"></i></button>` : ''}
+        ${telefonoVisible ? `<a href="https://wa.me/${user.telefono.replace(/[^0-9]/g, '')}" target="_blank" class="perfil-action-btn" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>` : ''}
+        <button class="btn-primary perfil-action-btn" onclick="compartirPerfil('${uid}')" title="Compartir"><i class="fas fa-share-alt"></i></button>
+        <button class="btn-primary perfil-action-btn" onclick="compartirPerfilQR('${uid}')" title="QR"><i class="fas fa-qrcode"></i></button>
       </div>
     </div>
     <div style="padding:20px 20px 20px 20px; margin-top:0;">
       <h2 style="margin:0; padding-left:140px;">${user.displayName}</h2>
       ${user.iglesia ? `<p style="padding-left:140px;"><i class="fas fa-church"></i> ${user.iglesia}</p>` : ''}
+      ${amigosComun > 0 ? `<p style="padding-left:140px; margin-top:4px;"><span class="amigos-comun"><i class="fas fa-user-friends"></i> ${amigosComun} amigo${amigosComun !== 1 ? 's' : ''} en común</span></p>` : ''}
       ${user.biografia ? `<p style="background:var(--bg-body); padding:10px; border-radius:8px; margin-top:10px;">${user.biografia}</p>` : ''}
       <div style="display:flex; gap:20px; margin:10px 0; flex-wrap:wrap;">
         <span><strong>${user.apoyos ? user.apoyos.length : 0}</strong> Roles</span>
@@ -4438,7 +5310,7 @@ function mostrarPerfilProfesional(user, esSeguidor, uid) {
   cargarSeguidores(uid);
 }
 
-// ====== VISOR DE FOTO CON REACCIONES ======
+// ====== VISOR DE FOTO ======
 function abrirFotoViewer(uid, fotoId) {
   if (fotoViewerUnsub) { fotoViewerUnsub(); fotoViewerUnsub = null; }
   const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
@@ -4641,6 +5513,7 @@ function eliminarCuenta() {
     MISIONEROS.where('uidCreador', '==', uid).get().then(snap => snap.forEach(d => d.ref.delete())),
     REELS.where('uid', '==', uid).get().then(snap => snap.forEach(d => d.ref.delete())),
     DEVOCIONALES.where('uid', '==', uid).get().then(snap => snap.forEach(d => d.ref.delete())),
+    HISTORIAS.where('uid', '==', uid).get().then(snap => snap.forEach(d => d.ref.delete())),
     SEGUIDORES.where('seguidorUid', '==', uid).get().then(snap => snap.forEach(d => d.ref.delete())),
     SEGUIDORES.where('seguidoUid', '==', uid).get().then(snap => snap.forEach(d => d.ref.delete())),
     USERS.doc(uid).delete(),
@@ -4831,6 +5704,7 @@ function mostrarNotificaciones() {
       else if (n.tipo === 'like_foto') texto = `${n.emisorNombre} le dio like a tu foto.`;
       else if (n.tipo === 'comentario_foto') texto = `${n.emisorNombre} comentó en tu foto: "${n.texto}"`;
       else if (n.tipo === 'etiqueta_foto') texto = `${n.emisorNombre} te etiquetó en una foto.`;
+      else if (n.tipo === 'mensaje_privado') texto = `${n.emisorNombre} te envió un mensaje: "${n.texto}"`;
       msg += `- ${texto} (${new Date(n.fecha.seconds * 1000).toLocaleString()})\n`;
       doc.ref.update({ leido: true });
     });
@@ -5443,7 +6317,23 @@ function navegarMediaViewer(dir) {
 }
 
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') cerrarMediaViewer();
+  if (e.key === 'Escape') {
+    cerrarMediaViewer();
+    cerrarStoryViewer();
+  }
+  // Atajos para el reel activo
+  if (document.getElementById('reelsViewerFull').classList.contains('show')) {
+    const visible = [...document.querySelectorAll('#reelsScroll video')].find(v => {
+      const r = v.getBoundingClientRect();
+      return r.top >= 0 && r.top < window.innerHeight * 0.3;
+    });
+    if (visible) {
+      const id = visible.dataset.reelVideo;
+      if (e.key === 'ArrowLeft') reelRewind(id);
+      if (e.key === 'ArrowRight') reelForward(id);
+      if (e.key === ' ') { e.preventDefault(); reelTogglePlay(id); }
+    }
+  }
 });
 
 // ================================================================
@@ -5624,6 +6514,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('btnSubirDevocional').addEventListener('click', subirDevocional);
 
+  // Historias
+  document.getElementById('historiaTipo').addEventListener('change', actualizarBloquesHistoria);
+  document.getElementById('historiaCancel').addEventListener('click', function() { cerrarModal('historiaModal'); });
+  document.getElementById('historiaPublicar').addEventListener('click', publicarHistoria);
+
+  // Chat privado
+  document.getElementById('chatPrivadoInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') enviarMensajePrivado();
+  });
+
   document.getElementById('btnCrearGrupo').addEventListener('click', abrirModalGrupo);
   document.getElementById('grupoCancel').addEventListener('click', function() { cerrarModal('grupoModal'); });
   document.getElementById('grupoCrear').addEventListener('click', crearGrupo);
@@ -5749,6 +6649,7 @@ document.addEventListener('DOMContentLoaded', function() {
   renderNoticias();
   renderReels();
   renderDevocionales();
+  renderHistorias();
   actualizarBotonesPorRol();
   actualizarTabs();
   cargarHistorial();
@@ -5764,7 +6665,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (user) await cargarUsuarioActual(user);
   });
 
-  console.log('✅ SAL Y LUZ v6: logout y tema en menú, un solo botón de perfil, reels full-screen con carrusel 3D vertical.');
+  // Limpieza de historias expiradas (cada 5 minutos: solo limpia el render, no borra de Storage)
+  setInterval(() => { renderHistorias(); }, 5 * 60 * 1000);
+
+  console.log('✅ SAL Y LUZ v7: historias 24h, chat privado, reels con controles, botones dorados.');
 });
 
 // ================================================================
@@ -5793,9 +6697,28 @@ window.cerrarReelsViewer = cerrarReelsViewer;
 window.abrirReelModal = abrirReelModal;
 window.publicarReel = publicarReel;
 window.likeReel = likeReel;
+window.dislikeReel = dislikeReel;
+window.orarReel = orarReel;
+window.toggleSeguirReel = toggleSeguirReel;
 window.compartirReel = compartirReel;
 window.eliminarReelViewer = eliminarReelViewer;
 window.comentarReelFull = comentarReelFull;
+window.reelTogglePlay = reelTogglePlay;
+window.reelRewind = reelRewind;
+window.reelForward = reelForward;
+window.reelToggleMute = reelToggleMute;
+window.renderHistorias = renderHistorias;
+window.abrirModalHistoria = abrirModalHistoria;
+window.publicarHistoria = publicarHistoria;
+window.abrirStoryViewer = abrirStoryViewer;
+window.cerrarStoryViewer = cerrarStoryViewer;
+window.storySiguiente = storySiguiente;
+window.storyAnterior = storyAnterior;
+window.votarHistoria = votarHistoria;
+window.eliminarHistoriaActual = eliminarHistoriaActual;
+window.abrirChatPrivado = abrirChatPrivado;
+window.cerrarChatPrivado = cerrarChatPrivado;
+window.enviarMensajePrivado = enviarMensajePrivado;
 window.renderDevocionales = renderDevocionales;
 window.subirDevocional = subirDevocional;
 window.verDevocional = verDevocional;

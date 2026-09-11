@@ -127,20 +127,32 @@
     body.dark .card { background: #1a1a2e; }
     .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
     .card h3 i { color: var(--teal); }
-    .historias-bar { display: flex; gap: 12px; overflow-x: auto; padding: 10px 6px; background: white; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow); margin-bottom: 16px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+
+    /* ============ HISTORIAS VERTICALES ============ */
+    .historias-bar { display: flex; gap: 12px; overflow-x: auto; padding: 12px 6px; background: white; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow); margin-bottom: 16px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
     body.dark .historias-bar { background: #1a1a2e; }
     .historias-bar::-webkit-scrollbar { display: none; }
-    .historia-item { flex-shrink: 0; width: 72px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; text-align: center; position: relative; }
-    .historia-ring { width: 64px; height: 64px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, #D4AF37, #A67C00); display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
-    .historia-ring.visto { background: var(--border-color); }
+    .historia-item { flex-shrink: 0; width: 92px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; text-align: center; position: relative; transition: transform 0.2s; }
+    .historia-item:hover { transform: translateY(-3px); }
+    .historia-ring { width: 92px; height: 144px; border-radius: 14px; padding: 3px; background: linear-gradient(135deg, #D4AF37, #A67C00); display: flex; align-items: center; justify-content: center; transition: transform 0.2s; position: relative; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .historia-ring.visto { background: var(--border-color); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
     .historia-ring.activa { animation: pulseRing 2s infinite; }
     @keyframes pulseRing { 0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.7); } 50% { box-shadow: 0 0 0 8px rgba(212,175,55,0); } }
-    .historia-ring:hover { transform: scale(1.08); }
-    .historia-avatar { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-body); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: var(--teal-dark); font-weight: 700; font-size: 20px; border: 2px solid white; overflow: hidden; }
-    body.dark .historia-avatar { border-color: #1a1a2e; }
-    .historia-nombre { font-size: 11px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 68px; font-weight: 500; }
-    .historia-add-icon { position: absolute; bottom: 0; right: 0; width: 22px; height: 22px; background: var(--teal); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; border: 2px solid white; z-index: 3; }
-    body.dark .historia-add-icon { border-color: #1a1a2e; }
+    .historia-ring:hover { transform: scale(1.04); }
+    .historia-avatar { width: 100%; height: 100%; border-radius: 11px; background: var(--bg-body); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: var(--teal-dark); font-weight: 700; font-size: 28px; overflow: hidden; position: relative; }
+    .historia-avatar::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.55) 100%); border-radius: 11px; pointer-events: none; }
+    .historia-mini-avatar { position: absolute; top: 6px; left: 6px; width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; background-size: cover; background-position: center; background-color: var(--teal); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+    .historia-nombre { font-size: 11px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; font-weight: 500; }
+    .historia-add-icon { position: absolute; bottom: 8px; right: 8px; width: 26px; height: 26px; background: var(--teal); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid white; z-index: 3; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+    .historia-add-label { position: absolute; bottom: 6px; left: 0; right: 0; color: #fff; font-size: 10px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.8); z-index: 2; }
+    @media (max-width: 640px) {
+      .historia-item { width: 78px; }
+      .historia-ring { width: 78px; height: 122px; border-radius: 12px; }
+      .historia-avatar { border-radius: 9px; }
+      .historia-mini-avatar { width: 24px; height: 24px; font-size: 10px; top: 4px; left: 4px; }
+      .historia-nombre { font-size: 10px; max-width: 76px; }
+    }
+
     .story-viewer { position: fixed; inset: 0; background: #000; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
     .story-viewer.show { display: flex; }
     .story-progress-bar { position: absolute; top: 8px; left: 8px; right: 8px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 3px; z-index: 30; display: flex; gap: 3px; }
@@ -258,6 +270,7 @@
     .reel-info-comment-box input { flex: 1; padding: 8px 14px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); color: white; font-size: 13px; }
     .reel-info-comment-box input::placeholder { color: rgba(255,255,255,0.5); }
     .reel-info-comment-box button { background: var(--teal); color: white; border: none; padding: 8px 18px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 500; }
+
     @media (min-width: 769px) {
       .reel-slide-full { flex-direction: row; }
       .reel-full-video { flex: 0 0 70%; }
@@ -266,13 +279,59 @@
       .reels-viewer-close { top: 20px; right: calc(30% + 20px); }
       .reel-acciones-vertical { display: none; }
       .reel-seguir-btn { display: none; }
+      .reel-comments-toggle { display: none !important; }
     }
+
+    /* ============ REELS MÓVIL SIMÉTRICO + COMENTARIOS TOGGLE ============ */
     @media (max-width: 768px) {
-      .reel-acciones-vertical { display: flex; }
-      .reel-seguir-btn { display: block; }
+      .reel-slide-full {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        padding: 0;
+      }
+      .reel-full-video {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .reel-full-video video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .reel-full-info {
+        flex: 0 0 auto;
+        max-height: none;
+        padding: 12px 14px 16px;
+        background: #12121a;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .reel-info-author img { width: 36px; height: 36px; }
+      .reel-info-author .name { font-size: 13px; }
+      .reel-info-author .date { font-size: 10px; }
+      .reel-info-desc { font-size: 12px; line-height: 1.4; }
       .reel-info-actions { display: none; }
-      .reel-full-info { max-height: 45vh; }
+      .reel-acciones-vertical { display: flex; right: 8px; bottom: 100px; gap: 12px; }
+      .reel-accion-btn .circulo { width: 40px; height: 40px; font-size: 18px; }
+      .reel-accion-btn .num { font-size: 10px; }
+      .reel-seguir-btn { display: block; }
+      /* Comentarios ocultos por defecto en móvil */
+      .reel-info-comments { display: none !important; }
+      .reel-info-comment-box { display: none !important; }
+      .reel-full-info.comments-open .reel-info-comments { display: flex !important; max-height: 32vh; overflow-y: auto; }
+      .reel-full-info.comments-open .reel-info-comment-box { display: flex !important; }
+      .reel-full-info.comments-open { max-height: 65vh; overflow-y: auto; }
+      .reel-comments-toggle { display: flex !important; }
     }
+    .reel-comments-toggle { display: none; }
+
     .reels-placeholder { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
     .reels-placeholder i { font-size: 60px; color: var(--teal); display: block; margin-bottom: 16px; }
     .reels-placeholder h3 { font-size: 20px; margin-bottom: 8px; color: var(--text-primary); }
@@ -2138,7 +2197,6 @@ function renderHistorias() {
     pintarBarraHistorias(Array.from(map.values()));
   };
 
-  // Historias públicas (visibles a todos, incluso sin sesión)
   listeners.historias = HISTORIAS.where('publica', '==', true)
     .orderBy('fecha', 'desc')
     .onSnapshot(snap => {
@@ -2147,7 +2205,6 @@ function renderHistorias() {
       mergeYRender();
     }, err => { console.warn('historias públicas err', err); publicas = []; mergeYRender(); });
 
-  // Historias propias (incluso privadas)
   if (currentUser) {
     listeners.historiasPropias = HISTORIAS.where('uid', '==', currentUser.uid)
       .orderBy('fecha', 'desc')
@@ -2181,10 +2238,12 @@ async function pintarBarraHistorias(historias) {
 
   let html = '';
   if (currentUser) {
+    const fotoPropia = currentUser.fotoPerfil || '';
     html += `<div class="historia-item" onclick="abrirModalHistoria()">
-      <div class="historia-ring" style="background:var(--teal); position:relative;">
-        <div class="historia-avatar" style="background-image:url('${currentUser.fotoPerfil || ''}'); background-size:cover; background-position:center;">
-          ${currentUser.fotoPerfil ? '' : '<i class="fas fa-user"></i>'}
+      <div class="historia-ring" style="background:linear-gradient(135deg,var(--teal),var(--teal-dark));">
+        <div class="historia-avatar" style="background-image:url('${fotoPropia}'); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center;">
+          ${fotoPropia ? '' : '<i class="fas fa-user" style="font-size:32px;color:#fff;"></i>'}
+          <div class="historia-add-label">Crear historia</div>
         </div>
         <div class="historia-add-icon"><i class="fas fa-plus"></i></div>
       </div>
@@ -2211,9 +2270,29 @@ async function pintarBarraHistorias(historias) {
     const foto = u.fotoPerfil || '';
     const nombre = u.displayName || 'Usuario';
     const activa = currentUser && uid === currentUser.uid;
+
+    // Tomar la última historia para usar como miniatura vertical
+    const ultima = historiasU[historiasU.length - 1];
+    let thumbUrl = '';
+    let thumbIcon = '<i class="fas fa-image" style="font-size:30px;color:#fff;"></i>';
+    if (ultima.tipo === 'imagen' || (!ultima.tipo && ultima.url)) {
+      thumbUrl = ultima.url || '';
+      thumbIcon = '';
+    } else if (ultima.tipo === 'video') {
+      thumbUrl = ''; // El navegador no muestra frame en background-image
+      thumbIcon = '<i class="fas fa-play-circle" style="font-size:34px;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));"></i>';
+    } else if (ultima.tipo === 'enlace') {
+      thumbIcon = '<i class="fas fa-link" style="font-size:30px;color:#fff;"></i>';
+    } else if (ultima.tipo === 'encuesta') {
+      thumbIcon = '<i class="fas fa-poll" style="font-size:30px;color:#fff;"></i>';
+    }
+
     html += `<div class="historia-item" onclick="abrirStoryViewer('${uid}')">
       <div class="historia-ring ${todasVistas ? 'visto' : ''} ${!todasVistas ? 'activa' : ''}">
-        <div class="historia-avatar" style="background-image:url('${foto}'); background-size:cover; background-position:center;">
+        <div class="historia-avatar" style="background-image:url('${thumbUrl}'); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; background-color:${thumbUrl ? 'transparent' : '#1a1a2e'};">
+          ${thumbUrl ? '' : thumbIcon}
+        </div>
+        <div class="historia-mini-avatar" style="background-image:url('${foto}'); background-size:cover; background-position:center;">
           ${foto ? '' : nombre.charAt(0).toUpperCase()}
         </div>
       </div>
@@ -2308,10 +2387,8 @@ async function abrirStoryViewer(uid) {
   let query;
   const esPropia = currentUser && currentUser.uid === uid;
   if (esPropia) {
-    // Mis historias: todas (públicas + privadas)
     query = HISTORIAS.where('uid', '==', uid).orderBy('fecha', 'asc');
   } else {
-    // Historias de otros: sólo públicas
     query = HISTORIAS.where('uid', '==', uid).where('publica', '==', true).orderBy('fecha', 'asc');
   }
   let snap;
@@ -2700,6 +2777,7 @@ async function renderReelsSlides(reels) {
     const amigosComun = amigosComunMap[r.uid] || 0;
     const lugar = r.lugar || '';
     const comentariosRender = renderReelsComments(r);
+    const numComentarios = (r.comentarios || []).length;
 
     html += `<div class="reel-slide-full" data-reel-id="${r.id}">
       <div class="reel-full-video" data-video-container="${r.id}">
@@ -2719,6 +2797,10 @@ async function renderReelsSlides(reels) {
           <button class="reel-accion-btn ${prayed ? 'prayed' : ''}" onclick="orarReel('${r.id}')">
             <span class="circulo"><i class="fas fa-pray"></i></span>
             <span class="num">${orando.length}</span>
+          </button>
+          <button class="reel-accion-btn reel-comments-toggle" onclick="toggleReelComments('${r.id}')">
+            <span class="circulo"><i class="fas fa-comment"></i></span>
+            <span class="num">${numComentarios}</span>
           </button>
           <button class="reel-accion-btn" onclick="compartirReel('${r.id}')">
             <span class="circulo"><i class="fas fa-share"></i></span>
@@ -2742,7 +2824,7 @@ async function renderReelsSlides(reels) {
           <span><i class="fas fa-forward"></i></span>
         </div>
       </div>
-      <div class="reel-full-info">
+      <div class="reel-full-info" id="reel-info-${r.id}">
         <div class="reel-info-author">
           <img src="${autorFoto}" onerror="this.style.display='none'" onclick="cerrarReelsViewer(); verPerfil('${r.uid}')" style="cursor:pointer;">
           <div style="flex:1;">
@@ -2824,6 +2906,13 @@ async function renderReelsSlides(reels) {
       });
     }
   });
+}
+
+// ============ TOGGLE COMENTARIOS MÓVIL ============
+function toggleReelComments(id) {
+  const info = document.getElementById('reel-info-' + id);
+  if (!info) return;
+  info.classList.toggle('comments-open');
 }
 
 function renderReelsComments(r) {
@@ -4290,9 +4379,13 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
         <span><strong id="numSeguidores">0</strong> Seguidores</span>
         <span><strong id="numSeguidos">0</strong> Siguiendo</span>
       </div>
+      <div id="perfilHistoriasSection" style="margin-top:16px;">
+        <h4 style="display:flex; align-items:center; gap:6px;"><i class="fas fa-circle-notch" style="color:var(--gold);"></i> Historias activas</h4>
+        <div id="perfilHistoriasContainer"><p style="color:var(--text-secondary); font-size:13px;">Cargando historias...</p></div>
+      </div>
       <div id="galeriaFotosContainer"><p style="color:var(--text-secondary);">Cargando fotos...</p></div>
       ${infoHtml ? `<div class="info-grid">${infoHtml}</div>` : ''}
-      <div id="perfilPublicaciones" style="margin-top:20px;"><h4>Publicaciones</h4><div id="perfilFeed"></div></div>
+      <div id="perfilPublicaciones" style="margin-top:20px;"><h4 style="display:flex; align-items:center; gap:6px;"><i class="fas fa-newspaper" style="color:var(--teal);"></i> Publicaciones</h4><div id="perfilFeed"></div></div>
     </div>
   </div>
   <div class="modal-actions"><button class="btn-cancel" onclick="cerrarModal('perfilModal')">Cerrar</button></div>`;
@@ -4300,18 +4393,78 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
   abrirModal('perfilModal');
   cargarPublicacionesUsuario(uid);
   cargarSeguidores(uid);
+  cargarHistoriasPerfil(uid);
 
   USERS.doc(uid).collection('fotos').orderBy('fecha', 'desc').get().then(snapshot => {
     const fotos = []; snapshot.forEach(doc => fotos.push({ id: doc.id, ...doc.data() }));
     const container = document.getElementById('galeriaFotosContainer');
     if (!container) return;
-    if (fotos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay fotos.</p>'; return; }
+    if (fotos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No hay fotos en la galería.</p>'; return; }
     let ghtml = '<div style="margin:10px 0;"><h4>📸 Galería</h4><div class="galeria-grid">';
     fotos.forEach(foto => { ghtml += `<div class="galeria-item" data-foto-id="${foto.id}" data-uid="${uid}" style="cursor:pointer;"><div class="galeria-img-wrapper"><img src="${foto.url}" alt=""></div>${foto.desc ? `<div class="foto-desc">${foto.desc}</div>` : ''}</div>`; });
     ghtml += '</div></div>';
     container.innerHTML = ghtml;
   });
 }
+
+// ============ HISTORIAS EN EL PERFIL ============
+async function cargarHistoriasPerfil(uid) {
+  const container = document.getElementById('perfilHistoriasContainer');
+  if (!container) return;
+  const ahora = Date.now();
+  try {
+    let query;
+    const esPropio = currentUser && currentUser.uid === uid;
+    if (esPropio) {
+      query = HISTORIAS.where('uid', '==', uid);
+    } else {
+      query = HISTORIAS.where('uid', '==', uid).where('publica', '==', true);
+    }
+    const snap = await query.get();
+    const historias = [];
+    snap.forEach(doc => {
+      const h = { id: doc.id, ...doc.data() };
+      if (!h.fecha || !h.fecha.seconds) return;
+      if (h.fecha.seconds * 1000 + 24 * 60 * 60 * 1000 <= ahora) return;
+      historias.push(h);
+    });
+    if (historias.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No hay historias activas.</p>';
+      return;
+    }
+    historias.sort((a, b) => (a.fecha.seconds || 0) - (b.fecha.seconds || 0));
+    const foto = '';
+    let html = '<div style="display:flex; gap:10px; overflow-x:auto; padding:4px 0; scrollbar-width:none;">';
+    historias.forEach(h => {
+      let thumbUrl = '';
+      let iconHtml = '<i class="fas fa-image" style="font-size:24px;color:#fff;"></i>';
+      if (h.tipo === 'imagen' || (!h.tipo && h.url)) {
+        thumbUrl = h.url || '';
+        iconHtml = '';
+      } else if (h.tipo === 'video') {
+        thumbUrl = '';
+        iconHtml = '<i class="fas fa-play-circle" style="font-size:28px;color:#fff;"></i>';
+      } else if (h.tipo === 'enlace') {
+        iconHtml = '<i class="fas fa-link" style="font-size:24px;color:#fff;"></i>';
+      } else if (h.tipo === 'encuesta') {
+        iconHtml = '<i class="fas fa-poll" style="font-size:24px;color:#fff;"></i>';
+      }
+      html += `<div class="historia-item" onclick="cerrarModal('perfilModal'); setTimeout(()=>abrirStoryViewer('${uid}'), 200);" style="width:78px;">
+        <div class="historia-ring" style="width:78px; height:122px; border-radius:12px;">
+          <div class="historia-avatar" style="border-radius:9px; background-image:url('${thumbUrl}'); background-color:${thumbUrl ? 'transparent' : '#1a1a2e'}; display:flex; align-items:center; justify-content:center;">
+            ${thumbUrl ? '' : iconHtml}
+          </div>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  } catch (e) {
+    container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No se pudieron cargar las historias.</p>';
+  }
+}
+
+// ============ PUBLICACIONES EN EL PERFIL (con tarjetas completas) ============
 function cargarPublicacionesUsuario(uid) {
   const container = document.getElementById('perfilFeed');
   if (!container) return;
@@ -4320,7 +4473,25 @@ function cargarPublicacionesUsuario(uid) {
     const docs = []; snapshot.forEach(d => docs.push({ id: d.id, ...d.data() }));
     docs.sort((a,b) => (b.fecha?.seconds||0) - (a.fecha?.seconds||0));
     let html = '';
-    docs.forEach(p => { html += `<div class="post"><div class="post-content">${p.texto}</div></div>`; });
+    docs.forEach(p => {
+      const fecha = p.fecha ? new Date(p.fecha.seconds * 1000).toLocaleString() : '';
+      const catLabels = { testimonio: 'Testimonio', obra: 'Obra', oracion: 'Oración', encuesta: 'Encuesta', campania: 'Campaña', otro: 'Otro' };
+      html += `<div class="post" style="margin-bottom:12px;">
+        <div class="post-time" style="font-size:11px; color:var(--text-secondary); margin-bottom:4px;">${fecha}</div>
+        ${p.categoria ? `<span class="post-categoria">${catLabels[p.categoria] || p.categoria}</span>` : ''}
+        <div class="post-content">${p.texto || ''}</div>`;
+      if (p.media) {
+        if (p.media.type === 'image') html += `<img src="${p.media.data}" class="post-media" style="max-height:220px; cursor:pointer;" onclick="event.stopPropagation(); abrirMediaViewer(['${p.media.data}'], 0, 'image')">`;
+        else if (p.media.type === 'video') html += `<video controls class="post-media" src="${p.media.data}" style="max-height:220px;"></video>`;
+      }
+      if (p.link) html += `<div style="margin:4px 0;"><a href="${p.link}" target="_blank" style="color:var(--teal); font-size:13px;">${p.link}</a></div>`;
+      html += `<div class="post-actions" style="border-top:1px solid var(--border-color); padding-top:6px; margin-top:6px; display:flex; gap:14px;">
+        <span style="font-size:12px; color:var(--text-secondary);"><i class="fas fa-heart" style="color:#e74c3c;"></i> ${p.likes ? p.likes.length : 0}</span>
+        <span style="font-size:12px; color:var(--text-secondary);"><i class="fas fa-pray" style="color:#6a1b9a;"></i> ${p.orando ? p.orando.length : 0}</span>
+        <span style="font-size:12px; color:var(--text-secondary);"><i class="fas fa-comment"></i> ${p.comentarios ? p.comentarios.length : 0}</span>
+      </div>
+      </div>`;
+    });
     container.innerHTML = html;
   }).catch(() => { container.innerHTML = '<p style="color:var(--text-secondary);">No se pudieron cargar las publicaciones.</p>'; });
 }
@@ -5137,7 +5308,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   setInterval(() => { renderHistorias(); }, 5 * 60 * 1000);
 
-  console.log('✅ SAL Y LUZ v9: historias públicas, perfiles sin login y visor de galería completo.');
+  console.log('✅ SAL Y LUZ v10: historias verticales + perfil con historias/publicaciones + reels móvil con toggle comentarios.');
 });
 
 // Exposición global
@@ -5179,6 +5350,7 @@ window.enviarRespuesta = enviarRespuesta;
 window.toggleOcultarComentario = toggleOcultarComentario;
 window.eliminarComentario = eliminarComentario;
 window.eliminarRespuesta = eliminarRespuesta;
+window.toggleReelComments = toggleReelComments;
 window.renderHistorias = renderHistorias;
 window.abrirModalHistoria = abrirModalHistoria;
 window.publicarHistoria = publicarHistoria;
@@ -5317,6 +5489,7 @@ window.toggleTheme = toggleTheme;
 window.renderAdminHistorias = renderAdminHistorias;
 window.renderAdminEventos = renderAdminEventos;
 window.renderAdminNoticias = renderAdminNoticias;
+window.cargarHistoriasPerfil = cargarHistoriasPerfil;
 window.getServiciosRef = getServiciosRef;
 window.getReportesRef = getReportesRef;
 window.USERS = USERS;

@@ -153,18 +153,18 @@
       .historia-nombre { font-size: 10px; max-width: 76px; }
     }
 
-    /* ============ STORY VIEWER TIPO REEL ============ */
+    /* ============ STORY VIEWER ESTILO FACEBOOK/REEL ============ */
     .story-viewer { position: fixed; inset: 0; background: #000; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
     .story-viewer.show { display: flex; }
-    .story-progress-bar { position: absolute; top: 8px; left: 8px; right: 8px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 3px; z-index: 30; display: flex; gap: 3px; }
+    .story-progress-bar { position: absolute; top: 12px; left: 12px; right: 12px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 3px; z-index: 30; display: flex; gap: 4px; }
     .story-progress-seg { flex: 1; background: rgba(255,255,255,0.35); border-radius: 3px; overflow: hidden; }
     .story-progress-fill { height: 100%; background: #fff; width: 0%; transition: width 0.1s linear; }
-    .story-header { position: absolute; top: 20px; left: 16px; right: 16px; display: flex; align-items: center; gap: 10px; z-index: 20; color: #fff; }
-    .story-header img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; background: var(--teal-light); }
+    .story-header { position: absolute; top: 24px; left: 16px; right: 16px; display: flex; align-items: center; gap: 10px; z-index: 20; color: #fff; }
+    .story-header img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: var(--teal-light); border: 2px solid rgba(255,255,255,0.6); }
     .story-header .info { flex: 1; }
     .story-header .name { font-weight: 600; font-size: 14px; }
     .story-header .time { font-size: 11px; opacity: 0.75; }
-    .story-header .close-btn { background: rgba(0,0,0,0.5); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 16px; cursor: pointer; }
+    .story-header .close-btn { background: rgba(0,0,0,0.5); border: none; color: #fff; width: 38px; height: 38px; border-radius: 50%; font-size: 16px; cursor: pointer; }
     .story-content { position: relative; width: 100%; height: 100%; max-width: 100%; max-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .story-content img, .story-content video {
       max-width: 100%; max-height: 100vh; width: auto; height: auto;
@@ -183,18 +183,128 @@
     .story-nav-left, .story-nav-right { position: absolute; top: 0; bottom: 0; width: 40%; z-index: 10; cursor: pointer; background: transparent; border: none; }
     .story-nav-left { left: 0; }
     .story-nav-right { right: 0; }
-    .story-delete-btn { position: absolute; bottom: 20px; right: 20px; z-index: 20; background: rgba(231,76,60,0.8); color: #fff; border: none; padding: 8px 16px; border-radius: 30px; cursor: pointer; font-size: 13px; }
-    .story-views-info { position: absolute; bottom: 20px; left: 20px; z-index: 20; background: rgba(0,0,0,0.5); color: #fff; padding: 6px 14px; border-radius: 30px; font-size: 12px; }
+    .story-delete-btn { position: absolute; bottom: 90px; right: 20px; z-index: 20; background: rgba(231,76,60,0.85); color: #fff; border: none; padding: 8px 16px; border-radius: 30px; cursor: pointer; font-size: 13px; }
+    .story-views-info { position: absolute; bottom: 90px; left: 20px; z-index: 20; background: rgba(0,0,0,0.6); color: #fff; padding: 6px 14px; border-radius: 30px; font-size: 12px; }
 
-    /* ============ SELECTOR USUARIOS HISTORIA ============ */
-    .historia-user-pick { display: flex; align-items: center; gap: 8px; padding: 6px 2px; cursor: pointer; border-bottom: 1px solid var(--border-color); }
-    .historia-user-pick:last-child { border-bottom: none; }
-    .historia-user-pick input[type="checkbox"] { width: auto; margin: 0; }
-    .historia-user-avatar {
-      width: 28px; height: 28px; border-radius: 50%; background-size: cover;
-      background-position: center; background-color: var(--teal);
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 11px; font-weight: 600; flex-shrink: 0;
+    /* ============ STORY REACTIONS BAR ============ */
+    .story-reactions-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 14px 16px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 25;
+    }
+    .story-reaction-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.15s;
+      backdrop-filter: blur(6px);
+    }
+    .story-reaction-btn:hover { background: rgba(255,255,255,0.3); }
+    .story-reaction-btn.liked { background: #e74c3c; border-color: #e74c3c; }
+    .story-reaction-btn.disliked { background: #e67e22; border-color: #e67e22; }
+    .story-reaction-btn.prayed { background: #6a1b9a; border-color: #6a1b9a; }
+    .story-desc-box {
+      position: absolute;
+      bottom: 68px;
+      left: 14px;
+      right: 14px;
+      color: #fff;
+      font-size: 13px;
+      background: rgba(0,0,0,0.45);
+      padding: 8px 12px;
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      z-index: 24;
+      max-height: 60px;
+      overflow-y: auto;
+    }
+
+    /* ============ GALERÍA VIEWER (CARRUSEL) ============ */
+    .galeria-viewer {
+      position: fixed; inset: 0; background: #000; z-index: 9999;
+      display: none; overflow: hidden;
+    }
+    .galeria-viewer.show { display: block; }
+    .galeria-viewer-close {
+      position: absolute; top: 16px; right: 16px; z-index: 100;
+      background: rgba(255,255,255,0.15); color: white; border: none;
+      width: 42px; height: 42px; border-radius: 50%; font-size: 18px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px);
+    }
+    .galeria-viewer-close:hover { background: rgba(255,255,255,0.3); }
+    .galeria-viewer-scroll {
+      height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    }
+    .galeria-viewer-scroll::-webkit-scrollbar { display: none; }
+    .galeria-slide-full {
+      height: 100vh; scroll-snap-align: start;
+      display: flex; flex-direction: column;
+      position: relative; background: #000;
+    }
+    .galeria-slide-media {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      min-height: 0; position: relative;
+    }
+    .galeria-slide-media img {
+      max-width: 100%; max-height: 100%; object-fit: contain; display: block;
+    }
+    .galeria-slide-info {
+      background: #12121a; color: #fff;
+      padding: 14px 16px; max-height: 35vh; overflow-y: auto;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .galeria-slide-info .titulo { font-weight: 700; font-size: 15px; }
+    .galeria-slide-info .desc { font-size: 13px; line-height: 1.5; opacity: 0.9; }
+    .galeria-slide-info .hashtags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+    .galeria-slide-info .hashtag { font-size: 12px; color: #7ee2c2; }
+    .galeria-slide-info .etiquetados { font-size: 12px; color: #b0b8c0; }
+    .galeria-slide-info .autor { display: flex; align-items: center; gap: 10px; }
+    .galeria-slide-info .autor img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+    .galeria-slide-info .autor .name { font-weight: 600; font-size: 13px; }
+    .galeria-slide-info .autor .date { font-size: 11px; opacity: 0.7; }
+    .galeria-slide-actions {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px;
+    }
+    .galeria-slide-actions button {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; padding: 6px 14px; border-radius: 30px; cursor: pointer;
+      font-size: 12px; display: inline-flex; align-items: center; gap: 5px;
+    }
+    .galeria-slide-actions button.liked { background: #e74c3c; border-color: #e74c3c; }
+    .galeria-slide-actions button.disliked { background: #e67e22; border-color: #e67e22; }
+    .galeria-slide-actions button.prayed { background: #6a1b9a; border-color: #6a1b9a; }
+    .galeria-slide-counter {
+      position: absolute; top: 16px; left: 16px; z-index: 20;
+      background: rgba(0,0,0,0.55); color: #fff;
+      padding: 6px 14px; border-radius: 30px; font-size: 12px;
+      backdrop-filter: blur(6px);
+    }
+    @media (min-width: 769px) {
+      .galeria-slide-full { flex-direction: row; }
+      .galeria-slide-media { flex: 0 0 68%; }
+      .galeria-slide-info {
+        flex: 1; max-height: 100vh; padding: 70px 22px 20px;
+        border-top: none; border-left: 1px solid rgba(255,255,255,0.1);
+      }
+      .galeria-viewer-close { right: calc(32% + 20px); }
+      .galeria-slide-counter { top: 20px; left: 20px; }
     }
 
     .chat-privado-box { max-width: 500px !important; padding: 0 !important; overflow: hidden; }
@@ -253,7 +363,6 @@
     .reel-comment-actions button.liked { color: #e74c3c; }
     .reel-comment-actions button.disliked { color: #e67e22; }
     .reel-comment-actions button.prayed { color: #c39bff; }
-    .reel-comment-actions button.oculto { color: #f39c12; }
     .reel-comment-respuestas { margin-top: 6px; padding-left: 12px; border-left: 2px solid rgba(255,255,255,0.15); display: flex; flex-direction: column; gap: 6px; }
     .reel-comment-respuesta { display: flex; gap: 6px; align-items: flex-start; }
     .reel-comment-respuesta .reel-comment-avatar { width: 24px; height: 24px; font-size: 11px; }
@@ -301,7 +410,6 @@
       .reel-comments-toggle { display: none !important; }
     }
 
-    /* ============ REELS MÓVIL SIMÉTRICO + COMENTARIOS TOGGLE ============ */
     @media (max-width: 768px) {
       .reel-slide-full {
         display: flex;
@@ -341,7 +449,6 @@
       .reel-accion-btn .circulo { width: 40px; height: 40px; font-size: 18px; }
       .reel-accion-btn .num { font-size: 10px; }
       .reel-seguir-btn { display: block; }
-      /* Comentarios ocultos por defecto en móvil */
       .reel-info-comments { display: none !important; }
       .reel-info-comment-box { display: none !important; }
       .reel-full-info.comments-open .reel-info-comments { display: flex !important; max-height: 32vh; overflow-y: auto; }
@@ -356,7 +463,6 @@
     .reels-placeholder h3 { font-size: 20px; margin-bottom: 8px; color: var(--text-primary); }
     .reels-placeholder p { font-size: 14px; margin-bottom: 16px; }
 
-    /* ============ REELS: BOTONES SOLO ICONOS ============ */
     .reels-main-actions { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 18px; padding: 24px 0; }
     .reels-icon-btn {
       width: 62px; height: 62px; border-radius: 50%;
@@ -441,6 +547,24 @@
     .galeria-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }
     .galeria-img-wrapper:hover img { transform: scale(1.06); }
     .galeria-item .foto-desc { padding: 6px 10px; font-size: 12px; color: var(--text-secondary); background: var(--bg-body); border-top: 1px solid var(--border-color); }
+    .galeria-eliminar-btn {
+      position: absolute; top: 6px; right: 6px; z-index: 3;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(231,76,60,0.9); color: #fff; border: none;
+      cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center;
+    }
+    .galeria-eliminar-btn:hover { background: #c0392b; }
+    .galeria-subir-card {
+      display: flex; align-items: center; justify-content: center;
+      aspect-ratio: 1/1; border-radius: 12px; cursor: pointer;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #fff; font-size: 32px; border: none;
+      box-shadow: 0 6px 18px rgba(212,175,55,0.45);
+      transition: transform 0.2s;
+    }
+    .galeria-subir-card:hover { transform: scale(1.04); }
+    .galeria-subir-card .label { font-size: 11px; font-weight: 600; margin-top: 4px; }
+    .galeria-subir-card .icon-wrap { display: flex; flex-direction: column; align-items: center; }
     .foto-viewer-reaction-btn { background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 30px; padding: 4px 12px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; color: var(--text-secondary); transition: 0.15s; }
     .foto-viewer-reaction-btn:hover { background: var(--border-color); }
     .foto-viewer-reaction-btn.liked { color: #e74c3c; border-color: #e74c3c; }
@@ -619,6 +743,50 @@
     .admin-ia-config label { font-weight: 500; font-size: 13px; margin-top: 6px; display: block; }
     .admin-ia-config input, .admin-ia-config textarea, .admin-ia-config select { width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: white; color: var(--text-primary); font-size: 13px; margin-top: 2px; }
     body.dark .admin-ia-config input, body.dark .admin-ia-config textarea, body.dark .admin-ia-config select { background: #1a1a2e; }
+
+    /* ============ SELECTOR USUARIOS HISTORIA ============ */
+    .historia-user-pick { display: flex; align-items: center; gap: 8px; padding: 6px 2px; cursor: pointer; border-bottom: 1px solid var(--border-color); }
+    .historia-user-pick:last-child { border-bottom: none; }
+    .historia-user-pick input[type="checkbox"] { width: auto; margin: 0; }
+    .historia-user-avatar {
+      width: 28px; height: 28px; border-radius: 50%; background-size: cover;
+      background-position: center; background-color: var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 11px; font-weight: 600; flex-shrink: 0;
+    }
+
+    /* ============ EDITAR PERFIL: MINIATURAS ============ */
+    .edit-mini-preview {
+      width: 80px; height: 80px; border-radius: 10px;
+      background: var(--bg-body); border: 1px solid var(--border-color);
+      background-size: cover; background-position: center;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-secondary); font-size: 24px;
+      position: relative; overflow: hidden;
+    }
+    .edit-mini-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .edit-preview-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 6px 0; }
+    .edit-preview-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .edit-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 8px; }
+    .edit-gallery-item {
+      aspect-ratio: 1/1; border-radius: 8px; overflow: hidden;
+      background: #000; position: relative;
+    }
+    .edit-gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    .edit-gallery-item .del-btn {
+      position: absolute; top: 4px; right: 4px;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(231,76,60,0.9); color: #fff; border: none;
+      cursor: pointer; font-size: 11px; display: flex; align-items: center; justify-content: center;
+    }
+    .edit-gallery-add {
+      aspect-ratio: 1/1; border-radius: 8px; cursor: pointer;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #fff; border: none; display: flex; align-items: center; justify-content: center;
+      font-size: 22px; box-shadow: 0 4px 12px rgba(212,175,55,0.4);
+      transition: transform 0.2s;
+    }
+    .edit-gallery-add:hover { transform: scale(1.05); }
   </style>
 </head>
 <body>
@@ -1148,22 +1316,40 @@
       <input type="tel" id="editTelefono">
       <label>Edad *</label>
       <input type="number" id="editEdad">
-      <label>Foto de perfil</label>
-      <input type="file" id="editFotoPerfilFile" accept="image/jpeg,image/png" style="margin:4px 0;">
-      <div id="editFotoPerfilPreview" style="max-width:100px; max-height:100px; overflow:hidden; border-radius:8px; margin:4px 0;">
-        <img id="editFotoPerfilImg" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-      </div>
-      <label>Foto de portada</label>
-      <input type="file" id="editPortadaFile" accept="image/jpeg,image/png" style="margin:4px 0;">
-      <div id="editPortadaPreview" style="max-width:200px; max-height:100px; overflow:hidden; border-radius:8px; margin:4px 0;">
-        <img id="editPortadaImg" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
-      </div>
+
       <hr style="border-color:var(--border-color); margin:12px 0;">
-      <h5>Galería de fotos</h5>
-      <label>Imágenes JPG/PNG (máx 5)</label>
-      <input type="file" id="editFotosPerfil" accept="image/jpeg,image/png" multiple style="margin:4px 0;">
-      <label>Descripción</label>
-      <input type="text" id="editFotosDesc" placeholder="Descripción de las fotos...">
+      <h5>Foto de perfil</h5>
+      <div class="edit-preview-row">
+        <div class="edit-mini-preview" id="editFotoPerfilMini">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="edit-preview-actions">
+          <input type="file" id="editFotoPerfilFile" accept="image/jpeg,image/png" style="display:none;">
+          <button class="btn-outline" type="button" onclick="document.getElementById('editFotoPerfilFile').click()"><i class="fas fa-upload"></i> Subir foto</button>
+          <button class="btn-danger" type="button" onclick="eliminarFotoPerfilDesdeEditar()"><i class="fas fa-trash"></i> Eliminar</button>
+        </div>
+      </div>
+
+      <h5>Foto de portada</h5>
+      <div class="edit-preview-row">
+        <div class="edit-mini-preview" id="editPortadaMini" style="width:140px; height:80px;">
+          <i class="fas fa-image"></i>
+        </div>
+        <div class="edit-preview-actions">
+          <input type="file" id="editPortadaFile" accept="image/jpeg,image/png" style="display:none;">
+          <button class="btn-outline" type="button" onclick="document.getElementById('editPortadaFile').click()"><i class="fas fa-upload"></i> Subir portada</button>
+          <button class="btn-danger" type="button" onclick="eliminarPortadaDesdeEditar()"><i class="fas fa-trash"></i> Eliminar</button>
+        </div>
+      </div>
+
+      <hr style="border-color:var(--border-color); margin:12px 0;">
+      <h5>Galería de fotos <span style="font-size:12px; color:var(--text-secondary);">(máx 100)</span></h5>
+      <div id="editGaleriaGrid" class="edit-gallery-grid"></div>
+      <input type="file" id="editGaleriaFile" accept="image/jpeg,image/png" style="display:none;" multiple>
+
+      <label>Descripción de las fotos</label>
+      <input type="text" id="editFotosDesc" placeholder="Descripción...">
+
       <label>Biografía / Testimonio</label>
       <textarea id="editBiografia" rows="3"></textarea>
       <label>Iglesia / Ministerio</label>
@@ -1199,6 +1385,15 @@
       <input type="text" id="editExperiencia">
       <hr style="border-color:var(--border-color); margin:12px 0;">
       <h5>Privacidad</h5>
+      <div style="background:var(--bg-body); padding:10px; border-radius:10px; border:1px solid var(--border-color); margin-bottom:8px;">
+        <label style="display:flex; align-items:center; gap:8px; margin:0; font-weight:500;">
+          <input type="checkbox" id="editPerfilSoloSeguidores" checked>
+          <span>🔒 Solo mis seguidores pueden ver mi perfil</span>
+        </label>
+        <div style="font-size:11px; color:var(--text-secondary); margin-top:4px; margin-left:24px;">
+          Si desactivas esta opción, cualquier persona (incluso sin seguirte) podrá ver tu perfil.
+        </div>
+      </div>
       <div class="checkbox-group" id="editPrivacidadContainer">
         <label><input type="checkbox" data-campo="biografia" checked> Biografía</label>
         <label><input type="checkbox" data-campo="situacionLaboral" checked> Situación laboral</label>
@@ -1567,6 +1762,45 @@
     </div>
   </div>
 
+  <!-- MODAL SUBIR FOTO A GALERÍA CON METADATOS -->
+  <div class="modal-overlay" id="fotoGaleriaModal">
+    <div class="modal-box" style="max-width:560px;">
+      <h3><i class="fas fa-camera"></i> Subir foto a la galería</h3>
+      <label>Imagen *</label>
+      <input type="file" id="fotoGaleriaFile" accept="image/jpeg,image/png">
+      <div id="fotoGaleriaPreview" class="preview-container"></div>
+      <label>Título</label>
+      <input type="text" id="fotoGaleriaTitulo" placeholder="Ej: Atardecer en la playa">
+      <label>Descripción</label>
+      <textarea id="fotoGaleriaDesc" rows="2" placeholder="Describe tu foto..."></textarea>
+      <label>Hashtags (separados por espacios o comas)</label>
+      <input type="text" id="fotoGaleriaHashtags" placeholder="#fe #amor #comunidad">
+      <label>Etiquetar usuarios</label>
+      <input type="text" id="fotoGaleriaBuscarUser" placeholder="Buscar usuario..." oninput="filtrarEtiquetarGaleria()" style="margin-bottom:6px;">
+      <div id="fotoGaleriaUsuariosLista" style="max-height:140px; overflow-y:auto; padding:6px; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-body);">
+        <p style="color:var(--text-secondary); font-size:12px;">Cargando usuarios...</p>
+      </div>
+      <label>Etiquetar iglesias</label>
+      <div id="fotoGaleriaIglesiasLista" style="max-height:120px; overflow-y:auto; padding:6px; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-body);">
+        <p style="color:var(--text-secondary); font-size:12px;">Cargando iglesias...</p>
+      </div>
+      <label>Etiquetar grupos</label>
+      <div id="fotoGaleriaGruposLista" style="max-height:120px; overflow-y:auto; padding:6px; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-body);">
+        <p style="color:var(--text-secondary); font-size:12px;">Cargando grupos...</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="cerrarModal('fotoGaleriaModal')">Cancelar</button>
+        <button class="btn-confirm" onclick="subirFotoGaleriaConMetadata()">Subir foto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISOR CARRUSEL GALERÍA -->
+  <div class="galeria-viewer" id="galeriaViewer">
+    <button class="galeria-viewer-close" onclick="cerrarGaleriaViewer()" title="Cerrar"><i class="fas fa-times"></i></button>
+    <div class="galeria-viewer-scroll" id="galeriaViewerScroll"></div>
+  </div>
+
   <div class="modal-overlay" id="qrModal">
     <div class="modal-box">
       <h3 style="justify-content:center;"><i class="fas fa-qrcode"></i> Compartir Perfil</h3>
@@ -1667,6 +1901,10 @@
         <label>Opciones (separadas por comas)</label>
         <input type="text" id="historiaEncuestaOpciones" placeholder="Opción 1, Opción 2">
       </div>
+
+      <label>Descripción breve (opcional)</label>
+      <input type="text" id="historiaDescripcion" placeholder="Escribe una breve descripción...">
+
       <div class="modal-actions">
         <button class="btn-cancel" id="historiaCancel">Cancelar</button>
         <button class="btn-confirm" id="historiaPublicar">Publicar</button>
@@ -1680,6 +1918,14 @@
     <div class="story-content" id="storyContent">
       <button class="story-nav-left" onclick="storyAnterior()"></button>
       <button class="story-nav-right" onclick="storySiguiente()"></button>
+    </div>
+    <div class="story-desc-box" id="storyDescBox" style="display:none;"></div>
+    <div class="story-reactions-bar" id="storyReactionsBar">
+      <button class="story-reaction-btn" id="storyLikeBtn" onclick="reaccionarHistoria('like')"><i class="fas fa-heart"></i> <span id="storyLikeCount">0</span></button>
+      <button class="story-reaction-btn" id="storyDislikeBtn" onclick="reaccionarHistoria('dislike')"><i class="fas fa-thumbs-down"></i> <span id="storyDislikeCount">0</span></button>
+      <button class="story-reaction-btn" id="storyPrayBtn" onclick="reaccionarHistoria('orando')"><i class="fas fa-pray"></i> <span id="storyPrayCount">0</span></button>
+      <button class="story-reaction-btn" onclick="compartirHistoria()"><i class="fas fa-share"></i> Compartir</button>
+      <button class="story-reaction-btn" onclick="comentarHistoria()"><i class="fas fa-comment"></i> <span id="storyCommentCount">0</span></button>
     </div>
     <div class="story-views-info" id="storyViewsInfo"></div>
     <button class="story-delete-btn" id="storyDeleteBtn" style="display:none;" onclick="eliminarHistoriaActual()">
@@ -1781,6 +2027,7 @@ const CHATS_PRIVADOS = db.collection('chats_privados');
 const PROYECTOS = db.collection('proyectos');
 const PROYECTO_POSTS = (pid) => PROYECTOS.doc(pid).collection('posts');
 const PROYECTO_CHAT = (pid) => PROYECTOS.doc(pid).collection('mensajes');
+const GALERIA_FOTOS = (uid) => USERS.doc(uid).collection('fotos');
 
 // ================================================================
 // 2. ESTADO GLOBAL
@@ -1816,6 +2063,10 @@ let proyectoPostUnsub = null;
 let mediaViewerItems = [];
 let mediaViewerIndex = 0;
 let mediaViewerActual = null;
+let galeriaViewerUnsub = null;
+let galeriaViewerFotos = [];
+let galeriaViewerUid = null;
+let galeriaViewerIndex = 0;
 
 const STORAGE_KEYS = {
   historialBiblia: 'iglesia_historial_biblia',
@@ -1826,6 +2077,8 @@ const STORAGE_KEYS = {
 let bibliaFuenteSize = parseInt(localStorage.getItem(STORAGE_KEYS.bibliaFuente)) || 14;
 let capitulosCache = {};
 let capituloKeys = [];
+
+const MAX_GALERIA = 100;
 
 // ================================================================
 // 3. UTILIDADES
@@ -1876,6 +2129,7 @@ window.registerUser = async function(email, password, nombre, telefono, edad, ap
       ministerio: '', situacionLaboral: '', situacionSentimental: '', nacionalidad: '',
       fechaNacimiento: '', estudios: '', talentos: '', caracter: '', experiencia: '',
       fotosPerfil: [],
+      perfilSoloSeguidores: true,
       privacidad: { biografia: true, situacionLaboral: true, situacionSentimental: true,
         nacionalidad: true, fechaNacimiento: true, estudios: true,
         talentos: true, telefono: true, edad: true, iglesia: true,
@@ -1911,6 +2165,7 @@ async function cargarUsuarioActual(user) {
         nacionalidad: data.nacionalidad || '', fechaNacimiento: data.fechaNacimiento || '',
         estudios: data.estudios || '', talentos: data.talentos || '', caracter: data.caracter || '',
         experiencia: data.experiencia || '', fotosPerfil: data.fotosPerfil || [],
+        perfilSoloSeguidores: data.perfilSoloSeguidores !== false,
         privacidad: data.privacidad || {}
       };
     } else {
@@ -1920,6 +2175,7 @@ async function cargarUsuarioActual(user) {
         iglesia: '', ministerio: '', situacionLaboral: '', situacionSentimental: '',
         nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '', caracter: '',
         experiencia: '', fotosPerfil: [],
+        perfilSoloSeguidores: true,
         privacidad: { historias: true },
         fechaRegistro: firebase.firestore.FieldValue.serverTimestamp()
       });
@@ -1928,7 +2184,7 @@ async function cargarUsuarioActual(user) {
         telefono: '', edad: '', apoyos: [], fotoPerfil: '', portada: '', biografia: '',
         iglesia: '', ministerio: '', situacionLaboral: '', situacionSentimental: '',
         nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '', caracter: '',
-        experiencia: '', fotosPerfil: [], privacidad: { historias: true }
+        experiencia: '', fotosPerfil: [], perfilSoloSeguidores: true, privacidad: { historias: true }
       };
     }
     isSuperAdmin = (user.email === 'salyluz@comunidad.com');
@@ -1970,6 +2226,7 @@ window.logoutUser = async function() {
     miUbicacionMarker = null;
     cerrarChatPrivado();
     cerrarReelsViewer();
+    cerrarGaleriaViewer();
   } catch (error) { console.error('Error al cerrar sesión:', error); }
 };
 
@@ -2230,7 +2487,6 @@ function eliminarElementoCarrusel(id) { if (!isAdmin) return; if (!confirm('¿El
 // ================================================================
 // 6.2 HISTORIAS (24h) — VISIBILIDAD CONTROLADA POR EL AUTOR
 // ================================================================
-// Determina si el usuario actual puede ver la historia
 function puedeVerHistoria(h, misSeguidos) {
   if (!h) return false;
   if (currentUser && h.uid === currentUser.uid) return true;
@@ -2263,7 +2519,6 @@ function renderHistorias() {
 
   if (listeners.historias) { listeners.historias(); listeners.historias = null; }
 
-  // Traemos TODAS las historias (de los últimos 24h) y filtramos por visibilidad en cliente
   listeners.historias = HISTORIAS.orderBy('fecha', 'desc').limit(300).onSnapshot(async snap => {
     const ahora = Date.now();
     const todas = [];
@@ -2274,7 +2529,6 @@ function renderHistorias() {
       todas.push(h);
     });
 
-    // Cargar seguidos del usuario actual
     let misSeguidos = new Set();
     if (currentUser) {
       try {
@@ -2283,7 +2537,6 @@ function renderHistorias() {
       } catch(e) {}
     }
 
-    // Filtrar por visibilidad
     const visibles = todas.filter(h => puedeVerHistoria(h, misSeguidos));
     pintarBarraHistorias(visibles);
   }, err => { console.warn('historias err', err); });
@@ -2381,6 +2634,7 @@ function abrirModalHistoria() {
   document.getElementById('historiaLinkTexto').value = '';
   document.getElementById('historiaEncuestaPregunta').value = '';
   document.getElementById('historiaEncuestaOpciones').value = '';
+  document.getElementById('historiaDescripcion').value = '';
   document.getElementById('historiaPreviewImg').innerHTML = '';
   document.getElementById('historiaPreviewVideo').innerHTML = '';
   document.getElementById('historiaPermitidosBlock').style.display = 'none';
@@ -2442,6 +2696,7 @@ function publicarHistoria() {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   const tipo = document.getElementById('historiaTipo').value;
   const visibilidad = document.getElementById('historiaVisibilidad').value || 'publica';
+  const descripcion = document.getElementById('historiaDescripcion').value.trim();
 
   const permitidos = [];
   if (visibilidad === 'personalizada') {
@@ -2457,7 +2712,13 @@ function publicarHistoria() {
     visibilidad,
     permitidos: visibilidad === 'personalizada' ? permitidos : [],
     publica: visibilidad === 'publica',
+    descripcion,
     vistas: [],
+    likes: [],
+    dislikes: [],
+    orando: [],
+    comentarios: [],
+    compartidos: 0,
     fecha: firebase.firestore.FieldValue.serverTimestamp()
   };
 
@@ -2577,6 +2838,36 @@ function mostrarHistoriaActual() {
   }
   content.innerHTML = contentHtml;
 
+  // Descripción
+  const descBox = document.getElementById('storyDescBox');
+  if (h.descripcion) {
+    descBox.textContent = h.descripcion;
+    descBox.style.display = 'block';
+  } else {
+    descBox.style.display = 'none';
+  }
+
+  // Contadores y estado de reacciones
+  const likes = h.likes || [];
+  const dislikes = h.dislikes || [];
+  const orando = h.orando || [];
+  const comentarios = h.comentarios || [];
+  const liked = currentUser && likes.includes(currentUser.uid);
+  const disliked = currentUser && dislikes.includes(currentUser.uid);
+  const prayed = currentUser && orando.includes(currentUser.uid);
+
+  document.getElementById('storyLikeCount').textContent = likes.length;
+  document.getElementById('storyDislikeCount').textContent = dislikes.length;
+  document.getElementById('storyPrayCount').textContent = orando.length;
+  document.getElementById('storyCommentCount').textContent = comentarios.length;
+
+  const likeBtn = document.getElementById('storyLikeBtn');
+  const dislikeBtn = document.getElementById('storyDislikeBtn');
+  const prayBtn = document.getElementById('storyPrayBtn');
+  likeBtn.classList.toggle('liked', !!liked);
+  dislikeBtn.classList.toggle('disliked', !!disliked);
+  prayBtn.classList.toggle('prayed', !!prayed);
+
   const vistas = h.vistas || [];
   document.getElementById('storyViewsInfo').textContent = vistas.length + ' vista' + (vistas.length !== 1 ? 's' : '');
 
@@ -2643,6 +2934,65 @@ function votarHistoria(historiaId, opcion) {
     });
   });
 }
+
+// ============ REACCIONAR A HISTORIA ============
+function reaccionarHistoria(tipo) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const h = storyActual.historias[storyActual.index];
+  if (!h) return;
+  HISTORIAS.doc(h.id).get().then(doc => {
+    if (!doc.exists) return;
+    const data = doc.data();
+    const upd = {};
+    const actual = data[tipo] || [];
+    const i = actual.indexOf(currentUser.uid);
+    const nuevo = actual.slice();
+    if (i > -1) nuevo.splice(i, 1); else nuevo.push(currentUser.uid);
+    upd[tipo] = nuevo;
+
+    // Quitar reacción opuesta para like/dislike
+    if (tipo === 'likes') upd.dislikes = (data.dislikes || []).filter(u => u !== currentUser.uid);
+    if (tipo === 'dislikes') upd.likes = (data.likes || []).filter(u => u !== currentUser.uid);
+
+    HISTORIAS.doc(h.id).update(upd).then(() => {
+      Object.assign(storyActual.historias[storyActual.index], upd);
+      mostrarHistoriaActual();
+    });
+  });
+}
+
+function compartirHistoria() {
+  const h = storyActual.historias[storyActual.index];
+  if (!h) return;
+  const url = window.location.href + '?historia=' + h.id;
+  HISTORIAS.doc(h.id).update({ compartidos: (h.compartidos || 0) + 1 }).catch(()=>{});
+  if (navigator.share) navigator.share({ title: 'Historia', url }).catch(()=>{});
+  else navigator.clipboard.writeText(url).then(() => alert('Enlace copiado.')).catch(()=>{});
+}
+
+function comentarHistoria() {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const h = storyActual.historias[storyActual.index];
+  if (!h) return;
+  const texto = prompt('Escribe un comentario:');
+  if (!texto || !texto.trim()) return;
+  HISTORIAS.doc(h.id).get().then(doc => {
+    if (!doc.exists) return;
+    const arr = doc.data().comentarios || [];
+    arr.push({
+      uid: currentUser.uid,
+      autor: currentUser.displayName,
+      autorFoto: currentUser.fotoPerfil || '',
+      texto: texto.trim(),
+      fecha: new Date().toISOString()
+    });
+    HISTORIAS.doc(h.id).update({ comentarios: arr }).then(() => {
+      Object.assign(storyActual.historias[storyActual.index], { comentarios: arr });
+      mostrarHistoriaActual();
+    });
+  });
+}
+
 function eliminarHistoriaActual() {
   const h = storyActual.historias[storyActual.index];
   if (!h) return;
@@ -4438,24 +4788,72 @@ function guardarNoticia() {
   else { data.fecha = firebase.firestore.FieldValue.serverTimestamp(); NOTICIAS.add(data).then(() => { cerrarModal('noticiaModal'); renderNoticias(); }); }
 }
 function eliminarNoticia(id) { if (!isAdmin || !confirm('¿Eliminar?')) return; NOTICIAS.doc(id).delete().then(() => renderNoticias()); }
-
+</script>
+<script>
 // ================================================================
-// 19. PERFIL (público, sin necesidad de iniciar sesión)
+// 19. PERFIL CON PRIVACIDAD POR SEGUIDORES + GALERÍA MEJORADA
 // ================================================================
-function verPerfil(uid) {
+async function verPerfil(uid) {
   if (!uid) return;
-  USERS.doc(uid).get().then(doc => {
+  let user;
+  try {
+    const doc = await USERS.doc(uid).get();
     if (!doc.exists) { alert('Usuario no encontrado.'); return; }
-    const user = doc.data();
-    if (currentUser) {
-      SEGUIDORES.where('seguidorUid', '==', currentUser.uid)
-                .where('seguidoUid', '==', uid).get()
-        .then(snap => mostrarPerfilProfesional(user, !snap.empty, uid))
-        .catch(() => mostrarPerfilProfesional(user, false, uid));
-    } else {
-      mostrarPerfilProfesional(user, false, uid);
+    user = doc.data();
+  } catch (e) {
+    alert('No se pudo cargar el perfil.');
+    return;
+  }
+
+  const esPropio = currentUser && currentUser.uid === uid;
+
+  // Verificar privacidad: solo seguidores pueden ver el perfil
+  if (!esPropio && !isAdmin) {
+    if (!currentUser) {
+      alert('Debes iniciar sesión para ver este perfil.');
+      return;
     }
-  }).catch(() => alert('No se pudo cargar el perfil.'));
+    const perfilSoloSeguidores = user.perfilSoloSeguidores !== false;
+    if (perfilSoloSeguidores) {
+      try {
+        const segSnap = await SEGUIDORES.where('seguidorUid', '==', currentUser.uid).where('seguidoUid', '==', uid).get();
+        if (segSnap.empty) {
+          // Mostrar modal de perfil privado
+          const modalContent = document.getElementById('perfilModalContent');
+          modalContent.innerHTML = `
+            <div style="padding:40px 24px; text-align:center;">
+              <button class="perfil-close-btn" onclick="cerrarModal('perfilModal')"><i class="fas fa-times"></i></button>
+              <i class="fas fa-lock" style="font-size:60px; color:var(--text-secondary); margin-bottom:16px; display:block;"></i>
+              <h3 style="justify-content:center; margin-bottom:8px;">Perfil privado</h3>
+              <div style="display:flex; align-items:center; gap:12px; justify-content:center; margin:16px 0;">
+                <div style="width:70px; height:70px; border-radius:50%; background-image:url('${user.fotoPerfil || ''}'); background-size:cover; background-position:center; background-color:var(--teal); display:flex; align-items:center; justify-content:center; color:#fff; font-size:24px; font-weight:600;">${user.fotoPerfil ? '' : (user.displayName || '?').charAt(0).toUpperCase()}</div>
+                <div style="text-align:left;">
+                  <div style="font-weight:700; font-size:16px;">${user.displayName || 'Usuario'}</div>
+                  <div style="font-size:12px; color:var(--text-secondary);">${user.iglesia || ''}</div>
+                </div>
+              </div>
+              <p style="color:var(--text-secondary); font-size:13px; margin-bottom:16px;">Sigue a este usuario para ver su perfil completo.</p>
+              <button class="btn-gold" onclick="seguirUsuario('${uid}')" style="padding:10px 24px; font-size:14px;">
+                <i class="fas fa-user-plus"></i> Seguir para ver perfil
+              </button>
+            </div>
+          `;
+          abrirModal('perfilModal');
+          return;
+        }
+      } catch(e) {}
+    }
+  }
+
+  let esSeguidor = false;
+  if (currentUser && !esPropio) {
+    try {
+      const segSnap = await SEGUIDORES.where('seguidorUid', '==', currentUser.uid).where('seguidoUid', '==', uid).get();
+      esSeguidor = !segSnap.empty;
+    } catch(e) {}
+  }
+
+  mostrarPerfilProfesional(user, esSeguidor, uid);
 }
 
 async function mostrarPerfilProfesional(user, esSeguidor, uid) {
@@ -4516,7 +4914,13 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
         <h4 style="display:flex; align-items:center; gap:6px;"><i class="fas fa-circle-notch" style="color:var(--gold);"></i> Historias activas</h4>
         <div id="perfilHistoriasContainer"><p style="color:var(--text-secondary); font-size:13px;">Cargando historias...</p></div>
       </div>
-      <div id="galeriaFotosContainer"><p style="color:var(--text-secondary);">Cargando fotos...</p></div>
+      <div id="galeriaFotosContainer" style="margin-top:16px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+          <h4 style="display:flex; align-items:center; gap:6px; margin:0;"><i class="fas fa-camera" style="color:var(--teal);"></i> Galería de fotos <span id="galeriaContador" style="font-size:12px; color:var(--text-secondary); font-weight:400;">(0/100)</span></h4>
+          ${esPropio ? `<button class="btn-gold" onclick="abrirSubirFotoGaleria()" style="font-size:12px;"><i class="fas fa-plus"></i> Subir foto</button>` : ''}
+        </div>
+        <div id="galeriaGridWrap"><p style="color:var(--text-secondary); font-size:13px;">Cargando galería...</p></div>
+      </div>
       ${infoHtml ? `<div class="info-grid">${infoHtml}</div>` : ''}
       <div id="perfilPublicaciones" style="margin-top:20px;"><h4 style="display:flex; align-items:center; gap:6px;"><i class="fas fa-newspaper" style="color:var(--teal);"></i> Publicaciones</h4><div id="perfilFeed"></div></div>
     </div>
@@ -4527,17 +4931,311 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
   cargarPublicacionesUsuario(uid);
   cargarSeguidores(uid);
   cargarHistoriasPerfil(uid);
+  cargarGaleriaPerfil(uid);
+}
 
-  USERS.doc(uid).collection('fotos').orderBy('fecha', 'desc').get().then(snapshot => {
-    const fotos = []; snapshot.forEach(doc => fotos.push({ id: doc.id, ...doc.data() }));
-    const container = document.getElementById('galeriaFotosContainer');
-    if (!container) return;
-    if (fotos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No hay fotos en la galería.</p>'; return; }
-    let ghtml = '<div style="margin:10px 0;"><h4>📸 Galería</h4><div class="galeria-grid">';
-    fotos.forEach(foto => { ghtml += `<div class="galeria-item" data-foto-id="${foto.id}" data-uid="${uid}" style="cursor:pointer;"><div class="galeria-img-wrapper"><img src="${foto.url}" alt=""></div>${foto.desc ? `<div class="foto-desc">${foto.desc}</div>` : ''}</div>`; });
-    ghtml += '</div></div>';
-    container.innerHTML = ghtml;
+// ============ GALERÍA EN EL PERFIL ============
+function cargarGaleriaPerfil(uid) {
+  const cont = document.getElementById('galeriaGridWrap');
+  if (!cont) return;
+  if (galeriaViewerUnsub) { galeriaViewerUnsub(); galeriaViewerUnsub = null; }
+  galeriaViewerUnsub = GALERIA_FOTOS(uid).orderBy('fecha', 'desc').onSnapshot(snap => {
+    const fotos = [];
+    snap.forEach(d => fotos.push({ id: d.id, ...d.data() }));
+    const contadorEl = document.getElementById('galeriaContador');
+    if (contadorEl) contadorEl.textContent = `(${fotos.length}/${MAX_GALERIA})`;
+    if (fotos.length === 0) {
+      cont.innerHTML = '<p style="color:var(--text-secondary); font-size:13px; padding:12px 0;">No hay fotos en la galería.</p>';
+      return;
+    }
+    let html = '<div class="galeria-grid">';
+    fotos.forEach((foto, i) => {
+      html += `<div class="galeria-item" data-foto-id="${foto.id}" data-uid="${uid}" data-index="${i}" style="cursor:pointer;">
+        <div class="galeria-img-wrapper">
+          <img src="${foto.url}" alt="${foto.titulo || ''}" loading="lazy">
+        </div>
+        ${(foto.titulo || foto.desc) ? `<div class="foto-desc">${foto.titulo ? `<strong>${foto.titulo}</strong>` : ''}${foto.desc ? (foto.titulo ? ' · ' : '') + foto.desc : ''}</div>` : ''}
+      </div>`;
+    });
+    html += '</div>';
+    cont.innerHTML = html;
+    // Click handler
+    cont.querySelectorAll('.galeria-item').forEach(el => {
+      el.addEventListener('click', (e) => {
+        if (e.target.closest('.galeria-eliminar-btn')) return;
+        const idx = parseInt(el.dataset.index) || 0;
+        abrirGaleriaViewer(uid, idx);
+      });
+    });
+  }, err => {
+    console.warn(err);
+    cont.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No se pudo cargar la galería.</p>';
   });
+}
+
+// ============ VISOR DE GALERÍA TIPO CARRUSEL ============
+function abrirGaleriaViewer(uid, startIndex) {
+  const fotos = [];
+  const cont = document.getElementById('galeriaGridWrap');
+  if (!cont) return;
+  cont.querySelectorAll('.galeria-item').forEach(el => {
+    const fotoId = el.dataset.fotoId;
+    const img = el.querySelector('img');
+    if (!img) return;
+    fotos.push({
+      id: fotoId,
+      url: img.src,
+      titulo: el.querySelector('.foto-desc strong')?.textContent || '',
+      desc: el.querySelector('.foto-desc')?.textContent || ''
+    });
+  });
+  if (fotos.length === 0) return;
+
+  galeriaViewerFotos = fotos;
+  galeriaViewerUid = uid;
+  galeriaViewerIndex = startIndex || 0;
+
+  renderGaleriaViewerSlides();
+  document.getElementById('galeriaViewer').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    const sc = document.getElementById('galeriaViewerScroll');
+    if (sc && sc.children[galeriaViewerIndex]) {
+      sc.scrollTop = sc.children[galeriaViewerIndex].offsetTop;
+    }
+  }, 80);
+}
+
+function renderGaleriaViewerSlides() {
+  const cont = document.getElementById('galeriaViewerScroll');
+  const uid = galeriaViewerUid;
+  const esPropio = currentUser && currentUser.uid === uid;
+
+  let html = '';
+  galeriaViewerFotos.forEach((foto, i) => {
+    const likes = foto.likes || [];
+    const dislikes = foto.dislikes || [];
+    const orando = foto.orando || [];
+    const liked = currentUser && likes.includes(currentUser.uid);
+    const disliked = currentUser && dislikes.includes(currentUser.uid);
+    const prayed = currentUser && orando.includes(currentUser.uid);
+    const hashtagsHtml = (foto.hashtags || []).map(h => `<span class="hashtag">#${h.replace(/^#/, '')}</span>`).join(' ');
+    const etiquetados = foto.etiquetadosNombres || [];
+
+    html += `<div class="galeria-slide-full" data-gal-index="${i}">
+      <div class="galeria-slide-media">
+        <img src="${foto.url}" alt="${foto.titulo || ''}">
+        <div class="galeria-slide-counter">${i + 1} / ${galeriaViewerFotos.length}</div>
+      </div>
+      <div class="galeria-slide-info">
+        <div class="autor">
+          <img src="${currentUser && currentUser.uid === uid ? (currentUser.fotoPerfil || '') : ''}" onerror="this.style.display='none'">
+          <div>
+            <div class="name">${foto.autorNombre || 'Usuario'}</div>
+            <div class="date">${foto.fecha ? new Date(foto.fecha.seconds * 1000).toLocaleString() : ''}</div>
+          </div>
+        </div>
+        ${foto.titulo ? `<div class="titulo">${foto.titulo}</div>` : ''}
+        ${foto.desc ? `<div class="desc">${foto.desc}</div>` : ''}
+        ${hashtagsHtml ? `<div class="hashtags">${hashtagsHtml}</div>` : ''}
+        ${etiquetados.length ? `<div class="etiquetados"><i class="fas fa-user-tag"></i> ${etiquetados.join(', ')}</div>` : ''}
+        <div class="galeria-slide-actions">
+          <button class="${liked ? 'liked' : ''}" onclick="reaccionarFotoGaleria('${uid}','${foto.id}','likes', this)"><i class="fas fa-heart"></i> <span>${likes.length}</span></button>
+          <button class="${disliked ? 'disliked' : ''}" onclick="reaccionarFotoGaleria('${uid}','${foto.id}','dislikes', this)"><i class="fas fa-thumbs-down"></i> <span>${dislikes.length}</span></button>
+          <button class="${prayed ? 'prayed' : ''}" onclick="reaccionarFotoGaleria('${uid}','${foto.id}','orando', this)"><i class="fas fa-pray"></i> <span>${orando.length}</span></button>
+          <button onclick="compartirFotoGaleria('${uid}','${foto.id}')"><i class="fas fa-share"></i> Compartir</button>
+          ${esPropio ? `<button onclick="eliminarFotoGaleria('${uid}','${foto.id}', event)"><i class="fas fa-trash"></i> Eliminar</button>` : ''}
+        </div>
+      </div>
+    </div>`;
+  });
+  cont.innerHTML = html;
+}
+
+function cerrarGaleriaViewer() {
+  document.getElementById('galeriaViewer').classList.remove('show');
+  document.getElementById('galeriaViewerScroll').innerHTML = '';
+  document.body.style.overflow = '';
+  galeriaViewerFotos = [];
+  galeriaViewerUid = null;
+  galeriaViewerIndex = 0;
+}
+
+function reaccionarFotoGaleria(uid, fotoId, tipo, btn) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const ref = GALERIA_FOTOS(uid).doc(fotoId);
+  ref.get().then(doc => {
+    if (!doc.exists) return;
+    const data = doc.data();
+    const upd = {};
+    const arr = (data[tipo] || []).slice();
+    const i = arr.indexOf(currentUser.uid);
+    if (i > -1) arr.splice(i, 1); else arr.push(currentUser.uid);
+    upd[tipo] = arr;
+    if (tipo === 'likes') upd.dislikes = (data.dislikes || []).filter(u => u !== currentUser.uid);
+    if (tipo === 'dislikes') upd.likes = (data.likes || []).filter(u => u !== currentUser.uid);
+    ref.update(upd);
+  });
+}
+
+function compartirFotoGaleria(uid, fotoId) {
+  const url = window.location.origin + window.location.pathname + '?foto=' + uid + '_' + fotoId;
+  if (navigator.share) navigator.share({ title: 'Foto', url }).catch(()=>{});
+  else navigator.clipboard.writeText(url).then(() => alert('Enlace copiado.')).catch(()=>{});
+}
+
+function eliminarFotoGaleria(uid, fotoId, e) {
+  if (e) e.stopPropagation();
+  if (!currentUser || currentUser.uid !== uid) { alert('Sin permiso.'); return; }
+  if (!confirm('¿Eliminar esta foto de tu galería?')) return;
+  GALERIA_FOTOS(uid).doc(fotoId).delete().then(() => {
+    renderGaleriaViewerSlides();
+    // If now empty, close
+    if (galeriaViewerFotos.length === 0) cerrarGaleriaViewer();
+  }).catch(err => alert('Error: ' + err.message));
+}
+
+// ============ SUBIR FOTO A GALERÍA ============
+function abrirSubirFotoGaleria() {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  document.getElementById('fotoGaleriaFile').value = '';
+  document.getElementById('fotoGaleriaTitulo').value = '';
+  document.getElementById('fotoGaleriaDesc').value = '';
+  document.getElementById('fotoGaleriaHashtags').value = '';
+  document.getElementById('fotoGaleriaPreview').innerHTML = '';
+  document.getElementById('fotoGaleriaBuscarUser').value = '';
+  cargarEtiquetarUsuarios();
+  cargarEtiquetarIglesias();
+  cargarEtiquetarGrupos();
+  abrirModal('fotoGaleriaModal');
+}
+
+function cargarEtiquetarUsuarios() {
+  const lista = document.getElementById('fotoGaleriaUsuariosLista');
+  USERS.get().then(snap => {
+    if (snap.empty) { lista.innerHTML = '<p style="color:var(--text-secondary); font-size:12px;">No hay usuarios.</p>'; return; }
+    let html = '';
+    snap.forEach(doc => {
+      const u = doc.data();
+      if (currentUser && u.uid === currentUser.uid) return;
+      const foto = u.fotoPerfil || '';
+      const inicial = (u.displayName || '?').charAt(0).toUpperCase();
+      html += `<label class="historia-user-pick" data-nombre="${(u.displayName||'').toLowerCase()}">
+        <input type="checkbox" class="fotoGaleriaUserCheck" value="${u.uid}" data-nombre="${u.displayName || ''}">
+        <div class="historia-user-avatar" style="background-image:url('${foto}');">${foto ? '' : inicial}</div>
+        <span style="font-size:13px;">${u.displayName || 'Usuario'}</span>
+      </label>`;
+    });
+    lista.innerHTML = html || '<p style="color:var(--text-secondary); font-size:12px;">No hay otros usuarios.</p>';
+  });
+}
+
+function filtrarEtiquetarGaleria() {
+  const q = (document.getElementById('fotoGaleriaBuscarUser').value || '').toLowerCase().trim();
+  document.querySelectorAll('#fotoGaleriaUsuariosLista .historia-user-pick').forEach(el => {
+    const nombre = el.dataset.nombre || '';
+    el.style.display = nombre.includes(q) ? 'flex' : 'none';
+  });
+}
+
+function cargarEtiquetarIglesias() {
+  const lista = document.getElementById('fotoGaleriaIglesiasLista');
+  IGLESIAS.get().then(snap => {
+    if (snap.empty) { lista.innerHTML = '<p style="color:var(--text-secondary); font-size:12px;">No hay iglesias.</p>'; return; }
+    let html = '';
+    snap.forEach(doc => {
+      const i = doc.data();
+      html += `<label class="historia-user-pick">
+        <input type="checkbox" class="fotoGaleriaIglesiaCheck" value="${doc.id}" data-nombre="${i.nombre || ''}">
+        <i class="fas fa-place-of-worship" style="color:var(--teal);"></i>
+        <span style="font-size:13px;">${i.nombre || 'Iglesia'}</span>
+      </label>`;
+    });
+    lista.innerHTML = html;
+  });
+}
+
+function cargarEtiquetarGrupos() {
+  const lista = document.getElementById('fotoGaleriaGruposLista');
+  GRUPOS.get().then(snap => {
+    if (snap.empty) { lista.innerHTML = '<p style="color:var(--text-secondary); font-size:12px;">No hay grupos.</p>'; return; }
+    let html = '';
+    snap.forEach(doc => {
+      const g = doc.data();
+      html += `<label class="historia-user-pick">
+        <input type="checkbox" class="fotoGaleriaGrupoCheck" value="${doc.id}" data-nombre="${g.nombre || ''}">
+        <i class="fas fa-users" style="color:var(--teal);"></i>
+        <span style="font-size:13px;">${g.nombre || 'Grupo'}</span>
+      </label>`;
+    });
+    lista.innerHTML = html;
+  });
+}
+
+async function subirFotoGaleriaConMetadata() {
+  if (!currentUser) return;
+  const file = document.getElementById('fotoGaleriaFile').files[0];
+  if (!file) { alert('Selecciona una imagen.'); return; }
+
+  // Check limit
+  try {
+    const snap = await GALERIA_FOTOS(currentUser.uid).get();
+    if (snap.size >= MAX_GALERIA) {
+      alert(`Has alcanzado el límite de ${MAX_GALERIA} fotos en tu galería.`);
+      return;
+    }
+  } catch(e) {}
+
+  const titulo = document.getElementById('fotoGaleriaTitulo').value.trim();
+  const desc = document.getElementById('fotoGaleriaDesc').value.trim();
+  const hashtagsRaw = document.getElementById('fotoGaleriaHashtags').value.trim();
+  const hashtags = hashtagsRaw ? hashtagsRaw.split(/[\s,]+/).map(h => h.replace(/^#/, '').trim()).filter(h => h) : [];
+
+  const etiquetadosUids = [];
+  const etiquetadosNombres = [];
+  document.querySelectorAll('#fotoGaleriaUsuariosLista .fotoGaleriaUserCheck:checked').forEach(cb => {
+    etiquetadosUids.push(cb.value);
+    etiquetadosNombres.push(cb.dataset.nombre || '');
+  });
+  const iglesiasIds = [];
+  const iglesiasNombres = [];
+  document.querySelectorAll('#fotoGaleriaIglesiasLista .fotoGaleriaIglesiaCheck:checked').forEach(cb => {
+    iglesiasIds.push(cb.value);
+    iglesiasNombres.push(cb.dataset.nombre || '');
+  });
+  const gruposIds = [];
+  const gruposNombres = [];
+  document.querySelectorAll('#fotoGaleriaGruposLista .fotoGaleriaGrupoCheck:checked').forEach(cb => {
+    gruposIds.push(cb.value);
+    gruposNombres.push(cb.dataset.nombre || '');
+  });
+
+  const path = `galeria/${currentUser.uid}/${Date.now()}_${file.name}`;
+  try {
+    const url = await subirArchivoStorage(file, path);
+    await GALERIA_FOTOS(currentUser.uid).add({
+      url,
+      titulo,
+      desc,
+      hashtags,
+      etiquetadosUids,
+      etiquetadosNombres: [...etiquetadosNombres, ...iglesiasNombres, ...gruposNombres],
+      iglesiasIds,
+      gruposIds,
+      likes: [],
+      dislikes: [],
+      orando: [],
+      comentarios: [],
+      compartidos: 0,
+      fecha: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    cerrarModal('fotoGaleriaModal');
+    alert('✅ Foto subida a tu galería.');
+    // Refrescar el preview del editar perfil si está abierto
+    renderEditGaleria();
+  } catch (err) {
+    alert('Error: ' + err.message);
+  }
 }
 
 // ============ HISTORIAS EN EL PERFIL ============
@@ -4601,7 +5299,7 @@ async function cargarHistoriasPerfil(uid) {
   }
 }
 
-// ============ PUBLICACIONES EN EL PERFIL (con tarjetas completas) ============
+// ============ PUBLICACIONES EN EL PERFIL ============
 function cargarPublicacionesUsuario(uid) {
   const container = document.getElementById('perfilFeed');
   if (!container) return;
@@ -4936,11 +5634,130 @@ function abrirEditarPerfil() {
     document.getElementById('editTalentos').value = currentUser.talentos || '';
     document.getElementById('editCaracter').value = currentUser.caracter || '';
     document.getElementById('editExperiencia').value = currentUser.experiencia || '';
+    document.getElementById('editPerfilSoloSeguidores').checked = currentUser.perfilSoloSeguidores !== false;
     document.querySelectorAll('#editApoyosContainer input').forEach(cb => cb.checked = (currentUser.apoyos || []).includes(cb.value));
     document.querySelectorAll('#editPrivacidadContainer input').forEach(cb => { const p = currentUser.privacidad || {}; cb.checked = p[cb.dataset.campo] !== undefined ? p[cb.dataset.campo] : true; });
+    // Mini previews
+    renderEditMiniPreviews();
+    renderEditGaleria();
     abrirModal('editarPerfilModal');
   }, 150);
 }
+
+function renderEditMiniPreviews() {
+  const fp = document.getElementById('editFotoPerfilMini');
+  const po = document.getElementById('editPortadaMini');
+  const f = currentUser.fotoPerfil || '';
+  const p = currentUser.portada || '';
+  fp.innerHTML = f ? `<img src="${f}" alt="">` : '<i class="fas fa-user"></i>';
+  po.innerHTML = p ? `<img src="${p}" alt="">` : '<i class="fas fa-image"></i>';
+}
+
+function eliminarFotoPerfilDesdeEditar() {
+  if (!currentUser) return;
+  if (!confirm('¿Eliminar tu foto de perfil?')) return;
+  USERS.doc(currentUser.uid).update({ fotoPerfil: '' }).then(() => {
+    currentUser.fotoPerfil = '';
+    renderEditMiniPreviews();
+    actualizarUIUsuario();
+  });
+}
+
+function eliminarPortadaDesdeEditar() {
+  if (!currentUser) return;
+  if (!confirm('¿Eliminar tu foto de portada?')) return;
+  USERS.doc(currentUser.uid).update({ portada: '' }).then(() => {
+    currentUser.portada = '';
+    renderEditMiniPreviews();
+  });
+}
+
+function renderEditGaleria() {
+  const cont = document.getElementById('editGaleriaGrid');
+  if (!cont || !currentUser) return;
+  GALERIA_FOTOS(currentUser.uid).orderBy('fecha', 'desc').get().then(snap => {
+    let html = '';
+    const total = snap.size;
+    if (total < MAX_GALERIA) {
+      html += `<button type="button" class="edit-gallery-add" onclick="document.getElementById('editGaleriaFile').click()" title="Subir foto"><i class="fas fa-plus"></i></button>`;
+    }
+    snap.forEach(doc => {
+      const f = doc.data();
+      html += `<div class="edit-gallery-item">
+        <img src="${f.url}" alt="">
+        <button type="button" class="del-btn" onclick="eliminarFotoGaleriaDesdeEditar('${doc.id}')"><i class="fas fa-times"></i></button>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  });
+}
+
+function eliminarFotoGaleriaDesdeEditar(fotoId) {
+  if (!currentUser) return;
+  if (!confirm('¿Eliminar esta foto de tu galería?')) return;
+  GALERIA_FOTOS(currentUser.uid).doc(fotoId).delete().then(() => renderEditGaleria()).catch(err => alert('Error: ' + err.message));
+}
+
+// Subida múltiple desde editar perfil
+document.addEventListener('change', function(e) {
+  if (e.target && e.target.id === 'editGaleriaFile') {
+    const files = e.target.files;
+    if (!files || files.length === 0 || !currentUser) return;
+    procesarMultiplesFotosGaleria(Array.from(files));
+    e.target.value = '';
+  }
+  if (e.target && e.target.id === 'editFotoPerfilFile') {
+    const f = e.target.files[0]; if (!f || !currentUser) return;
+    subirArchivoStorage(f, `profile_pictures/${currentUser.uid}/${Date.now()}_${f.name}`).then(url => {
+      return USERS.doc(currentUser.uid).update({ fotoPerfil: url });
+    }).then(() => {
+      currentUser.fotoPerfil = document.getElementById('editFotoPerfilMini').querySelector('img')?.src || '';
+      // Recargar preview real
+      USERS.doc(currentUser.uid).get().then(d => {
+        currentUser.fotoPerfil = d.data().fotoPerfil || '';
+        renderEditMiniPreviews();
+        actualizarUIUsuario();
+      });
+    }).catch(err => alert('Error: ' + err.message));
+  }
+  if (e.target && e.target.id === 'editPortadaFile') {
+    const f = e.target.files[0]; if (!f || !currentUser) return;
+    subirArchivoStorage(f, `cover_pictures/${currentUser.uid}/${Date.now()}_${f.name}`).then(url => {
+      return USERS.doc(currentUser.uid).update({ portada: url });
+    }).then(() => {
+      USERS.doc(currentUser.uid).get().then(d => {
+        currentUser.portada = d.data().portada || '';
+        renderEditMiniPreviews();
+      });
+    }).catch(err => alert('Error: ' + err.message));
+  }
+});
+
+async function procesarMultiplesFotosGaleria(files) {
+  if (!currentUser) return;
+  try {
+    const snap = await GALERIA_FOTOS(currentUser.uid).get();
+    const disponibles = MAX_GALERIA - snap.size;
+    if (disponibles <= 0) { alert(`Has alcanzado el límite de ${MAX_GALERIA} fotos.`); return; }
+    const aSubir = files.slice(0, disponibles);
+    if (files.length > disponibles) alert(`Solo se subirán ${disponibles} fotos (límite alcanzado).`);
+    for (const file of aSubir) {
+      const path = `galeria/${currentUser.uid}/${Date.now()}_${file.name}`;
+      try {
+        const url = await subirArchivoStorage(file, path);
+        await GALERIA_FOTOS(currentUser.uid).add({
+          url, titulo: '', desc: '', hashtags: [],
+          etiquetadosUids: [], etiquetadosNombres: [], iglesiasIds: [], gruposIds: [],
+          likes: [], dislikes: [], orando: [], comentarios: [], compartidos: 0,
+          fecha: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch(err) { console.warn('Error subiendo', file.name, err); }
+    }
+    renderEditGaleria();
+    alert('✅ Fotos subidas correctamente.');
+  } catch(err) { alert('Error: ' + err.message); }
+}
+
 async function guardarPerfilExtendido() {
   if (!currentUser) return;
   const nombre = document.getElementById('editNombre').value.trim();
@@ -4951,18 +5768,10 @@ async function guardarPerfilExtendido() {
   document.querySelectorAll('#editApoyosContainer input:checked').forEach(cb => apoyos.push(cb.value));
   const privacidad = {};
   document.querySelectorAll('#editPrivacidadContainer input').forEach(cb => { privacidad[cb.dataset.campo] = cb.checked; });
+  const perfilSoloSeguidores = document.getElementById('editPerfilSoloSeguidores').checked;
 
-  let fotoPerfil = currentUser.fotoPerfil || '';
-  let portada = currentUser.portada || '';
-  const fotoPerfilFile = document.getElementById('editFotoPerfilFile').files[0];
-  const portadaFile = document.getElementById('editPortadaFile').files[0];
-  const promesas = [];
-  if (fotoPerfilFile) promesas.push(subirArchivoStorage(fotoPerfilFile, `profile_pictures/${currentUser.uid}/${Date.now()}_${fotoPerfilFile.name}`).then(url => fotoPerfil = url));
-  if (portadaFile) promesas.push(subirArchivoStorage(portadaFile, `cover_pictures/${currentUser.uid}/${Date.now()}_${portadaFile.name}`).then(url => portada = url));
-
-  await Promise.all(promesas);
   const updateData = {
-    displayName: nombre, telefono, edad, fotoPerfil, portada, apoyos, privacidad,
+    displayName: nombre, telefono, edad, apoyos, privacidad, perfilSoloSeguidores,
     biografia: document.getElementById('editBiografia').value.trim(),
     iglesia: document.getElementById('editIglesia').value.trim(),
     situacionLaboral: document.getElementById('editSituacionLaboral').value.trim(),
@@ -4980,6 +5789,7 @@ async function guardarPerfilExtendido() {
   cerrarModal('editarPerfilModal');
   alert('Perfil actualizado.');
 }
+
 function seguirUsuario(uid) {
   if (!currentUser || uid === currentUser.uid) return;
   SEGUIDORES.where('seguidorUid', '==', currentUser.uid).where('seguidoUid', '==', uid).get().then(existing => {
@@ -5425,12 +6235,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnEliminarLogo').addEventListener('click', eliminarLogo);
   document.getElementById('btnGuardarMenuConfig').addEventListener('click', guardarConfigMenu);
 
-  document.getElementById('perfilModal').addEventListener('click', function(e) {
-    const item = e.target.closest('.galeria-item'); if (!item || e.target.closest('button')) return;
-    e.stopPropagation();
-    abrirFotoViewer(item.dataset.uid, item.dataset.fotoId);
-  });
-
   actualizarVersiculoDia();
   renderFeed(); renderGrupos(); renderDiscipulados(); renderOraciones();
   renderNecesidades(); renderServicios(); renderMisServicios(); renderConsejos();
@@ -5445,7 +6249,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   setInterval(() => { renderHistorias(); }, 5 * 60 * 1000);
 
-  console.log('✅ SAL Y LUZ v11: historias con visibilidad avanzada, story viewer tipo reel y botones de reel minimalistas.');
+  console.log('✅ SAL Y LUZ v12: galería con carrusel, perfiles privados por seguidores, story viewer facebook-style.');
 });
 
 // Exposición global
@@ -5497,6 +6301,9 @@ window.storySiguiente = storySiguiente;
 window.storyAnterior = storyAnterior;
 window.votarHistoria = votarHistoria;
 window.eliminarHistoriaActual = eliminarHistoriaActual;
+window.reaccionarHistoria = reaccionarHistoria;
+window.compartirHistoria = compartirHistoria;
+window.comentarHistoria = comentarHistoria;
 window.actualizarVisibilidadHistoria = actualizarVisibilidadHistoria;
 window.cargarUsuariosHistoria = cargarUsuariosHistoria;
 window.filtrarUsuariosHistoria = filtrarUsuariosHistoria;
@@ -5633,6 +6440,19 @@ window.renderAdminNoticias = renderAdminNoticias;
 window.cargarHistoriasPerfil = cargarHistoriasPerfil;
 window.getServiciosRef = getServiciosRef;
 window.getReportesRef = getReportesRef;
+window.abrirSubirFotoGaleria = abrirSubirFotoGaleria;
+window.subirFotoGaleriaConMetadata = subirFotoGaleriaConMetadata;
+window.filtrarEtiquetarGaleria = filtrarEtiquetarGaleria;
+window.cargarGaleriaPerfil = cargarGaleriaPerfil;
+window.abrirGaleriaViewer = abrirGaleriaViewer;
+window.cerrarGaleriaViewer = cerrarGaleriaViewer;
+window.reaccionarFotoGaleria = reaccionarFotoGaleria;
+window.compartirFotoGaleria = compartirFotoGaleria;
+window.eliminarFotoGaleria = eliminarFotoGaleria;
+window.renderEditGaleria = renderEditGaleria;
+window.eliminarFotoGaleriaDesdeEditar = eliminarFotoGaleriaDesdeEditar;
+window.eliminarFotoPerfilDesdeEditar = eliminarFotoPerfilDesdeEditar;
+window.eliminarPortadaDesdeEditar = eliminarPortadaDesdeEditar;
 window.USERS = USERS;
 window.POSTS = POSTS;
 window.ORACIONES = ORACIONES;
@@ -5640,6 +6460,7 @@ window.NECESIDADES = NECESIDADES;
 window.EVENTOS = EVENTOS;
 window.NOTICIAS = NOTICIAS;
 window.HISTORIAS = HISTORIAS;
+window.GALERIA_FOTOS = GALERIA_FOTOS;
 </script>
 </body>
 </html>

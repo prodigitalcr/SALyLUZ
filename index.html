@@ -996,6 +996,185 @@
       .reel-modal-side { max-height: 40vh; }
     }
 
+    /* ===== NUEVO VISOR DE REELS TIPO CARRUSEL 3D VERTICAL ===== */
+    .reels-fullscreen-viewer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 10000;
+      overflow: hidden;
+      perspective: 1200px;
+    }
+    .reels-fullscreen-viewer.show {
+      display: flex;
+      flex-direction: column;
+    }
+    .reels-carousel-container {
+      flex: 1;
+      position: relative;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      transform-style: preserve-3d;
+    }
+    .reels-carousel-container::-webkit-scrollbar { display: none; }
+
+    .reel-fullscreen-item {
+      height: 100vh;
+      width: 100%;
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      overflow: hidden;
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s ease;
+      transform-style: preserve-3d;
+      opacity: 0.4;
+      transform: rotateX(8deg) scale(0.92);
+    }
+    .reel-fullscreen-item.active {
+      opacity: 1;
+      transform: rotateX(0deg) scale(1);
+      z-index: 2;
+    }
+    .reel-fullscreen-item.prev {
+      transform: rotateX(-8deg) scale(0.92);
+      opacity: 0.4;
+    }
+    .reel-fullscreen-item.next {
+      transform: rotateX(8deg) scale(0.92);
+      opacity: 0.4;
+    }
+
+    .reel-fullscreen-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .reel-fullscreen-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      color: white;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .reel-fullscreen-overlay .reel-author-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+    }
+    .reel-fullscreen-overlay .reel-author-info img {
+      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
+      border: 2px solid white;
+    }
+    .reel-fullscreen-overlay .reel-author-info .name {
+      font-weight: 600; font-size: 15px; cursor: pointer;
+    }
+    .reel-fullscreen-overlay .reel-desc-text {
+      font-size: 14px; opacity: 0.9; white-space: pre-wrap;
+      pointer-events: auto;
+    }
+    .reel-fullscreen-overlay .reel-actions-row {
+      display: flex;
+      gap: 16px;
+      pointer-events: auto;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .reel-fullscreen-overlay .reel-actions-row button {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(4px);
+      transition: background 0.2s;
+    }
+    .reel-fullscreen-overlay .reel-actions-row button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    .reel-fullscreen-overlay .reel-actions-row button.liked {
+      color: #ff6b6b;
+    }
+    .reel-fullscreen-overlay .reel-actions-row button.orando {
+      color: #ce93d8;
+    }
+
+    /* Botón flotante de subir reel */
+    .reel-floating-add-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: white;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 10001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(29, 158, 117, 0.5);
+      transition: transform 0.2s, background 0.2s;
+    }
+    .reel-floating-add-btn:hover {
+      transform: scale(1.1);
+      background: var(--teal-dark);
+    }
+    @media (max-width: 768px) {
+      .reel-floating-add-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+      }
+    }
+
+    .reel-fullscreen-close {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10002;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      transition: background 0.2s;
+    }
+    .reel-fullscreen-close:hover {
+      background: rgba(0,0,0,0.9);
+    }
+
     .preview-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; position: relative; }
     .preview-container img, .preview-container video { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid var(--border-color); }
     .preview-container .file-preview { display: flex; align-items: center; gap: 4px; background: var(--bg-body); padding: 4px 8px; border-radius: 20px; border: 1px solid var(--border-color); }
@@ -1187,10 +1366,8 @@
         <div><div class="logo-text">SAL <span>Y</span> LUZ</div><div class="logo-sub">Comunidad Cristiana</div></div>
       </div>
       <div class="header-actions">
-        <button class="btn-primary" id="loginBtn">Entrar</button>
         <span class="user-badge" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span></span>
         <span id="notificacionesBadge" class="notificaciones-badge" style="display:none; cursor:pointer;">0</span>
-        <button class="btn-icon" id="themeToggle" title="Modo nocturno"><i class="fas fa-moon"></i></button>
         <button class="btn-icon" id="miPerfilBtn" title="Mi Perfil" style="display:none;"><i class="fas fa-user-circle"></i></button>
         <button class="menu-toggle" id="menuToggle" aria-label="Menú"><i class="fas fa-bars"></i></button>
       </div>
@@ -1215,6 +1392,7 @@
       <button class="tab" data-panel="admin" id="adminTab" style="display:none;"><i class="fas fa-cog"></i><span> Admin</span></button>
       <button class="tab only-mobile-tab" id="tabTemaMobile"><i class="fas fa-moon"></i><span> Modo nocturno</span></button>
       <button class="tab only-mobile-tab" id="tabNotifMobile"><i class="fas fa-bell"></i><span> Notificaciones (<span id="notifCountMobile">0</span>)</span></button>
+      <button class="tab only-mobile-tab" id="tabCerrarSesionMobile" style="display:none;"><i class="fas fa-sign-out-alt"></i><span> Cerrar sesión</span></button>
     </nav>
 
   </div>
@@ -2151,6 +2329,15 @@
     </div>
   </div>
 
+  <!-- ===== NUEVO VISOR DE REELS FULLSCREEN CON CARRUSEL 3D VERTICAL ===== -->
+  <div class="reels-fullscreen-viewer" id="reelsFullscreenViewer">
+    <button class="reel-fullscreen-close" onclick="cerrarReelsFullscreen()"><i class="fas fa-times"></i></button>
+    <button class="reel-floating-add-btn" id="reelFloatingAddBtn" onclick="abrirModalReelDesdeViewer()"><i class="fas fa-plus"></i></button>
+    <div class="reels-carousel-container" id="reelsCarouselContainer">
+      <!-- Los reels se cargarán dinámicamente aquí -->
+    </div>
+  </div>
+
   <div class="modal-overlay" id="qrModal">
     <div class="modal-box">
       <h3 style="justify-content:center;"><i class="fas fa-qrcode"></i> Compartir Perfil</h3>
@@ -2473,23 +2660,22 @@ window.logoutUser = async function() {
 function actualizarUIUsuario() {
   const userBadge = document.getElementById('userBadge');
   const userNameDisplay = document.getElementById('userNameDisplay');
-  const loginBtn = document.getElementById('loginBtn');
   const miPerfilBtn = document.getElementById('miPerfilBtn');
   const tabMapa = document.getElementById('tabMapa');
   const tabReportes = document.getElementById('tabReportes');
   const tabChatAdmin = document.getElementById('tabChatAdmin');
   const featureMapa = document.getElementById('featureMapa');
+  const tabCerrarSesionMobile = document.getElementById('tabCerrarSesionMobile');
 
   if (currentUser) {
     if (userNameDisplay) userNameDisplay.textContent = currentUser.displayName;
-    loginBtn.textContent = 'Cerrar sesión';
     if (currentUser.fotoPerfil) {
       userBadge.innerHTML = `<img src="${currentUser.fotoPerfil}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;margin-right:4px;"> <span id="userNameDisplay">${currentUser.displayName}</span>`;
     } else {
       userBadge.innerHTML = `<i class="fas fa-user"></i> <span id="userNameDisplay">${currentUser.displayName}</span>`;
     }
-    miPerfilBtn.style.display = 'inline-block';
-    miPerfilBtn.onclick = () => verPerfil(currentUser.uid);
+    // Ocultar el botón de perfil duplicado
+    if (miPerfilBtn) miPerfilBtn.style.display = 'none';
     tabMapa.style.display = 'inline-block';
     tabReportes.style.display = 'inline-block';
     tabChatAdmin.style.display = 'inline-block';
@@ -2505,11 +2691,13 @@ function actualizarUIUsuario() {
     }
     document.getElementById('chatAdminMsgNoAuth').style.display = 'none';
     document.getElementById('chatAdminContent').style.display = 'block';
+    // Mostrar botón de cerrar sesión en el menú móvil
+    if (tabCerrarSesionMobile) tabCerrarSesionMobile.style.display = 'flex';
   } else {
     userNameDisplay.textContent = 'Invitado';
-    loginBtn.textContent = 'Entrar';
     userBadge.innerHTML = `<i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span>`;
-    miPerfilBtn.style.display = 'none';
+    // Ocultar botón de perfil
+    if (miPerfilBtn) miPerfilBtn.style.display = 'none';
     tabMapa.style.display = 'none';
     tabReportes.style.display = 'none';
     tabChatAdmin.style.display = 'none';
@@ -2520,6 +2708,8 @@ function actualizarUIUsuario() {
     document.getElementById('reportesContent').style.display = 'none';
     document.getElementById('chatAdminMsgNoAuth').style.display = 'block';
     document.getElementById('chatAdminContent').style.display = 'none';
+    // Ocultar botón de cerrar sesión en el menú móvil
+    if (tabCerrarSesionMobile) tabCerrarSesionMobile.style.display = 'none';
   }
 
   const adminTab = document.getElementById('adminTab');
@@ -2591,7 +2781,7 @@ function switchPanel(name) {
   }
   switch (name) {
     case 'muro': renderFeed(); break;
-    case 'reels': renderReels(); break;
+    case 'reels': abrirReelsFullscreen(); break; // Abre el visor fullscreen al cambiar a Reels
     case 'grupos': renderGrupos(); break;
     case 'discipulado': renderDiscipulados(); break;
     case 'oracion': renderOraciones(); break;
@@ -3017,7 +3207,10 @@ function renderReels() {
     container.innerHTML = html;
 
     container.querySelectorAll('.reel-item').forEach(el => {
-      el.addEventListener('click', () => abrirReelViewer(el.dataset.reelId));
+      el.addEventListener('click', () => {
+        // Abrir el visor fullscreen en la posición del reel clicado
+        abrirReelsFullscreen(el.dataset.reelId);
+      });
     });
 
     setupReelsAutoPlay();
@@ -3045,90 +3238,168 @@ function setupReelsAutoPlay() {
   items.forEach(v => reelsObserver.observe(v));
 }
 
-function abrirReelViewer(reelId) {
-  if (reelViewerUnsub) { reelViewerUnsub(); reelViewerUnsub = null; }
-  reelViewerActualId = reelId;
-  const ref = REELS.doc(reelId);
-  reelViewerUnsub = ref.onSnapshot(doc => {
-    if (!doc.exists) return;
-    const r = doc.data();
-    const video = document.getElementById('reelViewerVideo');
-    if (video.src !== r.url) { video.src = r.url; video.play().catch(()=>{}); }
+// ===== NUEVO VISOR FULLSCREEN CON CARRUSEL 3D =====
+let reelsFullscreenUnsub = null;
+let reelsFullscreenData = [];
+let reelsFullscreenCurrentIndex = 0;
 
-    const autorFoto = r.autorFoto || '';
-    document.getElementById('reelViewerAuthor').innerHTML =
-      `<img src="${autorFoto}" onerror="this.style.display='none'"><div>
-        <div style="cursor:pointer;color:var(--teal);" onclick="cerrarReelViewer(); verPerfil('${r.uid}')">${r.autorNombre}</div>
-        <small style="color:var(--text-secondary); font-weight:400;">${r.fecha ? new Date(r.fecha.seconds*1000).toLocaleString() : ''}</small>
-      </div>`;
-    document.getElementById('reelViewerDesc').textContent = r.desc || '';
+function abrirReelsFullscreen(reelIdInicial) {
+  const viewer = document.getElementById('reelsFullscreenViewer');
+  const container = document.getElementById('reelsCarouselContainer');
+  if (!viewer || !container) return;
 
-    const likes = r.likes || [];
-    const liked = currentUser && likes.includes(currentUser.uid);
-    const comentarios = r.comentarios || [];
-    document.getElementById('reelViewerActions').innerHTML = `
-      <button class="${liked ? 'liked' : ''}" onclick="likeReel('${reelId}')"><i class="fas fa-heart"></i> ${likes.length}</button>
-      <button onclick="compartirReel('${reelId}')"><i class="fas fa-share"></i> Compartir</button>
-      ${isAdmin || (currentUser && r.uid === currentUser.uid) ? `<button onclick="eliminarReel('${reelId}'); cerrarReelViewer();" style="color:#e74c3c;border-color:#e74c3c;"><i class="fas fa-trash"></i> Eliminar</button>` : ''}
-    `;
-    document.getElementById('reelViewerComments').innerHTML = comentarios.length
-      ? comentarios.map(c => `<div><strong style="color:var(--teal);">${c.autor}</strong>: ${c.texto}</div>`).join('')
-      : '<p style="color:var(--text-secondary); font-size:12px;">Sin comentarios.</p>';
-    document.getElementById('reelViewerCommentBox').style.display = currentUser ? 'flex' : 'none';
-  });
-  abrirModal('reelViewerModal');
-}
+  // Limpiar suscripción anterior
+  if (reelsFullscreenUnsub) { reelsFullscreenUnsub(); reelsFullscreenUnsub = null; }
 
-function cerrarReelViewer() {
-  if (reelViewerUnsub) { reelViewerUnsub(); reelViewerUnsub = null; }
-  reelViewerActualId = null;
-  const v = document.getElementById('reelViewerVideo');
-  if (v) { v.pause(); v.src = ''; }
-  cerrarModal('reelViewerModal');
-}
+  // Cargar datos en tiempo real
+  reelsFullscreenUnsub = REELS.orderBy('fecha', 'desc').onSnapshot(snapshot => {
+    reelsFullscreenData = [];
+    snapshot.forEach(doc => reelsFullscreenData.push({ id: doc.id, ...doc.data() }));
 
-function comentarReelViewer() {
-  if (!currentUser || !reelViewerActualId) return;
-  const input = document.getElementById('reelViewerCommentInput');
-  const texto = input.value.trim();
-  if (!texto) return;
-  REELS.doc(reelViewerActualId).get().then(doc => {
-    if (!doc.exists) return;
-    const arr = doc.data().comentarios || [];
-    arr.push({ uid: currentUser.uid, autor: currentUser.displayName, texto, fecha: new Date().toISOString() });
-    REELS.doc(reelViewerActualId).update({ comentarios: arr });
-    input.value = '';
-  });
-}
+    if (reelsFullscreenData.length === 0) {
+      container.innerHTML = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; color:white; font-size:18px;">No hay reels disponibles.</div>';
+      viewer.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      return;
+    }
 
-function publicarReel() {
-  if (!currentUser) { alert('Debes iniciar sesión.'); return; }
-  const file = document.getElementById('reelFile').files[0];
-  const desc = document.getElementById('reelDesc').value.trim();
-  if (!file) { alert('Selecciona un video.'); return; }
-  if (!file.type.startsWith('video/')) { alert('El archivo debe ser un video.'); return; }
-  const path = `reels/${currentUser.uid}/${Date.now()}_${file.name}`;
-  subirArchivoStorage(file, path).then(url => {
-    return REELS.add({
-      uid: currentUser.uid,
-      autorNombre: currentUser.displayName,
-      autorFoto: currentUser.fotoPerfil || '',
-      url: url,
-      desc: desc || '',
-      fecha: firebase.firestore.FieldValue.serverTimestamp(),
-      likes: [],
-      comentarios: []
+    // Renderizar todos los reels
+    let html = '';
+    reelsFullscreenData.forEach((r, index) => {
+      const liked = r.likes && currentUser && r.likes.includes(currentUser.uid);
+      const orando = r.orando && currentUser && r.orando.includes(currentUser.uid);
+      const likesCount = r.likes ? r.likes.length : 0;
+      const orandoCount = r.orando ? r.orando.length : 0;
+      const comentariosCount = r.comentarios ? r.comentarios.length : 0;
+      const fechaStr = r.fecha ? new Date(r.fecha.seconds * 1000).toLocaleString() : '';
+      html += `
+        <div class="reel-fullscreen-item" data-index="${index}" data-reel-id="${r.id}">
+          <video src="${r.url}" loop playsinline preload="auto" muted></video>
+          <div class="reel-fullscreen-overlay">
+            <div class="reel-author-info" onclick="cerrarReelsFullscreen(); verPerfil('${r.uid}')">
+              <img src="${r.autorFoto || ''}" onerror="this.style.display='none'">
+              <div>
+                <div class="name">${r.autorNombre}</div>
+                <div style="font-size:11px; opacity:0.7;">${fechaStr}</div>
+              </div>
+            </div>
+            <div class="reel-desc-text">${r.desc || ''}</div>
+            <div class="reel-actions-row">
+              <button class="${liked ? 'liked' : ''}" onclick="event.stopPropagation(); likeReelFullscreen('${r.id}')">
+                <i class="fas fa-heart"></i> <span>${likesCount}</span>
+              </button>
+              <button class="${orando ? 'orando' : ''}" onclick="event.stopPropagation(); orandoReelFullscreen('${r.id}')">
+                <i class="fas fa-pray"></i> <span>${orandoCount}</span>
+              </button>
+              <button onclick="event.stopPropagation(); comentarReelFullscreen('${r.id}')">
+                <i class="fas fa-comment"></i> <span>${comentariosCount}</span>
+              </button>
+              <button onclick="event.stopPropagation(); compartirReelFullscreen('${r.id}')">
+                <i class="fas fa-share"></i> Compartir
+              </button>
+              ${isAdmin || (currentUser && r.uid === currentUser.uid) ? `
+                <button onclick="event.stopPropagation(); eliminarReelFullscreen('${r.id}')" style="color:#e74c3c;">
+                  <i class="fas fa-trash"></i> Eliminar
+                </button>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
     });
-  }).then(() => {
-    document.getElementById('reelFile').value = '';
-    document.getElementById('reelDesc').value = '';
-    document.getElementById('reelPreviewContainer').innerHTML = '';
-    cerrarModal('reelModal');
-    alert('Reel publicado correctamente.');
-  }).catch(err => { console.error(err); alert('Error: ' + err.message); });
+    container.innerHTML = html;
+
+    // Configurar scroll snap y reproducción
+    const items = container.querySelectorAll('.reel-fullscreen-item');
+    let currentActiveIndex = 0;
+
+    function updateActiveReel(index) {
+      items.forEach((item, i) => {
+        item.classList.remove('active', 'prev', 'next');
+        if (i === index) {
+          item.classList.add('active');
+          const video = item.querySelector('video');
+          if (video) {
+            video.muted = false;
+            video.play().catch(() => { video.muted = true; video.play().catch(()=>{}); });
+          }
+        } else if (i === index - 1) {
+          item.classList.add('prev');
+          const video = item.querySelector('video');
+          if (video) { video.pause(); video.currentTime = 0; }
+        } else if (i === index + 1) {
+          item.classList.add('next');
+          const video = item.querySelector('video');
+          if (video) { video.pause(); video.currentTime = 0; }
+        } else {
+          const video = item.querySelector('video');
+          if (video) { video.pause(); video.currentTime = 0; }
+        }
+      });
+    }
+
+    // Intersection Observer para detectar el reel activo
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+          const index = parseInt(entry.target.dataset.index);
+          currentActiveIndex = index;
+          updateActiveReel(index);
+        }
+      });
+    }, { threshold: [0, 0.6, 0.9], root: container });
+
+    items.forEach(item => observer.observe(item));
+
+    // Si se especificó un reel inicial, desplazarse a él
+    if (reelIdInicial) {
+      const targetIndex = reelsFullscreenData.findIndex(r => r.id === reelIdInicial);
+      if (targetIndex >= 0) {
+        setTimeout(() => {
+          const targetItem = items[targetIndex];
+          if (targetItem) {
+            targetItem.scrollIntoView({ behavior: 'auto', block: 'start' });
+            updateActiveReel(targetIndex);
+          }
+        }, 100);
+      }
+    } else {
+      // Asegurar que el primer reel se reproduzca
+      setTimeout(() => {
+        if (items.length > 0) {
+          updateActiveReel(0);
+        }
+      }, 200);
+    }
+
+    // Mostrar el visor
+    viewer.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  });
 }
 
-function likeReel(id) {
+function cerrarReelsFullscreen() {
+  const viewer = document.getElementById('reelsFullscreenViewer');
+  const container = document.getElementById('reelsCarouselContainer');
+  if (viewer) viewer.classList.remove('show');
+  if (container) {
+    const videos = container.querySelectorAll('video');
+    videos.forEach(v => { v.pause(); v.currentTime = 0; });
+  }
+  if (reelsFullscreenUnsub) { reelsFullscreenUnsub(); reelsFullscreenUnsub = null; }
+  document.body.style.overflow = '';
+}
+
+function abrirModalReelDesdeViewer() {
+  // Cerrar el visor y abrir el modal de subir reel
+  cerrarReelsFullscreen();
+  document.getElementById('reelFile').value = '';
+  document.getElementById('reelDesc').value = '';
+  document.getElementById('reelPreviewContainer').innerHTML = '';
+  abrirModal('reelModal');
+}
+
+function likeReelFullscreen(id) {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   REELS.doc(id).get().then(doc => {
     if (!doc.exists) return;
@@ -3141,7 +3412,32 @@ function likeReel(id) {
   }).catch(console.error);
 }
 
-function compartirReel(id) {
+function orandoReelFullscreen(id) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  REELS.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const reel = doc.data();
+    const orando = reel.orando || [];
+    const idx = orando.indexOf(currentUser.uid);
+    if (idx > -1) orando.splice(idx, 1);
+    else orando.push(currentUser.uid);
+    REELS.doc(id).update({ orando });
+  }).catch(console.error);
+}
+
+function comentarReelFullscreen(id) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const texto = prompt('Escribe tu comentario:');
+  if (!texto) return;
+  REELS.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const arr = doc.data().comentarios || [];
+    arr.push({ uid: currentUser.uid, autor: currentUser.displayName, texto, fecha: new Date().toISOString() });
+    REELS.doc(id).update({ comentarios: arr });
+  }).catch(console.error);
+}
+
+function compartirReelFullscreen(id) {
   const url = window.location.href + '?reel=' + id;
   if (navigator.share) {
     navigator.share({ title: 'Reel', text: 'Mira este reel', url: url }).catch(()=>{});
@@ -3150,10 +3446,16 @@ function compartirReel(id) {
   }
 }
 
-function eliminarReel(id) {
+function eliminarReelFullscreen(id) {
   if (!isAdmin) return;
   if (!confirm('¿Eliminar este reel?')) return;
-  REELS.doc(id).delete().catch(console.error);
+  REELS.doc(id).delete().then(() => {
+    // Recargar el visor
+    const viewer = document.getElementById('reelsFullscreenViewer');
+    if (viewer.classList.contains('show')) {
+      abrirReelsFullscreen();
+    }
+  }).catch(console.error);
 }
 
 // ================================================================
@@ -5090,8 +5392,8 @@ function mostrarPerfilProfesional(user, esSeguidor, uid) {
         ${esPropio ? `<button class="btn-primary perfil-action-btn" onclick="abrirEditarPerfil()" title="Editar"><i class="fas fa-edit"></i></button>` : ''}
         ${!esPropio && currentUser ? `<button class="btn-primary perfil-action-btn" onclick="seguirUsuario('${uid}')" title="${esSeguidor ? 'Dejar de seguir' : 'Seguir'}"><i class="fas ${esSeguidor ? 'fa-user-minus' : 'fa-user-plus'}"></i></button>` : ''}
         ${telefonoVisible ? `<a href="https://wa.me/${user.telefono.replace(/[^0-9]/g, '')}" target="_blank" class="btn-whatsapp-profile perfil-action-btn" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>` : ''}
-        <button class="btn-outline perfil-action-btn" onclick="compartirPerfil('${uid}')" title="Compartir"><i class="fas fa-share-alt"></i></button>
-        <button class="btn-outline perfil-action-btn" onclick="compartirPerfilQR('${uid}')" title="QR"><i class="fas fa-qrcode"></i></button>
+        <button class="btn-outline perfil-action-btn" onclick="compartirPerfil('${uid}')" title="Compartir" style="background:var(--bg-body);"><i class="fas fa-share-alt"></i></button>
+        <button class="btn-outline perfil-action-btn" onclick="compartirPerfilQR('${uid}')" title="QR" style="background:var(--bg-body);"><i class="fas fa-qrcode"></i></button>
       </div>
     </div>
     <div style="padding:20px 20px 20px 20px; margin-top:0;">
@@ -6117,16 +6419,43 @@ function guardarConfigMenu() {
 // ================================================================
 // 30. MODO NOCTURNO
 // ================================================================
-document.getElementById('themeToggle').addEventListener('click', function() {
+function toggleTheme() {
   document.body.classList.toggle('dark');
-  this.querySelector('i').classList.toggle('fa-moon');
-  this.querySelector('i').classList.toggle('fa-sun');
+  const themeToggleBtn = document.getElementById('themeToggle');
+  if (themeToggleBtn) {
+    themeToggleBtn.querySelector('i').classList.toggle('fa-moon');
+    themeToggleBtn.querySelector('i').classList.toggle('fa-sun');
+  }
+  // Actualizar ícono del tab de tema móvil
+  const tabTema = document.getElementById('tabTemaMobile');
+  if (tabTema) {
+    const icon = tabTema.querySelector('i');
+    if (document.body.classList.contains('dark')) {
+      icon.classList.remove('fa-moon');
+      icon.classList.add('fa-sun');
+    } else {
+      icon.classList.remove('fa-sun');
+      icon.classList.add('fa-moon');
+    }
+  }
   localStorage.setItem(STORAGE_KEYS.theme, document.body.classList.contains('dark') ? 'dark' : 'light');
-});
+}
+
+// Botón de tema original (oculto en móvil pero funcional)
+const themeToggleBtn = document.getElementById('themeToggle');
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', toggleTheme);
+}
 
 if (localStorage.getItem(STORAGE_KEYS.theme) === 'dark') {
   document.body.classList.add('dark');
-  document.getElementById('themeToggle').querySelector('i').classList.replace('fa-moon', 'fa-sun');
+  if (themeToggleBtn) themeToggleBtn.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+  const tabTema = document.getElementById('tabTemaMobile');
+  if (tabTema) {
+    const icon = tabTema.querySelector('i');
+    icon.classList.remove('fa-moon');
+    icon.classList.add('fa-sun');
+  }
 }
 
 // ================================================================
@@ -6340,6 +6669,7 @@ function guardarEditarUsuario() {
 // 34. EVENTOS DE CARGA INICIAL
 // ================================================================
 document.addEventListener('DOMContentLoaded', function() {
+  // Login button ahora solo inicia sesión (el logout está en el menú)
   document.getElementById('loginBtn').addEventListener('click', function() {
     if (currentUser) { window.logoutUser(); }
     else {
@@ -6392,9 +6722,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Botones móviles del menú hamburguesa
   const tabTema = document.getElementById('tabTemaMobile');
-  if (tabTema) tabTema.addEventListener('click', () => document.getElementById('themeToggle').click());
+  if (tabTema) tabTema.addEventListener('click', toggleTheme);
   const tabNotif = document.getElementById('tabNotifMobile');
-  if (tabNotif) tabNotif.addEventListener('click', () => mostrarNotificaciones());
+  if (tabNotif) tabNotif.addEventListener('click', mostrarNotificaciones);
+  const tabCerrarSesion = document.getElementById('tabCerrarSesionMobile');
+  if (tabCerrarSesion) tabCerrarSesion.addEventListener('click', function() { window.logoutUser(); });
 
   document.getElementById('logoInicio').addEventListener('click', function() { switchPanel('inicio'); });
 
@@ -6573,7 +6905,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  console.log('✅ SAL Y LUZ v5: sesión persistente, Mapbox Win11, header móvil compacto, perfil con iconos, galería sin contadores + visor con reacciones, reels Instagram-style.');
+  console.log('✅ SAL Y LUZ v6: menú unificado, botones de perfil no transparentes, reels fullscreen con carrusel 3D vertical, botón flotante para subir reel.');
 });
 
 // ================================================================
@@ -6719,6 +7051,15 @@ window.cerrarFotoViewer = cerrarFotoViewer;
 window.toggleReaccionFoto = toggleReaccionFoto;
 window.comentarFotoViewer = comentarFotoViewer;
 window.compartirFoto = compartirFoto;
+window.abrirReelsFullscreen = abrirReelsFullscreen;
+window.cerrarReelsFullscreen = cerrarReelsFullscreen;
+window.abrirModalReelDesdeViewer = abrirModalReelDesdeViewer;
+window.likeReelFullscreen = likeReelFullscreen;
+window.orandoReelFullscreen = orandoReelFullscreen;
+window.comentarReelFullscreen = comentarReelFullscreen;
+window.compartirReelFullscreen = compartirReelFullscreen;
+window.eliminarReelFullscreen = eliminarReelFullscreen;
+window.toggleTheme = toggleTheme;
 </script>
 </body>
 </html>

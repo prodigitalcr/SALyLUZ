@@ -48,518 +48,138 @@
       display: flex;
       flex-direction: column;
     }
-    .app {
-      max-width: 100% !important;
-      margin: 0 !important;
-      padding: 0 12px;
-      background: var(--bg-body);
-      flex: 1;
-    }
-
-    .header-nav-wrapper {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: var(--bg-body);
-    }
+    .app { max-width: 100% !important; margin: 0 !important; padding: 0 12px; background: var(--bg-body); flex: 1; }
+    .header-nav-wrapper { position: sticky; top: 0; z-index: 100; background: var(--bg-body); }
     body.dark .header-nav-wrapper { background: #12121a; }
-
     .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 14px;
-      background: white;
-      border-bottom: 1px solid var(--border-color);
-      position: relative;
-      backdrop-filter: blur(8px);
-      flex-wrap: wrap;
-      gap: 6px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; background: white; border-bottom: 1px solid var(--border-color);
+      position: relative; backdrop-filter: blur(8px); flex-wrap: wrap; gap: 6px;
     }
     body.dark .header { background: #1a1a2e; }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      animation: logoPulse 3s ease-in-out infinite;
-    }
+    .logo { display: flex; align-items: center; gap: 8px; cursor: pointer; animation: logoPulse 3s ease-in-out infinite; }
     @keyframes logoPulse { 0% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.05) rotate(2deg); } 100% { transform: scale(1) rotate(0deg); } }
-    .logo-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--teal);
-      font-size: 28px;
-      transition: transform 0.3s ease;
-      overflow: hidden;
-    }
+    .logo-icon { width: 48px; height: 48px; border-radius: 12px; background: transparent; display: flex; align-items: center; justify-content: center; color: var(--teal); font-size: 28px; transition: transform 0.3s ease; overflow: hidden; }
     .logo-icon img { width: 100%; height: 100%; object-fit: contain; background: transparent; }
     .logo:hover .logo-icon { transform: rotate(10deg) scale(1.05); }
     .logo-text { font-weight: 700; font-size: 18px; letter-spacing: -0.5px; }
     .logo-text span { color: var(--teal); }
     .logo-sub { font-size: 10px; color: var(--text-secondary); letter-spacing: 0.5px; text-transform: uppercase; }
-    .header-actions {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    #menuToggle {
-      display: none;
-      background: transparent;
-      border: none;
-      font-size: 24px;
-      color: var(--text-primary);
-      cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 8px;
-    }
+    .header-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    #menuToggle { display: none; background: transparent; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; padding: 4px 8px; border-radius: 8px; }
     #menuToggle:hover { background: var(--border-color); }
-
-    /* ===== HEADER MÓVIL EN UN SOLO RENGLÓN ===== */
     @media (max-width: 768px) {
       #menuToggle { display: block; padding: 4px 6px; }
-      .header {
-        padding: 6px 8px;
-        flex-wrap: nowrap;
-        gap: 4px;
-        align-items: center;
-      }
+      .header { padding: 6px 8px; flex-wrap: nowrap; gap: 4px; align-items: center; }
       .logo { gap: 4px; flex-shrink: 0; }
       .logo-icon { width: 32px; height: 32px; font-size: 17px; border-radius: 8px; }
       .logo-text { font-size: 12px; letter-spacing: -0.2px; line-height: 1.1; }
       .logo-sub { font-size: 7.5px; letter-spacing: 0.3px; }
       .logo > div:last-child { display: block; }
-      .header-actions {
-        gap: 3px;
-        flex-wrap: nowrap;
-        margin-left: auto;
-      }
+      .header-actions { gap: 3px; flex-wrap: nowrap; margin-left: auto; }
       .user-badge { font-size: 10px; padding: 2px 7px 2px 5px; gap: 3px; }
       .user-badge i { font-size: 10px; }
       .user-badge img { width: 18px !important; height: 18px !important; }
       .btn-primary { padding: 4px 10px; font-size: 11px; }
-      .btn-icon { font-size: 14px; padding: 4px 5px; }
-      #themeToggle { display: none; }
       .notificaciones-badge { font-size: 10px; padding: 1px 6px; }
     }
-
     body.force-hamburger #menuToggle { display: block; }
     .btn-icon { background: transparent; border: none; font-size: 16px; color: var(--text-secondary); cursor: pointer; padding: 4px 6px; border-radius: 30px; transition: 0.2s; }
     .btn-icon:hover { background: var(--border-color); }
-    .user-badge {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: var(--teal-light);
-      padding: 2px 10px 2px 6px;
-      border-radius: 40px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--teal-dark);
-      cursor: pointer;
-    }
+    .user-badge { display: flex; align-items: center; gap: 4px; background: var(--teal-light); padding: 2px 10px 2px 6px; border-radius: 40px; font-size: 12px; font-weight: 500; color: var(--teal-dark); cursor: pointer; }
     .user-badge i { font-size: 12px; }
-    .btn-primary {
-      background: var(--teal);
-      color: white;
-      border: none;
-      padding: 4px 14px;
-      border-radius: 40px;
-      font-weight: 500;
-      font-size: 12px;
-      cursor: pointer;
-      transition: 0.2s;
-      white-space: nowrap;
-    }
+    .btn-primary { background: var(--teal); color: white; border: none; padding: 4px 14px; border-radius: 40px; font-weight: 500; font-size: 12px; cursor: pointer; transition: 0.2s; white-space: nowrap; }
     .btn-primary:hover { background: var(--teal-dark); }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
-      padding: 4px 14px;
-      border-radius: 40px;
-      font-weight: 500;
-      font-size: 12px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+    .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); padding: 4px 14px; border-radius: 40px; font-weight: 500; font-size: 12px; cursor: pointer; transition: 0.2s; }
     .btn-outline:hover { background: var(--border-color); }
-    .btn-danger {
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 3px 12px;
-      border-radius: 30px;
-      font-size: 11px;
-      cursor: pointer;
-    }
+    .btn-solid { background: white; border: 1px solid var(--border-color); color: var(--text-primary); padding: 4px 14px; border-radius: 40px; font-weight: 500; font-size: 12px; cursor: pointer; transition: 0.2s; }
+    body.dark .btn-solid { background: #2a2a3e; color: var(--text-primary); }
+    .btn-solid:hover { background: var(--border-color); }
+    .btn-danger { background: #e74c3c; color: white; border: none; padding: 3px 12px; border-radius: 30px; font-size: 11px; cursor: pointer; }
     .btn-danger:hover { background: #c0392b; }
-    .admin-badge {
-      background: var(--orange);
-      color: white;
-      padding: 1px 10px;
-      border-radius: 40px;
-      font-size: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-block;
-    }
-
-    .btn-whatsapp-profile {
-      background: #25D366;
-      color: white;
-      padding: 6px 16px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 13px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      border: none;
-      cursor: pointer;
-      transition: 0.2s;
-    }
+    .admin-badge { background: var(--orange); color: white; padding: 1px 10px; border-radius: 40px; font-size: 10px; font-weight: 600; cursor: pointer; display: inline-block; }
+    .btn-whatsapp-profile { background: #25D366; color: white; padding: 6px 16px; border-radius: 30px; text-decoration: none; font-weight: 500; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; border: none; cursor: pointer; transition: 0.2s; }
     .btn-whatsapp-profile:hover { background: #1da851; color: white; }
-
-    .perfil-close-btn {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: rgba(0,0,0,0.55);
-      color: white;
-      border: none;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 16px;
-      z-index: 30;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-    }
+    .perfil-close-btn { position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.55); color: white; border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 16px; z-index: 30; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
     .perfil-close-btn:hover { background: rgba(0,0,0,0.85); }
-
-    /* BOTONES DEL PERFIL SOLO COMO ICONOS */
-    .perfil-action-btn {
-      width: 38px;
-      height: 38px;
-      padding: 0 !important;
-      border-radius: 50% !important;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px !important;
-      text-decoration: none;
-    }
+    .perfil-action-btn { width: 38px; height: 38px; padding: 0 !important; border-radius: 50% !important; display: inline-flex; align-items: center; justify-content: center; font-size: 15px !important; text-decoration: none; }
     .perfil-action-btn i { margin: 0 !important; }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
-    }
-    @media (max-width: 640px) {
-      .info-grid { grid-template-columns: 1fr; }
-    }
-    .info-item {
-      background: var(--bg-body);
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-size: 13px;
-      display: flex;
-      align-items: flex-start;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    @media (max-width: 640px) { .info-grid { grid-template-columns: 1fr; } }
+    .info-item { background: var(--bg-body); padding: 8px 12px; border-radius: 10px; font-size: 13px; display: flex; align-items: flex-start; gap: 6px; flex-wrap: wrap; }
     .info-item i { color: var(--teal); margin-top: 2px; }
     .info-item .label { font-weight: 600; color: var(--text-secondary); }
     .info-item .value { color: var(--text-primary); }
-
-    .media-viewer .media-date {
-      color: rgba(255,255,255,0.55);
-      font-size: 11px;
-      margin-top: 8px;
-      text-align: center;
-      font-style: italic;
-      letter-spacing: 0.3px;
-    }
-
-    .foto-tags {
-      padding: 4px 10px;
-      font-size: 11px;
-      color: var(--teal);
-      background: var(--bg-body);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      align-items: center;
-      border-top: 1px dashed var(--border-color);
-    }
-    .foto-tag {
-      background: var(--teal-light);
-      padding: 1px 8px;
-      border-radius: 20px;
-      cursor: pointer;
-      color: var(--teal-dark);
-      font-weight: 500;
-      transition: 0.15s;
-    }
+    .media-viewer .media-date { color: rgba(255,255,255,0.55); font-size: 11px; margin-top: 8px; text-align: center; font-style: italic; letter-spacing: 0.3px; }
+    .foto-tags { padding: 4px 10px; font-size: 11px; color: var(--teal); background: var(--bg-body); display: flex; flex-wrap: wrap; gap: 4px; align-items: center; border-top: 1px dashed var(--border-color); }
+    .foto-tag { background: var(--teal-light); padding: 1px 8px; border-radius: 20px; cursor: pointer; color: var(--teal-dark); font-weight: 500; transition: 0.15s; }
     .foto-tag:hover { background: var(--teal); color: white; }
-
-    #mainTabs {
-      display: flex;
-      overflow-x: auto;
-      gap: 2px;
-      padding: 0 6px;
-      background: white;
-      border-bottom: 1px solid var(--border-color);
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      transition: all 0.3s ease;
-    }
+    #mainTabs { display: flex; overflow-x: auto; gap: 2px; padding: 0 6px; background: white; border-bottom: 1px solid var(--border-color); scrollbar-width: none; -webkit-overflow-scrolling: touch; transition: all 0.3s ease; }
     body.dark #mainTabs { background: #1a1a2e; }
     #mainTabs::-webkit-scrollbar { display: none; }
-    .tab {
-      padding: 8px 10px;
-      font-size: 12px;
-      white-space: nowrap;
-      background: transparent;
-      border: none;
-      border-bottom: 3px solid transparent;
-      color: var(--text-secondary);
-      cursor: pointer;
-      font-weight: 500;
-      transition: 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-shrink: 0;
-    }
+    .tab { padding: 8px 10px; font-size: 12px; white-space: nowrap; background: transparent; border: none; border-bottom: 3px solid transparent; color: var(--text-secondary); cursor: pointer; font-weight: 500; transition: 0.15s; display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
     .tab i { font-size: 14px; }
     .tab.active { color: var(--teal); border-bottom-color: var(--teal); }
     .tab:hover { color: var(--text-primary); }
-
+    .tab.tab-action { color: var(--teal); }
+    .tab.tab-danger { color: #e74c3c; }
     .only-mobile-tab { display: none !important; }
     @media (max-width: 768px) { .only-mobile-tab { display: flex !important; } }
     body.force-hamburger .only-mobile-tab { display: flex !important; }
-
-    @media (min-width: 769px) {
-      #mainTabs:not(.open) {
-        justify-content: center;
-      }
-    }
-
-    #mainTabs.open,
-    body.force-hamburger #mainTabs,
-    body.force-hamburger #mainTabs.open {
-      justify-content: flex-start !important;
-      align-items: stretch !important;
-    }
-    #mainTabs.open .tab,
-    body.force-hamburger #mainTabs .tab,
-    body.force-hamburger #mainTabs.open .tab {
-      justify-content: flex-start !important;
-      text-align: left !important;
-    }
-
+    @media (min-width: 769px) { #mainTabs:not(.open) { justify-content: center; } }
+    #mainTabs.open, body.force-hamburger #mainTabs, body.force-hamburger #mainTabs.open { justify-content: flex-start !important; align-items: stretch !important; }
+    #mainTabs.open .tab, body.force-hamburger #mainTabs .tab, body.force-hamburger #mainTabs.open .tab { justify-content: flex-start !important; text-align: left !important; }
     @media (max-width: 768px) {
-      #mainTabs {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border-bottom: 1px solid var(--border-color);
-        box-shadow: var(--shadow);
-        z-index: 99;
-        padding: 8px 0;
-        max-height: 70vh;
-        overflow-y: auto;
-        justify-content: flex-start !important;
-        align-items: stretch !important;
-      }
+      #mainTabs { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: white; border-bottom: 1px solid var(--border-color); box-shadow: var(--shadow); z-index: 99; padding: 8px 0; max-height: 70vh; overflow-y: auto; justify-content: flex-start !important; align-items: stretch !important; }
       #mainTabs.open { display: flex; }
-      #mainTabs .tab {
-        padding: 12px 18px;
-        border-bottom: 1px solid var(--border-color);
-        width: 100%;
-        justify-content: flex-start !important;
-        text-align: left !important;
-        font-size: 14px;
-      }
+      #mainTabs .tab { padding: 12px 18px; border-bottom: 1px solid var(--border-color); width: 100%; justify-content: flex-start !important; text-align: left !important; font-size: 14px; }
       #mainTabs .tab:last-child { border-bottom: none; }
       #mainTabs .tab span { display: inline !important; }
     }
-
-    body.force-hamburger #mainTabs {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      border-bottom: 1px solid var(--border-color);
-      box-shadow: var(--shadow);
-      z-index: 99;
-      padding: 8px 0;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
+    body.force-hamburger #mainTabs { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: white; border-bottom: 1px solid var(--border-color); box-shadow: var(--shadow); z-index: 99; padding: 8px 0; max-height: 70vh; overflow-y: auto; }
     body.dark.force-hamburger #mainTabs { background: #1a1a2e; }
     body.force-hamburger #mainTabs.open { display: flex; }
-    body.force-hamburger #mainTabs .tab {
-      padding: 12px 18px;
-      border-bottom: 1px solid var(--border-color);
-      width: 100%;
-      justify-content: flex-start !important;
-      text-align: left !important;
-      font-size: 14px;
-    }
+    body.force-hamburger #mainTabs .tab { padding: 12px 18px; border-bottom: 1px solid var(--border-color); width: 100%; justify-content: flex-start !important; text-align: left !important; font-size: 14px; }
     body.force-hamburger #mainTabs .tab span { display: inline !important; }
-
     .panel { display: none; padding: 12px 10px; animation: fadeUp 0.25s ease; }
     .panel.active { display: block; }
     @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-    .card {
-      background: white;
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      margin-bottom: 14px;
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow);
-      transition: background var(--transition), border var(--transition);
-    }
+    .card { background: white; border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px; border: 1px solid var(--border-color); box-shadow: var(--shadow); transition: background var(--transition), border var(--transition); }
     body.dark .card { background: #1a1a2e; }
     .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
     .card h3 i { color: var(--teal); }
-
-    .hero-section {
-      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
-      border-radius: var(--radius);
-      padding: 40px 20px;
-      margin-bottom: 20px;
-      color: white;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-section::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -20%;
-      width: 300px;
-      height: 300px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 50%;
-      pointer-events: none;
-    }
+    .hero-section { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); border-radius: var(--radius); padding: 40px 20px; margin-bottom: 20px; color: white; text-align: center; position: relative; overflow: hidden; }
+    .hero-section::after { content: ''; position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; background: rgba(255,255,255,0.05); border-radius: 50%; pointer-events: none; }
     .hero-section h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
     .hero-section p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto 1.5rem; }
-    .hero-verse {
-      background: rgba(255,255,255,0.15);
-      padding: 12px 20px;
-      border-radius: 40px;
-      display: inline-block;
-      font-style: italic;
-      margin-bottom: 1rem;
-      backdrop-filter: blur(4px);
-    }
+    .hero-verse { background: rgba(255,255,255,0.15); padding: 12px 20px; border-radius: 40px; display: inline-block; font-style: italic; margin-bottom: 1rem; backdrop-filter: blur(4px); }
     .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
     .hero-actions .btn-primary { background: white; color: var(--teal-dark); padding: 10px 24px; font-size: 1rem; border-radius: 40px; }
     .hero-actions .btn-primary:hover { background: var(--orange-light); color: var(--orange-dark); }
     .hero-actions .btn-outline-light { background: transparent; border: 2px solid white; color: white; padding: 10px 24px; font-size: 1rem; border-radius: 40px; }
     .hero-actions .btn-outline-light:hover { background: white; color: var(--teal-dark); }
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 16px;
-      margin: 20px 0;
-    }
-    .feature-card {
-      background: white;
-      border-radius: var(--radius);
-      padding: 20px 12px;
-      text-align: center;
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow);
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin: 20px 0; }
+    .feature-card { background: white; border-radius: var(--radius); padding: 20px 12px; text-align: center; border: 1px solid var(--border-color); box-shadow: var(--shadow); transition: all 0.3s ease; cursor: pointer; }
     body.dark .feature-card { background: #1a1a2e; }
     .feature-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); border-color: var(--teal); }
     .feature-card i { font-size: 2.2rem; color: var(--teal); margin-bottom: 8px; display: block; }
     .feature-card h5 { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
     .feature-card small { color: var(--text-secondary); font-size: 0.8rem; }
-
-    .event-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-      margin-top: 12px;
-    }
-    .event-card {
-      background: var(--bg-body);
-      border-radius: var(--radius);
-      padding: 16px;
-      border: 1px solid var(--border-color);
-      transition: all 0.3s ease;
-    }
+    .event-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 12px; }
+    .event-card { background: var(--bg-body); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border-color); transition: all 0.3s ease; }
     .event-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--teal); }
-    .event-card .date-badge {
-      display: inline-block;
-      background: var(--teal);
-      color: white;
-      padding: 4px 12px;
-      border-radius: 30px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
+    .event-card .date-badge { display: inline-block; background: var(--teal); color: white; padding: 4px 12px; border-radius: 30px; font-size: 0.8rem; font-weight: 600; margin-bottom: 8px; }
     .event-card h5 { font-weight: 600; margin-bottom: 4px; font-size: 1.1rem; }
     .event-card p { color: var(--text-secondary); font-size: 0.9rem; margin: 4px 0; }
-
-    .noticias-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin-top: 8px;
-    }
-    .noticia-card {
-      background: var(--bg-body);
-      border-radius: var(--radius);
-      padding: 12px;
-      border: 1px solid var(--border-color);
-    }
+    .noticias-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 8px; }
+    .noticia-card { background: var(--bg-body); border-radius: var(--radius); padding: 12px; border: 1px solid var(--border-color); }
     .noticia-card a { color: var(--teal); text-decoration: none; font-weight: 500; }
     .noticia-card a:hover { text-decoration: underline; }
     .noticia-card .fecha { font-size: 11px; color: var(--text-secondary); }
     .noticia-card .admin-actions { margin-top: 4px; display: flex; gap: 4px; }
-
-    .verse-day {
-      background: var(--teal-light);
-      border-radius: var(--radius);
-      padding: 20px;
-      text-align: center;
-      margin: 20px 0;
-      border-left: 4px solid var(--teal);
-    }
+    .verse-day { background: var(--teal-light); border-radius: var(--radius); padding: 20px; text-align: center; margin: 20px 0; border-left: 4px solid var(--teal); }
     .verse-day blockquote { font-size: 1.2rem; font-style: italic; margin: 0; color: var(--text-primary); }
     .verse-day footer { margin-top: 8px; font-weight: 600; color: var(--teal-dark); }
-
     .carousel-container { position: relative; border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; background: #1a1a2e; box-shadow: var(--shadow); }
     .carousel-slide { display: none; width: 100%; height: 260px; object-fit: cover; transition: opacity 0.5s ease; }
     .carousel-slide.active { display: block; opacity: 1; }
@@ -575,60 +195,17 @@
     .carousel-indicators span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: 0.2s; }
     .carousel-indicators span.active { background: white; }
     @media (max-width: 600px) { .carousel-slide { height: 200px; } .carousel-caption { padding: 10px; } .carousel-caption h5 { font-size: 14px; } .carousel-caption p { font-size: 12px; } }
-
-    .post {
-      background: var(--card-bg, white);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 16px;
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow);
-    }
+    .post { background: var(--card-bg, white); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
     body.dark .post { background: #1a1a2e; }
     .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .post-avatar {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: var(--teal-light);
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 600; color: var(--teal-dark);
-      flex-shrink: 0;
-      background-size: cover;
-      background-position: center;
-      cursor: pointer;
-    }
+    .post-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--teal-dark); flex-shrink: 0; background-size: cover; background-position: center; cursor: pointer; }
     .post-author { font-weight: 600; font-size: 15px; cursor: pointer; }
     .post-time { font-size: 12px; color: var(--text-secondary); }
-    .post-categoria {
-      display: inline-block;
-      font-size: 11px;
-      padding: 1px 10px;
-      border-radius: 30px;
-      background: var(--orange-light);
-      color: var(--orange-dark);
-      margin-bottom: 4px;
-    }
+    .post-categoria { display: inline-block; font-size: 11px; padding: 1px 10px; border-radius: 30px; background: var(--orange-light); color: var(--orange-dark); margin-bottom: 4px; }
     .post-content { margin: 6px 0 10px; line-height: 1.6; font-size: 14px; }
     .post-media { max-width: 100%; border-radius: 12px; margin: 6px 0; max-height: 320px; object-fit: cover; }
-    .post-actions {
-      display: flex;
-      gap: 16px;
-      font-size: 13px;
-      color: var(--text-secondary);
-      flex-wrap: wrap;
-    }
-    .post-actions button {
-      background: none;
-      border: none;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-      color: var(--text-secondary);
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 30px;
-      transition: 0.15s;
-    }
+    .post-actions { display: flex; gap: 16px; font-size: 13px; color: var(--text-secondary); flex-wrap: wrap; }
+    .post-actions button { background: none; border: none; display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-secondary); font-size: 12px; padding: 4px 8px; border-radius: 30px; transition: 0.15s; }
     .post-actions button:hover { background: var(--border-color); }
     .post-actions button.liked { color: var(--teal); }
     .post-actions button.orando { color: #6a1b9a; }
@@ -637,13 +214,10 @@
     .comment-box { display: flex; gap: 6px; margin-top: 4px; }
     .comment-box input { flex:1; padding: 4px 8px; border-radius: 20px; border:1px solid var(--border-color); background: var(--bg-body); color: var(--text-primary); }
     .comment-box button { background: var(--teal); color:white; border:none; border-radius:20px; padding:4px 12px; cursor:pointer; }
-
     .grupo-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
     .grupo-info { flex: 1; }
     .grupo-actions { display: flex; gap: 6px; align-items: center; }
-
     .disc-card { background: var(--bg-body); border-radius: var(--radius); padding: 12px; margin-bottom: 10px; border: 1px solid var(--border-color); }
-
     .oracion-item { border-bottom: 1px solid var(--border-color); padding: 12px 0; }
     .oracion-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
     .oracion-avatar { width: 40px; height: 40px; border-radius: 50%; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--teal-dark); background-color: var(--teal-light); }
@@ -654,7 +228,6 @@
     .oracion-actions button { background: none; border: none; display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-secondary); font-size: 12px; padding: 2px 8px; border-radius: 30px; }
     .oracion-actions button.orado { color: var(--teal); }
     .oracion-actions button:hover { background: var(--border-color); }
-
     .consejo-item { border-bottom: 1px solid var(--border-color); padding: 12px 0; }
     .consejo-titulo { font-weight: 600; font-size: 15px; }
     .consejo-respuestas { margin-top: 8px; padding-left: 16px; border-left: 2px solid var(--teal-light); }
@@ -663,7 +236,6 @@
     .consejo-actions { display: flex; gap: 12px; margin: 6px 0; }
     .consejo-actions button { background: none; border: none; display: flex; align-items: center; gap: 4px; cursor: pointer; color: var(--text-secondary); font-size: 12px; padding: 2px 8px; border-radius: 30px; }
     .consejo-actions button.orado { color: var(--teal); }
-
     .serv-item { border-bottom: 1px solid var(--border-color); padding: 12px 0; }
     .serv-item.finalizado { opacity: 0.6; text-decoration: line-through; }
     .badge-finalizado { background: #e74c3c; color: white; padding: 1px 10px; border-radius: 30px; font-size: 11px; font-weight: 500; }
@@ -672,42 +244,14 @@
     .estado-confirmado { background: #27ae60; color: white; }
     .estado-cancelado { background: #e74c3c; color: white; }
     .solicitante-item { display: flex; justify-content: space-between; align-items: center; padding: 2px 0; font-size: 13px; border-bottom: 1px dashed var(--border-color); }
-
     .biblia-selectores { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
     .biblia-selectores .grupo { flex: 1; min-width: 150px; }
-    .biblia-nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      justify-content: center;
-      margin: 8px 0;
-    }
-    .biblia-nav button {
-      background: var(--teal);
-      color: white;
-      border: none;
-      border-radius: 30px;
-      padding: 4px 16px;
-      cursor: pointer;
-      font-size: 13px;
-    }
+    .biblia-nav { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin: 8px 0; }
+    .biblia-nav button { background: var(--teal); color: white; border: none; border-radius: 30px; padding: 4px 16px; cursor: pointer; font-size: 13px; }
     .biblia-nav button:hover { background: var(--teal-dark); }
     .biblia-nav .cap-info { font-weight: 600; font-size: 15px; margin: 0 8px; }
-    .fuente-control {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      margin: 4px 0;
-    }
-    .fuente-control button {
-      background: var(--bg-body);
-      border: 1px solid var(--border-color);
-      border-radius: 30px;
-      padding: 2px 12px;
-      cursor: pointer;
-      font-size: 14px;
-    }
+    .fuente-control { display: flex; gap: 6px; align-items: center; margin: 4px 0; }
+    .fuente-control button { background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 30px; padding: 2px 12px; cursor: pointer; font-size: 14px; }
     .fuente-control button:hover { background: var(--border-color); }
     .versiculos p { margin-bottom: 3px; line-height: 1.6; text-align: justify; padding: 4px 0; border-bottom: 1px dashed var(--border-color); }
     .versiculos p:last-child { border-bottom: none; }
@@ -719,19 +263,8 @@
     .btn-guardar-todo { margin-top: 8px; padding: 6px 18px; background: var(--teal); color: white; border: none; border-radius: 30px; font-weight: 500; cursor: pointer; display: none; font-size: 13px; }
     .btn-guardar-todo.show { display: inline-block; }
     .historial-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-    .historial-tag {
-      background: var(--bg-body);
-      border: 1px solid var(--border-color);
-      padding: 4px 14px;
-      border-radius: 30px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: 0.2s;
-      color: var(--text-primary);
-      font-weight: 500;
-    }
+    .historial-tag { background: var(--bg-body); border: 1px solid var(--border-color); padding: 4px 14px; border-radius: 30px; font-size: 12px; cursor: pointer; transition: 0.2s; color: var(--text-primary); font-weight: 500; }
     .historial-tag:hover { background: var(--teal-light); border-color: var(--teal); transform: translateY(-1px); }
-
     .map-wrapper { height: 400px; border-radius: 10px; border: 1px solid var(--border-color); margin: 6px 0; position: relative; }
     .map-wrapper .mapboxgl-map { height: 100%; width: 100%; border-radius: 10px; }
     .map-search { display: flex; gap: 6px; margin-bottom: 6px; }
@@ -740,7 +273,6 @@
     .map-search button:hover { background: var(--teal-dark); }
     .map-popup { font-size: 13px; }
     .map-popup strong { display: block; }
-
     .chat-mensajes-container { max-height: 350px; overflow-y: auto; background: var(--bg-body); border-radius: var(--radius); padding: 10px; margin-bottom: 8px; border: 1px solid var(--border-color); }
     .chat-mensajes-container .msg { margin-bottom: 6px; font-size: 13px; padding: 4px 8px; border-radius: 8px; background: white; border: 1px solid var(--border-color); }
     body.dark .chat-mensajes-container .msg { background: #1a1a2e; }
@@ -750,19 +282,9 @@
     .chat-input input { flex: 1; padding: 8px 12px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-primary); font-size: 13px; }
     .chat-input button { padding: 8px 16px; border-radius: 30px; border: none; background: var(--teal); color: white; cursor: pointer; }
     .chat-input button:hover { background: var(--teal-dark); }
-
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); align-items: center; justify-content: center; z-index: 999; }
     .modal-overlay.show { display: flex; }
-    .modal-box {
-      background: white;
-      border-radius: var(--radius);
-      padding: 24px 28px;
-      max-width: 900px;
-      width: 95%;
-      max-height: 90vh;
-      overflow-y: auto;
-      border: 1px solid var(--border-color);
-    }
+    .modal-box { background: white; border-radius: var(--radius); padding: 24px 28px; max-width: 900px; width: 95%; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border-color); }
     body.dark .modal-box { background: #1a1a2e; }
     .modal-box h3 { font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; font-size: 20px; }
     .modal-box h5 { font-size: 16px; font-weight: 600; margin: 10px 0 6px; }
@@ -778,7 +300,6 @@
     .modal-actions .btn-confirm { background: var(--teal); color: white; }
     .modal-actions .btn-confirm:hover { background: var(--teal-dark); }
     @media (max-width: 600px) { .modal-box { padding: 16px; max-width: 98%; } }
-
     .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px,1fr)); gap: 8px; margin-bottom: 12px; }
     .admin-stat { background: var(--bg-body); padding: 8px 6px; border-radius: 10px; text-align: center; border: 1px solid var(--border-color); }
     .admin-stat .num { font-size: 22px; font-weight: 700; color: var(--teal); }
@@ -791,481 +312,169 @@
     .admin-ia-config label { font-weight: 500; font-size: 13px; margin-top: 6px; display: block; }
     .admin-ia-config input, .admin-ia-config textarea, .admin-ia-config select { width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--border-color); background: white; color: var(--text-primary); font-size: 13px; margin-top: 2px; }
     body.dark .admin-ia-config input, body.dark .admin-ia-config textarea, body.dark .admin-ia-config select { background: #1a1a2e; }
-
     .notificaciones-badge { background: #e74c3c; color: white; border-radius: 50%; padding: 2px 8px; font-size: 11px; cursor: pointer; margin-left: 4px; }
-
-    .galeria-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 12px;
-    }
-    @media (min-width: 640px) {
-      .galeria-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    }
-    @media (min-width: 992px) {
-      .galeria-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
-    }
-    .galeria-item {
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-      background: white;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+    .galeria-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 12px; }
+    @media (min-width: 640px) { .galeria-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
+    @media (min-width: 992px) { .galeria-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
+    .galeria-item { position: relative; border-radius: 12px; overflow: hidden; background: white; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; }
     body.dark .galeria-item { background: #1a1a2e; }
     .galeria-item:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-    .galeria-img-wrapper {
-      position: relative;
-      aspect-ratio: 1/1;
-      overflow: hidden;
-      cursor: pointer;
-      background: #000;
-    }
-    .galeria-img-wrapper img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 0.35s ease;
-    }
+    .galeria-img-wrapper { position: relative; aspect-ratio: 1/1; overflow: hidden; cursor: pointer; background: #000; }
+    .galeria-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }
     .galeria-img-wrapper:hover img { transform: scale(1.06); }
-    .galeria-item .foto-desc {
-      padding: 6px 10px;
-      font-size: 12px;
-      color: var(--text-secondary);
-      background: var(--bg-body);
-      border-top: 1px solid var(--border-color);
-    }
-
-    /* Visor de foto */
-    .foto-viewer-reaction-btn {
-      background: var(--bg-body);
-      border: 1px solid var(--border-color);
-      border-radius: 30px;
-      padding: 4px 12px;
-      font-size: 12px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      color: var(--text-secondary);
-      transition: 0.15s;
-    }
+    .galeria-item .foto-desc { padding: 6px 10px; font-size: 12px; color: var(--text-secondary); background: var(--bg-body); border-top: 1px solid var(--border-color); }
+    .foto-viewer-reaction-btn { background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 30px; padding: 4px 12px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; color: var(--text-secondary); transition: 0.15s; }
     .foto-viewer-reaction-btn:hover { background: var(--border-color); }
     .foto-viewer-reaction-btn.liked { color: #e74c3c; border-color: #e74c3c; }
     .foto-viewer-reaction-btn.orando { color: #6a1b9a; border-color: #6a1b9a; }
-
-    #perfilModal .modal-box {
-      max-width: 1080px;
-      width: 96%;
-      max-height: 96vh;
-      padding: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      position: relative;
-    }
-    @media (max-width: 640px) {
-      #perfilModal .modal-box {
-        width: 100%;
-        max-width: 100%;
-        max-height: 100vh;
-        border-radius: 0;
-      }
-    }
+    #perfilModal .modal-box { max-width: 1080px; width: 96%; max-height: 96vh; padding: 0; overflow-y: auto; overflow-x: hidden; position: relative; }
+    @media (max-width: 640px) { #perfilModal .modal-box { width: 100%; max-width: 100%; max-height: 100vh; border-radius: 0; } }
     .perfil-facebook .portada { border-radius: 0 !important; margin: 0; }
     .perfil-facebook h2 { font-size: 1.6rem; }
     @media (max-width: 640px) {
-      .perfil-facebook h2,
-      .perfil-facebook p { padding-left: 0 !important; }
+      .perfil-facebook h2, .perfil-facebook p { padding-left: 0 !important; }
       .perfil-facebook .foto-perfil { width: 90px !important; height: 90px !important; }
       .perfil-facebook .portada { height: 150px !important; }
     }
 
-    /* ===== REELS ===== */
-    .reels-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 12px;
-      margin-top: 12px;
+    /* ============================================================ */
+    /* NUEVO VISOR DE REELS PANTALLA COMPLETA CON CARRUSEL 3D       */
+    /* ============================================================ */
+    .reels-viewer {
+      position: fixed; inset: 0; background: #000; z-index: 9998;
+      display: none; overflow: hidden;
     }
-    @media (max-width: 640px) {
-      .reels-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .reels-viewer.show { display: block; }
+    .reels-viewer-close {
+      position: absolute; top: 16px; right: 16px; z-index: 100;
+      background: rgba(255,255,255,0.15); color: white; border: none;
+      width: 42px; height: 42px; border-radius: 50%; font-size: 18px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(8px); transition: background 0.2s;
     }
+    .reels-viewer-close:hover { background: rgba(255,255,255,0.3); }
 
-    .reel-item {
-      background: #000;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-      position: relative;
-      aspect-ratio: 9 / 16;
-      cursor: pointer;
-      scroll-snap-align: start;
+    .reels-scroll {
+      height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory;
+      scrollbar-width: none; -webkit-overflow-scrolling: touch;
+      perspective: 1500px; perspective-origin: center center;
     }
-    .reel-item video {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      background: #000;
-    }
-    .reel-item .reel-overlay {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 8px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.75));
-      color: white; font-size: 12px;
-      display: flex; justify-content: space-between; align-items: center;
-      pointer-events: none;
-    }
-    .reel-item .reel-overlay span { display: flex; align-items: center; gap: 4px; }
-    .reel-item .reel-play-badge {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 40px; color: rgba(255,255,255,0.85);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-    .reel-item.paused .reel-play-badge { opacity: 1; }
+    .reels-scroll::-webkit-scrollbar { display: none; }
 
-    /* Modal 70/30 */
-    .reel-modal-box {
-      max-width: 1200px; width: 96%;
-      padding: 0; overflow: hidden;
-      display: flex; flex-direction: row;
-      background: #000;
-      border-radius: var(--radius);
-    }
-    .reel-modal-video-wrap {
-      flex: 0 0 70%;
-      background: #000;
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
-    .reel-modal-video-wrap video {
-      width: 100%; height: 80vh; max-height: 80vh;
-      object-fit: contain; background: #000;
-    }
-    .reel-modal-side {
-      flex: 1;
-      background: var(--bg-body);
-      color: var(--text-primary);
-      padding: 14px;
-      max-height: 80vh;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .reel-modal-side .reel-author {
-      display: flex; align-items: center; gap: 8px;
-      font-weight: 600;
-    }
-    .reel-modal-side .reel-author img {
-      width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
-      background: var(--teal-light);
-    }
-    .reel-modal-side .reel-desc {
-      font-size: 13px; white-space: pre-wrap; line-height: 1.5;
-    }
-    .reel-modal-side .reel-actions-bar {
-      display: flex; gap: 8px; flex-wrap: wrap;
-      padding: 8px 0;
-      border-top: 1px solid var(--border-color);
-      border-bottom: 1px solid var(--border-color);
-    }
-    .reel-modal-side .reel-actions-bar button {
-      background: var(--bg-body); border: 1px solid var(--border-color);
-      padding: 5px 12px; border-radius: 30px; cursor: pointer;
-      font-size: 12px; color: var(--text-secondary);
-      display: inline-flex; align-items: center; gap: 5px;
-    }
-    .reel-modal-side .reel-actions-bar button.liked { color: #e74c3c; border-color: #e74c3c; }
-    .reel-modal-side .reel-comments-list {
-      flex: 1; overflow-y: auto;
-      font-size: 13px;
-      display: flex; flex-direction: column; gap: 6px;
-    }
-
-    @media (max-width: 768px) {
-      .reel-modal-box { flex-direction: column; width: 100%; max-width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; }
-      .reel-modal-video-wrap { flex: 0 0 auto; width: 100%; }
-      .reel-modal-video-wrap video { height: 60vh; max-height: 60vh; }
-      .reel-modal-side { max-height: 40vh; }
-    }
-
-    /* ===== NUEVO VISOR DE REELS TIPO CARRUSEL 3D VERTICAL ===== */
-    .reels-fullscreen-viewer {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 10000;
-      overflow: hidden;
-      perspective: 1200px;
-    }
-    .reels-fullscreen-viewer.show {
-      display: flex;
-      flex-direction: column;
-    }
-    .reels-carousel-container {
-      flex: 1;
-      position: relative;
-      overflow-y: scroll;
-      scroll-snap-type: y mandatory;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      transform-style: preserve-3d;
-    }
-    .reels-carousel-container::-webkit-scrollbar { display: none; }
-
-    .reel-fullscreen-item {
-      height: 100vh;
-      width: 100%;
-      scroll-snap-align: start;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #000;
-      overflow: hidden;
-      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s ease;
-      transform-style: preserve-3d;
-      opacity: 0.4;
-      transform: rotateX(8deg) scale(0.92);
-    }
-    .reel-fullscreen-item.active {
-      opacity: 1;
-      transform: rotateX(0deg) scale(1);
-      z-index: 2;
-    }
-    .reel-fullscreen-item.prev {
-      transform: rotateX(-8deg) scale(0.92);
-      opacity: 0.4;
-    }
-    .reel-fullscreen-item.next {
-      transform: rotateX(8deg) scale(0.92);
-      opacity: 0.4;
-    }
-
-    .reel-fullscreen-item video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    .reel-slide-full {
+      height: 100vh; scroll-snap-align: start;
+      display: flex; flex-direction: column;
+      position: relative; transform-origin: center center;
+      transition: transform 0.35s ease-out, opacity 0.35s ease-out;
+      will-change: transform, opacity; backface-visibility: hidden;
       background: #000;
     }
+    .reel-full-video {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      background: #000; overflow: hidden; min-height: 0;
+    }
+    .reel-full-video video {
+      max-width: 100%; max-height: 100%;
+      width: auto; height: 100%; object-fit: contain; background: #000;
+    }
+    .reel-full-info {
+      background: #12121a; color: white; padding: 14px 16px;
+      max-height: 42vh; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 10px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .reel-info-author { display: flex; align-items: center; gap: 10px; }
+    .reel-info-author img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: var(--teal-light); }
+    .reel-info-author .name { font-weight: 600; font-size: 14px; cursor: pointer; }
+    .reel-info-author .name:hover { color: var(--teal); }
+    .reel-info-author .date { font-size: 11px; opacity: 0.7; }
+    .reel-info-desc { font-size: 13px; line-height: 1.5; white-space: pre-wrap; }
+    .reel-info-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .reel-info-actions button {
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: white; padding: 6px 14px; border-radius: 30px; cursor: pointer;
+      font-size: 12px; display: inline-flex; align-items: center; gap: 5px;
+      transition: 0.15s;
+    }
+    .reel-info-actions button:hover { background: rgba(255,255,255,0.2); }
+    .reel-info-actions button.liked { background: #e74c3c; border-color: #e74c3c; }
+    .reel-info-actions button.danger { background: rgba(231,76,60,0.3); border-color: #e74c3c; }
+    .reel-info-comments {
+      flex: 1; overflow-y: auto; font-size: 13px;
+      display: flex; flex-direction: column; gap: 5px;
+      min-height: 40px; max-height: 25vh;
+      padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .reel-info-comments .comment-line { font-size: 13px; line-height: 1.4; }
+    .reel-info-comments .comment-line strong { color: var(--teal); margin-right: 4px; }
+    .reel-info-comment-box { display: flex; gap: 6px; }
+    .reel-info-comment-box input {
+      flex: 1; padding: 8px 14px; border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08); color: white; font-size: 13px;
+    }
+    .reel-info-comment-box input::placeholder { color: rgba(255,255,255,0.5); }
+    .reel-info-comment-box button {
+      background: var(--teal); color: white; border: none;
+      padding: 8px 18px; border-radius: 30px; cursor: pointer;
+      font-size: 13px; font-weight: 500;
+    }
+    .reel-info-comment-box button:hover { background: var(--teal-dark); }
 
-    .reel-fullscreen-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 20px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.8));
-      color: white;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      pointer-events: none;
-    }
-    .reel-fullscreen-overlay .reel-author-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      pointer-events: auto;
-    }
-    .reel-fullscreen-overlay .reel-author-info img {
-      width: 40px; height: 40px; border-radius: 50%; object-fit: cover;
-      border: 2px solid white;
-    }
-    .reel-fullscreen-overlay .reel-author-info .name {
-      font-weight: 600; font-size: 15px; cursor: pointer;
-    }
-    .reel-fullscreen-overlay .reel-desc-text {
-      font-size: 14px; opacity: 0.9; white-space: pre-wrap;
-      pointer-events: auto;
-    }
-    .reel-fullscreen-overlay .reel-actions-row {
-      display: flex;
-      gap: 16px;
-      pointer-events: auto;
-      margin-top: 4px;
-      flex-wrap: wrap;
-    }
-    .reel-fullscreen-overlay .reel-actions-row button {
-      background: rgba(255,255,255,0.15);
-      border: none;
-      color: white;
-      padding: 6px 14px;
-      border-radius: 30px;
-      font-size: 13px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(4px);
-      transition: background 0.2s;
-    }
-    .reel-fullscreen-overlay .reel-actions-row button:hover {
-      background: rgba(255,255,255,0.3);
-    }
-    .reel-fullscreen-overlay .reel-actions-row button.liked {
-      color: #ff6b6b;
-    }
-    .reel-fullscreen-overlay .reel-actions-row button.orando {
-      color: #ce93d8;
+    @media (min-width: 769px) {
+      .reel-slide-full { flex-direction: row; }
+      .reel-full-video { flex: 0 0 70%; }
+      .reel-full-info {
+        flex: 1; max-height: 100vh;
+        padding: 60px 24px 20px;
+        border-top: none;
+        border-left: 1px solid rgba(255,255,255,0.1);
+      }
+      .reel-info-comments { max-height: none; min-height: 100px; }
+      .reels-viewer-close { top: 20px; right: calc(30% + 20px); }
     }
 
-    /* Botón flotante de subir reel */
-    .reel-floating-add-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: var(--teal);
-      color: white;
-      border: none;
-      font-size: 28px;
-      cursor: pointer;
-      z-index: 10001;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 20px rgba(29, 158, 117, 0.5);
+    /* FAB flotante para subir reel */
+    .reels-fab {
+      position: fixed; bottom: 20px; right: 20px;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--teal); color: white; border: none;
+      font-size: 22px; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      z-index: 9999; display: flex; align-items: center; justify-content: center;
       transition: transform 0.2s, background 0.2s;
     }
-    .reel-floating-add-btn:hover {
-      transform: scale(1.1);
-      background: var(--teal-dark);
-    }
+    .reels-fab:hover { background: var(--teal-dark); transform: scale(1.1); }
+    .reels-fab:active { transform: scale(0.95); }
+
     @media (max-width: 768px) {
-      .reel-floating-add-btn {
-        bottom: 20px;
-        right: 20px;
-        width: 52px;
-        height: 52px;
-        font-size: 24px;
-      }
+      .reels-fab { bottom: 16px; right: 16px; width: 52px; height: 52px; font-size: 20px; }
     }
 
-    .reel-fullscreen-close {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 10002;
-      background: rgba(0,0,0,0.6);
-      color: white;
-      border: none;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      font-size: 22px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(4px);
-      transition: background 0.2s;
+    /* Panel reels: estado vacío / placeholder */
+    .reels-placeholder {
+      text-align: center; padding: 40px 20px;
+      color: var(--text-secondary);
     }
-    .reel-fullscreen-close:hover {
-      background: rgba(0,0,0,0.9);
-    }
+    .reels-placeholder i { font-size: 60px; color: var(--teal); display: block; margin-bottom: 16px; }
+    .reels-placeholder h3 { font-size: 20px; margin-bottom: 8px; color: var(--text-primary); }
+    .reels-placeholder p { font-size: 14px; margin-bottom: 16px; }
 
     .preview-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; position: relative; }
     .preview-container img, .preview-container video { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid var(--border-color); }
     .preview-container .file-preview { display: flex; align-items: center; gap: 4px; background: var(--bg-body); padding: 4px 8px; border-radius: 20px; border: 1px solid var(--border-color); }
-    .preview-container .remove-preview {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background: #e74c3c;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .media-viewer {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.95);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      cursor: pointer;
-      flex-direction: column;
-    }
+    .preview-container .remove-preview { position: absolute; top: -6px; right: -6px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+    .media-viewer { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999; align-items: center; justify-content: center; padding: 20px; cursor: pointer; flex-direction: column; }
     .media-viewer.show { display: flex; }
-    .media-viewer .media-container {
-      max-width: 98%;
-      max-height: 85vh;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .media-viewer .media-container img,
-    .media-viewer .media-container video {
-      max-width: 100%;
-      max-height: 85vh;
-      object-fit: contain;
-      border-radius: 8px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.5);
-      cursor: default;
-    }
-    .media-viewer .close-viewer {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      color: white;
-      font-size: 40px;
-      cursor: pointer;
-      z-index: 10;
-    }
-    .media-viewer .nav-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,0.2);
-      color: white;
-      border: none;
-      padding: 16px 20px;
-      font-size: 30px;
-      cursor: pointer;
-      border-radius: 50%;
-      z-index: 10;
-      transition: 0.2s;
-    }
+    .media-viewer .media-container { max-width: 98%; max-height: 85vh; position: relative; display: flex; align-items: center; justify-content: center; }
+    .media-viewer .media-container img, .media-viewer .media-container video { max-width: 100%; max-height: 85vh; object-fit: contain; border-radius: 8px; box-shadow: 0 0 40px rgba(0,0,0,0.5); cursor: default; }
+    .media-viewer .close-viewer { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; z-index: 10; }
+    .media-viewer .nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); color: white; border: none; padding: 16px 20px; font-size: 30px; cursor: pointer; border-radius: 50%; z-index: 10; transition: 0.2s; }
     .media-viewer .nav-btn:hover { background: rgba(255,255,255,0.4); }
     .media-viewer .nav-btn.prev { left: 10px; }
     .media-viewer .nav-btn.next { right: 10px; }
-    .media-viewer .media-info {
-      color: white;
-      font-size: 14px;
-      margin-top: 10px;
-      text-align: center;
-      width: 100%;
-      max-width: 600px;
-    }
-    .media-viewer .media-info.media-date {
-      color: rgba(255,255,255,0.55);
-      font-size: 11px;
-      font-style: italic;
-      letter-spacing: 0.3px;
-    }
-
+    .media-viewer .media-info { color: white; font-size: 14px; margin-top: 10px; text-align: center; width: 100%; max-width: 600px; }
+    .media-viewer .media-info.media-date { color: rgba(255,255,255,0.55); font-size: 11px; font-style: italic; letter-spacing: 0.3px; }
     .footer { text-align: center; padding: 16px 12px; border-top: 1px solid var(--border-color); font-size: 13px; color: var(--text-secondary); background: var(--bg-body); margin-top: 20px; }
     .footer span { font-weight: 600; color: var(--teal); }
     .config-solo-admin { display: block; }
@@ -1275,100 +484,36 @@
     .superadmin-no-config .config-msg { display: block !important; color: var(--text-secondary); font-style: italic; padding: 8px 0; }
     .solicitud-item { padding: 8px 0; border-bottom: 1px solid var(--border-color); }
     .solicitud-item:last-child { border-bottom: none; }
-
-    .devocional-card {
-      background: var(--bg-body);
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 12px;
-      border: 1px solid var(--border-color);
-      transition: all 0.25s ease;
-    }
+    .devocional-card { background: var(--bg-body); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; border: 1px solid var(--border-color); transition: all 0.25s ease; }
     .devocional-card:hover { border-color: var(--teal); box-shadow: var(--shadow); }
-    .devocional-card .dev-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-    .devocional-card .dev-icon {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 22px; flex-shrink: 0;
-    }
+    .devocional-card .dev-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .devocional-card .dev-icon { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--teal), var(--teal-dark)); display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; flex-shrink: 0; }
     .devocional-card h5 { font-weight: 600; font-size: 15px; margin: 0; }
     .devocional-card .dev-meta { font-size: 12px; color: var(--text-secondary); }
     .devocional-card .dev-desc { font-size: 13px; margin: 6px 0; color: var(--text-primary); line-height: 1.5; }
     .devocional-card .dev-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-    .pdf-viewer {
-      width: 100%;
-      height: 75vh;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      background: #525659;
-      margin-top: 10px;
-    }
-    .pdf-viewer iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 10px;
-    }
-
-    #qrModal .modal-box {
-      max-width: 420px;
-      text-align: center;
-      padding: 24px;
-    }
-    .qr-foto-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      justify-content: center;
-      margin: 16px 0;
-      padding: 12px;
-      background: var(--bg-body);
-      border-radius: 12px;
-    }
-    .qr-foto-wrap img {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--teal);
-      background: #fff;
-    }
-    .qr-img-wrap {
-      background: white;
-      padding: 12px;
-      border-radius: 12px;
-      display: inline-block;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .qr-img-wrap img {
-      width: 240px;
-      height: 240px;
-      display: block;
-    }
+    .pdf-viewer { width: 100%; height: 75vh; border: 1px solid var(--border-color); border-radius: 10px; background: #525659; margin-top: 10px; }
+    .pdf-viewer iframe { width: 100%; height: 100%; border: none; border-radius: 10px; }
+    #qrModal .modal-box { max-width: 420px; text-align: center; padding: 24px; }
+    .qr-foto-wrap { display: flex; align-items: center; gap: 12px; justify-content: center; margin: 16px 0; padding: 12px; background: var(--bg-body); border-radius: 12px; }
+    .qr-foto-wrap img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 3px solid var(--teal); background: #fff; }
+    .qr-img-wrap { background: white; padding: 12px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .qr-img-wrap img { width: 240px; height: 240px; display: block; }
   </style>
 </head>
 <body>
 
 <div class="app" id="appContainer">
-
   <div class="header-nav-wrapper">
-
     <header class="header">
       <div class="logo" id="logoInicio">
         <div class="logo-icon" id="logoIcon"><i class="fas fa-church"></i></div>
         <div><div class="logo-text">SAL <span>Y</span> LUZ</div><div class="logo-sub">Comunidad Cristiana</div></div>
       </div>
       <div class="header-actions">
+        <button class="btn-primary" id="loginBtn">Entrar</button>
         <span class="user-badge" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span></span>
         <span id="notificacionesBadge" class="notificaciones-badge" style="display:none; cursor:pointer;">0</span>
-        <button class="btn-icon" id="miPerfilBtn" title="Mi Perfil" style="display:none;"><i class="fas fa-user-circle"></i></button>
         <button class="menu-toggle" id="menuToggle" aria-label="Menú"><i class="fas fa-bars"></i></button>
       </div>
     </header>
@@ -1390,11 +535,11 @@
       <button class="tab" data-panel="chatadmin" id="tabChatAdmin" style="display:none;"><i class="fas fa-user-cog"></i><span> Chat Admin</span></button>
       <button class="tab" id="tabChatEquipo" data-panel="chatequipo" style="display:none;"><i class="fas fa-users-cog"></i><span> Equipo</span></button>
       <button class="tab" data-panel="admin" id="adminTab" style="display:none;"><i class="fas fa-cog"></i><span> Admin</span></button>
-      <button class="tab only-mobile-tab" id="tabTemaMobile"><i class="fas fa-moon"></i><span> Modo nocturno</span></button>
-      <button class="tab only-mobile-tab" id="tabNotifMobile"><i class="fas fa-bell"></i><span> Notificaciones (<span id="notifCountMobile">0</span>)</span></button>
-      <button class="tab only-mobile-tab" id="tabCerrarSesionMobile" style="display:none;"><i class="fas fa-sign-out-alt"></i><span> Cerrar sesión</span></button>
-    </nav>
 
+      <!-- NUEVAS OPCIONES DE MENÚ -->
+      <button class="tab tab-action" id="tabTemaToggle"><i class="fas fa-moon"></i><span> Modo nocturno</span></button>
+      <button class="tab tab-danger" id="tabAuthToggle" style="display:none;"><i class="fas fa-sign-out-alt"></i><span> Cerrar sesión</span></button>
+    </nav>
   </div>
 
   <!-- ===== PANEL INICIO ===== -->
@@ -1565,13 +710,14 @@
     <div id="feedContainer"></div>
   </div>
 
-  <!-- ===== PANEL REELS ===== -->
+  <!-- ===== PANEL REELS (ahora abre directamente el visor de pantalla completa) ===== -->
   <div class="panel" id="panel-reels">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3><i class="fas fa-video"></i> Reels</h3>
-      <button class="btn-primary" id="btnAbrirReelModal" style="display:none;"><i class="fas fa-plus"></i> Subir Reel</button>
+    <div class="reels-placeholder">
+      <i class="fas fa-video"></i>
+      <h3>Reels de la comunidad</h3>
+      <p>Comparte y descubre videos cortos con la comunidad.</p>
+      <button class="btn-primary" onclick="abrirReelsViewer()"><i class="fas fa-play"></i> Ver Reels</button>
     </div>
-    <div id="reelsContainer" class="reels-grid"><p style="color:var(--text-secondary); grid-column:1/-1; text-align:center;">Cargando reels...</p></div>
   </div>
 
   <!-- ===== PANEL GRUPOS ===== -->
@@ -1770,12 +916,10 @@
         <div class="admin-stat"><div class="num" id="statSolicitudesPass">0</div><div class="label">Solicitudes</div></div>
       </div>
     </div>
-
     <div class="card">
       <h3><i class="fas fa-key"></i> Solicitudes de cambio de contraseña</h3>
       <div id="solicitudesPasswordList"><p style="color:var(--text-secondary);">No hay solicitudes pendientes.</p></div>
     </div>
-
     <div class="card config-solo-admin" id="cardLogoConfig">
       <h3><i class="fas fa-image"></i> Personalizar Logo</h3>
       <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
@@ -1794,7 +938,6 @@
       </div>
     </div>
     <div class="config-msg" id="msgLogoConfig"><p>⚠️ Solo el SuperAdmin puede modificar el logo.</p></div>
-
     <div class="card config-solo-admin" id="cardMenuConfig">
       <h3><i class="fas fa-bars"></i> Configuración de menú</h3>
       <div class="admin-ia-config">
@@ -1806,7 +949,6 @@
       </div>
     </div>
     <div class="config-msg" id="msgMenuConfig"><p>⚠️ Solo el SuperAdmin puede configurar el menú.</p></div>
-
     <div class="card"><h3><i class="fas fa-users"></i> Usuarios registrados</h3><div id="adminUserList"></div></div>
     <div class="card"><h3><i class="fas fa-newspaper"></i> Publicaciones del muro</h3><div id="adminPostList"></div></div>
     <div class="card"><h3><i class="fas fa-pray"></i> Peticiones de oración</h3><div id="adminOracionList"></div></div>
@@ -1814,18 +956,15 @@
     <div class="card"><h3><i class="fas fa-utensils"></i> Servicios alimentarios</h3><div id="adminServicioList"></div></div>
     <div class="card"><h3><i class="fas fa-clipboard-list"></i> Reportes de todos</h3><div id="adminReportesList"></div></div>
     <div class="card"><h3><i class="fas fa-calendar-alt"></i> Gestionar Eventos</h3><button class="btn-primary" id="btnAgregarEvento"><i class="fas fa-plus"></i> Nuevo Evento</button><div id="adminEventosList" style="margin-top:10px;"></div></div>
-
     <div class="card">
       <h3><i class="fas fa-newspaper"></i> Gestionar Noticias</h3>
       <button class="btn-primary" id="btnAgregarNoticiaAdmin"><i class="fas fa-plus"></i> Agregar Noticia</button>
       <div id="adminNoticiasList" style="margin-top:10px;"></div>
     </div>
-
     <div class="card">
       <h3><i class="fas fa-book-bible"></i> Gestionar Devocionales</h3>
       <div id="adminDevocionalesList" style="margin-top:10px;"></div>
     </div>
-
     <div class="card config-solo-admin" id="cardIAConfig">
       <h3><i class="fas fa-robot"></i> Configuración de IA (OpenRouter)</h3>
       <div class="admin-ia-config">
@@ -1853,7 +992,6 @@
       </div>
     </div>
     <div class="config-msg" id="msgIAConfig"><p>⚠️ Solo el SuperAdmin puede configurar la IA.</p></div>
-
     <div class="card config-solo-admin" id="cardMapboxConfig">
       <h3><i class="fas fa-map"></i> Configuración de Mapbox</h3>
       <div class="admin-ia-config">
@@ -1916,19 +1054,16 @@
       <input type="tel" id="editTelefono" placeholder="+506 8888-8888">
       <label>Edad *</label>
       <input type="number" id="editEdad" placeholder="Edad">
-
       <label>Foto de perfil (subir imagen)</label>
       <input type="file" id="editFotoPerfilFile" accept="image/jpeg,image/png" style="margin:4px 0;">
       <div id="editFotoPerfilPreview" style="max-width:100px; max-height:100px; overflow:hidden; border-radius:8px; margin:4px 0;">
         <img id="editFotoPerfilImg" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
       </div>
-
       <label>Foto de portada (subir imagen)</label>
       <input type="file" id="editPortadaFile" accept="image/jpeg,image/png" style="margin:4px 0;">
       <div id="editPortadaPreview" style="max-width:200px; max-height:100px; overflow:hidden; border-radius:8px; margin:4px 0;">
         <img id="editPortadaImg" src="" style="width:100%; height:100%; object-fit:cover; display:none;">
       </div>
-
       <hr style="border-color:var(--border-color); margin:12px 0;">
       <h5 style="font-size:15px; margin-bottom:8px;">Galería de fotos (subir nuevas)</h5>
       <label>Selecciona imágenes JPG o PNG (máximo 5)</label>
@@ -1936,7 +1071,6 @@
       <label>Descripción para las fotos (opcional)</label>
       <input type="text" id="editFotosDesc" placeholder="Descripción de las fotos..." style="margin-bottom:6px;">
       <p style="font-size:11px; color:var(--text-secondary);">Las fotos se mostrarán en tu galería de perfil.</p>
-
       <label>Biografía / Testimonio</label>
       <textarea id="editBiografia" placeholder="Cuéntanos algo sobre ti..." rows="3"></textarea>
       <label>Iglesia / Ministerio</label>
@@ -1970,7 +1104,6 @@
       <input type="text" id="editCaracter" placeholder="Ej: Servicial, Líder...">
       <label>Experiencia</label>
       <input type="text" id="editExperiencia" placeholder="Ej: 5 años en ministerio...">
-
       <hr style="border-color:var(--border-color); margin:12px 0;">
       <h5 style="font-size:15px; margin-bottom:8px;">Privacidad de la información</h5>
       <p style="font-size:13px; color:var(--text-secondary);">Marca lo que quieras mostrar públicamente en tu perfil.</p>
@@ -2309,35 +1442,6 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="reelViewerModal" style="padding:10px;">
-    <div class="reel-modal-box">
-      <div class="reel-modal-video-wrap">
-        <video id="reelViewerVideo" src="" controls loop playsinline></video>
-      </div>
-      <div class="reel-modal-side">
-        <button class="btn-outline" onclick="cerrarReelViewer()" style="align-self:flex-end;"><i class="fas fa-times"></i> Cerrar</button>
-        <div class="reel-author" id="reelViewerAuthor"></div>
-        <div class="reel-desc" id="reelViewerDesc"></div>
-        <div class="reel-actions-bar" id="reelViewerActions"></div>
-        <div style="font-weight:600; font-size:14px; margin-top:6px;">Comentarios</div>
-        <div class="reel-comments-list" id="reelViewerComments"></div>
-        <div class="comment-box" id="reelViewerCommentBox" style="margin-top:auto;">
-          <input type="text" id="reelViewerCommentInput" placeholder="Escribe un comentario...">
-          <button onclick="comentarReelViewer()"><i class="fas fa-paper-plane"></i></button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== NUEVO VISOR DE REELS FULLSCREEN CON CARRUSEL 3D VERTICAL ===== -->
-  <div class="reels-fullscreen-viewer" id="reelsFullscreenViewer">
-    <button class="reel-fullscreen-close" onclick="cerrarReelsFullscreen()"><i class="fas fa-times"></i></button>
-    <button class="reel-floating-add-btn" id="reelFloatingAddBtn" onclick="abrirModalReelDesdeViewer()"><i class="fas fa-plus"></i></button>
-    <div class="reels-carousel-container" id="reelsCarouselContainer">
-      <!-- Los reels se cargarán dinámicamente aquí -->
-    </div>
-  </div>
-
   <div class="modal-overlay" id="qrModal">
     <div class="modal-box">
       <h3 style="justify-content:center;"><i class="fas fa-qrcode"></i> Compartir Perfil</h3>
@@ -2387,6 +1491,17 @@
     </div>
   </div>
 
+  <!-- ===== VISOR DE REELS PANTALLA COMPLETA ===== -->
+  <div class="reels-viewer" id="reelsViewerFull">
+    <button class="reels-viewer-close" onclick="cerrarReelsViewer()" title="Cerrar"><i class="fas fa-times"></i></button>
+    <div class="reels-scroll" id="reelsScroll"></div>
+  </div>
+
+  <!-- ===== FAB FLOTANTE PARA SUBIR REEL ===== -->
+  <button class="reels-fab" id="reelsFab" onclick="abrirReelModal()" title="Subir Reel" style="display:none;">
+    <i class="fas fa-plus"></i>
+  </button>
+
   <div class="media-viewer" id="mediaViewer" onclick="cerrarMediaViewer()">
     <span class="close-viewer" onclick="cerrarMediaViewer()">&times;</span>
     <button class="nav-btn prev" onclick="event.stopPropagation(); navegarMediaViewer(-1)">❮</button>
@@ -2422,7 +1537,6 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-// 🔐 Persistencia de sesión: mantiene al usuario al recargar
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
 
 // ================================================================
@@ -2470,11 +1584,11 @@ let mapboxMarkers = [];
 let mapboxToken = '';
 let miUbicacionMarker = null;
 let miUbicacionWatchId = null;
-let reelsObserver = null;
-let reelViewerUnsub = null;
-let reelViewerActualId = null;
 let fotoViewerUnsub = null;
 let fotoViewerActual = null;
+let reelsViewerUnsub = null;
+let reelsAll = [];
+let reelsObserverFull = null;
 const STORAGE_KEYS = {
   historialBiblia: 'iglesia_historial_biblia',
   theme: 'iglesia_theme',
@@ -2491,10 +1605,7 @@ let capitulosKeys = [];
 // 3. FUNCIONES DE UTILIDAD
 // ================================================================
 function getUsuarioActual() { return currentUser; }
-function tieneRol(rol) {
-  if (!currentUser) return false;
-  return currentUser.apoyos && currentUser.apoyos.includes(rol);
-}
+function tieneRol(rol) { if (!currentUser) return false; return currentUser.apoyos && currentUser.apoyos.includes(rol); }
 function tieneAlgunRolApoyo() {
   const roles = ['facilitador','asistente','anfitrion','misionero','servidor','consejero','oracion','ayuda_alimentaria'];
   return roles.some(r => tieneRol(r)) || isAdmin;
@@ -2531,32 +1642,14 @@ window.registerUser = async function(email, password, nombre, telefono, edad, ap
     const cred = await auth.createUserWithEmailAndPassword(email, password);
     const user = cred.user;
     await USERS.doc(user.uid).set({
-      uid: user.uid,
-      displayName: nombre,
-      email: email,
-      telefono: telefono,
-      edad: edad,
-      apoyos: apoyos || [],
-      fotoPerfil: '',
-      portada: '',
-      biografia: '',
-      iglesia: '',
-      ministerio: '',
-      situacionLaboral: '',
-      situacionSentimental: '',
-      nacionalidad: '',
-      fechaNacimiento: '',
-      estudios: '',
-      talentos: '',
-      caracter: '',
-      experiencia: '',
-      fotosPerfil: [],
-      privacidad: {
-        biografia: true, situacionLaboral: true, situacionSentimental: true,
+      uid: user.uid, displayName: nombre, email: email, telefono: telefono, edad: edad,
+      apoyos: apoyos || [], fotoPerfil: '', portada: '', biografia: '', iglesia: '', ministerio: '',
+      situacionLaboral: '', situacionSentimental: '', nacionalidad: '', fechaNacimiento: '',
+      estudios: '', talentos: '', caracter: '', experiencia: '', fotosPerfil: [],
+      privacidad: { biografia: true, situacionLaboral: true, situacionSentimental: true,
         nacionalidad: true, fechaNacimiento: true, estudios: true,
         talentos: true, telefono: true, edad: true, iglesia: true,
-        caracter: true, experiencia: true
-      },
+        caracter: true, experiencia: true },
       fechaRegistro: firebase.firestore.FieldValue.serverTimestamp()
     });
     await user.updateProfile({ displayName: nombre });
@@ -2581,27 +1674,21 @@ async function cargarUsuarioActual(user) {
         uid: user.uid, email: user.email,
         displayName: data.displayName || user.displayName || 'Anónimo',
         telefono: data.telefono || '', edad: data.edad || '',
-        apoyos: data.apoyos || [],
-        fotoPerfil: data.fotoPerfil || '', portada: data.portada || '',
-        biografia: data.biografia || '', iglesia: data.iglesia || '',
-        ministerio: data.ministerio || '',
-        situacionLaboral: data.situacionLaboral || '',
-        situacionSentimental: data.situacionSentimental || '',
-        nacionalidad: data.nacionalidad || '',
-        fechaNacimiento: data.fechaNacimiento || '',
-        estudios: data.estudios || '', talentos: data.talentos || '',
-        caracter: data.caracter || '', experiencia: data.experiencia || '',
-        fotosPerfil: data.fotosPerfil || [],
+        apoyos: data.apoyos || [], fotoPerfil: data.fotoPerfil || '', portada: data.portada || '',
+        biografia: data.biografia || '', iglesia: data.iglesia || '', ministerio: data.ministerio || '',
+        situacionLaboral: data.situacionLaboral || '', situacionSentimental: data.situacionSentimental || '',
+        nacionalidad: data.nacionalidad || '', fechaNacimiento: data.fechaNacimiento || '',
+        estudios: data.estudios || '', talentos: data.talentos || '', caracter: data.caracter || '',
+        experiencia: data.experiencia || '', fotosPerfil: data.fotosPerfil || [],
         privacidad: data.privacidad || {}
       };
     } else {
       await USERS.doc(user.uid).set({
-        uid: user.uid, displayName: user.displayName || 'Anónimo',
-        email: user.email, telefono: '', edad: '', apoyos: [],
-        fotoPerfil: '', portada: '', biografia: '', iglesia: '',
-        ministerio: '', situacionLaboral: '', situacionSentimental: '',
-        nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '',
-        caracter: '', experiencia: '', fotosPerfil: [],
+        uid: user.uid, displayName: user.displayName || 'Anónimo', email: user.email,
+        telefono: '', edad: '', apoyos: [], fotoPerfil: '', portada: '', biografia: '',
+        iglesia: '', ministerio: '', situacionLaboral: '', situacionSentimental: '',
+        nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '', caracter: '',
+        experiencia: '', fotosPerfil: [],
         privacidad: { biografia: true, situacionLaboral: true, situacionSentimental: true,
           nacionalidad: true, fechaNacimiento: true, estudios: true,
           talentos: true, telefono: true, edad: true, iglesia: true,
@@ -2609,14 +1696,11 @@ async function cargarUsuarioActual(user) {
         fechaRegistro: firebase.firestore.FieldValue.serverTimestamp()
       });
       currentUser = {
-        uid: user.uid, email: user.email,
-        displayName: user.displayName || 'Anónimo',
-        telefono: '', edad: '', apoyos: [],
-        fotoPerfil: '', portada: '', biografia: '', iglesia: '',
-        ministerio: '', situacionLaboral: '', situacionSentimental: '',
-        nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '',
-        caracter: '', experiencia: '', fotosPerfil: [],
-        privacidad: {}
+        uid: user.uid, email: user.email, displayName: user.displayName || 'Anónimo',
+        telefono: '', edad: '', apoyos: [], fotoPerfil: '', portada: '', biografia: '',
+        iglesia: '', ministerio: '', situacionLaboral: '', situacionSentimental: '',
+        nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '', caracter: '',
+        experiencia: '', fotosPerfil: [], privacidad: {}
       };
     }
     isSuperAdmin = (user.email === 'salyluz@comunidad.com');
@@ -2660,26 +1744,31 @@ window.logoutUser = async function() {
 function actualizarUIUsuario() {
   const userBadge = document.getElementById('userBadge');
   const userNameDisplay = document.getElementById('userNameDisplay');
-  const miPerfilBtn = document.getElementById('miPerfilBtn');
+  const loginBtn = document.getElementById('loginBtn');
   const tabMapa = document.getElementById('tabMapa');
   const tabReportes = document.getElementById('tabReportes');
   const tabChatAdmin = document.getElementById('tabChatAdmin');
   const featureMapa = document.getElementById('featureMapa');
-  const tabCerrarSesionMobile = document.getElementById('tabCerrarSesionMobile');
+  const tabAuthToggle = document.getElementById('tabAuthToggle');
+  const reelsFab = document.getElementById('reelsFab');
 
   if (currentUser) {
     if (userNameDisplay) userNameDisplay.textContent = currentUser.displayName;
+    // loginBtn oculto cuando logueado (Cerrar sesión está en el menú)
+    loginBtn.style.display = 'none';
     if (currentUser.fotoPerfil) {
       userBadge.innerHTML = `<img src="${currentUser.fotoPerfil}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;margin-right:4px;"> <span id="userNameDisplay">${currentUser.displayName}</span>`;
     } else {
       userBadge.innerHTML = `<i class="fas fa-user"></i> <span id="userNameDisplay">${currentUser.displayName}</span>`;
     }
-    // Ocultar el botón de perfil duplicado
-    if (miPerfilBtn) miPerfilBtn.style.display = 'none';
+    userBadge.style.display = 'inline-flex';
+    // Tab cerrar sesión visible
+    if (tabAuthToggle) tabAuthToggle.style.display = 'flex';
     tabMapa.style.display = 'inline-block';
     tabReportes.style.display = 'inline-block';
     tabChatAdmin.style.display = 'inline-block';
     featureMapa.style.display = 'block';
+    if (reelsFab) reelsFab.style.display = 'flex';
     document.getElementById('mapaMsgNoAuth').style.display = 'none';
     document.getElementById('mapaContent').style.display = 'block';
     if (tieneAlgunRolApoyo() || isAdmin) {
@@ -2691,25 +1780,23 @@ function actualizarUIUsuario() {
     }
     document.getElementById('chatAdminMsgNoAuth').style.display = 'none';
     document.getElementById('chatAdminContent').style.display = 'block';
-    // Mostrar botón de cerrar sesión en el menú móvil
-    if (tabCerrarSesionMobile) tabCerrarSesionMobile.style.display = 'flex';
   } else {
     userNameDisplay.textContent = 'Invitado';
+    loginBtn.style.display = 'inline-block';
     userBadge.innerHTML = `<i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span>`;
-    // Ocultar botón de perfil
-    if (miPerfilBtn) miPerfilBtn.style.display = 'none';
+    userBadge.style.display = 'inline-flex';
+    if (tabAuthToggle) tabAuthToggle.style.display = 'none';
     tabMapa.style.display = 'none';
     tabReportes.style.display = 'none';
     tabChatAdmin.style.display = 'none';
     featureMapa.style.display = 'none';
+    if (reelsFab) reelsFab.style.display = 'none';
     document.getElementById('mapaMsgNoAuth').style.display = 'block';
     document.getElementById('mapaContent').style.display = 'none';
     document.getElementById('reportesMsgNoAuth').style.display = 'block';
     document.getElementById('reportesContent').style.display = 'none';
     document.getElementById('chatAdminMsgNoAuth').style.display = 'block';
     document.getElementById('chatAdminContent').style.display = 'none';
-    // Ocultar botón de cerrar sesión en el menú móvil
-    if (tabCerrarSesionMobile) tabCerrarSesionMobile.style.display = 'none';
   }
 
   const adminTab = document.getElementById('adminTab');
@@ -2718,7 +1805,6 @@ function actualizarUIUsuario() {
   const btnGestionarEventos = document.getElementById('btnGestionarEventos');
   const btnAgregarNoticiaInicio = document.getElementById('btnAgregarNoticiaInicio');
   const btnAgregarNoticiaAdmin = document.getElementById('btnAgregarNoticiaAdmin');
-  const btnAbrirReel = document.getElementById('btnAbrirReelModal');
   if (isAdmin) {
     adminTab.style.display = 'inline-block';
     gestionarCarruselBtn.style.display = 'inline-block';
@@ -2734,7 +1820,6 @@ function actualizarUIUsuario() {
     btnAgregarNoticiaInicio.style.display = 'none';
     btnAgregarNoticiaAdmin.style.display = 'none';
   }
-  if (btnAbrirReel) btnAbrirReel.style.display = currentUser ? 'inline-block' : 'none';
 
   const isConfigAllowed = isSuperAdmin;
   ['cardLogoConfig', 'cardIAConfig', 'cardMapboxConfig', 'cardMenuConfig'].forEach(id => {
@@ -2750,11 +1835,8 @@ function actualizarUIUsuario() {
   actualizarTabs();
   const muroPublicar = document.getElementById('muroPublicarCard');
   muroPublicar.style.display = currentUser ? 'block' : 'none';
-
   const devSubirCard = document.getElementById('devocionalSubirCard');
-  if (devSubirCard) {
-    devSubirCard.style.display = puedeSubirDevocional() ? 'block' : 'none';
-  }
+  if (devSubirCard) devSubirCard.style.display = puedeSubirDevocional() ? 'block' : 'none';
 }
 
 // ================================================================
@@ -2781,7 +1863,10 @@ function switchPanel(name) {
   }
   switch (name) {
     case 'muro': renderFeed(); break;
-    case 'reels': abrirReelsFullscreen(); break; // Abre el visor fullscreen al cambiar a Reels
+    case 'reels': 
+      // Al tocar Reels se abre directamente el visor de pantalla completa
+      setTimeout(() => abrirReelsViewer(), 80);
+      break;
     case 'grupos': renderGrupos(); break;
     case 'discipulado': renderDiscipulados(); break;
     case 'oracion': renderOraciones(); break;
@@ -2813,11 +1898,43 @@ document.addEventListener('click', function(e) {
     tabs.classList.remove('open');
   }
 });
-document.querySelectorAll('#mainTabs .tab').forEach(tab => {
-  tab.addEventListener('click', function() {
-    document.getElementById('mainTabs').classList.remove('open');
-  });
+
+// Tema toggle (nueva ubicación en menú)
+document.getElementById('tabTemaToggle').addEventListener('click', function() {
+  toggleTheme();
+  document.getElementById('mainTabs').classList.remove('open');
 });
+
+// Auth toggle (Entrar/Cerrar sesión en menú)
+document.getElementById('tabAuthToggle').addEventListener('click', function() {
+  if (currentUser) {
+    window.logoutUser();
+  } else {
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPassword').value = '';
+    document.getElementById('loginName').value = '';
+    document.getElementById('loginTelefono').value = '';
+    document.getElementById('loginEdad').value = '';
+    document.querySelectorAll('#loginModal .checkbox-group input[type="checkbox"]').forEach(cb => cb.checked = false);
+    document.getElementById('loginError').textContent = '';
+    document.getElementById('loginModeLogin').click();
+    abrirModal('loginModal');
+  }
+  document.getElementById('mainTabs').classList.remove('open');
+});
+
+function toggleTheme() {
+  document.body.classList.toggle('dark');
+  const isDark = document.body.classList.contains('dark');
+  const icon = document.querySelector('#tabTemaToggle i');
+  if (icon) {
+    icon.classList.toggle('fa-moon', !isDark);
+    icon.classList.toggle('fa-sun', isDark);
+  }
+  const span = document.querySelector('#tabTemaToggle span');
+  if (span) span.textContent = isDark ? ' Modo claro' : ' Modo nocturno';
+  localStorage.setItem(STORAGE_KEYS.theme, isDark ? 'dark' : 'light');
+}
 
 // ================================================================
 // 6.1 CARRUSEL
@@ -2918,7 +2035,6 @@ function renderFeed() {
   const container = document.getElementById('feedContainer');
   container.innerHTML = '<p style="color:var(--text-secondary);">Cargando publicaciones...</p>';
   const filtro = document.getElementById('feedFiltro').value;
-  let query = POSTS.orderBy('fecha', 'desc');
   if (filtro === 'siguiendo' && currentUser) {
     SEGUIDORES.where('seguidorUid', '==', currentUser.uid).get().then(snap => {
       const seguidos = [];
@@ -3181,225 +2297,139 @@ function donarCampania(postId) {
 }
 
 // ================================================================
-// 7.1 REELS (Instagram-style)
+// 7.1 REELS (Visor pantalla completa con carrusel 3D vertical)
 // ================================================================
-function renderReels() {
-  if (listeners.reels) listeners.reels();
-  const container = document.getElementById('reelsContainer');
-  container.innerHTML = '<p style="color:var(--text-secondary); grid-column:1/-1; text-align:center;">Cargando reels...</p>';
-  listeners.reels = REELS.orderBy('fecha', 'desc').onSnapshot(snapshot => {
-    if (snapshot.empty) {
-      container.innerHTML = '<p style="color:var(--text-secondary); grid-column:1/-1; text-align:center;">No hay reels aún.</p>';
-      return;
-    }
-    let html = '';
-    snapshot.forEach(doc => {
-      const r = { id: doc.id, ...doc.data() };
-      html += `<div class="reel-item paused" data-reel-id="${r.id}">
-        <video src="${r.url}" muted loop playsinline preload="metadata" data-reel-video="${r.id}"></video>
-        <div class="reel-play-badge"><i class="fas fa-play"></i></div>
-        <div class="reel-overlay">
-          <span><strong>${r.autorNombre}</strong></span>
-          <span><i class="fas fa-heart"></i> ${r.likes ? r.likes.length : 0}</span>
-        </div>
-      </div>`;
-    });
-    container.innerHTML = html;
-
-    container.querySelectorAll('.reel-item').forEach(el => {
-      el.addEventListener('click', () => {
-        // Abrir el visor fullscreen en la posición del reel clicado
-        abrirReelsFullscreen(el.dataset.reelId);
-      });
-    });
-
-    setupReelsAutoPlay();
-  });
-}
-
-function setupReelsAutoPlay() {
-  if (reelsObserver) reelsObserver.disconnect();
-  const items = document.querySelectorAll('.reel-item video');
-  if (!items.length) return;
-  reelsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      const video = entry.target;
-      const card = video.closest('.reel-item');
-      if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
-        video.muted = false;
-        video.play().then(() => card.classList.remove('paused')).catch(() => { video.muted = true; video.play().catch(()=>{}); });
-      } else {
-        video.pause();
-        video.currentTime = 0;
-        card.classList.add('paused');
-      }
-    });
-  }, { threshold: [0, 0.6, 0.9] });
-  items.forEach(v => reelsObserver.observe(v));
-}
-
-// ===== NUEVO VISOR FULLSCREEN CON CARRUSEL 3D =====
-let reelsFullscreenUnsub = null;
-let reelsFullscreenData = [];
-let reelsFullscreenCurrentIndex = 0;
-
-function abrirReelsFullscreen(reelIdInicial) {
-  const viewer = document.getElementById('reelsFullscreenViewer');
-  const container = document.getElementById('reelsCarouselContainer');
-  if (!viewer || !container) return;
-
-  // Limpiar suscripción anterior
-  if (reelsFullscreenUnsub) { reelsFullscreenUnsub(); reelsFullscreenUnsub = null; }
-
-  // Cargar datos en tiempo real
-  reelsFullscreenUnsub = REELS.orderBy('fecha', 'desc').onSnapshot(snapshot => {
-    reelsFullscreenData = [];
-    snapshot.forEach(doc => reelsFullscreenData.push({ id: doc.id, ...doc.data() }));
-
-    if (reelsFullscreenData.length === 0) {
-      container.innerHTML = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; color:white; font-size:18px;">No hay reels disponibles.</div>';
-      viewer.classList.add('show');
-      document.body.style.overflow = 'hidden';
-      return;
-    }
-
-    // Renderizar todos los reels
-    let html = '';
-    reelsFullscreenData.forEach((r, index) => {
-      const liked = r.likes && currentUser && r.likes.includes(currentUser.uid);
-      const orando = r.orando && currentUser && r.orando.includes(currentUser.uid);
-      const likesCount = r.likes ? r.likes.length : 0;
-      const orandoCount = r.orando ? r.orando.length : 0;
-      const comentariosCount = r.comentarios ? r.comentarios.length : 0;
-      const fechaStr = r.fecha ? new Date(r.fecha.seconds * 1000).toLocaleString() : '';
-      html += `
-        <div class="reel-fullscreen-item" data-index="${index}" data-reel-id="${r.id}">
-          <video src="${r.url}" loop playsinline preload="auto" muted></video>
-          <div class="reel-fullscreen-overlay">
-            <div class="reel-author-info" onclick="cerrarReelsFullscreen(); verPerfil('${r.uid}')">
-              <img src="${r.autorFoto || ''}" onerror="this.style.display='none'">
-              <div>
-                <div class="name">${r.autorNombre}</div>
-                <div style="font-size:11px; opacity:0.7;">${fechaStr}</div>
-              </div>
-            </div>
-            <div class="reel-desc-text">${r.desc || ''}</div>
-            <div class="reel-actions-row">
-              <button class="${liked ? 'liked' : ''}" onclick="event.stopPropagation(); likeReelFullscreen('${r.id}')">
-                <i class="fas fa-heart"></i> <span>${likesCount}</span>
-              </button>
-              <button class="${orando ? 'orando' : ''}" onclick="event.stopPropagation(); orandoReelFullscreen('${r.id}')">
-                <i class="fas fa-pray"></i> <span>${orandoCount}</span>
-              </button>
-              <button onclick="event.stopPropagation(); comentarReelFullscreen('${r.id}')">
-                <i class="fas fa-comment"></i> <span>${comentariosCount}</span>
-              </button>
-              <button onclick="event.stopPropagation(); compartirReelFullscreen('${r.id}')">
-                <i class="fas fa-share"></i> Compartir
-              </button>
-              ${isAdmin || (currentUser && r.uid === currentUser.uid) ? `
-                <button onclick="event.stopPropagation(); eliminarReelFullscreen('${r.id}')" style="color:#e74c3c;">
-                  <i class="fas fa-trash"></i> Eliminar
-                </button>
-              ` : ''}
-            </div>
-          </div>
-        </div>
-      `;
-    });
-    container.innerHTML = html;
-
-    // Configurar scroll snap y reproducción
-    const items = container.querySelectorAll('.reel-fullscreen-item');
-    let currentActiveIndex = 0;
-
-    function updateActiveReel(index) {
-      items.forEach((item, i) => {
-        item.classList.remove('active', 'prev', 'next');
-        if (i === index) {
-          item.classList.add('active');
-          const video = item.querySelector('video');
-          if (video) {
-            video.muted = false;
-            video.play().catch(() => { video.muted = true; video.play().catch(()=>{}); });
-          }
-        } else if (i === index - 1) {
-          item.classList.add('prev');
-          const video = item.querySelector('video');
-          if (video) { video.pause(); video.currentTime = 0; }
-        } else if (i === index + 1) {
-          item.classList.add('next');
-          const video = item.querySelector('video');
-          if (video) { video.pause(); video.currentTime = 0; }
-        } else {
-          const video = item.querySelector('video');
-          if (video) { video.pause(); video.currentTime = 0; }
-        }
-      });
-    }
-
-    // Intersection Observer para detectar el reel activo
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
-          const index = parseInt(entry.target.dataset.index);
-          currentActiveIndex = index;
-          updateActiveReel(index);
-        }
-      });
-    }, { threshold: [0, 0.6, 0.9], root: container });
-
-    items.forEach(item => observer.observe(item));
-
-    // Si se especificó un reel inicial, desplazarse a él
-    if (reelIdInicial) {
-      const targetIndex = reelsFullscreenData.findIndex(r => r.id === reelIdInicial);
-      if (targetIndex >= 0) {
-        setTimeout(() => {
-          const targetItem = items[targetIndex];
-          if (targetItem) {
-            targetItem.scrollIntoView({ behavior: 'auto', block: 'start' });
-            updateActiveReel(targetIndex);
-          }
-        }, 100);
-      }
-    } else {
-      // Asegurar que el primer reel se reproduzca
-      setTimeout(() => {
-        if (items.length > 0) {
-          updateActiveReel(0);
-        }
-      }, 200);
-    }
-
-    // Mostrar el visor
-    viewer.classList.add('show');
-    document.body.style.overflow = 'hidden';
-  });
-}
-
-function cerrarReelsFullscreen() {
-  const viewer = document.getElementById('reelsFullscreenViewer');
-  const container = document.getElementById('reelsCarouselContainer');
-  if (viewer) viewer.classList.remove('show');
-  if (container) {
-    const videos = container.querySelectorAll('video');
-    videos.forEach(v => { v.pause(); v.currentTime = 0; });
-  }
-  if (reelsFullscreenUnsub) { reelsFullscreenUnsub(); reelsFullscreenUnsub = null; }
-  document.body.style.overflow = '';
-}
-
-function abrirModalReelDesdeViewer() {
-  // Cerrar el visor y abrir el modal de subir reel
-  cerrarReelsFullscreen();
+function abrirReelModal() {
+  if (!currentUser) { alert('Inicia sesión para subir un reel.'); return; }
   document.getElementById('reelFile').value = '';
   document.getElementById('reelDesc').value = '';
   document.getElementById('reelPreviewContainer').innerHTML = '';
   abrirModal('reelModal');
 }
 
-function likeReelFullscreen(id) {
+function renderReels() {
+  // Solo mantenemos el placeholder del panel; la lista real se carga al abrir el visor
+  if (listeners.reels) listeners.reels();
+  listeners.reels = REELS.orderBy('fecha', 'desc').onSnapshot(snapshot => {
+    reelsAll = [];
+    snapshot.forEach(doc => reelsAll.push({ id: doc.id, ...doc.data() }));
+  });
+}
+
+function abrirReelsViewer() {
+  // Suscribirse a reels en tiempo real
+  const container = document.getElementById('reelsScroll');
+  container.innerHTML = '<div style="height:100vh; display:flex; align-items:center; justify-content:center; color:#fff;"><i class="fas fa-spinner fa-spin" style="font-size:32px;"></i></div>';
+  document.getElementById('reelsViewerFull').classList.add('show');
+  document.body.style.overflow = 'hidden';
+
+  if (reelsViewerUnsub) reelsViewerUnsub();
+  reelsViewerUnsub = REELS.orderBy('fecha', 'desc').onSnapshot(snapshot => {
+    const reels = [];
+    snapshot.forEach(doc => reels.push({ id: doc.id, ...doc.data() }));
+    renderReelsSlides(reels);
+  });
+}
+
+function cerrarReelsViewer() {
+  if (reelsViewerUnsub) { reelsViewerUnsub(); reelsViewerUnsub = null; }
+  if (reelsObserverFull) { reelsObserverFull.disconnect(); reelsObserverFull = null; }
+  document.getElementById('reelsScroll').innerHTML = '';
+  document.getElementById('reelsViewerFull').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function renderReelsSlides(reels) {
+  const container = document.getElementById('reelsScroll');
+  if (!reels || reels.length === 0) {
+    container.innerHTML = '<div style="height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#fff; text-align:center; padding:20px;"><i class="fas fa-video" style="font-size:60px; opacity:0.5; margin-bottom:16px;"></i><h3 style="margin-bottom:8px;">Aún no hay reels</h3><p style="opacity:0.7; font-size:14px; margin-bottom:16px;">Sé el primero en compartir uno.</p><button class="btn-primary" onclick="abrirReelModal()"><i class="fas fa-plus"></i> Subir Reel</button></div>';
+    return;
+  }
+  let html = '';
+  reels.forEach(r => {
+    const likes = r.likes || [];
+    const liked = currentUser && likes.includes(currentUser.uid);
+    const comentarios = r.comentarios || [];
+    const puedeEliminar = isAdmin || (currentUser && r.uid === currentUser.uid);
+    const autorFoto = r.autorFoto || '';
+    const fecha = r.fecha ? new Date(r.fecha.seconds * 1000).toLocaleString() : '';
+    html += `<div class="reel-slide-full" data-reel-id="${r.id}">
+      <div class="reel-full-video">
+        <video src="${r.url}" loop playsinline preload="metadata" data-reel-video="${r.id}"></video>
+      </div>
+      <div class="reel-full-info">
+        <div class="reel-info-author">
+          <img src="${autorFoto}" onerror="this.style.display='none'">
+          <div style="flex:1;">
+            <div class="name" onclick="cerrarReelsViewer(); verPerfil('${r.uid}')">${r.autorNombre}</div>
+            <div class="date">${fecha}</div>
+          </div>
+        </div>
+        ${r.desc ? `<div class="reel-info-desc">${r.desc}</div>` : ''}
+        <div class="reel-info-actions">
+          <button class="${liked ? 'liked' : ''}" onclick="likeReel('${r.id}')"><i class="fas fa-heart"></i> <span>${likes.length}</span></button>
+          <button onclick="compartirReel('${r.id}')"><i class="fas fa-share"></i> Compartir</button>
+          ${puedeEliminar ? `<button class="danger" onclick="eliminarReelViewer('${r.id}')"><i class="fas fa-trash"></i> Eliminar</button>` : ''}
+        </div>
+        <div class="reel-info-comments">
+          ${comentarios.length
+            ? comentarios.map(c => `<div class="comment-line"><strong>${c.autor}</strong>${c.texto}</div>`).join('')
+            : '<div style="opacity:0.6; font-size:12px;">Sin comentarios aún.</div>'}
+        </div>
+        ${currentUser ? `<div class="reel-info-comment-box">
+          <input type="text" id="reel-comment-input-${r.id}" placeholder="Escribe un comentario...">
+          <button onclick="comentarReelFull('${r.id}')"><i class="fas fa-paper-plane"></i></button>
+        </div>` : ''}
+      </div>
+    </div>`;
+  });
+  container.innerHTML = html;
+
+  // Activar autoplay por scroll (un reel a la vez)
+  setupReelsFullObserver();
+  // Actualizar 3D al hacer scroll
+  container.removeEventListener('scroll', onReelsScroll);
+  container.addEventListener('scroll', onReelsScroll, { passive: true });
+  onReelsScroll();
+}
+
+function onReelsScroll() {
+  const container = document.getElementById('reelsScroll');
+  if (!container) return;
+  const center = container.scrollTop + container.clientHeight / 2;
+  const slides = container.querySelectorAll('.reel-slide-full');
+  slides.forEach(slide => {
+    const slideCenter = slide.offsetTop + slide.clientHeight / 2;
+    const dist = (slideCenter - center) / container.clientHeight;
+    const rotateX = dist * -25;
+    const scale = Math.max(0.7, 1 - Math.abs(dist) * 0.15);
+    const opacity = Math.max(0.15, 1 - Math.abs(dist) * 1.1);
+    slide.style.transform = `perspective(1500px) rotateX(${rotateX}deg) scale(${scale})`;
+    slide.style.opacity = opacity;
+  });
+}
+
+function setupReelsFullObserver() {
+  if (reelsObserverFull) reelsObserverFull.disconnect();
+  const videos = document.querySelectorAll('#reelsScroll video');
+  if (!videos.length) return;
+  reelsObserverFull = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target;
+      if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
+        // Pausar los demás
+        document.querySelectorAll('#reelsScroll video').forEach(v => { if (v !== video) { v.pause(); } });
+        video.muted = false;
+        video.play().catch(() => { video.muted = true; video.play().catch(()=>{}); });
+      } else {
+        video.pause();
+      }
+    });
+  }, { threshold: [0, 0.7, 0.9], root: document.getElementById('reelsScroll') });
+  videos.forEach(v => reelsObserverFull.observe(v));
+}
+
+function likeReel(id) {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   REELS.doc(id).get().then(doc => {
     if (!doc.exists) return;
@@ -3412,32 +2442,7 @@ function likeReelFullscreen(id) {
   }).catch(console.error);
 }
 
-function orandoReelFullscreen(id) {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
-  REELS.doc(id).get().then(doc => {
-    if (!doc.exists) return;
-    const reel = doc.data();
-    const orando = reel.orando || [];
-    const idx = orando.indexOf(currentUser.uid);
-    if (idx > -1) orando.splice(idx, 1);
-    else orando.push(currentUser.uid);
-    REELS.doc(id).update({ orando });
-  }).catch(console.error);
-}
-
-function comentarReelFullscreen(id) {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
-  const texto = prompt('Escribe tu comentario:');
-  if (!texto) return;
-  REELS.doc(id).get().then(doc => {
-    if (!doc.exists) return;
-    const arr = doc.data().comentarios || [];
-    arr.push({ uid: currentUser.uid, autor: currentUser.displayName, texto, fecha: new Date().toISOString() });
-    REELS.doc(id).update({ comentarios: arr });
-  }).catch(console.error);
-}
-
-function compartirReelFullscreen(id) {
+function compartirReel(id) {
   const url = window.location.href + '?reel=' + id;
   if (navigator.share) {
     navigator.share({ title: 'Reel', text: 'Mira este reel', url: url }).catch(()=>{});
@@ -3446,24 +2451,54 @@ function compartirReelFullscreen(id) {
   }
 }
 
-function eliminarReelFullscreen(id) {
-  if (!isAdmin) return;
+function eliminarReelViewer(id) {
+  if (!isAdmin && !currentUser) return;
   if (!confirm('¿Eliminar este reel?')) return;
-  REELS.doc(id).delete().then(() => {
-    // Recargar el visor
-    const viewer = document.getElementById('reelsFullscreenViewer');
-    if (viewer.classList.contains('show')) {
-      abrirReelsFullscreen();
-    }
-  }).catch(console.error);
+  REELS.doc(id).delete().catch(console.error);
+}
+
+function comentarReelFull(id) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const input = document.getElementById('reel-comment-input-' + id);
+  if (!input) return;
+  const texto = input.value.trim();
+  if (!texto) return;
+  REELS.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const arr = doc.data().comentarios || [];
+    arr.push({ uid: currentUser.uid, autor: currentUser.displayName, texto, fecha: new Date().toISOString() });
+    REELS.doc(id).update({ comentarios: arr });
+    input.value = '';
+  });
+}
+
+function publicarReel() {
+  if (!currentUser) { alert('Debes iniciar sesión.'); return; }
+  const file = document.getElementById('reelFile').files[0];
+  const desc = document.getElementById('reelDesc').value.trim();
+  if (!file) { alert('Selecciona un video.'); return; }
+  if (!file.type.startsWith('video/')) { alert('El archivo debe ser un video.'); return; }
+  const path = `reels/${currentUser.uid}/${Date.now()}_${file.name}`;
+  subirArchivoStorage(file, path).then(url => {
+    return REELS.add({
+      uid: currentUser.uid, autorNombre: currentUser.displayName,
+      autorFoto: currentUser.fotoPerfil || '', url: url, desc: desc || '',
+      fecha: firebase.firestore.FieldValue.serverTimestamp(),
+      likes: [], comentarios: []
+    });
+  }).then(() => {
+    document.getElementById('reelFile').value = '';
+    document.getElementById('reelDesc').value = '';
+    document.getElementById('reelPreviewContainer').innerHTML = '';
+    cerrarModal('reelModal');
+    alert('Reel publicado correctamente.');
+  }).catch(err => { console.error(err); alert('Error: ' + err.message); });
 }
 
 // ================================================================
 // 7.2 DEVOCIONALES
 // ================================================================
-function puedeSubirDevocional() {
-  return isAdmin || tieneRol('facilitador') || tieneRol('consejero');
-}
+function puedeSubirDevocional() { return isAdmin || tieneRol('facilitador') || tieneRol('consejero'); }
 
 function renderDevocionales() {
   if (listeners.devocionales) listeners.devocionales();
@@ -3508,16 +2543,12 @@ function subirDevocional() {
   if (!titulo) { alert('Escribe un título.'); return; }
   if (!file) { alert('Selecciona un archivo PDF.'); return; }
   if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) { alert('Solo se permiten archivos PDF.'); return; }
-
   const path = `devocionales/${currentUser.uid}/${Date.now()}_${file.name}`;
   subirArchivoStorage(file, path).then(url => {
     return DEVOCIONALES.add({
-      uid: currentUser.uid,
-      autorNombre: currentUser.displayName,
-      autorFoto: currentUser.fotoPerfil || '',
-      titulo, desc,
-      pdfUrl: url,
-      fileName: file.name,
+      uid: currentUser.uid, autorNombre: currentUser.displayName,
+      autorFoto: currentUser.fotoPerfil || '', titulo, desc,
+      pdfUrl: url, fileName: file.name,
       fecha: firebase.firestore.FieldValue.serverTimestamp()
     });
   }).then(() => {
@@ -3838,7 +2869,7 @@ function orarOracion(id) {
 }
 
 // ================================================================
-// 11. MAPA (Mapbox) - Compatible Win11
+// 11. MAPA (Mapbox)
 // ================================================================
 function cargarMapboxToken() {
   CONFIG_MAPBOX.get().then(doc => {
@@ -3888,7 +2919,6 @@ function initMapboxMap() {
   const container = document.getElementById('mapboxMap');
   if (!container) return;
 
-  // 🔎 Verificar soporte WebGL (falla común en Win11 sin aceleración HW)
   let webglOK = false;
   try {
     const c = document.createElement('canvas');
@@ -3904,7 +2934,6 @@ function initMapboxMap() {
     return;
   }
 
-  // Limpiar watch previo
   if (miUbicacionWatchId !== null && navigator.geolocation) {
     navigator.geolocation.clearWatch(miUbicacionWatchId);
     miUbicacionWatchId = null;
@@ -3927,10 +2956,7 @@ function initMapboxMap() {
     return;
   }
 
-  mapboxMap.on('error', (e) => {
-    console.warn('Mapbox error:', e && e.error ? e.error.message : e);
-  });
-
+  mapboxMap.on('error', (e) => { console.warn('Mapbox error:', e && e.error ? e.error.message : e); });
   mapboxMap.addControl(new mapboxgl.NavigationControl());
 
   if (navigator.geolocation) {
@@ -3970,8 +2996,7 @@ function cargarMarcadoresMapbox() {
           .setHTML(`<div class="map-popup"><strong>${m.nombre}</strong><br>${m.ciudad || ''}<br>📞 ${m.whatsapp || ''}</div>`);
         const marker = new mapboxgl.Marker({ color: '#e74c3c' })
           .setLngLat([parseFloat(m.lng), parseFloat(m.lat)])
-          .setPopup(popup)
-          .addTo(mapboxMap);
+          .setPopup(popup).addTo(mapboxMap);
         mapboxMarkers.push(marker);
       }
     });
@@ -3985,8 +3010,7 @@ function cargarMarcadoresMapbox() {
           .setHTML(`<div class="map-popup"><strong>${i.nombre}</strong><br>${i.direccion || ''}<br>📞 ${i.telefono || ''}<br>⏰ ${i.horarios || ''}</div>`);
         const marker = new mapboxgl.Marker({ color: '#2ecc71' })
           .setLngLat([parseFloat(i.lng), parseFloat(i.lat)])
-          .setPopup(popup)
-          .addTo(mapboxMap);
+          .setPopup(popup).addTo(mapboxMap);
         mapboxMarkers.push(marker);
       }
     });
@@ -4000,8 +3024,7 @@ function cargarMarcadoresMapbox() {
           .setHTML(`<div class="map-popup"><strong>${g.nombre}</strong><br>Facilitador: ${g.facilitador}<br>${g.ubicacion || ''}</div>`);
         const marker = new mapboxgl.Marker({ color: '#3498db' })
           .setLngLat([parseFloat(g.lng), parseFloat(g.lat)])
-          .setPopup(popup)
-          .addTo(mapboxMap);
+          .setPopup(popup).addTo(mapboxMap);
         mapboxMarkers.push(marker);
       }
     });
@@ -4015,8 +3038,7 @@ function cargarMarcadoresMapbox() {
           .setHTML(`<div class="map-popup"><strong>${s.nombre}</strong><br>${s.direccion || ''}<br>📞 ${s.telefono || ''}<br>⏰ ${s.fecha} ${s.horario}</div>`);
         const marker = new mapboxgl.Marker({ color: '#f39c12' })
           .setLngLat([parseFloat(s.lng), parseFloat(s.lat)])
-          .setPopup(popup)
-          .addTo(mapboxMap);
+          .setPopup(popup).addTo(mapboxMap);
         mapboxMarkers.push(marker);
       }
     });
@@ -4030,8 +3052,7 @@ function cargarMarcadoresMapbox() {
           .setHTML(`<div class="map-popup"><strong>${e.titulo}</strong><br>${e.lugar || ''}<br>📅 ${e.fecha} ${e.hora || ''}</div>`);
         const marker = new mapboxgl.Marker({ color: '#9b59b6' })
           .setLngLat([parseFloat(e.lng), parseFloat(e.lat)])
-          .setPopup(popup)
-          .addTo(mapboxMap);
+          .setPopup(popup).addTo(mapboxMap);
         mapboxMarkers.push(marker);
       }
     });
@@ -4047,10 +3068,7 @@ function renderGruposMapa() {
       const g = doc.data();
       if (g.ubicacion || (g.lat && g.lng)) conUbicacion.push(g);
     });
-    if (conUbicacion.length === 0) {
-      container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos con ubicación registrada.</p>';
-      return;
-    }
+    if (conUbicacion.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay grupos con ubicación registrada.</p>'; return; }
     let html = '';
     conUbicacion.forEach(g => {
       let link = '';
@@ -4295,9 +3313,8 @@ function publicarNecesidad() {
       const path = `necesidades/${currentUser.uid}/${Date.now()}_${f.name}`;
       promesasSubida.push(subirArchivoStorage(f, path));
     }
-    Promise.all(promesasSubida).then((urls) => {
-      guardarNecesidad(categoria, desc, telefono, urls);
-    }).catch((err) => { console.error('Error subiendo fotos:', err); alert('Error al subir fotos.'); });
+    Promise.all(promesasSubida).then((urls) => { guardarNecesidad(categoria, desc, telefono, urls); })
+      .catch((err) => { console.error('Error subiendo fotos:', err); alert('Error al subir fotos.'); });
   } else {
     guardarNecesidad(categoria, desc, telefono, []);
   }
@@ -4367,7 +3384,6 @@ function ofrecerServicio() {
     document.getElementById('servicioTelefono').value = '';
     document.getElementById('servicioLat').value = '';
     document.getElementById('servicioLng').value = '';
-    if (mapInstances['servicioMap']) mapInstances['servicioMap'].setView([0,0], 2);
   }).catch(err => { console.error(err); alert('❌ Error: ' + err.message); });
 }
 
@@ -4530,7 +3546,6 @@ function renderConsejos() {
       const numOraciones = c.oraciones ? c.oraciones.length : 0;
       const esAutor = currentUser && currentUser.uid === c.uid;
       const esConsejero = tieneRol('consejero') || isAdmin;
-
       html += `<div class="consejo-item">
         <div class="consejo-titulo">${c.titulo}</div>
         <small style="color:var(--text-secondary);">Publicado por <span onclick="verPerfil('${c.uid}')" style="cursor:pointer;color:var(--teal);">${c.autorNombre}</span> · ${new Date(c.fecha.seconds * 1000).toLocaleString()}</small>
@@ -4585,10 +3600,7 @@ function responderConsejo(id) {
   CONSEJOS.doc(id).get().then(doc => {
     if (!doc.exists) return;
     const c = doc.data();
-    if (c.uid !== currentUser.uid && !tieneRol('consejero') && !isAdmin) {
-      alert('No tienes permiso para responder.');
-      return;
-    }
+    if (c.uid !== currentUser.uid && !tieneRol('consejero') && !isAdmin) { alert('No tienes permiso para responder.'); return; }
     const respuestas = c.respuestas || [];
     respuestas.push({ uid: currentUser.uid, autor: currentUser.displayName, texto, fecha: new Date().toISOString() });
     CONSEJOS.doc(id).update({ respuestas });
@@ -5162,16 +4174,12 @@ function guardarEvento() {
   if (!titulo || !fecha) { alert('Título y fecha son obligatorios.'); return; }
   const data = { titulo, fecha, hora, lugar, desc, lat: lat || '', lng: lng || '', actualizado: firebase.firestore.FieldValue.serverTimestamp() };
   if (id) {
-    EVENTOS.doc(id).update(data).then(() => {
-      alert('Evento actualizado.'); cerrarModal('eventoModal'); renderAdminEventos(); renderEventos();
-    });
+    EVENTOS.doc(id).update(data).then(() => { alert('Evento actualizado.'); cerrarModal('eventoModal'); renderAdminEventos(); renderEventos(); });
   } else {
     data.creadoPor = currentUser.uid;
     data.creadoPorNombre = currentUser.displayName;
     data.fechaCreacion = firebase.firestore.FieldValue.serverTimestamp();
-    EVENTOS.add(data).then(() => {
-      alert('Evento creado.'); cerrarModal('eventoModal'); renderAdminEventos(); renderEventos();
-    });
+    EVENTOS.add(data).then(() => { alert('Evento creado.'); cerrarModal('eventoModal'); renderAdminEventos(); renderEventos(); });
   }
 }
 
@@ -5230,9 +4238,7 @@ function renderNoticias() {
     });
     container.innerHTML = html;
   });
-  if (document.getElementById('adminNoticiasList')) {
-    renderAdminNoticias();
-  }
+  if (document.getElementById('adminNoticiasList')) renderAdminNoticias();
 }
 
 function abrirModalNoticia(noticiaId) {
@@ -5267,16 +4273,12 @@ function guardarNoticia() {
   if (!titulo || !link) { alert('Título y enlace son obligatorios.'); return; }
   const data = { titulo, link, desc, actualizado: firebase.firestore.FieldValue.serverTimestamp() };
   if (id) {
-    NOTICIAS.doc(id).update(data).then(() => {
-      alert('Noticia actualizada.'); cerrarModal('noticiaModal'); renderNoticias();
-    });
+    NOTICIAS.doc(id).update(data).then(() => { alert('Noticia actualizada.'); cerrarModal('noticiaModal'); renderNoticias(); });
   } else {
     data.fecha = firebase.firestore.FieldValue.serverTimestamp();
     data.creadoPor = currentUser.uid;
     data.creadoPorNombre = currentUser.displayName;
-    NOTICIAS.add(data).then(() => {
-      alert('Noticia agregada.'); cerrarModal('noticiaModal'); renderNoticias();
-    });
+    NOTICIAS.add(data).then(() => { alert('Noticia agregada.'); cerrarModal('noticiaModal'); renderNoticias(); });
   }
 }
 
@@ -5355,7 +4357,6 @@ function mostrarPerfilProfesional(user, esSeguidor, uid) {
     }
   });
 
-  // Galería en mosaico sin contadores
   function renderFotosGaleria(fotosArray, uid) {
     if (!fotosArray || fotosArray.length === 0)
       return '<p style="color:var(--text-secondary);">No hay fotos en la galería.</p>';
@@ -5392,8 +4393,8 @@ function mostrarPerfilProfesional(user, esSeguidor, uid) {
         ${esPropio ? `<button class="btn-primary perfil-action-btn" onclick="abrirEditarPerfil()" title="Editar"><i class="fas fa-edit"></i></button>` : ''}
         ${!esPropio && currentUser ? `<button class="btn-primary perfil-action-btn" onclick="seguirUsuario('${uid}')" title="${esSeguidor ? 'Dejar de seguir' : 'Seguir'}"><i class="fas ${esSeguidor ? 'fa-user-minus' : 'fa-user-plus'}"></i></button>` : ''}
         ${telefonoVisible ? `<a href="https://wa.me/${user.telefono.replace(/[^0-9]/g, '')}" target="_blank" class="btn-whatsapp-profile perfil-action-btn" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>` : ''}
-        <button class="btn-outline perfil-action-btn" onclick="compartirPerfil('${uid}')" title="Compartir" style="background:var(--bg-body);"><i class="fas fa-share-alt"></i></button>
-        <button class="btn-outline perfil-action-btn" onclick="compartirPerfilQR('${uid}')" title="QR" style="background:var(--bg-body);"><i class="fas fa-qrcode"></i></button>
+        <button class="btn-solid perfil-action-btn" onclick="compartirPerfil('${uid}')" title="Compartir"><i class="fas fa-share-alt"></i></button>
+        <button class="btn-solid perfil-action-btn" onclick="compartirPerfilQR('${uid}')" title="QR"><i class="fas fa-qrcode"></i></button>
       </div>
     </div>
     <div style="padding:20px 20px 20px 20px; margin-top:0;">
@@ -5725,10 +4726,7 @@ function guardarPerfilExtendido() {
     privacidad[cb.dataset.campo] = cb.checked;
   });
 
-  if (!nombre || !telefono || isNaN(edad) || edad <= 0) {
-    alert('Por favor completa los campos obligatorios.');
-    return;
-  }
+  if (!nombre || !telefono || isNaN(edad) || edad <= 0) { alert('Por favor completa los campos obligatorios.'); return; }
 
   let fotoPerfil = currentUser.fotoPerfil || '';
   let portada = currentUser.portada || '';
@@ -5766,15 +4764,13 @@ function guardarPerfilExtendido() {
     const updateData = {
       displayName: nombre, telefono, edad, fotoPerfil, portada,
       biografia, iglesia, apoyos, situacionLaboral, situacionSentimental,
-      nacionalidad, fechaNacimiento, estudios, talentos, caracter, experiencia,
-      privacidad
+      nacionalidad, fechaNacimiento, estudios, talentos, caracter, experiencia, privacidad
     };
     return USERS.doc(currentUser.uid).update(updateData);
   }).then(() => {
     Object.assign(currentUser, { displayName: nombre, telefono, edad, fotoPerfil, portada,
       biografia, iglesia, apoyos, situacionLaboral, situacionSentimental,
-      nacionalidad, fechaNacimiento, estudios, talentos, caracter, experiencia,
-      privacidad });
+      nacionalidad, fechaNacimiento, estudios, talentos, caracter, experiencia, privacidad });
     actualizarUIUsuario();
     cerrarModal('editarPerfilModal');
     alert('Perfil actualizado correctamente.');
@@ -5789,7 +4785,6 @@ function abrirEditarPerfil() {
     abrirModal('editarPerfilModal');
   }, 150);
 }
-window.guardarEdicionPerfil = guardarPerfilExtendido;
 
 // ================================================================
 // 24. SOLICITUD DE CAMBIO DE CONTRASEÑA
@@ -5798,20 +4793,13 @@ document.getElementById('btnSolicitarCambioPassword').addEventListener('click', 
   if (!currentUser) { alert('Inicia sesión.'); return; }
   if (isSuperAdmin) { alert('El SuperAdmin no necesita solicitar cambio de contraseña.'); return; }
   SOLICITUDES_PASSWORD.where('uid', '==', currentUser.uid).where('estado', '==', 'pendiente').get().then(snap => {
-    if (!snap.empty) {
-      alert('Ya tienes una solicitud pendiente. Espera la respuesta del SuperAdmin.');
-      return;
-    }
+    if (!snap.empty) { alert('Ya tienes una solicitud pendiente. Espera la respuesta del SuperAdmin.'); return; }
     if (confirm('¿Deseas enviar una solicitud de cambio de contraseña al SuperAdmin? Te contactará para ayudarte.')) {
       SOLICITUDES_PASSWORD.add({
-        uid: currentUser.uid,
-        email: currentUser.email,
-        nombre: currentUser.displayName,
-        estado: 'pendiente',
-        fecha: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        alert('Solicitud enviada. El SuperAdmin la revisará pronto.');
-      }).catch(err => { console.error(err); alert('Error: ' + err.message); });
+        uid: currentUser.uid, email: currentUser.email, nombre: currentUser.displayName,
+        estado: 'pendiente', fecha: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => { alert('Solicitud enviada. El SuperAdmin la revisará pronto.'); })
+        .catch(err => { console.error(err); alert('Error: ' + err.message); });
     }
   }).catch(console.error);
 });
@@ -5826,8 +4814,6 @@ function cargarContadorNotificaciones() {
     const count = snapshot.size;
     const badge = document.getElementById('notificacionesBadge');
     if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'inline-block' : 'none'; }
-    const badgeMob = document.getElementById('notifCountMobile');
-    if (badgeMob) badgeMob.textContent = count;
   });
 }
 
@@ -5861,7 +4847,6 @@ const versiculoContainer = document.getElementById('versiculoContainer');
 let textosBiblicos = {};
 let libroActual = '';
 let capituloActual = '';
-let capituloKeys = [];
 
 fetch('textos-biblicos.json')
   .then(response => response.json())
@@ -5870,8 +4855,7 @@ fetch('textos-biblicos.json')
     const todosLosLibros = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
     Object.keys(todosLosLibros).forEach(libro => {
       const option = document.createElement('option');
-      option.value = libro;
-      option.textContent = libro;
+      option.value = libro; option.textContent = libro;
       libroSelect.appendChild(option);
     });
   })
@@ -5880,8 +4864,7 @@ fetch('textos-biblicos.json')
     const fallback = ['Génesis','Éxodo','Levítico','Números','Deuteronomio','Josué','Jueces','Rut','1 Samuel','2 Samuel','1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras','Nehemías','Ester','Job','Salmos','Proverbios','Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones','Ezequiel','Daniel','Oseas','Joel','Amós','Abdías','Jonás','Miqueas','Nahúm','Habacuc','Sofonías','Hageo','Zacarías','Malaquías','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','1 Corintios','2 Corintios','Gálatas','Efesios','Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo','2 Timoteo','Tito','Filemón','Hebreos','Santiago','1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan','Judas','Apocalipsis'];
     fallback.forEach(l => {
       const option = document.createElement('option');
-      option.value = l;
-      option.textContent = l;
+      option.value = l; option.textContent = l;
       libroSelect.appendChild(option);
     });
     textosBiblicos = { antiguoTestamento: {}, nuevoTestamento: {} };
@@ -5931,8 +4914,7 @@ function cargarCapitulos(libro) {
     capituloSelect.innerHTML = '<option value="">Selecciona capítulo</option>';
     keys.forEach(cap => {
       const option = document.createElement('option');
-      option.value = cap;
-      option.textContent = 'Capítulo ' + cap;
+      option.value = cap; option.textContent = 'Capítulo ' + cap;
       capituloSelect.appendChild(option);
     });
     if (keys.length > 0) {
@@ -6038,11 +5020,8 @@ function guardarTodosVersos() {
 
 function actualizarInfoCap() {
   const capInfo = document.getElementById('capInfo');
-  if (libroActual && capituloActual) {
-    capInfo.textContent = libroActual + ' ' + capituloActual;
-  } else {
-    capInfo.textContent = 'Capítulo';
-  }
+  if (libroActual && capituloActual) capInfo.textContent = libroActual + ' ' + capituloActual;
+  else capInfo.textContent = 'Capítulo';
 }
 
 function navegarCapitulo(dir) {
@@ -6063,9 +5042,7 @@ function ajustarFuente(delta) {
   bibliaFuenteSize = Math.max(10, Math.min(30, bibliaFuenteSize + delta));
   localStorage.setItem(STORAGE_KEYS.bibliaFuente, bibliaFuenteSize);
   document.getElementById('fuenteInfo').textContent = 'Tamaño: ' + bibliaFuenteSize + 'px';
-  if (versiculoContainer) {
-    versiculoContainer.style.fontSize = bibliaFuenteSize + 'px';
-  }
+  if (versiculoContainer) versiculoContainer.style.fontSize = bibliaFuenteSize + 'px';
 }
 
 function buscarBiblia() {
@@ -6088,10 +5065,7 @@ function buscarTexto(query) {
           const versiculos = data[cap];
           Object.keys(versiculos).forEach(num => {
             const texto = versiculos[num];
-            if (texto.toLowerCase().includes(queryLower)) {
-              const key = libro + ' ' + cap + ':' + num;
-              resultados[key] = texto;
-            }
+            if (texto.toLowerCase().includes(queryLower)) resultados[libro + ' ' + cap + ':' + num] = texto;
           });
         });
       }).catch(() => {})
@@ -6101,20 +5075,15 @@ function buscarTexto(query) {
   Promise.all(promesas).then(() => {
     let html = '';
     const keys = Object.keys(resultados);
-    if (keys.length === 0) {
-      html = '<p style="color:var(--text-secondary);">No se encontraron versículos que contengan "' + query + '".</p>';
-    } else {
+    if (keys.length === 0) html = '<p style="color:var(--text-secondary);">No se encontraron versículos que contengan "' + query + '".</p>';
+    else {
       html = '<p><strong>Resultados para "' + query + '":</strong></p>';
-      keys.forEach(key => {
-        html += '<p><strong>' + key + '</strong> — ' + resultados[key] + '</p>';
-      });
+      keys.forEach(key => { html += '<p><strong>' + key + '</strong> — ' + resultados[key] + '</p>'; });
     }
     document.getElementById('resultadoBiblia').innerHTML = html;
     guardarHistorial(query);
     document.getElementById('btnReiniciarBusqueda').style.display = 'inline-block';
-  }).catch(() => {
-    document.getElementById('resultadoBiblia').innerHTML = '<p style="color:var(--text-secondary);">Error en la búsqueda.</p>';
-  });
+  }).catch(() => { document.getElementById('resultadoBiblia').innerHTML = '<p style="color:var(--text-secondary);">Error en la búsqueda.</p>'; });
 }
 
 function reiniciarBusqueda() {
@@ -6133,26 +5102,15 @@ function buscarVersiculo() {
   }
   const todosLosLibros = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
   const ruta = todosLosLibros[libro];
-  if (!ruta) {
-    document.getElementById('resultadoVersiculo').innerHTML = '<p style="color:var(--text-secondary);">Libro no encontrado.</p>';
-    return;
-  }
+  if (!ruta) { document.getElementById('resultadoVersiculo').innerHTML = '<p style="color:var(--text-secondary);">Libro no encontrado.</p>'; return; }
   fetch(ruta).then(res => res.json()).then(data => {
     const capitulo = data[cap];
-    if (!capitulo) {
-      document.getElementById('resultadoVersiculo').innerHTML = '<p style="color:var(--text-secondary);">Capítulo no encontrado.</p>';
-      return;
-    }
+    if (!capitulo) { document.getElementById('resultadoVersiculo').innerHTML = '<p style="color:var(--text-secondary);">Capítulo no encontrado.</p>'; return; }
     const texto = capitulo[num];
-    if (!texto) {
-      document.getElementById('resultadoVersiculo').innerHTML = '<p style="color:var(--text-secondary);">Versículo no encontrado.</p>';
-      return;
-    }
+    if (!texto) { document.getElementById('resultadoVersiculo').innerHTML = '<p style="color:var(--text-secondary);">Versículo no encontrado.</p>'; return; }
     document.getElementById('resultadoVersiculo').innerHTML = `<p><strong>${libro} ${cap}:${num}</strong> — ${texto}</p>`;
     guardarHistorial(libro + ' ' + cap + ':' + num);
-  }).catch(() => {
-    document.getElementById('resultadoVersiculo').innerHTML = '<p style="color:var(--text-secondary);">Error al cargar el libro.</p>';
-  });
+  }).catch(() => { document.getElementById('resultadoVersiculo').innerHTML = '<p style="color:var(--text-secondary);">Error al cargar el libro.</p>'; });
 }
 
 function cargarHistorial() {
@@ -6162,9 +5120,7 @@ function cargarHistorial() {
     container.innerHTML = '<span style="color:var(--text-secondary); font-size:12px;">No hay búsquedas recientes.</span>';
     return;
   }
-  container.innerHTML = historial.map(t => {
-    return `<span class="historial-tag" onclick="buscarTexto('${t.replace(/'/g, "\\'")}')">${t}</span>`;
-  }).join('');
+  container.innerHTML = historial.map(t => `<span class="historial-tag" onclick="buscarTexto('${t.replace(/'/g, "\\'")}')">${t}</span>`).join('');
 }
 
 // ================================================================
@@ -6208,17 +5164,12 @@ Pregunta del usuario: ${pregunta}`;
         'HTTP-Referer': window.location.origin,
         'X-Title': 'Sal y Luz'
       },
-      body: JSON.stringify({
-        model: model,
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: 700
-      })
+      body: JSON.stringify({ model: model, messages: [{ role: 'user', content: prompt }], max_tokens: 700 })
     })
     .then(res => res.json())
     .then(data => {
-      if (data.error) {
-        chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> ❌ Error: ${data.error.message || data.error}. Verifica la configuración de la API.</div>`;
-      } else {
+      if (data.error) chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> ❌ Error: ${data.error.message || data.error}. Verifica la configuración de la API.</div>`;
+      else {
         const reply = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : 'No pude obtener una respuesta.';
         chat.innerHTML += `<div class="msg bot"><strong>Asistente:</strong> ${reply}</div>`;
       }
@@ -6236,16 +5187,10 @@ function guardarConfigIA() {
   const key = document.getElementById('openrouterKey').value.trim();
   const model = document.getElementById('openrouterModel').value.trim() || 'https://openrouter.ai/api/v1/chat/completions';
   let selectedModel = document.getElementById('openrouterModelSelect').value;
-  if (selectedModel === 'custom') {
-    selectedModel = document.getElementById('openrouterCustomModel').value.trim() || 'openai/gpt-3.5-turbo';
-  }
-  CONFIG_IA.set({
-    apiKey: key || '', model, selectedModel,
-    actualizado: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(() => {
-    document.getElementById('iaStatus').textContent = '✅ Configurada. Modelo: ' + selectedModel;
-    alert('Configuración guardada.');
-  }).catch(err => { console.error(err); alert('Error: ' + err.message); });
+  if (selectedModel === 'custom') selectedModel = document.getElementById('openrouterCustomModel').value.trim() || 'openai/gpt-3.5-turbo';
+  CONFIG_IA.set({ apiKey: key || '', model, selectedModel, actualizado: firebase.firestore.FieldValue.serverTimestamp() })
+    .then(() => { document.getElementById('iaStatus').textContent = '✅ Configurada. Modelo: ' + selectedModel; alert('Configuración guardada.'); })
+    .catch(err => { console.error(err); alert('Error: ' + err.message); });
 }
 
 function guardarContextoIA() {
@@ -6264,9 +5209,8 @@ function cargarConfigIA() {
       const sel = document.getElementById('openrouterModelSelect');
       if (data.selectedModel) {
         const optionExists = Array.from(sel.options).some(opt => opt.value === data.selectedModel);
-        if (optionExists) {
-          sel.value = data.selectedModel;
-        } else {
+        if (optionExists) sel.value = data.selectedModel;
+        else {
           sel.value = 'custom';
           document.getElementById('openrouterCustomModel').value = data.selectedModel;
           document.getElementById('openrouterCustomModel').style.display = 'block';
@@ -6279,7 +5223,7 @@ function cargarConfigIA() {
 
 document.getElementById('openrouterModelSelect').addEventListener('change', function() {
   const customInput = document.getElementById('openrouterCustomModel');
-  if (this.value === 'custom') { customInput.style.display = 'block'; } else { customInput.style.display = 'none'; }
+  if (this.value === 'custom') customInput.style.display = 'block'; else customInput.style.display = 'none';
 });
 
 // ================================================================
@@ -6301,14 +5245,12 @@ function initMap(mapId, searchId, latId, lngId) {
     document.getElementById(latId).value = pos.lat;
     document.getElementById(lngId).value = pos.lng;
     const searchInput = document.getElementById(searchId);
-    if (searchInput) { searchInput.value = pos.lat.toFixed(6) + ', ' + pos.lng.toFixed(6); }
+    if (searchInput) searchInput.value = pos.lat.toFixed(6) + ', ' + pos.lng.toFixed(6);
   });
 
   const searchInput = document.getElementById(searchId);
   if (searchInput) {
-    searchInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') { buscarEnMapa(mapId); }
-    });
+    searchInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') buscarEnMapa(mapId); });
   }
 
   mapInstances[mapId] = map;
@@ -6339,7 +5281,7 @@ function buscarEnMapa(mapId) {
           document.getElementById(mapInstances[mapId + '_lat']).value = lat;
           document.getElementById(mapInstances[mapId + '_lng']).value = lng;
         }
-      } else { alert('No se encontró la ubicación.'); }
+      } else alert('No se encontró la ubicación.');
     })
     .catch(err => { console.error('Error en geocodificación:', err); alert('Error al buscar la dirección.'); });
 }
@@ -6366,13 +5308,9 @@ function subirLogo() {
   const file = fileInput.files[0];
   if (!file) { alert('Selecciona una imagen.'); return; }
   const path = `logo/logo_${Date.now()}_${file.name}`;
-  subirArchivoStorage(file, path).then(url => {
-    return APP_CONFIG.set({ logoUrl: url }, { merge: true });
-  }).then(() => {
-    alert('Logo actualizado correctamente.');
-    cargarLogoConfig();
-    fileInput.value = '';
-  }).catch(err => { console.error(err); alert('Error al subir el logo: ' + err.message); });
+  subirArchivoStorage(file, path).then(url => APP_CONFIG.set({ logoUrl: url }, { merge: true }))
+    .then(() => { alert('Logo actualizado correctamente.'); cargarLogoConfig(); fileInput.value = ''; })
+    .catch(err => { console.error(err); alert('Error al subir el logo: ' + err.message); });
 }
 
 function eliminarLogo() {
@@ -6389,7 +5327,7 @@ function eliminarLogo() {
 }
 
 // ================================================================
-// 29B. CONFIGURACIÓN DE MENÚ HAMBURGUESA
+// 29B. CONFIGURACIÓN DE MENÚ
 // ================================================================
 function cargarConfigMenu() {
   APP_CONFIG.get().then(doc => {
@@ -6407,55 +5345,21 @@ function guardarConfigMenu() {
   if (!isSuperAdmin) { alert('Solo el SuperAdmin puede configurar el menú.'); return; }
   const force = document.getElementById('forceHamburgerCheck').checked;
   APP_CONFIG.set({ forceHamburger: force }, { merge: true }).then(() => {
-    if (force) {
-      document.body.classList.add('force-hamburger');
-    } else {
-      document.body.classList.remove('force-hamburger');
-    }
+    if (force) document.body.classList.add('force-hamburger');
+    else document.body.classList.remove('force-hamburger');
     alert('Configuración de menú guardada.');
   }).catch(err => { console.error(err); alert('Error: ' + err.message); });
 }
 
 // ================================================================
-// 30. MODO NOCTURNO
+// 30. MODO NOCTURNO (inicialización)
 // ================================================================
-function toggleTheme() {
-  document.body.classList.toggle('dark');
-  const themeToggleBtn = document.getElementById('themeToggle');
-  if (themeToggleBtn) {
-    themeToggleBtn.querySelector('i').classList.toggle('fa-moon');
-    themeToggleBtn.querySelector('i').classList.toggle('fa-sun');
-  }
-  // Actualizar ícono del tab de tema móvil
-  const tabTema = document.getElementById('tabTemaMobile');
-  if (tabTema) {
-    const icon = tabTema.querySelector('i');
-    if (document.body.classList.contains('dark')) {
-      icon.classList.remove('fa-moon');
-      icon.classList.add('fa-sun');
-    } else {
-      icon.classList.remove('fa-sun');
-      icon.classList.add('fa-moon');
-    }
-  }
-  localStorage.setItem(STORAGE_KEYS.theme, document.body.classList.contains('dark') ? 'dark' : 'light');
-}
-
-// Botón de tema original (oculto en móvil pero funcional)
-const themeToggleBtn = document.getElementById('themeToggle');
-if (themeToggleBtn) {
-  themeToggleBtn.addEventListener('click', toggleTheme);
-}
-
 if (localStorage.getItem(STORAGE_KEYS.theme) === 'dark') {
   document.body.classList.add('dark');
-  if (themeToggleBtn) themeToggleBtn.querySelector('i').classList.replace('fa-moon', 'fa-sun');
-  const tabTema = document.getElementById('tabTemaMobile');
-  if (tabTema) {
-    const icon = tabTema.querySelector('i');
-    icon.classList.remove('fa-moon');
-    icon.classList.add('fa-sun');
-  }
+  const icon = document.querySelector('#tabTemaToggle i');
+  if (icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
+  const span = document.querySelector('#tabTemaToggle span');
+  if (span) span.textContent = ' Modo claro';
 }
 
 // ================================================================
@@ -6497,17 +5401,8 @@ function abrirMediaViewer(items, index, type, dates) {
   const img = document.getElementById('mediaViewerImage');
   const video = document.getElementById('mediaViewerVideo');
   const current = mediaViewerItems[mediaViewerIndex];
-  if (current.type === 'image') {
-    img.style.display = 'block';
-    video.style.display = 'none';
-    img.src = current.url;
-  } else {
-    img.style.display = 'none';
-    video.style.display = 'block';
-    video.src = current.url;
-    video.load();
-    video.play();
-  }
+  if (current.type === 'image') { img.style.display = 'block'; video.style.display = 'none'; img.src = current.url; }
+  else { img.style.display = 'none'; video.style.display = 'block'; video.src = current.url; video.load(); video.play(); }
   actualizarMediaViewerInfo();
   viewer.classList.add('show');
   document.body.style.overflow = 'hidden';
@@ -6542,17 +5437,8 @@ function navegarMediaViewer(dir) {
   const current = mediaViewerItems[mediaViewerIndex];
   const img = document.getElementById('mediaViewerImage');
   const video = document.getElementById('mediaViewerVideo');
-  if (current.type === 'image') {
-    img.style.display = 'block';
-    video.style.display = 'none';
-    img.src = current.url;
-  } else {
-    img.style.display = 'none';
-    video.style.display = 'block';
-    video.src = current.url;
-    video.load();
-    video.play();
-  }
+  if (current.type === 'image') { img.style.display = 'block'; video.style.display = 'none'; img.src = current.url; }
+  else { img.style.display = 'none'; video.style.display = 'block'; video.src = current.url; video.load(); video.play(); }
   actualizarMediaViewerInfo();
 }
 
@@ -6573,11 +5459,8 @@ function actualizarBotonesPorRol() {
   const misServicios = document.getElementById('misServiciosContainer');
   const devSubirCard = document.getElementById('devocionalSubirCard');
 
-  if (puedeCrearGrupo()) btnGrupo.style.display = 'inline-block';
-  else btnGrupo.style.display = 'none';
-
-  if (puedeCrearGrupo()) btnDiscipulado.style.display = 'inline-block';
-  else btnDiscipulado.style.display = 'none';
+  if (puedeCrearGrupo()) btnGrupo.style.display = 'inline-block'; else btnGrupo.style.display = 'none';
+  if (puedeCrearGrupo()) btnDiscipulado.style.display = 'inline-block'; else btnDiscipulado.style.display = 'none';
 
   if (tieneRol('servidor') || tieneRol('ayuda_alimentaria')) {
     servicioForm.style.display = 'block';
@@ -6590,18 +5473,10 @@ function actualizarBotonesPorRol() {
     servicioMsg.style.display = 'block';
   }
 
-  if (currentUser) misServicios.style.display = 'block';
-  else misServicios.style.display = 'none';
-
-  if (isAdmin || tieneRol('misionero')) btnMisionero.style.display = 'inline-block';
-  else btnMisionero.style.display = 'none';
-
-  if (isAdmin) btnIglesia.style.display = 'inline-block';
-  else btnIglesia.style.display = 'none';
-
-  if (devSubirCard) {
-    devSubirCard.style.display = puedeSubirDevocional() ? 'block' : 'none';
-  }
+  if (currentUser) misServicios.style.display = 'block'; else misServicios.style.display = 'none';
+  if (isAdmin || tieneRol('misionero')) btnMisionero.style.display = 'inline-block'; else btnMisionero.style.display = 'none';
+  if (isAdmin) btnIglesia.style.display = 'inline-block'; else btnIglesia.style.display = 'none';
+  if (devSubirCard) devSubirCard.style.display = puedeSubirDevocional() ? 'block' : 'none';
 }
 
 function actualizarTabs() {
@@ -6669,7 +5544,6 @@ function guardarEditarUsuario() {
 // 34. EVENTOS DE CARGA INICIAL
 // ================================================================
 document.addEventListener('DOMContentLoaded', function() {
-  // Login button ahora solo inicia sesión (el logout está en el menú)
   document.getElementById('loginBtn').addEventListener('click', function() {
     if (currentUser) { window.logoutUser(); }
     else {
@@ -6707,8 +5581,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const apoyos = [];
       document.querySelectorAll('#loginModal .checkbox-group input[type="checkbox"]:checked').forEach(cb => apoyos.push(cb.value));
       if (!email || !password || !nombre || !telefono || isNaN(edad) || edad <= 0) {
-        document.getElementById('loginError').textContent = 'Completa todos los campos obligatorios.';
-        return;
+        document.getElementById('loginError').textContent = 'Completa todos los campos obligatorios.'; return;
       }
       const ok = await window.registerUser(email, password, nombre, telefono, edad, apoyos);
       if (ok) cerrarModal('loginModal');
@@ -6717,16 +5590,12 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('loginCancelBtn').addEventListener('click', function() { cerrarModal('loginModal'); });
 
   document.querySelectorAll('#mainTabs .tab[data-panel]').forEach(tab => {
-    tab.addEventListener('click', function() { const panel = this.dataset.panel; if (panel) switchPanel(panel); });
+    tab.addEventListener('click', function() {
+      const panel = this.dataset.panel;
+      if (panel) switchPanel(panel);
+      document.getElementById('mainTabs').classList.remove('open');
+    });
   });
-
-  // Botones móviles del menú hamburguesa
-  const tabTema = document.getElementById('tabTemaMobile');
-  if (tabTema) tabTema.addEventListener('click', toggleTheme);
-  const tabNotif = document.getElementById('tabNotifMobile');
-  if (tabNotif) tabNotif.addEventListener('click', mostrarNotificaciones);
-  const tabCerrarSesion = document.getElementById('tabCerrarSesionMobile');
-  if (tabCerrarSesion) tabCerrarSesion.addEventListener('click', function() { window.logoutUser(); });
 
   document.getElementById('logoInicio').addEventListener('click', function() { switchPanel('inicio'); });
 
@@ -6750,12 +5619,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('campaniaMonto').style.display = val === 'campania' ? 'block' : 'none';
   });
 
-  document.getElementById('btnAbrirReelModal').addEventListener('click', function() {
-    document.getElementById('reelFile').value = '';
-    document.getElementById('reelDesc').value = '';
-    document.getElementById('reelPreviewContainer').innerHTML = '';
-    abrirModal('reelModal');
-  });
   document.getElementById('reelModalCancel').addEventListener('click', function() { cerrarModal('reelModal'); });
   document.getElementById('reelModalPublicar').addEventListener('click', publicarReel);
 
@@ -6856,7 +5719,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('btnGuardarMenuConfig').addEventListener('click', guardarConfigMenu);
 
-  // Galería de perfil → abre el visor de foto con reacciones
   document.getElementById('perfilModal').addEventListener('click', function(e) {
     const item = e.target.closest('.galeria-item');
     if (!item) return;
@@ -6898,14 +5760,11 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => { initMap('servicioMap', 'servicioMapSearch', 'servicioLat', 'servicioLng'); }, 500);
   }
 
-  // 🔐 Persistencia de sesión: restaurar usuario al recargar
   auth.onAuthStateChanged(async (user) => {
-    if (user) {
-      await cargarUsuarioActual(user);
-    }
+    if (user) await cargarUsuarioActual(user);
   });
 
-  console.log('✅ SAL Y LUZ v6: menú unificado, botones de perfil no transparentes, reels fullscreen con carrusel 3D vertical, botón flotante para subir reel.');
+  console.log('✅ SAL Y LUZ v6: logout y tema en menú, un solo botón de perfil, reels full-screen con carrusel 3D vertical.');
 });
 
 // ================================================================
@@ -6929,13 +5788,14 @@ window.compartirPost = compartirPost;
 window.votarEncuesta = votarEncuesta;
 window.donarCampania = donarCampania;
 window.renderReels = renderReels;
+window.abrirReelsViewer = abrirReelsViewer;
+window.cerrarReelsViewer = cerrarReelsViewer;
+window.abrirReelModal = abrirReelModal;
 window.publicarReel = publicarReel;
 window.likeReel = likeReel;
 window.compartirReel = compartirReel;
-window.eliminarReel = eliminarReel;
-window.abrirReelViewer = abrirReelViewer;
-window.cerrarReelViewer = cerrarReelViewer;
-window.comentarReelViewer = comentarReelViewer;
+window.eliminarReelViewer = eliminarReelViewer;
+window.comentarReelFull = comentarReelFull;
 window.renderDevocionales = renderDevocionales;
 window.subirDevocional = subirDevocional;
 window.verDevocional = verDevocional;
@@ -7051,14 +5911,6 @@ window.cerrarFotoViewer = cerrarFotoViewer;
 window.toggleReaccionFoto = toggleReaccionFoto;
 window.comentarFotoViewer = comentarFotoViewer;
 window.compartirFoto = compartirFoto;
-window.abrirReelsFullscreen = abrirReelsFullscreen;
-window.cerrarReelsFullscreen = cerrarReelsFullscreen;
-window.abrirModalReelDesdeViewer = abrirModalReelDesdeViewer;
-window.likeReelFullscreen = likeReelFullscreen;
-window.orandoReelFullscreen = orandoReelFullscreen;
-window.comentarReelFullscreen = comentarReelFullscreen;
-window.compartirReelFullscreen = compartirReelFullscreen;
-window.eliminarReelFullscreen = eliminarReelFullscreen;
 window.toggleTheme = toggleTheme;
 </script>
 </body>

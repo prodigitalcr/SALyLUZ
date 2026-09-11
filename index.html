@@ -198,6 +198,7 @@
       align-items: center;
       gap: 8px;
       z-index: 25;
+      flex-wrap: wrap;
     }
     .story-reaction-btn {
       background: rgba(255,255,255,0.15);
@@ -521,14 +522,44 @@
     .config-msg { display: none; }
     body.dark .config-solo-admin { background: #1a1a2e; }
     .solicitud-item { padding: 8px 0; border-bottom: 1px solid var(--border-color); }
-    .devocional-card { background: var(--bg-body); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; border: 1px solid var(--border-color); transition: all 0.25s ease; }
+
+    /* ============ DEVOCIONALES MEJORADOS ============ */
+    .devocional-card { background: var(--bg-body); border-radius: var(--radius); padding: 0; margin-bottom: 14px; border: 1px solid var(--border-color); transition: all 0.25s ease; overflow: hidden; }
     .devocional-card:hover { border-color: var(--teal); box-shadow: var(--shadow); }
+    .devocional-cover { width: 100%; height: 180px; object-fit: cover; display: block; background: linear-gradient(135deg, var(--teal), var(--teal-dark)); }
+    .devocional-cover-placeholder { width: 100%; height: 160px; background: linear-gradient(135deg, var(--teal), var(--teal-dark)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 52px; }
+    .devocional-body { padding: 14px; }
     .devocional-card .dev-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .devocional-card .dev-icon { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--teal), var(--teal-dark)); display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; flex-shrink: 0; }
+    .devocional-card .dev-icon { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, var(--teal), var(--teal-dark)); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; flex-shrink: 0; }
     .devocional-card h5 { font-weight: 600; font-size: 15px; margin: 0; }
     .devocional-card .dev-meta { font-size: 12px; color: var(--text-secondary); }
     .devocional-card .dev-desc { font-size: 13px; margin: 6px 0; color: var(--text-primary); line-height: 1.5; }
-    .devocional-card .dev-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .devocional-categoria {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; padding: 2px 10px; border-radius: 20px;
+      background: var(--teal-light); color: var(--teal-dark); font-weight: 600;
+      margin-bottom: 6px;
+    }
+    body.dark .devocional-categoria { background: rgba(29,158,117,0.2); color: #7ee2c2; }
+    .devocional-tags { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+    .devocional-tag { font-size: 11px; color: var(--teal); background: transparent; }
+    .devocional-stats { display: flex; gap: 12px; font-size: 11px; color: var(--text-secondary); margin: 6px 0; }
+    .devocional-stats span { display: inline-flex; align-items: center; gap: 3px; }
+    .devocional-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .devocional-actions .dev-react-btn {
+      background: transparent; border: 1px solid var(--border-color);
+      padding: 5px 12px; border-radius: 30px; cursor: pointer;
+      font-size: 12px; color: var(--text-secondary);
+      display: inline-flex; align-items: center; gap: 4px;
+      transition: 0.15s;
+    }
+    .devocional-actions .dev-react-btn:hover { background: var(--bg-body); }
+    .devocional-actions .dev-react-btn.liked { color: #e74c3c; border-color: #e74c3c; background: rgba(231,76,60,0.1); }
+    .devocional-actions .dev-react-btn.prayed { color: #6a1b9a; border-color: #6a1b9a; background: rgba(106,27,154,0.1); }
+    .devocional-comments-box { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border-color); }
+    .devocional-comment { padding: 4px 0; font-size: 12px; }
+    .devocional-comment .autor { font-weight: 600; color: var(--teal); cursor: pointer; }
+
     .pdf-viewer { width: 100%; height: 75vh; border: 1px solid var(--border-color); border-radius: 10px; background: #525659; margin-top: 10px; }
     .pdf-viewer iframe { width: 100%; height: 100%; border: none; border-radius: 10px; }
     #qrModal .modal-box { max-width: 420px; text-align: center; padding: 24px; }
@@ -596,6 +627,19 @@
       .perfil-facebook .foto-perfil { width: 90px !important; height: 90px !important; }
       .perfil-facebook .portada { height: 150px !important; }
     }
+    .social-links-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; padding-left: 140px; }
+    @media (max-width: 640px) { .social-links-row { padding-left: 0; } }
+    .social-link-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 30px;
+      font-size: 12px; font-weight: 600; text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .social-link-btn:hover { transform: scale(1.05); }
+    .social-fb { background: #1877F2; color: #fff; }
+    .social-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; }
+    .social-tt { background: #000; color: #fff; }
+    .social-other { background: var(--teal); color: #fff; }
     .post { background: var(--card-bg, white); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
     body.dark .post { background: #1a1a2e; }
     .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
@@ -934,12 +978,42 @@
       <h3><i class="fas fa-book-bible"></i> Subir Devocional</h3>
       <label>Título *</label>
       <input type="text" id="devocionalTitulo" placeholder="Título">
+      <label>Categoría</label>
+      <select id="devocionalCategoria">
+        <option value="Reflexión">Reflexión</option>
+        <option value="Estudio Bíblico">Estudio Bíblico</option>
+        <option value="Testimonio">Testimonio</option>
+        <option value="Oración">Oración</option>
+        <option value="Alabanza">Alabanza</option>
+        <option value="Enseñanza">Enseñanza</option>
+        <option value="Devocional Diario">Devocional Diario</option>
+        <option value="Otro">Otro</option>
+      </select>
+      <label>Tags / Etiquetas (separadas por comas)</label>
+      <input type="text" id="devocionalTags" placeholder="fe, amor, esperanza">
       <label>Descripción breve</label>
-      <textarea id="devocionalDesc" placeholder="Breve descripción..." rows="2"></textarea>
+      <textarea id="devocionalDesc" placeholder="Breve descripción..." rows="3"></textarea>
+      <label>Imagen de portada (opcional)</label>
+      <input type="file" id="devocionalCover" accept="image/*">
+      <div id="devocionalCoverPreview" class="preview-container"></div>
       <label>Archivo PDF *</label>
       <input type="file" id="devocionalPdf" accept="application/pdf">
       <div id="devocionalPreview" class="preview-container"></div>
       <button class="btn-primary" id="btnSubirDevocional" style="margin-top:8px;"><i class="fas fa-upload"></i> Publicar Devocional</button>
+    </div>
+    <div class="card">
+      <h3><i class="fas fa-filter"></i> Filtrar por categoría</h3>
+      <select id="devocionalFiltro" onchange="renderDevocionales()" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
+        <option value="todas">Todas</option>
+        <option value="Reflexión">Reflexión</option>
+        <option value="Estudio Bíblico">Estudio Bíblico</option>
+        <option value="Testimonio">Testimonio</option>
+        <option value="Oración">Oración</option>
+        <option value="Alabanza">Alabanza</option>
+        <option value="Enseñanza">Enseñanza</option>
+        <option value="Devocional Diario">Devocional Diario</option>
+        <option value="Otro">Otro</option>
+      </select>
     </div>
     <div id="devocionalesContainer"><p style="color:var(--text-secondary); text-align:center; padding:20px;">Cargando devocionales...</p></div>
   </div>
@@ -1037,7 +1111,7 @@
         <h3><i class="fas fa-globe-americas"></i> Misioneros, Iglesias y Servicios</h3>
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
           <button class="btn-primary" id="btnRegistrarMisionero" style="display:none;"><i class="fas fa-user-plus"></i> Misionero</button>
-          <button class="btn-primary" id="btnRegistrarIglesia" style="display:none; background:var(--orange);"><i class="fas fa-place-of-worship"></i> Iglesia</button>
+          <button class="btn-primary" id="btnRegistrarIglesia" style="display:none; background:var(--orange);"><i class="fas fa-place-of-worship"></i> Iglesia local</button>
         </div>
         <div class="map-wrapper" id="mapa3d"><div id="mapboxMap" class="mapboxgl-map" style="height:100%;width:100%;"></div></div>
         <div style="margin-top:6px; display:flex; gap:16px; flex-wrap:wrap; font-size:12px;">
@@ -1171,6 +1245,7 @@
         <div class="admin-stat"><div class="num" id="statProyectos">0</div><div class="label">Proyectos</div></div>
         <div class="admin-stat"><div class="num" id="statDiscipulados">0</div><div class="label">Discipulados</div></div>
         <div class="admin-stat"><div class="num" id="statMisioneros">0</div><div class="label">Misioneros</div></div>
+        <div class="admin-stat"><div class="num" id="statIglesias">0</div><div class="label">Iglesias</div></div>
         <div class="admin-stat"><div class="num" id="statConsejos">0</div><div class="label">Consejos</div></div>
         <div class="admin-stat"><div class="num" id="statReportes">0</div><div class="label">Reportes</div></div>
         <div class="admin-stat"><div class="num" id="statEventos">0</div><div class="label">Eventos</div></div>
@@ -1230,6 +1305,10 @@
     <div class="card">
       <h3><i class="fas fa-images"></i> Gestionar Historias</h3>
       <div id="adminHistoriasList" style="margin-top:10px;"></div>
+    </div>
+    <div class="card">
+      <h3><i class="fas fa-place-of-worship"></i> Gestionar Iglesias locales</h3>
+      <div id="adminIglesiasList" style="margin-top:10px;"></div>
     </div>
     <div class="card config-solo-admin" id="cardIAConfig">
       <h3><i class="fas fa-robot"></i> Configuración de IA (OpenRouter)</h3>
@@ -1316,6 +1395,19 @@
       <input type="tel" id="editTelefono">
       <label>Edad *</label>
       <input type="number" id="editEdad">
+
+      <hr style="border-color:var(--border-color); margin:12px 0;">
+      <h5><i class="fas fa-share-alt"></i> Redes sociales</h5>
+      <label>Facebook</label>
+      <input type="url" id="editFacebook" placeholder="https://facebook.com/tu-perfil">
+      <label>Instagram</label>
+      <input type="url" id="editInstagram" placeholder="https://instagram.com/tu-perfil">
+      <label>TikTok</label>
+      <input type="url" id="editTiktok" placeholder="https://tiktok.com/@tu-usuario">
+      <label>Otra red social</label>
+      <input type="url" id="editOtraRed" placeholder="https://...">
+      <label>Nombre de la otra red</label>
+      <input type="text" id="editOtraRedNombre" placeholder="Ej: YouTube, Twitter/X...">
 
       <hr style="border-color:var(--border-color); margin:12px 0;">
       <h5>Foto de perfil</h5>
@@ -1667,14 +1759,16 @@
 
   <div class="modal-overlay" id="iglesiaModal">
     <div class="modal-box">
-      <h3><i class="fas fa-place-of-worship"></i> Registrar Iglesia</h3>
+      <h3><i class="fas fa-place-of-worship"></i> Registrar Iglesia local</h3>
       <label>Nombre *</label>
       <input type="text" id="iglesiaNombre">
       <label>Dirección *</label>
       <input type="text" id="iglesiaDireccion">
       <label>Teléfono</label>
       <input type="tel" id="iglesiaTelefono">
-      <label>Horarios</label>
+      <label>Pastor / Líder</label>
+      <input type="text" id="iglesiaPastor">
+      <label>Horarios de culto</label>
       <input type="text" id="iglesiaHorarios">
       <div style="margin-top:10px;">
         <div class="map-search">
@@ -1762,7 +1856,6 @@
     </div>
   </div>
 
-  <!-- MODAL SUBIR FOTO A GALERÍA CON METADATOS -->
   <div class="modal-overlay" id="fotoGaleriaModal">
     <div class="modal-box" style="max-width:560px;">
       <h3><i class="fas fa-camera"></i> Subir foto a la galería</h3>
@@ -1795,7 +1888,6 @@
     </div>
   </div>
 
-  <!-- VISOR CARRUSEL GALERÍA -->
   <div class="galeria-viewer" id="galeriaViewer">
     <button class="galeria-viewer-close" onclick="cerrarGaleriaViewer()" title="Cerrar"><i class="fas fa-times"></i></button>
     <div class="galeria-viewer-scroll" id="galeriaViewerScroll"></div>
@@ -1921,8 +2013,8 @@
     </div>
     <div class="story-desc-box" id="storyDescBox" style="display:none;"></div>
     <div class="story-reactions-bar" id="storyReactionsBar">
-      <button class="story-reaction-btn" id="storyLikeBtn" onclick="reaccionarHistoria('like')"><i class="fas fa-heart"></i> <span id="storyLikeCount">0</span></button>
-      <button class="story-reaction-btn" id="storyDislikeBtn" onclick="reaccionarHistoria('dislike')"><i class="fas fa-thumbs-down"></i> <span id="storyDislikeCount">0</span></button>
+      <button class="story-reaction-btn" id="storyLikeBtn" onclick="reaccionarHistoria('likes')"><i class="fas fa-heart"></i> <span id="storyLikeCount">0</span></button>
+      <button class="story-reaction-btn" id="storyDislikeBtn" onclick="reaccionarHistoria('dislikes')"><i class="fas fa-thumbs-down"></i> <span id="storyDislikeCount">0</span></button>
       <button class="story-reaction-btn" id="storyPrayBtn" onclick="reaccionarHistoria('orando')"><i class="fas fa-pray"></i> <span id="storyPrayCount">0</span></button>
       <button class="story-reaction-btn" onclick="compartirHistoria()"><i class="fas fa-share"></i> Compartir</button>
       <button class="story-reaction-btn" onclick="comentarHistoria()"><i class="fas fa-comment"></i> <span id="storyCommentCount">0</span></button>
@@ -2088,6 +2180,9 @@ function tieneAlgunRolApoyo() {
   const roles = ['facilitador','asistente','anfitrion','misionero','servidor','consejero','oracion','ayuda_alimentaria'];
   return roles.some(r => tieneRol(r)) || isAdmin;
 }
+function puedeAgregarIglesia() {
+  return isAdmin || tieneRol('facilitador') || tieneRol('consejero') || tieneRol('misionero');
+}
 function abrirModal(id) { document.getElementById(id).classList.add('show'); }
 function cerrarModal(id) { document.getElementById(id).classList.remove('show'); }
 function subirArchivoStorage(file, path) {
@@ -2103,6 +2198,10 @@ function fmtTime(s) {
   s = Math.floor(s || 0);
   const m = Math.floor(s/60), ss = s % 60;
   return m + ':' + (ss < 10 ? '0' : '') + ss;
+}
+function capitalize(s) {
+  if (!s) return '';
+  return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 // ================================================================
@@ -2129,6 +2228,7 @@ window.registerUser = async function(email, password, nombre, telefono, edad, ap
       ministerio: '', situacionLaboral: '', situacionSentimental: '', nacionalidad: '',
       fechaNacimiento: '', estudios: '', talentos: '', caracter: '', experiencia: '',
       fotosPerfil: [],
+      facebook: '', instagram: '', tiktok: '', otraRed: '', otraRedNombre: '',
       perfilSoloSeguidores: true,
       privacidad: { biografia: true, situacionLaboral: true, situacionSentimental: true,
         nacionalidad: true, fechaNacimiento: true, estudios: true,
@@ -2165,6 +2265,8 @@ async function cargarUsuarioActual(user) {
         nacionalidad: data.nacionalidad || '', fechaNacimiento: data.fechaNacimiento || '',
         estudios: data.estudios || '', talentos: data.talentos || '', caracter: data.caracter || '',
         experiencia: data.experiencia || '', fotosPerfil: data.fotosPerfil || [],
+        facebook: data.facebook || '', instagram: data.instagram || '',
+        tiktok: data.tiktok || '', otraRed: data.otraRed || '', otraRedNombre: data.otraRedNombre || '',
         perfilSoloSeguidores: data.perfilSoloSeguidores !== false,
         privacidad: data.privacidad || {}
       };
@@ -2175,6 +2277,7 @@ async function cargarUsuarioActual(user) {
         iglesia: '', ministerio: '', situacionLaboral: '', situacionSentimental: '',
         nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '', caracter: '',
         experiencia: '', fotosPerfil: [],
+        facebook: '', instagram: '', tiktok: '', otraRed: '', otraRedNombre: '',
         perfilSoloSeguidores: true,
         privacidad: { historias: true },
         fechaRegistro: firebase.firestore.FieldValue.serverTimestamp()
@@ -2184,7 +2287,9 @@ async function cargarUsuarioActual(user) {
         telefono: '', edad: '', apoyos: [], fotoPerfil: '', portada: '', biografia: '',
         iglesia: '', ministerio: '', situacionLaboral: '', situacionSentimental: '',
         nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '', caracter: '',
-        experiencia: '', fotosPerfil: [], perfilSoloSeguidores: true, privacidad: { historias: true }
+        experiencia: '', fotosPerfil: [],
+        facebook: '', instagram: '', tiktok: '', otraRed: '', otraRedNombre: '',
+        perfilSoloSeguidores: true, privacidad: { historias: true }
       };
     }
     isSuperAdmin = (user.email === 'salyluz@comunidad.com');
@@ -2763,6 +2868,7 @@ function publicarHistoria() {
   }
 }
 
+// ✅ FIX: sin orderBy compuesto, se ordena localmente
 async function abrirStoryViewer(uid) {
   const ahora = Date.now();
   const esPropia = currentUser && currentUser.uid === uid;
@@ -2777,7 +2883,8 @@ async function abrirStoryViewer(uid) {
 
   let snap;
   try {
-    snap = await HISTORIAS.where('uid', '==', uid).orderBy('fecha', 'asc').get();
+    // ⚡ SIN orderBy para evitar necesidad de índice compuesto
+    snap = await HISTORIAS.where('uid', '==', uid).get();
   } catch (e) {
     console.warn(e);
     alert('No se pudieron cargar las historias.');
@@ -2793,6 +2900,8 @@ async function abrirStoryViewer(uid) {
       historias.push(h);
     }
   });
+  // Ordenar localmente por fecha ascendente
+  historias.sort((a, b) => (a.fecha.seconds || 0) - (b.fecha.seconds || 0));
 
   if (historias.length === 0) {
     alert('No hay historias activas visibles para ti de este usuario.');
@@ -2838,7 +2947,6 @@ function mostrarHistoriaActual() {
   }
   content.innerHTML = contentHtml;
 
-  // Descripción
   const descBox = document.getElementById('storyDescBox');
   if (h.descripcion) {
     descBox.textContent = h.descripcion;
@@ -2847,7 +2955,6 @@ function mostrarHistoriaActual() {
     descBox.style.display = 'none';
   }
 
-  // Contadores y estado de reacciones
   const likes = h.likes || [];
   const dislikes = h.dislikes || [];
   const orando = h.orando || [];
@@ -2935,7 +3042,6 @@ function votarHistoria(historiaId, opcion) {
   });
 }
 
-// ============ REACCIONAR A HISTORIA ============
 function reaccionarHistoria(tipo) {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   const h = storyActual.historias[storyActual.index];
@@ -2950,7 +3056,6 @@ function reaccionarHistoria(tipo) {
     if (i > -1) nuevo.splice(i, 1); else nuevo.push(currentUser.uid);
     upd[tipo] = nuevo;
 
-    // Quitar reacción opuesta para like/dislike
     if (tipo === 'likes') upd.dislikes = (data.dislikes || []).filter(u => u !== currentUser.uid);
     if (tipo === 'dislikes') upd.likes = (data.likes || []).filter(u => u !== currentUser.uid);
 
@@ -3700,46 +3805,199 @@ function publicarReel() {
 }
 
 // ================================================================
-// 7.2 DEVOCIONALES
+// 7.2 DEVOCIONALES — MEJORADOS
 // ================================================================
 function puedeSubirDevocional() { return isAdmin || tieneRol('facilitador') || tieneRol('consejero'); }
+
 function renderDevocionales() {
   if (listeners.devocionales) listeners.devocionales();
   const container = document.getElementById('devocionalesContainer');
+  const filtro = document.getElementById('devocionalFiltro')?.value || 'todas';
+
   listeners.devocionales = DEVOCIONALES.orderBy('fecha', 'desc').onSnapshot(snapshot => {
-    if (snapshot.empty) { container.innerHTML = '<div class="card" style="text-align:center; padding:30px;"><i class="fas fa-book-bible" style="font-size:48px; color:var(--teal); margin-bottom:12px; display:block;"></i><h3 style="justify-content:center;">No hay devocionales aún</h3></div>'; return; }
+    if (snapshot.empty) {
+      container.innerHTML = '<div class="card" style="text-align:center; padding:30px;"><i class="fas fa-book-bible" style="font-size:48px; color:var(--teal); margin-bottom:12px; display:block;"></i><h3 style="justify-content:center;">No hay devocionales aún</h3></div>';
+      return;
+    }
+    const docs = [];
+    snapshot.forEach(doc => docs.push({ id: doc.id, ...doc.data() }));
+    const filtrados = filtro === 'todas' ? docs : docs.filter(d => (d.categoria || 'Reflexión') === filtro);
+    if (filtrados.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary); text-align:center; padding:20px;">No hay devocionales en esta categoría.</p>';
+      return;
+    }
     let html = '';
-    snapshot.forEach(doc => {
-      const d = { id: doc.id, ...doc.data() };
+    filtrados.forEach(d => {
       const puedeEliminar = currentUser && (currentUser.uid === d.uid || isAdmin);
       const fecha = d.fecha ? new Date(d.fecha.seconds * 1000).toLocaleString() : '';
-      html += `<div class="devocional-card"><div class="dev-header"><div class="dev-icon"><i class="fas fa-book-bible"></i></div><div style="flex:1;"><h5>${d.titulo}</h5><div class="dev-meta">Por <span style="color:var(--teal);cursor:pointer;" onclick="verPerfil('${d.uid}')">${d.autorNombre}</span> · ${fecha}</div></div></div>${d.desc ? `<div class="dev-desc">${d.desc}</div>` : ''}<div class="dev-actions"><button class="btn-primary" onclick="verDevocional('${d.id}')"><i class="fas fa-book-open"></i> Leer</button><a class="btn-outline" href="${d.pdfUrl}" download target="_blank" style="text-decoration:none;">Descargar</a>${puedeEliminar ? `<button class="btn-danger" onclick="eliminarDevocional('${d.id}')"><i class="fas fa-trash"></i></button>` : ''}</div></div>`;
+      const likes = d.likes || [];
+      const orando = d.orando || [];
+      const comentarios = d.comentarios || [];
+      const vistas = d.vistas || 0;
+      const descargas = d.descargas || 0;
+      const liked = currentUser && likes.includes(currentUser.uid);
+      const prayed = currentUser && orando.includes(currentUser.uid);
+      const tags = d.tags || [];
+
+      const coverHtml = d.coverUrl
+        ? `<img src="${d.coverUrl}" class="devocional-cover" alt="${d.titulo}">`
+        : `<div class="devocional-cover-placeholder"><i class="fas fa-book-bible"></i></div>`;
+
+      let commentsHtml = '';
+      if (comentarios.length > 0) {
+        commentsHtml = '<div class="devocional-comments-box">';
+        comentarios.slice(-3).forEach(c => {
+          commentsHtml += `<div class="devocional-comment"><span class="autor">${c.autor}:</span> ${c.texto}</div>`;
+        });
+        if (comentarios.length > 3) commentsHtml += `<div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">+${comentarios.length - 3} comentarios más</div>`;
+        commentsHtml += '</div>';
+      }
+
+      html += `<div class="devocional-card">
+        ${coverHtml}
+        <div class="devocional-body">
+          <span class="devocional-categoria"><i class="fas fa-tag"></i> ${d.categoria || 'Reflexión'}</span>
+          <div class="dev-header">
+            <div class="dev-icon"><i class="fas fa-book-bible"></i></div>
+            <div style="flex:1;">
+              <h5>${d.titulo}</h5>
+              <div class="dev-meta">Por <span style="color:var(--teal);cursor:pointer;" onclick="verPerfil('${d.uid}')">${d.autorNombre}</span> · ${fecha}</div>
+            </div>
+          </div>
+          ${d.desc ? `<div class="dev-desc">${d.desc}</div>` : ''}
+          ${tags.length ? `<div class="devocional-tags">${tags.map(t => `<span class="devocional-tag">#${t}</span>`).join(' ')}</div>` : ''}
+          <div class="devocional-stats">
+            <span><i class="fas fa-eye"></i> ${vistas} vistas</span>
+            <span><i class="fas fa-download"></i> ${descargas} descargas</span>
+            <span><i class="fas fa-comment"></i> ${comentarios.length} comentarios</span>
+          </div>
+          <div class="devocional-actions">
+            <button class="dev-react-btn ${liked ? 'liked' : ''}" onclick="likeDevocional('${d.id}')"><i class="fas fa-heart"></i> ${likes.length}</button>
+            <button class="dev-react-btn ${prayed ? 'prayed' : ''}" onclick="orarDevocional('${d.id}')"><i class="fas fa-pray"></i> ${orando.length}</button>
+            <button class="dev-react-btn" onclick="comentarDevocional('${d.id}')"><i class="fas fa-comment"></i> Comentar</button>
+            <button class="dev-react-btn" onclick="compartirDevocional('${d.id}')"><i class="fas fa-share"></i> Compartir</button>
+            <button class="btn-primary" onclick="verDevocional('${d.id}')"><i class="fas fa-book-open"></i> Leer</button>
+            <a class="btn-outline" href="${d.pdfUrl}" download target="_blank" style="text-decoration:none;" onclick="contarDescargaDevocional('${d.id}')">Descargar</a>
+            ${puedeEliminar ? `<button class="btn-danger" onclick="eliminarDevocional('${d.id}')"><i class="fas fa-trash"></i></button>` : ''}
+          </div>
+          ${commentsHtml}
+        </div>
+      </div>`;
     });
     container.innerHTML = html;
   });
 }
+
 function subirDevocional() {
   if (!puedeSubirDevocional()) { alert('Sin permiso.'); return; }
   const titulo = document.getElementById('devocionalTitulo').value.trim();
   const desc = document.getElementById('devocionalDesc').value.trim();
+  const categoria = document.getElementById('devocionalCategoria').value;
+  const tagsRaw = document.getElementById('devocionalTags').value.trim();
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(t => t) : [];
   const file = document.getElementById('devocionalPdf').files[0];
+  const coverFile = document.getElementById('devocionalCover').files[0];
   if (!titulo || !file) { alert('Título y PDF requeridos.'); return; }
-  const path = `devocionales/${currentUser.uid}/${Date.now()}_${file.name}`;
-  subirArchivoStorage(file, path).then(url => DEVOCIONALES.add({ uid: currentUser.uid, autorNombre: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '', titulo, desc, pdfUrl: url, fileName: file.name, fecha: firebase.firestore.FieldValue.serverTimestamp() }))
-    .then(() => { document.getElementById('devocionalTitulo').value = ''; document.getElementById('devocionalDesc').value = ''; document.getElementById('devocionalPdf').value = ''; alert('✅ Devocional publicado.'); })
-    .catch(err => alert('Error: ' + err.message));
+
+  const uploadPdf = () => {
+    const path = `devocionales/${currentUser.uid}/${Date.now()}_${file.name}`;
+    return subirArchivoStorage(file, path);
+  };
+  const uploadCover = () => {
+    if (!coverFile) return Promise.resolve('');
+    const path = `devocionales/covers/${currentUser.uid}/${Date.now()}_${coverFile.name}`;
+    return subirArchivoStorage(coverFile, path);
+  };
+
+  Promise.all([uploadPdf(), uploadCover()]).then(([pdfUrl, coverUrl]) => {
+    return DEVOCIONALES.add({
+      uid: currentUser.uid,
+      autorNombre: currentUser.displayName,
+      autorFoto: currentUser.fotoPerfil || '',
+      titulo, desc, categoria, tags,
+      pdfUrl, coverUrl,
+      fileName: file.name,
+      likes: [], orando: [], comentarios: [], vistas: 0, descargas: 0, compartidos: 0,
+      fecha: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }).then(() => {
+    document.getElementById('devocionalTitulo').value = '';
+    document.getElementById('devocionalDesc').value = '';
+    document.getElementById('devocionalTags').value = '';
+    document.getElementById('devocionalPdf').value = '';
+    document.getElementById('devocionalCover').value = '';
+    document.getElementById('devocionalCoverPreview').innerHTML = '';
+    alert('✅ Devocional publicado.');
+  }).catch(err => alert('Error: ' + err.message));
 }
+
 function verDevocional(id) {
   DEVOCIONALES.doc(id).get().then(doc => {
     if (!doc.exists) return;
     const d = doc.data();
     document.getElementById('devViewerTitulo').textContent = d.titulo;
-    document.getElementById('devViewerMeta').textContent = `Por ${d.autorNombre} · ${d.fecha ? new Date(d.fecha.seconds * 1000).toLocaleString() : ''}`;
+    document.getElementById('devViewerMeta').textContent = `Por ${d.autorNombre} · ${d.categoria || 'Reflexión'} · ${d.fecha ? new Date(d.fecha.seconds * 1000).toLocaleString() : ''}`;
     document.getElementById('devViewerDesc').textContent = d.desc || '';
     document.getElementById('devViewerIframe').src = 'https://docs.google.com/gview?url=' + encodeURIComponent(d.pdfUrl) + '&embedded=true';
+    DEVOCIONALES.doc(id).update({ vistas: (d.vistas || 0) + 1 }).catch(()=>{});
     abrirModal('devocionalViewerModal');
   });
 }
+
+function contarDescargaDevocional(id) {
+  DEVOCIONALES.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    DEVOCIONALES.doc(id).update({ descargas: (doc.data().descargas || 0) + 1 }).catch(()=>{});
+  });
+}
+
+function likeDevocional(id) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  DEVOCIONALES.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const likes = doc.data().likes || [];
+    const i = likes.indexOf(currentUser.uid);
+    if (i > -1) likes.splice(i, 1); else likes.push(currentUser.uid);
+    DEVOCIONALES.doc(id).update({ likes });
+  });
+}
+
+function orarDevocional(id) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  DEVOCIONALES.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const orando = doc.data().orando || [];
+    const i = orando.indexOf(currentUser.uid);
+    if (i > -1) orando.splice(i, 1); else orando.push(currentUser.uid);
+    DEVOCIONALES.doc(id).update({ orando });
+  });
+}
+
+function comentarDevocional(id) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const texto = prompt('Escribe tu comentario:');
+  if (!texto || !texto.trim()) return;
+  DEVOCIONALES.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const arr = doc.data().comentarios || [];
+    arr.push({
+      uid: currentUser.uid, autor: currentUser.displayName,
+      autorFoto: currentUser.fotoPerfil || '',
+      texto: texto.trim(), fecha: new Date().toISOString()
+    });
+    DEVOCIONALES.doc(id).update({ comentarios: arr }).then(() => alert('✅ Comentario agregado.'));
+  });
+}
+
+function compartirDevocional(id) {
+  const url = window.location.href + '?devocional=' + id;
+  DEVOCIONALES.doc(id).get().then(doc => {
+    if (doc.exists) DEVOCIONALES.doc(id).update({ compartidos: (doc.data().compartidos || 0) + 1 }).catch(()=>{});
+  });
+  if (navigator.share) navigator.share({ title: 'Devocional', url }).catch(()=>{});
+  else navigator.clipboard.writeText(url).then(() => alert('Enlace copiado.')).catch(()=>{});
+}
+
 function eliminarDevocional(id) {
   DEVOCIONALES.doc(id).get().then(doc => {
     if (!doc.exists) return;
@@ -3749,6 +4007,7 @@ function eliminarDevocional(id) {
     DEVOCIONALES.doc(id).delete();
   });
 }
+
 function renderAdminDevocionales() {
   const list = document.getElementById('adminDevocionalesList');
   if (!list) return;
@@ -3757,7 +4016,7 @@ function renderAdminDevocionales() {
     let html = '';
     snapshot.forEach(doc => {
       const d = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${d.titulo}</strong> — ${d.autorNombre}</span><div class="actions"><button class="btn-danger" onclick="eliminarDevocional('${doc.id}')" style="font-size:10px;">Eliminar</button></div></div>`;
+      html += `<div class="admin-list-item"><span class="info"><strong>${d.titulo}</strong> · ${d.categoria || 'Reflexión'} — ${d.autorNombre}</span><div class="actions"><button class="btn-danger" onclick="eliminarDevocional('${doc.id}')" style="font-size:10px;">Eliminar</button></div></div>`;
     });
     list.innerHTML = html;
   });
@@ -4243,7 +4502,7 @@ function cargarMarcadoresMapbox() {
 }
 function renderGruposMapa() { if (!currentUser) return; GRUPOS.get().then(snap => { const c = document.getElementById('gruposMapaList'); let html = ''; snap.forEach(doc => { const g = doc.data(); if (g.ubicacion || (g.lat && g.lng)) { html += `<div style="padding:4px 0; border-bottom:1px solid var(--border-color);"><strong>${g.nombre}</strong>${g.lat && g.lng ? ` <button class="mapa-ver-btn" onclick="verEnMapa(${g.lat},${g.lng},'${g.nombre}')">Ver en mapa</button>` : ''}</div>`; } }); c.innerHTML = html || '<p style="color:var(--text-secondary);">Sin grupos con ubicación.</p>'; }); }
 function renderMisionerosMapa() { if (!currentUser) return; if (listeners.misioneros) listeners.misioneros(); listeners.misioneros = MISIONEROS.orderBy('nombre', 'asc').onSnapshot(snap => { const c = document.getElementById('misionerosMapaList'); let html = ''; snap.forEach(doc => { const m = doc.data(); html += `<div style="padding:4px 0; border-bottom:1px solid var(--border-color);"><strong>${m.nombre}</strong> (${m.ciudad || ''}) ${m.whatsapp ? `· ${m.whatsapp}` : ''}${m.lat && m.lng ? ` <button class="mapa-ver-btn" onclick="verEnMapa(${m.lat},${m.lng},'${m.nombre}')">Ver en mapa</button>` : ''}</div>`; }); c.innerHTML = html || '<p style="color:var(--text-secondary);">No hay misioneros.</p>'; }); }
-function renderIglesiasMapa() { if (!currentUser) return; if (listeners.iglesias) listeners.iglesias(); listeners.iglesias = IGLESIAS.orderBy('nombre', 'asc').onSnapshot(snap => { const c = document.getElementById('iglesiasMapaList'); let html = ''; snap.forEach(doc => { const i = doc.data(); html += `<div style="padding:4px 0; border-bottom:1px solid var(--border-color);"><strong>${i.nombre}</strong> (${i.direccion || ''})${i.lat && i.lng ? ` <button class="mapa-ver-btn" onclick="verEnMapa(${i.lat},${i.lng},'${i.nombre}')">Ver en mapa</button>` : ''}</div>`; }); c.innerHTML = html || '<p style="color:var(--text-secondary);">No hay iglesias.</p>'; }); }
+function renderIglesiasMapa() { if (!currentUser) return; if (listeners.iglesias) listeners.iglesias(); listeners.iglesias = IGLESIAS.orderBy('nombre', 'asc').onSnapshot(snap => { const c = document.getElementById('iglesiasMapaList'); let html = ''; snap.forEach(doc => { const i = doc.data(); html += `<div style="padding:4px 0; border-bottom:1px solid var(--border-color);"><strong>${i.nombre}</strong> (${i.direccion || ''})${i.pastor ? ` · Pastor: ${i.pastor}` : ''}${i.lat && i.lng ? ` <button class="mapa-ver-btn" onclick="verEnMapa(${i.lat},${i.lng},'${i.nombre}')">Ver en mapa</button>` : ''}</div>`; }); c.innerHTML = html || '<p style="color:var(--text-secondary);">No hay iglesias.</p>'; }); }
 function renderServiciosMapa() { if (!currentUser) return; getServiciosRef().get().then(snap => { const c = document.getElementById('serviciosMapaList'); let html = ''; snap.forEach(doc => { const s = doc.data(); if (s.lat && s.lng) html += `<div style="padding:4px 0; border-bottom:1px solid var(--border-color);"><strong>${s.nombre}</strong> <button class="mapa-ver-btn" onclick="verEnMapa(${s.lat},${s.lng},'${s.nombre}')">Ver en mapa</button></div>`; }); c.innerHTML = html || '<p style="color:var(--text-secondary);">No hay servicios.</p>'; }); }
 function renderEventosMapa() { if (!currentUser) return; EVENTOS.get().then(snap => { const c = document.getElementById('eventosMapaList'); let html = ''; snap.forEach(doc => { const e = doc.data(); if (e.lat && e.lng) html += `<div style="padding:4px 0; border-bottom:1px solid var(--border-color);"><strong>${e.titulo}</strong> <button class="mapa-ver-btn" onclick="verEnMapa(${e.lat},${e.lng},'${e.titulo}')">Ver en mapa</button></div>`; }); c.innerHTML = html || '<p style="color:var(--text-secondary);">No hay eventos.</p>'; }); }
 function abrirModalMisionero() { if (!isAdmin && !tieneRol('misionero')) { alert('Sin permiso.'); return; } ['misioneroNombre','misioneroCiudad','misioneroUbicacion','misioneroWhatsapp','misioneroLat','misioneroLng'].forEach(id => document.getElementById(id).value = ''); setTimeout(() => initMap('misioneroMap', 'misioneroMapSearch', 'misioneroLat', 'misioneroLng'), 200); abrirModal('misioneroModal'); }
@@ -4255,14 +4514,31 @@ function registrarMisionero() {
   MISIONEROS.add({ uidCreador: currentUser.uid, nombre, ciudad, ubicacion: document.getElementById('misioneroUbicacion').value.trim(), whatsapp, lat: document.getElementById('misioneroLat').value || '', lng: document.getElementById('misioneroLng').value || '', fechaRegistro: firebase.firestore.FieldValue.serverTimestamp() }).then(() => cerrarModal('misioneroModal'));
 }
 function eliminarMisionero(id) { if (!confirm('¿Eliminar?')) return; MISIONEROS.doc(id).delete(); }
-function abrirModalIglesia() { if (!isAdmin) return; ['iglesiaNombre','iglesiaDireccion','iglesiaTelefono','iglesiaHorarios','iglesiaLat','iglesiaLng'].forEach(id => document.getElementById(id).value = ''); setTimeout(() => initMap('iglesiaMap', 'iglesiaMapSearch', 'iglesiaLat', 'iglesiaLng'), 200); abrirModal('iglesiaModal'); }
+function abrirModalIglesia() {
+  // ✅ Permitir a facilitadores, consejeros y misioneros además de admin
+  if (!puedeAgregarIglesia()) { alert('Sin permiso. Solo facilitadores, consejeros y misioneros pueden registrar iglesias.'); return; }
+  ['iglesiaNombre','iglesiaDireccion','iglesiaTelefono','iglesiaHorarios','iglesiaPastor','iglesiaLat','iglesiaLng'].forEach(id => document.getElementById(id).value = '');
+  setTimeout(() => initMap('iglesiaMap', 'iglesiaMapSearch', 'iglesiaLat', 'iglesiaLng'), 200);
+  abrirModal('iglesiaModal');
+}
 function registrarIglesia() {
+  if (!puedeAgregarIglesia()) { alert('Sin permiso.'); return; }
   const nombre = document.getElementById('iglesiaNombre').value.trim();
   const direccion = document.getElementById('iglesiaDireccion').value.trim();
-  if (!nombre || !direccion) return;
-  IGLESIAS.add({ uidCreador: currentUser.uid, nombre, direccion, telefono: document.getElementById('iglesiaTelefono').value.trim(), horarios: document.getElementById('iglesiaHorarios').value.trim(), lat: document.getElementById('iglesiaLat').value || '', lng: document.getElementById('iglesiaLng').value || '', fechaRegistro: firebase.firestore.FieldValue.serverTimestamp() }).then(() => cerrarModal('iglesiaModal'));
+  if (!nombre || !direccion) { alert('Nombre y dirección requeridos.'); return; }
+  IGLESIAS.add({
+    uidCreador: currentUser.uid,
+    creadorNombre: currentUser.displayName,
+    nombre, direccion,
+    telefono: document.getElementById('iglesiaTelefono').value.trim(),
+    pastor: document.getElementById('iglesiaPastor').value.trim(),
+    horarios: document.getElementById('iglesiaHorarios').value.trim(),
+    lat: document.getElementById('iglesiaLat').value || '',
+    lng: document.getElementById('iglesiaLng').value || '',
+    fechaRegistro: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => { cerrarModal('iglesiaModal'); alert('✅ Iglesia registrada.'); });
 }
-function eliminarIglesia(id) { if (!isAdmin || !confirm('¿Eliminar?')) return; IGLESIAS.doc(id).delete(); }
+function eliminarIglesia(id) { if (!isAdmin && !puedeAgregarIglesia()) return; if (!confirm('¿Eliminar?')) return; IGLESIAS.doc(id).delete(); }
 
 // ================================================================
 // 12. NECESIDADES
@@ -4565,7 +4841,7 @@ function renderAdminPanel() {
   if (!isAdmin) return;
   cargarConfigIA();
   if (isSuperAdmin) renderSolicitudesPassword();
-  const stats = { users:0, posts:0, oraciones:0, necesidades:0, grupos:0, discipulados:0, misioneros:0, consejos:0, servicios:0, reportes:0, eventos:0, reels:0, historias:0, proyectos:0 };
+  const stats = { users:0, posts:0, oraciones:0, necesidades:0, grupos:0, discipulados:0, misioneros:0, iglesias:0, consejos:0, servicios:0, reportes:0, eventos:0, reels:0, historias:0, proyectos:0 };
   Promise.all([
     USERS.get().then(s => stats.users = s.size),
     POSTS.get().then(s => stats.posts = s.size),
@@ -4574,6 +4850,7 @@ function renderAdminPanel() {
     GRUPOS.get().then(s => stats.grupos = s.size),
     DISCIPULADOS.get().then(s => stats.discipulados = s.size),
     MISIONEROS.get().then(s => stats.misioneros = s.size),
+    IGLESIAS.get().then(s => stats.iglesias = s.size),
     CONSEJOS.get().then(s => stats.consejos = s.size),
     getServiciosRef().get().then(s => stats.servicios = s.size),
     getReportesRef().get().then(s => stats.reportes = s.size),
@@ -4589,6 +4866,7 @@ function renderAdminPanel() {
     document.getElementById('statGrupos').textContent = stats.grupos;
     document.getElementById('statDiscipulados').textContent = stats.discipulados;
     document.getElementById('statMisioneros').textContent = stats.misioneros;
+    if (document.getElementById('statIglesias')) document.getElementById('statIglesias').textContent = stats.iglesias;
     document.getElementById('statConsejos').textContent = stats.consejos;
     document.getElementById('statServicios').textContent = stats.servicios;
     document.getElementById('statReportes').textContent = stats.reportes;
@@ -4640,10 +4918,25 @@ function renderAdminPanel() {
     snapshot.forEach(doc => { const r = doc.data(); html += `<div class="admin-list-item"><span class="info"><strong>${r.usuario}</strong>: ${r.titulo}</span><div class="actions"><button class="btn-danger" onclick="eliminarReporte('${doc.id}'); renderAdminPanel();" style="font-size:10px;">Eliminar</button></div></div>`; });
     list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin reportes.</p>';
   });
+  renderAdminIglesias();
   renderAdminEventos();
   renderAdminNoticias();
   renderAdminDevocionales();
   renderAdminHistorias();
+}
+
+function renderAdminIglesias() {
+  const list = document.getElementById('adminIglesiasList');
+  if (!list) return;
+  IGLESIAS.orderBy('nombre', 'asc').get().then(snapshot => {
+    if (snapshot.empty) { list.innerHTML = '<p style="color:var(--text-secondary);">No hay iglesias registradas.</p>'; return; }
+    let html = '';
+    snapshot.forEach(doc => {
+      const i = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${i.nombre}</strong> · ${i.direccion || ''} ${i.pastor ? '· '+i.pastor : ''}</span><div class="actions"><button class="btn-danger" onclick="IGLESIAS.doc('${doc.id}').delete(); renderAdminIglesias();" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html;
+  });
 }
 
 function renderSolicitudesPassword() {
@@ -4818,7 +5111,6 @@ async function verPerfil(uid) {
       try {
         const segSnap = await SEGUIDORES.where('seguidorUid', '==', currentUser.uid).where('seguidoUid', '==', uid).get();
         if (segSnap.empty) {
-          // Mostrar modal de perfil privado
           const modalContent = document.getElementById('perfilModalContent');
           modalContent.innerHTML = `
             <div style="padding:40px 24px; text-align:center;">
@@ -4863,11 +5155,26 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
 
   function campoVisible(campo, valor) { if (!valor) return null; const pub = privacidad[campo] !== undefined ? privacidad[campo] : true; return (pub || esPropio || isAdmin) ? valor : null; }
 
-  const camposInfo = ['biografia','situacionLaboral','situacionSentimental','nacionalidad','fechaNacimiento','estudios','talentos','telefono','edad','iglesia','caracter','experiencia'];
+  // ✅ Nombres con primera letra mayúscula
+  const camposInfoLabels = {
+    biografia: 'Biografía',
+    situacionLaboral: 'Situación laboral',
+    situacionSentimental: 'Situación sentimental',
+    nacionalidad: 'Nacionalidad',
+    fechaNacimiento: 'Fecha de nacimiento',
+    estudios: 'Estudios',
+    talentos: 'Talentos',
+    telefono: 'Teléfono',
+    edad: 'Edad',
+    iglesia: 'Iglesia',
+    caracter: 'Carácter',
+    experiencia: 'Experiencia'
+  };
+  const camposInfo = Object.keys(camposInfoLabels);
   let infoHtml = '';
   camposInfo.forEach(campo => {
     const v = campoVisible(campo, user[campo]);
-    if (v) infoHtml += `<div class="info-item"><i class="fas fa-circle"></i><span class="label">${campo}:</span> <span class="value">${v}</span></div>`;
+    if (v) infoHtml += `<div class="info-item"><i class="fas fa-circle"></i><span class="label">${camposInfoLabels[campo]}:</span> <span class="value">${v}</span></div>`;
   });
 
   let rolesHtml = '';
@@ -4883,6 +5190,17 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
       const susSeg = await SEGUIDORES.where('seguidoUid', '==', uid).get();
       susSeg.forEach(d => { if (misSet.has(d.data().seguidorUid)) amigosComun++; });
     } catch(e) {}
+  }
+
+  // ✅ Redes sociales
+  let socialHtml = '';
+  if (user.facebook || user.instagram || user.tiktok || user.otraRed) {
+    socialHtml = '<div class="social-links-row">';
+    if (user.facebook) socialHtml += `<a href="${user.facebook}" target="_blank" class="social-link-btn social-fb"><i class="fab fa-facebook-f"></i> Facebook</a>`;
+    if (user.instagram) socialHtml += `<a href="${user.instagram}" target="_blank" class="social-link-btn social-ig"><i class="fab fa-instagram"></i> Instagram</a>`;
+    if (user.tiktok) socialHtml += `<a href="${user.tiktok}" target="_blank" class="social-link-btn social-tt"><i class="fab fa-tiktok"></i> TikTok</a>`;
+    if (user.otraRed) socialHtml += `<a href="${user.otraRed}" target="_blank" class="social-link-btn social-other"><i class="fas fa-link"></i> ${user.otraRedNombre || 'Otra red'}</a>`;
+    socialHtml += '</div>';
   }
 
   const telefonoVisible = campoVisible('telefono', user.telefono);
@@ -4904,6 +5222,7 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
       ${user.iglesia ? `<p style="padding-left:140px;"><i class="fas fa-church"></i> ${user.iglesia}</p>` : ''}
       ${amigosComun > 0 ? `<p style="padding-left:140px;"><span class="amigos-comun"><i class="fas fa-user-friends"></i> ${amigosComun} amigos en común</span></p>` : ''}
       ${rolesHtml ? `<div style="padding-left:140px;">${rolesHtml}</div>` : ''}
+      ${socialHtml}
       ${user.biografia ? `<p style="background:var(--bg-body); padding:10px; border-radius:8px; margin-top:10px;">${user.biografia}</p>` : ''}
       <div style="display:flex; gap:20px; margin:10px 0; flex-wrap:wrap;">
         <span><strong>${user.apoyos ? user.apoyos.length : 0}</strong> Roles</span>
@@ -4959,7 +5278,6 @@ function cargarGaleriaPerfil(uid) {
     });
     html += '</div>';
     cont.innerHTML = html;
-    // Click handler
     cont.querySelectorAll('.galeria-item').forEach(el => {
       el.addEventListener('click', (e) => {
         if (e.target.closest('.galeria-eliminar-btn')) return;
@@ -5089,9 +5407,10 @@ function eliminarFotoGaleria(uid, fotoId, e) {
   if (!currentUser || currentUser.uid !== uid) { alert('Sin permiso.'); return; }
   if (!confirm('¿Eliminar esta foto de tu galería?')) return;
   GALERIA_FOTOS(uid).doc(fotoId).delete().then(() => {
+    const idx = galeriaViewerFotos.findIndex(f => f.id === fotoId);
+    if (idx >= 0) galeriaViewerFotos.splice(idx, 1);
+    if (galeriaViewerFotos.length === 0) { cerrarGaleriaViewer(); return; }
     renderGaleriaViewerSlides();
-    // If now empty, close
-    if (galeriaViewerFotos.length === 0) cerrarGaleriaViewer();
   }).catch(err => alert('Error: ' + err.message));
 }
 
@@ -5177,7 +5496,6 @@ async function subirFotoGaleriaConMetadata() {
   const file = document.getElementById('fotoGaleriaFile').files[0];
   if (!file) { alert('Selecciona una imagen.'); return; }
 
-  // Check limit
   try {
     const snap = await GALERIA_FOTOS(currentUser.uid).get();
     if (snap.size >= MAX_GALERIA) {
@@ -5231,21 +5549,21 @@ async function subirFotoGaleriaConMetadata() {
     });
     cerrarModal('fotoGaleriaModal');
     alert('✅ Foto subida a tu galería.');
-    // Refrescar el preview del editar perfil si está abierto
     renderEditGaleria();
   } catch (err) {
     alert('Error: ' + err.message);
   }
 }
 
-// ============ HISTORIAS EN EL PERFIL ============
+// ============ HISTORIAS EN EL PERFIL — FIX SIN orderBy ============
 async function cargarHistoriasPerfil(uid) {
   const container = document.getElementById('perfilHistoriasContainer');
   if (!container) return;
   const ahora = Date.now();
   const esPropio = currentUser && currentUser.uid === uid;
   try {
-    const snap = await HISTORIAS.where('uid', '==', uid).orderBy('fecha', 'asc').get();
+    // ⚡ Sin orderBy para evitar índice compuesto
+    const snap = await HISTORIAS.where('uid', '==', uid).get();
 
     let misSeguidos = new Set();
     if (currentUser) {
@@ -5264,11 +5582,12 @@ async function cargarHistoriasPerfil(uid) {
         historias.push(h);
       }
     });
+    historias.sort((a, b) => (a.fecha.seconds || 0) - (b.fecha.seconds || 0));
+
     if (historias.length === 0) {
       container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No hay historias activas.</p>';
       return;
     }
-    historias.sort((a, b) => (a.fecha.seconds || 0) - (b.fecha.seconds || 0));
     let html = '<div style="display:flex; gap:10px; overflow-x:auto; padding:4px 0; scrollbar-width:none;">';
     historias.forEach(h => {
       let thumbUrl = '';
@@ -5295,6 +5614,7 @@ async function cargarHistoriasPerfil(uid) {
     html += '</div>';
     container.innerHTML = html;
   } catch (e) {
+    console.warn(e);
     container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No se pudieron cargar las historias.</p>';
   }
 }
@@ -5634,10 +5954,15 @@ function abrirEditarPerfil() {
     document.getElementById('editTalentos').value = currentUser.talentos || '';
     document.getElementById('editCaracter').value = currentUser.caracter || '';
     document.getElementById('editExperiencia').value = currentUser.experiencia || '';
+    // Redes sociales
+    document.getElementById('editFacebook').value = currentUser.facebook || '';
+    document.getElementById('editInstagram').value = currentUser.instagram || '';
+    document.getElementById('editTiktok').value = currentUser.tiktok || '';
+    document.getElementById('editOtraRed').value = currentUser.otraRed || '';
+    document.getElementById('editOtraRedNombre').value = currentUser.otraRedNombre || '';
     document.getElementById('editPerfilSoloSeguidores').checked = currentUser.perfilSoloSeguidores !== false;
     document.querySelectorAll('#editApoyosContainer input').forEach(cb => cb.checked = (currentUser.apoyos || []).includes(cb.value));
     document.querySelectorAll('#editPrivacidadContainer input').forEach(cb => { const p = currentUser.privacidad || {}; cb.checked = p[cb.dataset.campo] !== undefined ? p[cb.dataset.campo] : true; });
-    // Mini previews
     renderEditMiniPreviews();
     renderEditGaleria();
     abrirModal('editarPerfilModal');
@@ -5698,7 +6023,6 @@ function eliminarFotoGaleriaDesdeEditar(fotoId) {
   GALERIA_FOTOS(currentUser.uid).doc(fotoId).delete().then(() => renderEditGaleria()).catch(err => alert('Error: ' + err.message));
 }
 
-// Subida múltiple desde editar perfil
 document.addEventListener('change', function(e) {
   if (e.target && e.target.id === 'editGaleriaFile') {
     const files = e.target.files;
@@ -5711,8 +6035,6 @@ document.addEventListener('change', function(e) {
     subirArchivoStorage(f, `profile_pictures/${currentUser.uid}/${Date.now()}_${f.name}`).then(url => {
       return USERS.doc(currentUser.uid).update({ fotoPerfil: url });
     }).then(() => {
-      currentUser.fotoPerfil = document.getElementById('editFotoPerfilMini').querySelector('img')?.src || '';
-      // Recargar preview real
       USERS.doc(currentUser.uid).get().then(d => {
         currentUser.fotoPerfil = d.data().fotoPerfil || '';
         renderEditMiniPreviews();
@@ -5781,7 +6103,12 @@ async function guardarPerfilExtendido() {
     estudios: document.getElementById('editEstudios').value.trim(),
     talentos: document.getElementById('editTalentos').value.trim(),
     caracter: document.getElementById('editCaracter').value.trim(),
-    experiencia: document.getElementById('editExperiencia').value.trim()
+    experiencia: document.getElementById('editExperiencia').value.trim(),
+    facebook: document.getElementById('editFacebook').value.trim(),
+    instagram: document.getElementById('editInstagram').value.trim(),
+    tiktok: document.getElementById('editTiktok').value.trim(),
+    otraRed: document.getElementById('editOtraRed').value.trim(),
+    otraRedNombre: document.getElementById('editOtraRedNombre').value.trim()
   };
   await USERS.doc(currentUser.uid).update(updateData);
   Object.assign(currentUser, updateData);
@@ -6063,7 +6390,8 @@ function actualizarBotonesPorRol() {
   else { servicioForm.style.display = 'none'; servicioMsg.style.display = 'block'; }
   if (currentUser) misServicios.style.display = 'block'; else misServicios.style.display = 'none';
   if (isAdmin || tieneRol('misionero')) btnMisionero.style.display = 'inline-block'; else btnMisionero.style.display = 'none';
-  if (isAdmin) btnIglesia.style.display = 'inline-block'; else btnIglesia.style.display = 'none';
+  // ✅ Iglesias: admin, facilitador, consejero y misionero pueden registrar
+  if (puedeAgregarIglesia()) btnIglesia.style.display = 'inline-block'; else btnIglesia.style.display = 'none';
   if (devSubirCard) devSubirCard.style.display = puedeSubirDevocional() ? 'block' : 'none';
 }
 function actualizarTabs() {
@@ -6235,6 +6563,17 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnEliminarLogo').addEventListener('click', eliminarLogo);
   document.getElementById('btnGuardarMenuConfig').addEventListener('click', guardarConfigMenu);
 
+  // Preview de imagen de portada del devocional
+  const devCoverInput = document.getElementById('devocionalCover');
+  if (devCoverInput) {
+    devCoverInput.addEventListener('change', function() {
+      const f = this.files[0]; if (!f) return;
+      const cont = document.getElementById('devocionalCoverPreview');
+      const url = URL.createObjectURL(f);
+      cont.innerHTML = `<img src="${url}" style="max-width:150px; border-radius:8px;">`;
+    });
+  }
+
   actualizarVersiculoDia();
   renderFeed(); renderGrupos(); renderDiscipulados(); renderOraciones();
   renderNecesidades(); renderServicios(); renderMisServicios(); renderConsejos();
@@ -6249,10 +6588,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   setInterval(() => { renderHistorias(); }, 5 * 60 * 1000);
 
-  console.log('✅ SAL Y LUZ v12: galería con carrusel, perfiles privados por seguidores, story viewer facebook-style.');
+  console.log('✅ SAL Y LUZ v13: historias corregidas + capitalización + redes sociales + iglesias locales + devocionales mejorados.');
 });
 
-// Exposición global
+// ================================================================
+// EXPOSICIÓN GLOBAL
+// ================================================================
 window.switchPanel = switchPanel;
 window.abrirModal = abrirModal;
 window.cerrarModal = cerrarModal;
@@ -6326,6 +6667,11 @@ window.subirDevocional = subirDevocional;
 window.verDevocional = verDevocional;
 window.eliminarDevocional = eliminarDevocional;
 window.puedeSubirDevocional = puedeSubirDevocional;
+window.likeDevocional = likeDevocional;
+window.orarDevocional = orarDevocional;
+window.comentarDevocional = comentarDevocional;
+window.compartirDevocional = compartirDevocional;
+window.contarDescargaDevocional = contarDescargaDevocional;
 window.renderAdminDevocionales = renderAdminDevocionales;
 window.renderGrupos = renderGrupos;
 window.unirseGrupo = unirseGrupo;
@@ -6352,6 +6698,8 @@ window.eliminarMisionero = eliminarMisionero;
 window.abrirModalIglesia = abrirModalIglesia;
 window.registrarIglesia = registrarIglesia;
 window.eliminarIglesia = eliminarIglesia;
+window.puedeAgregarIglesia = puedeAgregarIglesia;
+window.renderAdminIglesias = renderAdminIglesias;
 window.renderNecesidades = renderNecesidades;
 window.publicarNecesidad = publicarNecesidad;
 window.subirAyuda = subirAyuda;
@@ -6461,6 +6809,7 @@ window.EVENTOS = EVENTOS;
 window.NOTICIAS = NOTICIAS;
 window.HISTORIAS = HISTORIAS;
 window.GALERIA_FOTOS = GALERIA_FOTOS;
+window.IGLESIAS = IGLESIAS;
 </script>
 </body>
 </html>

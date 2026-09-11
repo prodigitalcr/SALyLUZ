@@ -120,12 +120,36 @@
       border-radius: 8px;
     }
     #menuToggle:hover { background: var(--border-color); }
+
+    /* ===== HEADER MÓVIL EN UN SOLO RENGLÓN ===== */
     @media (max-width: 768px) {
-      #menuToggle { display: block; }
+      #menuToggle { display: block; padding: 4px 6px; }
+      .header {
+        padding: 6px 8px;
+        flex-wrap: nowrap;
+        gap: 4px;
+        align-items: center;
+      }
+      .logo { gap: 4px; flex-shrink: 0; }
+      .logo-icon { width: 32px; height: 32px; font-size: 17px; border-radius: 8px; }
+      .logo-text { font-size: 12px; letter-spacing: -0.2px; line-height: 1.1; }
+      .logo-sub { font-size: 7.5px; letter-spacing: 0.3px; }
+      .logo > div:last-child { display: block; }
+      .header-actions {
+        gap: 3px;
+        flex-wrap: nowrap;
+        margin-left: auto;
+      }
+      .user-badge { font-size: 10px; padding: 2px 7px 2px 5px; gap: 3px; }
+      .user-badge i { font-size: 10px; }
+      .user-badge img { width: 18px !important; height: 18px !important; }
+      .btn-primary { padding: 4px 10px; font-size: 11px; }
+      .btn-icon { font-size: 14px; padding: 4px 5px; }
+      #themeToggle { display: none; }
+      .notificaciones-badge { font-size: 10px; padding: 1px 6px; }
     }
-    body.force-hamburger #menuToggle {
-      display: block;
-    }
+
+    body.force-hamburger #menuToggle { display: block; }
     .btn-icon { background: transparent; border: none; font-size: 16px; color: var(--text-secondary); cursor: pointer; padding: 4px 6px; border-radius: 30px; transition: 0.2s; }
     .btn-icon:hover { background: var(--border-color); }
     .user-badge {
@@ -187,7 +211,6 @@
       display: inline-block;
     }
 
-    /* ===== WHATSAPP PROFILE BTN ===== */
     .btn-whatsapp-profile {
       background: #25D366;
       color: white;
@@ -205,7 +228,6 @@
     }
     .btn-whatsapp-profile:hover { background: #1da851; color: white; }
 
-    /* ===== PROFILE CLOSE BTN ===== */
     .perfil-close-btn {
       position: absolute;
       top: 12px;
@@ -226,7 +248,20 @@
     }
     .perfil-close-btn:hover { background: rgba(0,0,0,0.85); }
 
-    /* ===== INFO GRID 2 COLUMNS ===== */
+    /* BOTONES DEL PERFIL SOLO COMO ICONOS */
+    .perfil-action-btn {
+      width: 38px;
+      height: 38px;
+      padding: 0 !important;
+      border-radius: 50% !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px !important;
+      text-decoration: none;
+    }
+    .perfil-action-btn i { margin: 0 !important; }
+
     .info-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -250,7 +285,6 @@
     .info-item .label { font-weight: 600; color: var(--text-secondary); }
     .info-item .value { color: var(--text-primary); }
 
-    /* ===== MEDIA VIEWER DATE ===== */
     .media-viewer .media-date {
       color: rgba(255,255,255,0.55);
       font-size: 11px;
@@ -260,7 +294,6 @@
       letter-spacing: 0.3px;
     }
 
-    /* ===== GALLERY TAGS ===== */
     .foto-tags {
       padding: 4px 10px;
       font-size: 11px;
@@ -283,7 +316,6 @@
     }
     .foto-tag:hover { background: var(--teal); color: white; }
 
-    /* ===== TABS ===== */
     #mainTabs {
       display: flex;
       overflow-x: auto;
@@ -317,14 +349,16 @@
     .tab.active { color: var(--teal); border-bottom-color: var(--teal); }
     .tab:hover { color: var(--text-primary); }
 
-    /* CENTRADO SOLO CUANDO NO ES HAMBURGUESA (PC normal) */
+    .only-mobile-tab { display: none !important; }
+    @media (max-width: 768px) { .only-mobile-tab { display: flex !important; } }
+    body.force-hamburger .only-mobile-tab { display: flex !important; }
+
     @media (min-width: 769px) {
       #mainTabs:not(.open) {
         justify-content: center;
       }
     }
 
-    /* TODOS LOS TABS ALINEADOS A LA IZQUIERDA CUANDO EL MENÚ HAMBURGUESA ESTÁ ABIERTO */
     #mainTabs.open,
     body.force-hamburger #mainTabs,
     body.force-hamburger #mainTabs.open {
@@ -798,16 +832,6 @@
       transition: transform 0.35s ease;
     }
     .galeria-img-wrapper:hover img { transform: scale(1.06); }
-    .galeria-item .delete-btn {
-      position: absolute; top: 8px; right: 8px;
-      background: rgba(231,76,60,0.9); color: white;
-      border: none; border-radius: 50%;
-      width: 28px; height: 28px;
-      cursor: pointer; font-size: 14px;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 3;
-    }
-    .galeria-item .delete-btn:hover { background: #c0392b; }
     .galeria-item .foto-desc {
       padding: 6px 10px;
       font-size: 12px;
@@ -815,48 +839,24 @@
       background: var(--bg-body);
       border-top: 1px solid var(--border-color);
     }
-    .foto-actions {
-      display: flex;
-      gap: 2px;
-      padding: 4px 6px;
-      background: white;
-      border-top: 1px solid var(--border-color);
-      justify-content: space-around;
-    }
-    body.dark .foto-actions { background: #1a1a2e; }
-    .foto-action-btn {
-      background: none;
-      border: none;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      cursor: pointer;
-      color: var(--text-secondary);
-      font-size: 12px;
-      padding: 5px 6px;
-      border-radius: 20px;
-      transition: 0.15s;
-      flex: 1;
-      justify-content: center;
-      min-width: 0;
-    }
-    .foto-action-btn:hover { background: var(--border-color); }
-    .foto-action-btn.liked { color: #e74c3c; }
-    .foto-action-btn.orando { color: #6a1b9a; }
-    .foto-action-btn i { font-size: 13px; }
-    .foto-comentarios {
-      padding: 8px 10px;
+
+    /* Visor de foto */
+    .foto-viewer-reaction-btn {
       background: var(--bg-body);
-      border-top: 1px solid var(--border-color);
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      padding: 4px 12px;
       font-size: 12px;
-      max-height: 160px;
-      overflow-y: auto;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      transition: 0.15s;
     }
-    .foto-comentario { margin-bottom: 4px; padding: 2px 0; line-height: 1.4; }
-    .foto-comentario strong { color: var(--teal); }
-    .foto-comentarios .comment-box { margin-top: 6px; }
-    .foto-comentarios .comment-box input { font-size: 12px; padding: 4px 8px; }
-    .foto-comentarios .comment-box button { padding: 4px 10px; font-size: 11px; }
+    .foto-viewer-reaction-btn:hover { background: var(--border-color); }
+    .foto-viewer-reaction-btn.liked { color: #e74c3c; border-color: #e74c3c; }
+    .foto-viewer-reaction-btn.orando { color: #6a1b9a; border-color: #6a1b9a; }
 
     #perfilModal .modal-box {
       max-width: 1080px;
@@ -884,60 +884,117 @@
       .perfil-facebook .portada { height: 150px !important; }
     }
 
+    /* ===== REELS ===== */
     .reels-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
       margin-top: 12px;
     }
+    @media (max-width: 640px) {
+      .reels-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    }
+
     .reel-item {
-      background: var(--bg-body);
-      border-radius: var(--radius);
+      background: #000;
+      border-radius: 12px;
       overflow: hidden;
       border: 1px solid var(--border-color);
       position: relative;
-      aspect-ratio: 9/16;
+      aspect-ratio: 9 / 16;
       cursor: pointer;
+      scroll-snap-align: start;
     }
     .reel-item video {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
+      display: block;
+      background: #000;
     }
     .reel-item .reel-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      position: absolute; bottom: 0; left: 0; right: 0;
       padding: 8px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.6));
-      color: white;
-      font-size: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+      color: white; font-size: 12px;
+      display: flex; justify-content: space-between; align-items: center;
+      pointer-events: none;
     }
     .reel-item .reel-overlay span { display: flex; align-items: center; gap: 4px; }
-    .reel-item .reel-overlay i { font-size: 14px; }
-    .reel-actions {
-      display: flex;
-      gap: 12px;
-      margin: 4px 0;
+    .reel-item .reel-play-badge {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 40px; color: rgba(255,255,255,0.85);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
     }
-    .reel-actions button {
-      background: none;
-      border: none;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-      color: var(--text-secondary);
-      font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 30px;
+    .reel-item.paused .reel-play-badge { opacity: 1; }
+
+    /* Modal 70/30 */
+    .reel-modal-box {
+      max-width: 1200px; width: 96%;
+      padding: 0; overflow: hidden;
+      display: flex; flex-direction: row;
+      background: #000;
+      border-radius: var(--radius);
     }
-    .reel-actions button:hover { background: var(--border-color); }
-    .reel-actions button.liked { color: var(--teal); }
+    .reel-modal-video-wrap {
+      flex: 0 0 70%;
+      background: #000;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .reel-modal-video-wrap video {
+      width: 100%; height: 80vh; max-height: 80vh;
+      object-fit: contain; background: #000;
+    }
+    .reel-modal-side {
+      flex: 1;
+      background: var(--bg-body);
+      color: var(--text-primary);
+      padding: 14px;
+      max-height: 80vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .reel-modal-side .reel-author {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 600;
+    }
+    .reel-modal-side .reel-author img {
+      width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
+      background: var(--teal-light);
+    }
+    .reel-modal-side .reel-desc {
+      font-size: 13px; white-space: pre-wrap; line-height: 1.5;
+    }
+    .reel-modal-side .reel-actions-bar {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      padding: 8px 0;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .reel-modal-side .reel-actions-bar button {
+      background: var(--bg-body); border: 1px solid var(--border-color);
+      padding: 5px 12px; border-radius: 30px; cursor: pointer;
+      font-size: 12px; color: var(--text-secondary);
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .reel-modal-side .reel-actions-bar button.liked { color: #e74c3c; border-color: #e74c3c; }
+    .reel-modal-side .reel-comments-list {
+      flex: 1; overflow-y: auto;
+      font-size: 13px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .reel-modal-box { flex-direction: column; width: 100%; max-width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; }
+      .reel-modal-video-wrap { flex: 0 0 auto; width: 100%; }
+      .reel-modal-video-wrap video { height: 60vh; max-height: 60vh; }
+      .reel-modal-side { max-height: 40vh; }
+    }
 
     .preview-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; position: relative; }
     .preview-container img, .preview-container video { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid var(--border-color); }
@@ -1040,7 +1097,6 @@
     .solicitud-item { padding: 8px 0; border-bottom: 1px solid var(--border-color); }
     .solicitud-item:last-child { border-bottom: none; }
 
-    /* ===== DEVOCIONALES ===== */
     .devocional-card {
       background: var(--bg-body);
       border-radius: var(--radius);
@@ -1082,7 +1138,6 @@
       border-radius: 10px;
     }
 
-    /* ===== QR MODAL ===== */
     #qrModal .modal-box {
       max-width: 420px;
       text-align: center;
@@ -1126,23 +1181,21 @@
 
   <div class="header-nav-wrapper">
 
-    <!-- ===== HEADER ===== -->
     <header class="header">
       <div class="logo" id="logoInicio">
         <div class="logo-icon" id="logoIcon"><i class="fas fa-church"></i></div>
         <div><div class="logo-text">SAL <span>Y</span> LUZ</div><div class="logo-sub">Comunidad Cristiana</div></div>
       </div>
       <div class="header-actions">
-        <button class="menu-toggle" id="menuToggle" aria-label="Menú"><i class="fas fa-bars"></i></button>
-        <button class="btn-icon" id="themeToggle" title="Modo nocturno"><i class="fas fa-moon"></i></button>
-        <span class="user-badge" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span></span>
-        <button class="btn-icon" id="miPerfilBtn" title="Mi Perfil" style="display:none;"><i class="fas fa-user-circle"></i></button>
-        <span id="notificacionesBadge" class="notificaciones-badge" style="display:none; cursor:pointer;">0</span>
         <button class="btn-primary" id="loginBtn">Entrar</button>
+        <span class="user-badge" id="userBadge"><i class="fas fa-user"></i> <span id="userNameDisplay">Invitado</span></span>
+        <span id="notificacionesBadge" class="notificaciones-badge" style="display:none; cursor:pointer;">0</span>
+        <button class="btn-icon" id="themeToggle" title="Modo nocturno"><i class="fas fa-moon"></i></button>
+        <button class="btn-icon" id="miPerfilBtn" title="Mi Perfil" style="display:none;"><i class="fas fa-user-circle"></i></button>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menú"><i class="fas fa-bars"></i></button>
       </div>
     </header>
 
-    <!-- ===== TABS ===== -->
     <nav class="tabs" id="mainTabs">
       <button class="tab active" data-panel="inicio"><i class="fas fa-home"></i><span> Inicio</span></button>
       <button class="tab" data-panel="biblia"><i class="fas fa-bible"></i><span> Biblia</span></button>
@@ -1160,9 +1213,11 @@
       <button class="tab" data-panel="chatadmin" id="tabChatAdmin" style="display:none;"><i class="fas fa-user-cog"></i><span> Chat Admin</span></button>
       <button class="tab" id="tabChatEquipo" data-panel="chatequipo" style="display:none;"><i class="fas fa-users-cog"></i><span> Equipo</span></button>
       <button class="tab" data-panel="admin" id="adminTab" style="display:none;"><i class="fas fa-cog"></i><span> Admin</span></button>
+      <button class="tab only-mobile-tab" id="tabTemaMobile"><i class="fas fa-moon"></i><span> Modo nocturno</span></button>
+      <button class="tab only-mobile-tab" id="tabNotifMobile"><i class="fas fa-bell"></i><span> Notificaciones (<span id="notifCountMobile">0</span>)</span></button>
     </nav>
 
-  </div><!-- /header-nav-wrapper -->
+  </div>
 
   <!-- ===== PANEL INICIO ===== -->
   <div class="panel active" id="panel-inicio">
@@ -2065,6 +2120,37 @@
     <div class="modal-box" id="perfilModalContent"></div>
   </div>
 
+  <div class="modal-overlay" id="fotoViewerModal">
+    <div class="modal-box" style="max-width:900px; width:96%; padding:0; position:relative;">
+      <button class="perfil-close-btn" onclick="cerrarFotoViewer()" title="Cerrar"><i class="fas fa-times"></i></button>
+      <div style="background:#000; border-radius:var(--radius); overflow:hidden;">
+        <img id="fotoViewerImg" src="" style="width:100%; max-height:75vh; object-fit:contain; display:block; background:#000;">
+      </div>
+      <div id="fotoViewerReactions" style="padding:10px 14px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:var(--bg-body); border-top:1px solid var(--border-color);"></div>
+      <div id="fotoViewerComments" style="padding:10px 14px; max-height:180px; overflow-y:auto; background:var(--bg-body);"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="reelViewerModal" style="padding:10px;">
+    <div class="reel-modal-box">
+      <div class="reel-modal-video-wrap">
+        <video id="reelViewerVideo" src="" controls loop playsinline></video>
+      </div>
+      <div class="reel-modal-side">
+        <button class="btn-outline" onclick="cerrarReelViewer()" style="align-self:flex-end;"><i class="fas fa-times"></i> Cerrar</button>
+        <div class="reel-author" id="reelViewerAuthor"></div>
+        <div class="reel-desc" id="reelViewerDesc"></div>
+        <div class="reel-actions-bar" id="reelViewerActions"></div>
+        <div style="font-weight:600; font-size:14px; margin-top:6px;">Comentarios</div>
+        <div class="reel-comments-list" id="reelViewerComments"></div>
+        <div class="comment-box" id="reelViewerCommentBox" style="margin-top:auto;">
+          <input type="text" id="reelViewerCommentInput" placeholder="Escribe un comentario...">
+          <button onclick="comentarReelViewer()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="qrModal">
     <div class="modal-box">
       <h3 style="justify-content:center;"><i class="fas fa-qrcode"></i> Compartir Perfil</h3>
@@ -2125,7 +2211,7 @@
     <div class="media-info" id="mediaViewerInfo"></div>
   </div>
 
-</div><!-- /app -->
+</div>
 
 <footer class="footer">
   <span>Norlan Cárcamo López - prodigital</span> &copy; 2026 · Todos los derechos reservados.
@@ -2133,7 +2219,7 @@
 
 <script>
 // ================================================================
-// 0. FIREBASE CONFIG
+// 0. FIREBASE CONFIG + PERSISTENCIA DE SESIÓN
 // ================================================================
 const firebaseConfig = {
   apiKey: "AIzaSyCpCtxZqnj6HyjfjAfkgiJcEB5dMxwtmwc",
@@ -2148,6 +2234,9 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
+
+// 🔐 Persistencia de sesión: mantiene al usuario al recargar
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
 
 // ================================================================
 // 1. REFERENCIAS A COLECCIONES
@@ -2194,6 +2283,11 @@ let mapboxMarkers = [];
 let mapboxToken = '';
 let miUbicacionMarker = null;
 let miUbicacionWatchId = null;
+let reelsObserver = null;
+let reelViewerUnsub = null;
+let reelViewerActualId = null;
+let fotoViewerUnsub = null;
+let fotoViewerActual = null;
 const STORAGE_KEYS = {
   historialBiblia: 'iglesia_historial_biblia',
   theme: 'iglesia_theme',
@@ -2387,7 +2481,7 @@ function actualizarUIUsuario() {
   const featureMapa = document.getElementById('featureMapa');
 
   if (currentUser) {
-    userNameDisplay.textContent = currentUser.displayName;
+    if (userNameDisplay) userNameDisplay.textContent = currentUser.displayName;
     loginBtn.textContent = 'Cerrar sesión';
     if (currentUser.fotoPerfil) {
       userBadge.innerHTML = `<img src="${currentUser.fotoPerfil}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;margin-right:4px;"> <span id="userNameDisplay">${currentUser.displayName}</span>`;
@@ -2467,7 +2561,6 @@ function actualizarUIUsuario() {
   const muroPublicar = document.getElementById('muroPublicarCard');
   muroPublicar.style.display = currentUser ? 'block' : 'none';
 
-  // Devocionales: mostrar formulario según rol
   const devSubirCard = document.getElementById('devocionalSubirCard');
   if (devSubirCard) {
     devSubirCard.style.display = puedeSubirDevocional() ? 'block' : 'none';
@@ -2898,7 +2991,7 @@ function donarCampania(postId) {
 }
 
 // ================================================================
-// 7.1 REELS
+// 7.1 REELS (Instagram-style)
 // ================================================================
 function renderReels() {
   if (listeners.reels) listeners.reels();
@@ -2906,37 +2999,105 @@ function renderReels() {
   container.innerHTML = '<p style="color:var(--text-secondary); grid-column:1/-1; text-align:center;">Cargando reels...</p>';
   listeners.reels = REELS.orderBy('fecha', 'desc').onSnapshot(snapshot => {
     if (snapshot.empty) {
-      container.innerHTML = '<p style="color:var(--text-secondary); grid-column:1/-1; text-align:center;">No hay reels aún. ¡Sé el primero en subir uno!</p>';
+      container.innerHTML = '<p style="color:var(--text-secondary); grid-column:1/-1; text-align:center;">No hay reels aún.</p>';
       return;
     }
     let html = '';
     snapshot.forEach(doc => {
-      const reel = { id: doc.id, ...doc.data() };
-      const liked = reel.likes && reel.likes.includes(currentUser ? currentUser.uid : null);
-      const avatar = reel.autorFoto || '';
-      const puedeVerPerfil = currentUser !== null;
-      html += `<div class="reel-item">
-        <video src="${reel.url}" controls preload="metadata" playsinline></video>
+      const r = { id: doc.id, ...doc.data() };
+      html += `<div class="reel-item paused" data-reel-id="${r.id}">
+        <video src="${r.url}" muted loop playsinline preload="metadata" data-reel-video="${r.id}"></video>
+        <div class="reel-play-badge"><i class="fas fa-play"></i></div>
         <div class="reel-overlay">
-          <span><strong>${reel.autorNombre}</strong></span>
-          <span><i class="fas fa-heart"></i> ${reel.likes ? reel.likes.length : 0}</span>
-        </div>
-        <div style="padding:8px;">
-          <p style="font-size:13px; margin:2px 0;">${reel.desc || ''}</p>
-          <div class="reel-actions">
-            <button onclick="likeReel('${reel.id}')" class="${liked ? 'liked' : ''}"><i class="fas fa-heart"></i> ${reel.likes ? reel.likes.length : 0}</button>
-            <button onclick="toggleComentariosReel('${reel.id}')"><i class="fas fa-comment"></i> ${reel.comentarios ? reel.comentarios.length : 0}</button>
-            <button onclick="compartirReel('${reel.id}')"><i class="fas fa-share"></i> Compartir</button>
-          </div>
-          <div class="comments" id="comments-reel-${reel.id}" style="display:none;">
-            ${reel.comentarios ? reel.comentarios.map(c => `<div><span class="autor" onclick="verPerfil('${c.uid}')" style="cursor:pointer;font-weight:600;">${c.autor}</span>: ${c.texto} <small style="color:var(--text-secondary);">${new Date(c.fecha).toLocaleString()}</small></div>`).join('') : ''}
-            ${currentUser ? `<div class="comment-box"><input type="text" id="commentInput-reel-${reel.id}" placeholder="Comentar..."><button onclick="comentarReel('${reel.id}')"><i class="fas fa-paper-plane"></i></button></div>` : '<p style="font-size:12px;color:var(--text-secondary);">Inicia sesión para comentar.</p>'}
-          </div>
-          ${isAdmin ? `<button class="btn-danger" onclick="eliminarReel('${reel.id}')" style="font-size:10px; margin-top:4px;">Eliminar</button>` : ''}
+          <span><strong>${r.autorNombre}</strong></span>
+          <span><i class="fas fa-heart"></i> ${r.likes ? r.likes.length : 0}</span>
         </div>
       </div>`;
     });
     container.innerHTML = html;
+
+    container.querySelectorAll('.reel-item').forEach(el => {
+      el.addEventListener('click', () => abrirReelViewer(el.dataset.reelId));
+    });
+
+    setupReelsAutoPlay();
+  });
+}
+
+function setupReelsAutoPlay() {
+  if (reelsObserver) reelsObserver.disconnect();
+  const items = document.querySelectorAll('.reel-item video');
+  if (!items.length) return;
+  reelsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target;
+      const card = video.closest('.reel-item');
+      if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+        video.muted = false;
+        video.play().then(() => card.classList.remove('paused')).catch(() => { video.muted = true; video.play().catch(()=>{}); });
+      } else {
+        video.pause();
+        video.currentTime = 0;
+        card.classList.add('paused');
+      }
+    });
+  }, { threshold: [0, 0.6, 0.9] });
+  items.forEach(v => reelsObserver.observe(v));
+}
+
+function abrirReelViewer(reelId) {
+  if (reelViewerUnsub) { reelViewerUnsub(); reelViewerUnsub = null; }
+  reelViewerActualId = reelId;
+  const ref = REELS.doc(reelId);
+  reelViewerUnsub = ref.onSnapshot(doc => {
+    if (!doc.exists) return;
+    const r = doc.data();
+    const video = document.getElementById('reelViewerVideo');
+    if (video.src !== r.url) { video.src = r.url; video.play().catch(()=>{}); }
+
+    const autorFoto = r.autorFoto || '';
+    document.getElementById('reelViewerAuthor').innerHTML =
+      `<img src="${autorFoto}" onerror="this.style.display='none'"><div>
+        <div style="cursor:pointer;color:var(--teal);" onclick="cerrarReelViewer(); verPerfil('${r.uid}')">${r.autorNombre}</div>
+        <small style="color:var(--text-secondary); font-weight:400;">${r.fecha ? new Date(r.fecha.seconds*1000).toLocaleString() : ''}</small>
+      </div>`;
+    document.getElementById('reelViewerDesc').textContent = r.desc || '';
+
+    const likes = r.likes || [];
+    const liked = currentUser && likes.includes(currentUser.uid);
+    const comentarios = r.comentarios || [];
+    document.getElementById('reelViewerActions').innerHTML = `
+      <button class="${liked ? 'liked' : ''}" onclick="likeReel('${reelId}')"><i class="fas fa-heart"></i> ${likes.length}</button>
+      <button onclick="compartirReel('${reelId}')"><i class="fas fa-share"></i> Compartir</button>
+      ${isAdmin || (currentUser && r.uid === currentUser.uid) ? `<button onclick="eliminarReel('${reelId}'); cerrarReelViewer();" style="color:#e74c3c;border-color:#e74c3c;"><i class="fas fa-trash"></i> Eliminar</button>` : ''}
+    `;
+    document.getElementById('reelViewerComments').innerHTML = comentarios.length
+      ? comentarios.map(c => `<div><strong style="color:var(--teal);">${c.autor}</strong>: ${c.texto}</div>`).join('')
+      : '<p style="color:var(--text-secondary); font-size:12px;">Sin comentarios.</p>';
+    document.getElementById('reelViewerCommentBox').style.display = currentUser ? 'flex' : 'none';
+  });
+  abrirModal('reelViewerModal');
+}
+
+function cerrarReelViewer() {
+  if (reelViewerUnsub) { reelViewerUnsub(); reelViewerUnsub = null; }
+  reelViewerActualId = null;
+  const v = document.getElementById('reelViewerVideo');
+  if (v) { v.pause(); v.src = ''; }
+  cerrarModal('reelViewerModal');
+}
+
+function comentarReelViewer() {
+  if (!currentUser || !reelViewerActualId) return;
+  const input = document.getElementById('reelViewerCommentInput');
+  const texto = input.value.trim();
+  if (!texto) return;
+  REELS.doc(reelViewerActualId).get().then(doc => {
+    if (!doc.exists) return;
+    const arr = doc.data().comentarios || [];
+    arr.push({ uid: currentUser.uid, autor: currentUser.displayName, texto, fecha: new Date().toISOString() });
+    REELS.doc(reelViewerActualId).update({ comentarios: arr });
+    input.value = '';
   });
 }
 
@@ -2980,30 +3141,10 @@ function likeReel(id) {
   }).catch(console.error);
 }
 
-function toggleComentariosReel(id) {
-  const div = document.getElementById('comments-reel-' + id);
-  if (div) div.style.display = div.style.display === 'none' ? 'block' : 'none';
-}
-
-function comentarReel(id) {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
-  const input = document.getElementById('commentInput-reel-' + id);
-  const texto = input.value.trim();
-  if (!texto) return;
-  REELS.doc(id).get().then(doc => {
-    if (!doc.exists) return;
-    const reel = doc.data();
-    const comentarios = reel.comentarios || [];
-    comentarios.push({ uid: currentUser.uid, autor: currentUser.displayName, texto, fecha: new Date().toISOString() });
-    REELS.doc(id).update({ comentarios });
-    input.value = '';
-  }).catch(console.error);
-}
-
 function compartirReel(id) {
   const url = window.location.href + '?reel=' + id;
   if (navigator.share) {
-    navigator.share({ title: 'Reel', text: 'Mira este reel', url: url });
+    navigator.share({ title: 'Reel', text: 'Mira este reel', url: url }).catch(()=>{});
   } else {
     navigator.clipboard.writeText(url).then(() => alert('Enlace copiado.'));
   }
@@ -3094,7 +3235,6 @@ function verDevocional(id) {
     document.getElementById('devViewerMeta').textContent = `Por ${d.autorNombre} · ${d.fecha ? new Date(d.fecha.seconds * 1000).toLocaleString() : ''}`;
     document.getElementById('devViewerDesc').textContent = d.desc || '';
     const iframe = document.getElementById('devViewerIframe');
-    // Usar visor de Google Docs para compatibilidad móvil
     iframe.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(d.pdfUrl) + '&embedded=true';
     abrirModal('devocionalViewerModal');
   }).catch(console.error);
@@ -3396,7 +3536,7 @@ function orarOracion(id) {
 }
 
 // ================================================================
-// 11. MAPA (Mapbox)
+// 11. MAPA (Mapbox) - Compatible Win11
 // ================================================================
 function cargarMapboxToken() {
   CONFIG_MAPBOX.get().then(doc => {
@@ -3446,6 +3586,22 @@ function initMapboxMap() {
   const container = document.getElementById('mapboxMap');
   if (!container) return;
 
+  // 🔎 Verificar soporte WebGL (falla común en Win11 sin aceleración HW)
+  let webglOK = false;
+  try {
+    const c = document.createElement('canvas');
+    webglOK = !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
+  } catch (e) { webglOK = false; }
+
+  if (!webglOK) {
+    container.innerHTML = '<div style="padding:24px; text-align:center; color:var(--text-secondary); font-size:13px;">' +
+      '<i class="fas fa-exclamation-triangle" style="font-size:32px; color:var(--orange); display:block; margin-bottom:10px;"></i>' +
+      '<strong>Tu navegador no tiene WebGL habilitado.</strong><br>' +
+      'Activa la <em>aceleración por hardware</em> en Chrome/Edge (Configuración → Sistema → Usar gráficos acelerados) y reinicia el navegador.' +
+      '</div>';
+    return;
+  }
+
   // Limpiar watch previo
   if (miUbicacionWatchId !== null && navigator.geolocation) {
     navigator.geolocation.clearWatch(miUbicacionWatchId);
@@ -3454,32 +3610,39 @@ function initMapboxMap() {
   miUbicacionMarker = null;
 
   if (mapboxMap) { mapboxMap.remove(); mapboxMap = null; mapboxMarkers.forEach(m => m.remove()); mapboxMarkers = []; }
-  mapboxMap = new mapboxgl.Map({
-    container: 'mapboxMap',
-    style: 'mapbox://styles/mapbox/streets-v11',
-    center: [-84.0, 10.0],
-    zoom: 7
+
+  try {
+    mapboxMap = new mapboxgl.Map({
+      container: 'mapboxMap',
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [-84.0, 10.0],
+      zoom: 7,
+      failIfMajorPerformanceCaveat: false,
+      antialias: false
+    });
+  } catch (e) {
+    container.innerHTML = '<p style="padding:20px; text-align:center; color:var(--text-secondary);">Error iniciando Mapbox: ' + e.message + '</p>';
+    return;
+  }
+
+  mapboxMap.on('error', (e) => {
+    console.warn('Mapbox error:', e && e.error ? e.error.message : e);
   });
+
   mapboxMap.addControl(new mapboxgl.NavigationControl());
 
-  // Mi ubicación en tiempo real (watchPosition) con marcador personalizado (bombilla)
   if (navigator.geolocation) {
     miUbicacionWatchId = navigator.geolocation.watchPosition(pos => {
       const { latitude, longitude } = pos.coords;
-
       if (miUbicacionMarker) {
         miUbicacionMarker.setLngLat([longitude, latitude]);
       } else {
         const el = document.createElement('div');
         el.innerHTML = '<i class="fas fa-lightbulb" style="color:#FFD700; font-size:34px; text-shadow: 0 0 10px #FFA500, 0 0 22px #FFD700, 0 0 34px #FFA500;"></i>';
-        el.style.width = '40px';
-        el.style.height = '40px';
-        el.style.display = 'flex';
-        el.style.alignItems = 'center';
-        el.style.justifyContent = 'center';
+        el.style.width = '40px'; el.style.height = '40px';
+        el.style.display = 'flex'; el.style.alignItems = 'center'; el.style.justifyContent = 'center';
         el.style.cursor = 'pointer';
         el.style.filter = 'drop-shadow(0 0 6px rgba(255,215,0,0.9))';
-
         miUbicacionMarker = new mapboxgl.Marker({ element: el })
           .setLngLat([longitude, latitude])
           .setPopup(new mapboxgl.Popup().setHTML('<strong>💡 Mi ubicación</strong><br><small>Actualización en tiempo real</small>'))
@@ -3588,13 +3751,11 @@ function renderGruposMapa() {
     }
     let html = '';
     conUbicacion.forEach(g => {
-      let link = '', info = '';
+      let link = '';
       if (g.lat && g.lng) {
         link = `<a href="#" onclick="verEnMapa(${g.lat},${g.lng},'${g.nombre}','Facilitador: ${g.facilitador}')" style="color:var(--teal);">Ver en mapa</a>`;
-        info = `Facilitador: ${g.facilitador}`;
       } else if (g.ubicacion) {
         link = `<a href="#" onclick="verEnMapa(null,null,'${g.nombre}','${g.ubicacion}')" style="color:var(--teal);">Ver en mapa</a>`;
-        info = g.ubicacion;
       }
       html += `<div style="padding:4px 0; border-bottom:1px solid var(--border-color);">
         <strong>${g.nombre}</strong> - ${link}
@@ -3614,13 +3775,11 @@ function renderMisionerosMapa() {
     let html = '';
     snapshot.forEach(doc => {
       const m = { id: doc.id, ...doc.data() };
-      let ubicacionDisplay = '', info = '';
+      let ubicacionDisplay = '';
       if (m.lat && m.lng) {
         ubicacionDisplay = `<a href="#" onclick="verEnMapa(${m.lat},${m.lng},'${m.nombre}','${m.ciudad || ''}')" style="color:var(--teal);">Ver en mapa</a>`;
-        info = m.ciudad || '';
       } else if (m.ubicacion) {
         ubicacionDisplay = `<a href="#" onclick="verEnMapa(null,null,'${m.nombre}','${m.ubicacion}')" style="color:var(--teal);">Ver en mapa</a>`;
-        info = m.ubicacion;
       }
       const puedeEliminar = (currentUser && currentUser.uid === m.uidCreador) || isAdmin;
       html += `<div class="misionero-item" style="padding:6px 0; border-bottom:1px solid var(--border-color);">
@@ -3647,13 +3806,11 @@ function renderIglesiasMapa() {
     let html = '';
     snapshot.forEach(doc => {
       const i = { id: doc.id, ...doc.data() };
-      let ubicacionDisplay = '', info = '';
+      let ubicacionDisplay = '';
       if (i.lat && i.lng) {
         ubicacionDisplay = `<a href="#" onclick="verEnMapa(${i.lat},${i.lng},'${i.nombre}','${i.direccion || ''}')" style="color:var(--teal);">Ver en mapa</a>`;
-        info = i.direccion || '';
       } else if (i.direccion) {
         ubicacionDisplay = `<a href="#" onclick="verEnMapa(null,null,'${i.nombre}','${i.direccion}')" style="color:var(--teal);">Ver en mapa</a>`;
-        info = i.direccion;
       }
       const puedeEliminar = (currentUser && currentUser.uid === i.uidCreador) || isAdmin;
       html += `<div class="iglesia-item" style="padding:6px 0; border-bottom:1px solid var(--border-color);">
@@ -3927,13 +4084,11 @@ function renderServicios() {
       const esGestor = puedeGestionarServicio();
       const fechaServicio = new Date(s.fecha + 'T' + (s.horario ? s.horario.split('-')[0].trim() : '00:00'));
       const finalizado = fechaServicio < ahora;
-      let ubicacionLink = '', info = '';
+      let ubicacionLink = '';
       if (s.lat && s.lng) {
         ubicacionLink = `<a href="#" onclick="verEnMapa(${s.lat},${s.lng},'${s.nombre}','${s.direccion || ''}')" style="color:var(--teal);">Ver en mapa</a>`;
-        info = s.direccion || '';
       } else if (s.direccion) {
         ubicacionLink = `<a href="#" onclick="verEnMapa(null,null,'${s.nombre}','${s.direccion}')" style="color:var(--teal);">Ver en mapa</a>`;
-        info = s.direccion;
       }
       const claseFinalizado = finalizado ? 'finalizado' : '';
       const badgeFinalizado = finalizado ? '<span class="badge-finalizado">Finalizado</span>' : '';
@@ -4898,60 +5053,19 @@ function mostrarPerfilProfesional(user, esSeguidor, uid) {
     }
   });
 
+  // Galería en mosaico sin contadores
   function renderFotosGaleria(fotosArray, uid) {
     if (!fotosArray || fotosArray.length === 0)
       return '<p style="color:var(--text-secondary);">No hay fotos en la galería.</p>';
-    const allUrls = fotosArray.map(f => f.url);
-    const allDates = fotosArray.map(f => f.fecha ? new Date(f.fecha.seconds * 1000).toLocaleDateString() : '');
     let html = '<div style="margin:10px 0;"><h4>📸 Galería de fotos</h4><div class="galeria-grid">';
-    fotosArray.forEach((foto, idx) => {
-      const fotoId = foto.id;
+    fotosArray.forEach(foto => {
       const url = foto.url;
       const desc = foto.desc || '';
-      const tags = foto.tags || [];
-      const likes = foto.likes || [];
-      const orando = foto.orando || [];
-      const comentarios = foto.comentarios || [];
-      const liked = currentUser && likes.includes(currentUser.uid);
-      const orado = currentUser && orando.includes(currentUser.uid);
-      const puedeEliminar = currentUser && (currentUser.uid === uid || isAdmin);
-
-      html += `<div class="galeria-item" data-urls='${JSON.stringify(allUrls)}' data-dates='${JSON.stringify(allDates)}' data-index="${idx}">
+      html += `<div class="galeria-item" data-foto-id="${foto.id}" data-uid="${uid}" style="cursor:pointer;">
         <div class="galeria-img-wrapper">
           <img src="${url}" alt="foto">
-          ${puedeEliminar ? `<button class="delete-btn" onclick="event.stopPropagation(); eliminarFoto('${uid}','${fotoId}')">✕</button>` : ''}
         </div>
         ${desc ? `<div class="foto-desc">${desc}</div>` : ''}
-        ${tags.length ? `<div class="foto-tags"><i class="fas fa-user-tag"></i> ${tags.map(t => `<span class="foto-tag" onclick="event.stopPropagation(); verPerfil('${t.uid}')">${t.nombre}</span>`).join(' ')}</div>` : ''}
-        ${puedeEliminar ? `<div style="padding:4px 8px; display:flex; gap:8px; justify-content:flex-end; background:var(--bg-body); border-top:1px solid var(--border-color);">
-          <button onclick="event.stopPropagation(); editarDescripcionFoto('${uid}','${fotoId}')" style="background:none; border:none; color:var(--teal); cursor:pointer; font-size:11px;"><i class="fas fa-edit"></i> Descripción</button>
-          <button onclick="event.stopPropagation(); etiquetarUsuarioFoto('${uid}','${fotoId}')" style="background:none; border:none; color:var(--teal); cursor:pointer; font-size:11px;"><i class="fas fa-user-tag"></i> Etiquetar</button>
-        </div>` : ''}
-        <div class="foto-actions">
-          <button class="foto-action-btn ${liked ? 'liked' : ''}"
-            onclick="event.stopPropagation(); likeFoto('${uid}','${fotoId}', this)">
-            <i class="fas fa-heart"></i> <span>${likes.length}</span>
-          </button>
-          <button class="foto-action-btn ${orado ? 'orando' : ''}"
-            onclick="event.stopPropagation(); orarFoto('${uid}','${fotoId}', this)">
-            <i class="fas fa-pray"></i> <span>${orando.length}</span>
-          </button>
-          <button class="foto-action-btn"
-            onclick="event.stopPropagation(); compartirFoto('${uid}','${fotoId}')">
-            <i class="fas fa-share"></i>
-          </button>
-          <button class="foto-action-btn"
-            onclick="event.stopPropagation(); toggleComentariosFoto('${fotoId}')">
-            <i class="fas fa-comment"></i> <span>${comentarios.length}</span>
-          </button>
-        </div>
-        <div class="foto-comentarios" id="foto-comentarios-${fotoId}" style="display:none;">
-          ${comentarios.map(c => `<div class="foto-comentario"><strong>${c.autor}</strong>: ${c.texto}</div>`).join('')}
-          ${currentUser ? `<div class="comment-box">
-            <input type="text" id="foto-comment-input-${fotoId}" placeholder="Comentar...">
-            <button onclick="event.stopPropagation(); comentarFoto('${uid}','${fotoId}')"><i class="fas fa-paper-plane"></i></button>
-          </div>` : ''}
-        </div>
       </div>`;
     });
     html += '</div></div>';
@@ -4961,18 +5075,9 @@ function mostrarPerfilProfesional(user, esSeguidor, uid) {
   const fotosRef = USERS.doc(uid).collection('fotos').orderBy('fecha', 'desc');
   fotosRef.get().then(snapshot => {
     const fotos = [];
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      if (!data.likes) data.likes = [];
-      if (!data.orando) data.orando = [];
-      if (!data.comentarios) data.comentarios = [];
-      if (!data.tags) data.tags = [];
-      fotos.push({ id: doc.id, ...data });
-    });
+    snapshot.forEach(doc => fotos.push({ id: doc.id, ...doc.data() }));
     const galeriaContainer = document.getElementById('galeriaFotosContainer');
-    if (galeriaContainer) {
-      galeriaContainer.innerHTML = renderFotosGaleria(fotos, uid);
-    }
+    if (galeriaContainer) galeriaContainer.innerHTML = renderFotosGaleria(fotos, uid);
   });
 
   const telefonoVisible = campoVisible('telefono', user.telefono);
@@ -4982,11 +5087,11 @@ function mostrarPerfilProfesional(user, esSeguidor, uid) {
     <div class="portada" style="background-image:url('${user.portada || ''}'); height:200px; background-size:cover; background-position:center; position:relative; border-radius:8px 8px 0 0;">
       <div class="foto-perfil" style="position:absolute; top:20px; left:20px; width:120px; height:120px; border-radius:50%; border:4px solid white; background-image:url('${user.fotoPerfil || ''}'); background-size:cover; background-position:center; cursor:pointer;" onclick="abrirMediaViewer(['${user.fotoPerfil || ''}'], 0, 'image')"></div>
       <div style="position:absolute; bottom:10px; right:20px; display:flex; gap:8px; flex-wrap:wrap;">
-        ${esPropio ? `<button class="btn-primary" onclick="abrirEditarPerfil()"><i class="fas fa-edit"></i> Editar</button>` : ''}
-        ${!esPropio && currentUser ? `<button class="btn-primary" onclick="seguirUsuario('${uid}')">${esSeguidor ? 'Dejar de seguir' : 'Seguir'}</button>` : ''}
-        ${telefonoVisible ? `<a href="https://wa.me/${user.telefono.replace(/[^0-9]/g, '')}" target="_blank" class="btn-whatsapp-profile"><i class="fab fa-whatsapp"></i> WhatsApp</a>` : ''}
-        <button class="btn-outline" onclick="compartirPerfil('${uid}')"><i class="fas fa-share-alt"></i> Compartir</button>
-        <button class="btn-outline" onclick="compartirPerfilQR('${uid}')"><i class="fas fa-qrcode"></i> QR</button>
+        ${esPropio ? `<button class="btn-primary perfil-action-btn" onclick="abrirEditarPerfil()" title="Editar"><i class="fas fa-edit"></i></button>` : ''}
+        ${!esPropio && currentUser ? `<button class="btn-primary perfil-action-btn" onclick="seguirUsuario('${uid}')" title="${esSeguidor ? 'Dejar de seguir' : 'Seguir'}"><i class="fas ${esSeguidor ? 'fa-user-minus' : 'fa-user-plus'}"></i></button>` : ''}
+        ${telefonoVisible ? `<a href="https://wa.me/${user.telefono.replace(/[^0-9]/g, '')}" target="_blank" class="btn-whatsapp-profile perfil-action-btn" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>` : ''}
+        <button class="btn-outline perfil-action-btn" onclick="compartirPerfil('${uid}')" title="Compartir"><i class="fas fa-share-alt"></i></button>
+        <button class="btn-outline perfil-action-btn" onclick="compartirPerfilQR('${uid}')" title="QR"><i class="fas fa-qrcode"></i></button>
       </div>
     </div>
     <div style="padding:20px 20px 20px 20px; margin-top:0;">
@@ -5030,6 +5135,106 @@ function mostrarPerfilProfesional(user, esSeguidor, uid) {
   cargarSeguidores(uid);
 }
 
+// ====== VISOR DE FOTO CON REACCIONES ======
+function abrirFotoViewer(uid, fotoId) {
+  if (fotoViewerUnsub) { fotoViewerUnsub(); fotoViewerUnsub = null; }
+  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
+  fotoViewerActual = { uid, fotoId, ref };
+  fotoViewerUnsub = ref.onSnapshot(doc => {
+    if (!doc.exists) return;
+    const foto = doc.data();
+    document.getElementById('fotoViewerImg').src = foto.url;
+    renderReaccionesFoto(uid, fotoId, foto);
+    renderComentariosFoto(uid, fotoId, foto);
+  });
+  abrirModal('fotoViewerModal');
+}
+
+function cerrarFotoViewer() {
+  if (fotoViewerUnsub) { fotoViewerUnsub(); fotoViewerUnsub = null; }
+  fotoViewerActual = null;
+  cerrarModal('fotoViewerModal');
+}
+
+function renderReaccionesFoto(uid, fotoId, foto) {
+  const c = document.getElementById('fotoViewerReactions');
+  const likes = foto.likes || [];
+  const orando = foto.orando || [];
+  const liked = currentUser && likes.includes(currentUser.uid);
+  const orado = currentUser && orando.includes(currentUser.uid);
+  c.innerHTML = `
+    <button class="foto-viewer-reaction-btn ${liked ? 'liked' : ''}" onclick="toggleReaccionFoto('${uid}','${fotoId}','likes')">
+      <i class="fas fa-heart"></i> <span>${likes.length}</span>
+    </button>
+    <button class="foto-viewer-reaction-btn ${orado ? 'orando' : ''}" onclick="toggleReaccionFoto('${uid}','${fotoId}','orando')">
+      <i class="fas fa-pray"></i> <span>${orando.length}</span>
+    </button>
+    <button class="foto-viewer-reaction-btn" onclick="compartirFoto('${uid}','${fotoId}')">
+      <i class="fas fa-share"></i> Compartir
+    </button>
+  `;
+}
+
+function renderComentariosFoto(uid, fotoId, foto) {
+  const c = document.getElementById('fotoViewerComments');
+  const comentarios = foto.comentarios || [];
+  let html = comentarios.map(cm =>
+    `<div style="font-size:13px; margin-bottom:4px;"><strong style="color:var(--teal);">${cm.autor}</strong>: ${cm.texto}</div>`
+  ).join('') || '<p style="color:var(--text-secondary); font-size:12px;">Sin comentarios aún.</p>';
+  if (currentUser) {
+    html += `<div class="comment-box" style="margin-top:6px;">
+      <input type="text" id="foto-viewer-input-${fotoId}" placeholder="Comentar...">
+      <button onclick="comentarFotoViewer('${uid}','${fotoId}')"><i class="fas fa-paper-plane"></i></button>
+    </div>`;
+  }
+  c.innerHTML = html;
+}
+
+function toggleReaccionFoto(uid, fotoId, campo) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
+  ref.get().then(doc => {
+    if (!doc.exists) return;
+    const data = doc.data();
+    const arr = data[campo] || [];
+    const idx = arr.indexOf(currentUser.uid);
+    if (idx > -1) arr.splice(idx, 1); else arr.push(currentUser.uid);
+    ref.update({ [campo]: arr }).then(() => {
+      if (idx === -1 && uid !== currentUser.uid && campo === 'likes') {
+        NOTIFICACIONES(uid).add({
+          tipo: 'like_foto', emisorUid: currentUser.uid,
+          emisorNombre: currentUser.displayName, fotoId,
+          fecha: firebase.firestore.FieldValue.serverTimestamp(), leido: false
+        }).catch(()=>{});
+      }
+    });
+  });
+}
+
+function comentarFotoViewer(uid, fotoId) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const input = document.getElementById('foto-viewer-input-' + fotoId);
+  const texto = input.value.trim();
+  if (!texto) return;
+  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
+  ref.get().then(doc => {
+    if (!doc.exists) return;
+    const arr = doc.data().comentarios || [];
+    arr.push({ uid: currentUser.uid, autor: currentUser.displayName, texto, fecha: new Date().toISOString() });
+    ref.update({ comentarios: arr });
+    input.value = '';
+  });
+}
+
+function compartirFoto(uid, fotoId) {
+  const url = window.location.origin + window.location.pathname + '?perfil=' + uid + '&foto=' + fotoId;
+  if (navigator.share) {
+    navigator.share({ title: 'Foto', text: 'Mira esta foto', url }).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(url).then(() => alert('Enlace copiado al portapapeles.'));
+  }
+}
+
 function subirMediaConDesc(uid, file, desc) {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   if (currentUser.uid !== uid && !isAdmin) { alert('No tienes permiso.'); return; }
@@ -5043,158 +5248,16 @@ function subirMediaConDesc(uid, file, desc) {
   }).then(() => { alert('Foto subida correctamente.'); verPerfil(uid); }).catch(console.error);
 }
 
-function eliminarFoto(uid, fotoId) {
-  if (!currentUser) return;
-  if (currentUser.uid !== uid && !isAdmin) { alert('No tienes permiso.'); return; }
-  if (!confirm('¿Eliminar esta foto?')) return;
-  USERS.doc(uid).collection('fotos').doc(fotoId).delete().then(() => { alert('Foto eliminada.'); verPerfil(uid); }).catch(console.error);
-}
-
-function editarDescripcionFoto(uid, fotoId) {
-  if (!currentUser) return;
-  if (currentUser.uid !== uid && !isAdmin) { alert('No tienes permiso.'); return; }
-  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
-  ref.get().then(doc => {
-    if (!doc.exists) return;
-    const descActual = doc.data().desc || '';
-    const nueva = prompt('Edita la descripción de la foto:', descActual);
-    if (nueva === null) return;
-    ref.update({ desc: nueva.trim() }).then(() => {
-      verPerfil(uid);
-    }).catch(err => alert('Error: ' + err.message));
-  }).catch(console.error);
-}
-
-function etiquetarUsuarioFoto(uid, fotoId) {
-  if (!currentUser) return;
-  if (currentUser.uid !== uid && !isAdmin) { alert('No tienes permiso.'); return; }
-  const nombre = prompt('Escribe el nombre del usuario a etiquetar:');
-  if (!nombre || !nombre.trim()) return;
-  USERS.where('displayName', '==', nombre.trim()).get().then(snap => {
-    if (snap.empty) { alert('No se encontró un usuario con ese nombre.'); return; }
-    const taggedUid = snap.docs[0].id;
-    const taggedName = snap.docs[0].data().displayName;
-    const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
-    ref.get().then(doc => {
-      if (!doc.exists) return;
-      const tags = doc.data().tags || [];
-      if (tags.find(t => t.uid === taggedUid)) { alert('Este usuario ya está etiquetado.'); return; }
-      tags.push({ uid: taggedUid, nombre: taggedName });
-      ref.update({ tags }).then(() => {
-        verPerfil(uid);
-        NOTIFICACIONES(taggedUid).add({
-          tipo: 'etiqueta_foto', emisorUid: currentUser.uid,
-          emisorNombre: currentUser.displayName, fotoId,
-          fecha: firebase.firestore.FieldValue.serverTimestamp(), leido: false
-        }).catch(()=>{});
-      });
-    });
-  }).catch(console.error);
-}
-
-function likeFoto(uid, fotoId, btn) {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
-  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
-  ref.get().then(doc => {
-    if (!doc.exists) return;
-    const foto = doc.data();
-    const likes = foto.likes || [];
-    const idx = likes.indexOf(currentUser.uid);
-    if (idx > -1) likes.splice(idx, 1);
-    else likes.push(currentUser.uid);
-    ref.update({ likes }).then(() => {
-      const yaLike = likes.includes(currentUser.uid);
-      btn.classList.toggle('liked', yaLike);
-      const span = btn.querySelector('span');
-      if (span) span.textContent = likes.length;
-      if (yaLike && uid !== currentUser.uid) {
-        NOTIFICACIONES(uid).add({
-          tipo: 'like_foto', emisorUid: currentUser.uid,
-          emisorNombre: currentUser.displayName, fotoId,
-          fecha: firebase.firestore.FieldValue.serverTimestamp(), leido: false
-        }).catch(()=>{});
-      }
-    });
-  }).catch(console.error);
-}
-
-function orarFoto(uid, fotoId, btn) {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
-  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
-  ref.get().then(doc => {
-    if (!doc.exists) return;
-    const foto = doc.data();
-    const orando = foto.orando || [];
-    const idx = orando.indexOf(currentUser.uid);
-    if (idx > -1) orando.splice(idx, 1);
-    else orando.push(currentUser.uid);
-    ref.update({ orando }).then(() => {
-      const yaOro = orando.includes(currentUser.uid);
-      btn.classList.toggle('orando', yaOro);
-      const span = btn.querySelector('span');
-      if (span) span.textContent = orando.length;
-    });
-  }).catch(console.error);
-}
-
-function toggleComentariosFoto(fotoId) {
-  const el = document.getElementById('foto-comentarios-' + fotoId);
-  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
-
-function comentarFoto(uid, fotoId) {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
-  const input = document.getElementById('foto-comment-input-' + fotoId);
-  if (!input) return;
-  const texto = input.value.trim();
-  if (!texto) return;
-  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
-  ref.get().then(doc => {
-    if (!doc.exists) return;
-    const foto = doc.data();
-    const comentarios = foto.comentarios || [];
-    comentarios.push({
-      uid: currentUser.uid, autor: currentUser.displayName,
-      texto, fecha: new Date().toISOString()
-    });
-    ref.update({ comentarios }).then(() => {
-      const cont = document.getElementById('foto-comentarios-' + fotoId);
-      const listHtml = comentarios.map(c =>
-        `<div class="foto-comentario"><strong>${c.autor}</strong>: ${c.texto}</div>`
-      ).join('');
-      const inputHtml = `<div class="comment-box">
-        <input type="text" id="foto-comment-input-${fotoId}" placeholder="Comentar...">
-        <button onclick="event.stopPropagation(); comentarFoto('${uid}','${fotoId}')"><i class="fas fa-paper-plane"></i></button>
-      </div>`;
-      cont.innerHTML = listHtml + inputHtml;
-      if (uid !== currentUser.uid) {
-        NOTIFICACIONES(uid).add({
-          tipo: 'comentario_foto', emisorUid: currentUser.uid,
-          emisorNombre: currentUser.displayName, fotoId, texto,
-          fecha: firebase.firestore.FieldValue.serverTimestamp(), leido: false
-        }).catch(()=>{});
-      }
-    });
-  }).catch(console.error);
-}
-
-function compartirFoto(uid, fotoId) {
-  const url = window.location.origin + window.location.pathname + '?perfil=' + uid + '&foto=' + fotoId;
-  if (navigator.share) {
-    navigator.share({ title: 'Foto', text: 'Mira esta foto', url }).catch(()=>{});
-  } else {
-    navigator.clipboard.writeText(url).then(() => alert('Enlace copiado al portapapeles.'));
-  }
-}
-
 function cargarPublicacionesUsuario(uid) {
   const container = document.getElementById('perfilFeed');
   if (!container) return;
-  POSTS.where('uid', '==', uid).orderBy('fecha', 'desc').get().then(snapshot => {
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones.</p>'; return; }
+  POSTS.where('uid', '==', uid).get().then(snapshot => {
+    const docs = [];
+    snapshot.forEach(d => docs.push({ id: d.id, ...d.data() }));
+    docs.sort((a,b) => (b.fecha?.seconds||0) - (a.fecha?.seconds||0));
+    if (docs.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones.</p>'; return; }
     let html = '';
-    snapshot.forEach(doc => {
-      const post = { id: doc.id, ...doc.data() };
+    docs.forEach(post => {
       const liked = post.likes && post.likes.includes(currentUser ? currentUser.uid : null);
       const orando = post.orando && post.orando.includes(currentUser ? currentUser.uid : null);
       html += `<div class="post">
@@ -5418,8 +5481,11 @@ function guardarPerfilExtendido() {
 
 function abrirEditarPerfil() {
   if (!currentUser) { alert('Primero debes iniciar sesión.'); return; }
-  cargarPerfilExtendido();
-  abrirModal('editarPerfilModal');
+  cerrarModal('perfilModal');
+  setTimeout(() => {
+    cargarPerfilExtendido();
+    abrirModal('editarPerfilModal');
+  }, 150);
 }
 window.guardarEdicionPerfil = guardarPerfilExtendido;
 
@@ -5458,6 +5524,8 @@ function cargarContadorNotificaciones() {
     const count = snapshot.size;
     const badge = document.getElementById('notificacionesBadge');
     if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'inline-block' : 'none'; }
+    const badgeMob = document.getElementById('notifCountMobile');
+    if (badgeMob) badgeMob.textContent = count;
   });
 }
 
@@ -6318,9 +6386,15 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   document.getElementById('loginCancelBtn').addEventListener('click', function() { cerrarModal('loginModal'); });
 
-  document.querySelectorAll('#mainTabs .tab').forEach(tab => {
+  document.querySelectorAll('#mainTabs .tab[data-panel]').forEach(tab => {
     tab.addEventListener('click', function() { const panel = this.dataset.panel; if (panel) switchPanel(panel); });
   });
+
+  // Botones móviles del menú hamburguesa
+  const tabTema = document.getElementById('tabTemaMobile');
+  if (tabTema) tabTema.addEventListener('click', () => document.getElementById('themeToggle').click());
+  const tabNotif = document.getElementById('tabNotifMobile');
+  if (tabNotif) tabNotif.addEventListener('click', () => mostrarNotificaciones());
 
   document.getElementById('logoInicio').addEventListener('click', function() { switchPanel('inicio'); });
 
@@ -6353,7 +6427,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('reelModalCancel').addEventListener('click', function() { cerrarModal('reelModal'); });
   document.getElementById('reelModalPublicar').addEventListener('click', publicarReel);
 
-  // Devocionales
   document.getElementById('btnSubirDevocional').addEventListener('click', subirDevocional);
 
   document.getElementById('btnCrearGrupo').addEventListener('click', abrirModalGrupo);
@@ -6451,23 +6524,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.getElementById('btnGuardarMenuConfig').addEventListener('click', guardarConfigMenu);
 
-  // Delegado para la galería de perfil (visor)
+  // Galería de perfil → abre el visor de foto con reacciones
   document.getElementById('perfilModal').addEventListener('click', function(e) {
-    if (e.target.closest('button') ||
-        e.target.closest('input') ||
-        e.target.closest('.comment-box') ||
-        e.target.closest('.foto-comentarios')) return;
-
     const item = e.target.closest('.galeria-item');
-    if (item && item.dataset.urls) {
-      e.stopPropagation();
-      try {
-        const urls = JSON.parse(item.dataset.urls);
-        const dates = JSON.parse(item.dataset.dates || '[]');
-        const index = parseInt(item.dataset.index) || 0;
-        abrirMediaViewer(urls, index, 'image', dates);
-      } catch (err) { console.warn('Error abriendo visor:', err); }
-    }
+    if (!item) return;
+    if (e.target.closest('button')) return;
+    e.stopPropagation();
+    abrirFotoViewer(item.dataset.uid, item.dataset.fotoId);
   });
 
   actualizarVersiculoDia();
@@ -6503,7 +6566,14 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => { initMap('servicioMap', 'servicioMapSearch', 'servicioLat', 'servicioLng'); }, 500);
   }
 
-  console.log('✅ SAL Y LUZ v4: tabs alineados a la izquierda en hamburguesa, mi ubicación en tiempo real con bombilla, QR de perfil, colección Devocionales.');
+  // 🔐 Persistencia de sesión: restaurar usuario al recargar
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      await cargarUsuarioActual(user);
+    }
+  });
+
+  console.log('✅ SAL Y LUZ v5: sesión persistente, Mapbox Win11, header móvil compacto, perfil con iconos, galería sin contadores + visor con reacciones, reels Instagram-style.');
 });
 
 // ================================================================
@@ -6529,10 +6599,11 @@ window.donarCampania = donarCampania;
 window.renderReels = renderReels;
 window.publicarReel = publicarReel;
 window.likeReel = likeReel;
-window.toggleComentariosReel = toggleComentariosReel;
-window.comentarReel = comentarReel;
 window.compartirReel = compartirReel;
 window.eliminarReel = eliminarReel;
+window.abrirReelViewer = abrirReelViewer;
+window.cerrarReelViewer = cerrarReelViewer;
+window.comentarReelViewer = comentarReelViewer;
 window.renderDevocionales = renderDevocionales;
 window.subirDevocional = subirDevocional;
 window.verDevocional = verDevocional;
@@ -6632,7 +6703,6 @@ window.compartirPerfilQR = compartirPerfilQR;
 window.descargarQR = descargarQR;
 window.cargarPublicacionesUsuario = cargarPublicacionesUsuario;
 window.cargarSeguidores = cargarSeguidores;
-window.eliminarFoto = eliminarFoto;
 window.abrirModalNoticia = abrirModalNoticia;
 window.guardarNoticia = guardarNoticia;
 window.eliminarNoticia = eliminarNoticia;
@@ -6644,14 +6714,11 @@ window.rechazarSolicitudPassword = rechazarSolicitudPassword;
 window.renderSolicitudesPassword = renderSolicitudesPassword;
 window.guardarConfigMenu = guardarConfigMenu;
 window.cargarConfigMenu = cargarConfigMenu;
-
-window.likeFoto = likeFoto;
-window.orarFoto = orarFoto;
-window.toggleComentariosFoto = toggleComentariosFoto;
-window.comentarFoto = comentarFoto;
+window.abrirFotoViewer = abrirFotoViewer;
+window.cerrarFotoViewer = cerrarFotoViewer;
+window.toggleReaccionFoto = toggleReaccionFoto;
+window.comentarFotoViewer = comentarFotoViewer;
 window.compartirFoto = compartirFoto;
-window.editarDescripcionFoto = editarDescripcionFoto;
-window.etiquetarUsuarioFoto = etiquetarUsuarioFoto;
 </script>
 </body>
 </html>

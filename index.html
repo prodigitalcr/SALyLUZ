@@ -351,7 +351,25 @@
     .foto-viewer-reaction-btn { background: var(--bg-body); border: 1px solid var(--border-color); border-radius: 30px; padding: 4px 12px; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; color: var(--text-secondary); transition: 0.15s; }
     .foto-viewer-reaction-btn:hover { background: var(--border-color); }
     .foto-viewer-reaction-btn.liked { color: #e74c3c; border-color: #e74c3c; }
+    .foto-viewer-reaction-btn.disliked { color: #e67e22; border-color: #e67e22; }
     .foto-viewer-reaction-btn.orando { color: #6a1b9a; border-color: #6a1b9a; }
+    .foto-mini-btn {
+      background: transparent; border: 1px solid var(--border-color);
+      padding: 2px 8px; border-radius: 20px; cursor: pointer;
+      font-size: 11px; color: var(--text-secondary);
+      display: inline-flex; align-items: center; gap: 3px;
+      transition: 0.15s;
+    }
+    .foto-mini-btn:hover { background: var(--bg-body); }
+    .foto-mini-btn.liked { color: #e74c3c; border-color: #e74c3c; }
+    .foto-mini-btn.disliked { color: #e67e22; border-color: #e67e22; }
+    .foto-mini-btn.orando { color: #6a1b9a; border-color: #6a1b9a; }
+    .foto-reply-input { display: flex; gap: 6px; margin-top: 4px; }
+    .foto-reply-input input { flex: 1; padding: 5px 10px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-primary); font-size: 12px; }
+    .foto-reply-input button { background: var(--teal); color: white; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 11px; }
+    .foto-comment-box { display: flex; gap: 6px; margin-top: 8px; }
+    .foto-comment-box input { flex: 1; padding: 8px 14px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-primary); font-size: 13px; }
+    .foto-comment-box button { background: var(--teal); color: white; border: none; padding: 8px 18px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 500; }
     #perfilModal .modal-box { max-width: 1080px; width: 96%; max-height: 96vh; padding: 0; overflow-y: auto; overflow-x: hidden; position: relative; }
     @media (max-width: 640px) { #perfilModal .modal-box { width: 100%; max-width: 100%; max-height: 100vh; border-radius: 0; } }
     .perfil-facebook .portada { border-radius: 0 !important; margin: 0; }
@@ -1103,6 +1121,7 @@
         <label><input type="checkbox" data-campo="iglesia" checked> Iglesia</label>
         <label><input type="checkbox" data-campo="caracter" checked> Carácter</label>
         <label><input type="checkbox" data-campo="experiencia" checked> Experiencia</label>
+        <label><input type="checkbox" data-campo="historias" checked> Historias visibles para todos</label>
       </div>
       <div style="margin-top:16px; padding-top:12px; border-top:1px solid var(--border-color);">
         <button class="btn-outline" id="btnSolicitarCambioPassword" style="width:100%;"><i class="fas fa-key"></i> Solicitar cambio de contraseña</button>
@@ -1453,7 +1472,7 @@
         <img id="fotoViewerImg" src="" style="width:100%; max-height:75vh; object-fit:contain; display:block; background:#000;">
       </div>
       <div id="fotoViewerReactions" style="padding:10px 14px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:var(--bg-body); border-top:1px solid var(--border-color);"></div>
-      <div id="fotoViewerComments" style="padding:10px 14px; max-height:180px; overflow-y:auto; background:var(--bg-body);"></div>
+      <div id="fotoViewerComments" style="padding:10px 14px; max-height:280px; overflow-y:auto; background:var(--bg-body);"></div>
     </div>
   </div>
 
@@ -1752,7 +1771,7 @@ window.registerUser = async function(email, password, nombre, telefono, edad, ap
       privacidad: { biografia: true, situacionLaboral: true, situacionSentimental: true,
         nacionalidad: true, fechaNacimiento: true, estudios: true,
         talentos: true, telefono: true, edad: true, iglesia: true,
-        caracter: true, experiencia: true },
+        caracter: true, experiencia: true, historias: true },
       fechaRegistro: firebase.firestore.FieldValue.serverTimestamp()
     });
     await user.updateProfile({ displayName: nombre });
@@ -1793,7 +1812,7 @@ async function cargarUsuarioActual(user) {
         iglesia: '', ministerio: '', situacionLaboral: '', situacionSentimental: '',
         nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '', caracter: '',
         experiencia: '', fotosPerfil: [],
-        privacidad: {},
+        privacidad: { historias: true },
         fechaRegistro: firebase.firestore.FieldValue.serverTimestamp()
       });
       currentUser = {
@@ -1801,7 +1820,7 @@ async function cargarUsuarioActual(user) {
         telefono: '', edad: '', apoyos: [], fotoPerfil: '', portada: '', biografia: '',
         iglesia: '', ministerio: '', situacionLaboral: '', situacionSentimental: '',
         nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '', caracter: '',
-        experiencia: '', fotosPerfil: [], privacidad: {}
+        experiencia: '', fotosPerfil: [], privacidad: { historias: true }
       };
     }
     isSuperAdmin = (user.email === 'salyluz@comunidad.com');
@@ -1909,7 +1928,6 @@ function actualizarUIUsuario() {
     document.getElementById('chatAdminContent').style.display = 'none';
   }
 
-  // SuperAdmin: botón "Convertir a menú hamburguesa"
   if (tabConvertir) tabConvertir.style.display = isSuperAdmin ? 'inline-flex' : 'none';
 
   const adminTab = document.getElementById('adminTab');
@@ -2031,7 +2049,6 @@ function toggleTheme() {
   localStorage.setItem(STORAGE_KEYS.theme, isDark ? 'dark' : 'light');
 }
 
-// SuperAdmin: Convertir a menú hamburguesa
 document.getElementById('tabConvertirHamburguesa').addEventListener('click', function() {
   if (!isSuperAdmin) return;
   const activo = document.body.classList.toggle('force-hamburger');
@@ -2103,31 +2120,68 @@ function agregarElementoCarrusel() {
 function eliminarElementoCarrusel(id) { if (!isAdmin) return; if (!confirm('¿Eliminar?')) return; CARRUSEL.doc(id).delete().then(() => renderListaCarrusel()); }
 
 // ================================================================
-// 6.2 HISTORIAS (24h)
+// 6.2 HISTORIAS (24h) — VISIBILIDAD CONTROLADA POR EL AUTOR
 // ================================================================
 function renderHistorias() {
   const bar = document.getElementById('historiasBar');
   if (!bar) return;
-  if (!currentUser) { bar.innerHTML = ''; bar.style.display = 'none'; return; }
   bar.style.display = 'flex';
 
-  if (listeners.historias) listeners.historias();
-  listeners.historias = HISTORIAS.orderBy('fecha', 'desc').onSnapshot(async snapshot => {
-    const ahora = Date.now();
-    const porUsuario = {};
-    snapshot.forEach(doc => {
-      const h = { id: doc.id, ...doc.data() };
-      if (!h.fecha || !h.fecha.seconds) return;
-      const expira = h.fecha.seconds * 1000 + 24 * 60 * 60 * 1000;
-      if (expira <= ahora) return;
-      if (!porUsuario[h.uid]) porUsuario[h.uid] = [];
-      porUsuario[h.uid].push(h);
-    });
-    Object.keys(porUsuario).forEach(uid => {
-      porUsuario[uid].sort((a,b) => a.fecha.seconds - b.fecha.seconds);
-    });
+  if (listeners.historias) { listeners.historias(); listeners.historias = null; }
+  if (listeners.historiasPropias) { listeners.historiasPropias(); listeners.historiasPropias = null; }
 
-    let html = `<div class="historia-item" onclick="abrirModalHistoria()">
+  let publicas = [], propias = [];
+
+  const mergeYRender = () => {
+    const map = new Map();
+    [...publicas, ...propias].forEach(h => map.set(h.id, h));
+    pintarBarraHistorias(Array.from(map.values()));
+  };
+
+  // Historias públicas (visibles a todos, incluso sin sesión)
+  listeners.historias = HISTORIAS.where('publica', '==', true)
+    .orderBy('fecha', 'desc')
+    .onSnapshot(snap => {
+      publicas = [];
+      snap.forEach(d => publicas.push({ id: d.id, ...d.data() }));
+      mergeYRender();
+    }, err => { console.warn('historias públicas err', err); publicas = []; mergeYRender(); });
+
+  // Historias propias (incluso privadas)
+  if (currentUser) {
+    listeners.historiasPropias = HISTORIAS.where('uid', '==', currentUser.uid)
+      .orderBy('fecha', 'desc')
+      .onSnapshot(snap => {
+        propias = [];
+        snap.forEach(d => propias.push({ id: d.id, ...d.data() }));
+        mergeYRender();
+      }, err => { console.warn('historias propias err', err); propias = []; mergeYRender(); });
+  } else {
+    propias = [];
+    mergeYRender();
+  }
+}
+
+async function pintarBarraHistorias(historias) {
+  const bar = document.getElementById('historiasBar');
+  if (!bar) return;
+
+  const ahora = Date.now();
+  const porUsuario = {};
+  historias.forEach(h => {
+    if (!h.fecha || !h.fecha.seconds) return;
+    const expira = h.fecha.seconds * 1000 + 24 * 60 * 60 * 1000;
+    if (expira <= ahora) return;
+    if (!porUsuario[h.uid]) porUsuario[h.uid] = [];
+    porUsuario[h.uid].push(h);
+  });
+  Object.keys(porUsuario).forEach(uid => {
+    porUsuario[uid].sort((a, b) => a.fecha.seconds - b.fecha.seconds);
+  });
+
+  let html = '';
+  if (currentUser) {
+    html += `<div class="historia-item" onclick="abrirModalHistoria()">
       <div class="historia-ring" style="background:var(--teal); position:relative;">
         <div class="historia-avatar" style="background-image:url('${currentUser.fotoPerfil || ''}'); background-size:cover; background-position:center;">
           ${currentUser.fotoPerfil ? '' : '<i class="fas fa-user"></i>'}
@@ -2136,39 +2190,37 @@ function renderHistorias() {
       </div>
       <div class="historia-nombre">Mi historia</div>
     </div>`;
+  }
 
-    const usuariosUnicos = Object.keys(porUsuario);
-    if (usuariosUnicos.length === 0) {
-      bar.innerHTML = html;
-      return;
-    }
+  const usuariosUnicos = Object.keys(porUsuario);
+  if (usuariosUnicos.length === 0) { bar.innerHTML = html; return; }
 
-    const userPromises = usuariosUnicos.map(uid => USERS.doc(uid).get().then(d => ({ uid, data: d.exists ? d.data() : null })));
-    const usersInfo = await Promise.all(userPromises);
-    const userMap = {};
-    usersInfo.forEach(u => userMap[u.uid] = u.data);
+  const usersInfo = await Promise.all(
+    usuariosUnicos.map(uid => USERS.doc(uid).get().then(d => ({ uid, data: d.exists ? d.data() : null })))
+  );
+  const userMap = {};
+  usersInfo.forEach(u => userMap[u.uid] = u.data);
 
-    const vistas = JSON.parse(localStorage.getItem('historias_vistas') || '{}');
+  const vistas = JSON.parse(localStorage.getItem('historias_vistas') || '{}');
 
-    usuariosUnicos.forEach(uid => {
-      const u = userMap[uid];
-      if (!u) return;
-      const historiasU = porUsuario[uid];
-      const todasVistas = historiasU.every(h => vistas[h.id]);
-      const foto = u.fotoPerfil || '';
-      const nombre = u.displayName || 'Usuario';
-      const activa = currentUser && uid === currentUser.uid;
-      html += `<div class="historia-item" onclick="abrirStoryViewer('${uid}')">
-        <div class="historia-ring ${todasVistas ? 'visto' : ''} ${!todasVistas ? 'activa' : ''}">
-          <div class="historia-avatar" style="background-image:url('${foto}'); background-size:cover; background-position:center;">
-            ${foto ? '' : nombre.charAt(0).toUpperCase()}
-          </div>
+  usuariosUnicos.forEach(uid => {
+    const u = userMap[uid];
+    if (!u) return;
+    const historiasU = porUsuario[uid];
+    const todasVistas = historiasU.every(h => vistas[h.id]);
+    const foto = u.fotoPerfil || '';
+    const nombre = u.displayName || 'Usuario';
+    const activa = currentUser && uid === currentUser.uid;
+    html += `<div class="historia-item" onclick="abrirStoryViewer('${uid}')">
+      <div class="historia-ring ${todasVistas ? 'visto' : ''} ${!todasVistas ? 'activa' : ''}">
+        <div class="historia-avatar" style="background-image:url('${foto}'); background-size:cover; background-position:center;">
+          ${foto ? '' : nombre.charAt(0).toUpperCase()}
         </div>
-        <div class="historia-nombre">${activa ? 'Tu historia' : nombre.split(' ')[0]}</div>
-      </div>`;
-    });
-    bar.innerHTML = html;
-  }, err => { console.warn('historias err', err); bar.innerHTML = ''; });
+      </div>
+      <div class="historia-nombre">${activa ? 'Tu historia' : nombre.split(' ')[0]}</div>
+    </div>`;
+  });
+  bar.innerHTML = html;
 }
 
 function abrirModalHistoria() {
@@ -2197,11 +2249,15 @@ function actualizarBloquesHistoria() {
 function publicarHistoria() {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   const tipo = document.getElementById('historiaTipo').value;
+  const publica = (currentUser.privacidad && currentUser.privacidad.historias !== undefined)
+    ? !!currentUser.privacidad.historias
+    : true;
   const dataBase = {
     uid: currentUser.uid,
     autorNombre: currentUser.displayName,
     autorFoto: currentUser.fotoPerfil || '',
     tipo,
+    publica,
     vistas: [],
     fecha: firebase.firestore.FieldValue.serverTimestamp()
   };
@@ -2249,7 +2305,19 @@ function publicarHistoria() {
 
 async function abrirStoryViewer(uid) {
   const ahora = Date.now();
-  const snap = await HISTORIAS.where('uid', '==', uid).orderBy('fecha', 'asc').get();
+  let query;
+  const esPropia = currentUser && currentUser.uid === uid;
+  if (esPropia) {
+    // Mis historias: todas (públicas + privadas)
+    query = HISTORIAS.where('uid', '==', uid).orderBy('fecha', 'asc');
+  } else {
+    // Historias de otros: sólo públicas
+    query = HISTORIAS.where('uid', '==', uid).where('publica', '==', true).orderBy('fecha', 'asc');
+  }
+  let snap;
+  try { snap = await query.get(); }
+  catch (e) { console.warn(e); alert('No se pudieron cargar las historias.'); return; }
+
   const historias = [];
   snap.forEach(doc => {
     const h = { id: doc.id, ...doc.data() };
@@ -2404,9 +2472,8 @@ function renderPosts(snapshot, container) {
     const catLabels = { testimonio: '<span class="post-categoria" style="background:#d4edda;color:#155724;">Testimonio</span>', obra: '<span class="post-categoria" style="background:#cce5ff;color:#004085;">Obra</span>', oracion: '<span class="post-categoria" style="background:#f8d7da;color:#721c24;">Oración</span>', encuesta: '<span class="post-categoria" style="background:#fff3cd;color:#856404;">Encuesta</span>', campania: '<span class="post-categoria" style="background:#d1ecf1;color:#0c5460;">Campaña</span>', otro: '<span class="post-categoria" style="background:#e2e3e5;color:#383d41;">Otro</span>' };
     const catHtml = post.categoria ? catLabels[post.categoria] || catLabels.otro : '';
     const avatar = post.autorFoto || '';
-    const puedeVerPerfil = currentUser !== null;
     html += '<div class="post">';
-    html += `<div class="post-header" onclick="${puedeVerPerfil ? "verPerfil('" + post.uid + "')" : ""}" style="cursor:${puedeVerPerfil ? 'pointer' : 'default'};">`;
+    html += `<div class="post-header" onclick="verPerfil('${post.uid}')" style="cursor:pointer;">`;
     html += `<div class="post-avatar" style="background-image:url(${avatar});background-size:cover;background-position:center;">${avatar ? '' : (post.autorNombre || '?').charAt(0).toUpperCase()}</div>`;
     html += `<div><div class="post-author">${post.autorNombre}</div><div class="post-time">${post.fecha ? new Date(post.fecha.seconds * 1000).toLocaleString() : ''}</div></div></div>`;
     html += catHtml;
@@ -2551,7 +2618,7 @@ function donarCampania(postId) {
 </script>
 <script>
 // ================================================================
-// 7.1 REELS (móvil: reacciones verticales / PC: video 70% + panel 30%)
+// 7.1 REELS
 // ================================================================
 function abrirReelModal() {
   if (!currentUser) { alert('Inicia sesión.'); return; }
@@ -2712,7 +2779,6 @@ async function renderReelsSlides(reels) {
   container.addEventListener('scroll', onReelsScroll, { passive: true });
   onReelsScroll();
 
-  // Controles auto-ocultos a 2s + click/doble click + volumen
   container.querySelectorAll('video').forEach(v => {
     const rid = v.dataset.reelVideo;
     const controls = document.getElementById('reel-controls-' + rid);
@@ -4047,7 +4113,8 @@ function renderAdminHistorias() {
       const h = doc.data();
       const fecha = h.fecha ? new Date(h.fecha.seconds * 1000).toLocaleString() : '';
       const expira = h.fecha ? new Date((h.fecha.seconds + 86400) * 1000).toLocaleString() : '';
-      html += `<div class="admin-list-item"><span class="info"><strong>${h.autorNombre}</strong> [${h.tipo}] · ${fecha} · Expira: ${expira}</span><div class="actions"><button class="btn-danger" onclick="HISTORIAS.doc('${doc.id}').delete(); renderAdminHistorias();" style="font-size:10px;">Eliminar</button></div></div>`;
+      const publica = h.publica === true ? '🌐 Pública' : '🔒 Privada';
+      html += `<div class="admin-list-item"><span class="info"><strong>${h.autorNombre}</strong> [${h.tipo}] · ${publica} · ${fecha} · Expira: ${expira}</span><div class="actions"><button class="btn-danger" onclick="HISTORIAS.doc('${doc.id}').delete(); renderAdminHistorias();" style="font-size:10px;">Eliminar</button></div></div>`;
     });
     list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin historias.</p>';
   });
@@ -4151,16 +4218,24 @@ function guardarNoticia() {
 function eliminarNoticia(id) { if (!isAdmin || !confirm('¿Eliminar?')) return; NOTICIAS.doc(id).delete().then(() => renderNoticias()); }
 
 // ================================================================
-// 19. PERFIL
+// 19. PERFIL (público, sin necesidad de iniciar sesión)
 // ================================================================
 function verPerfil(uid) {
   if (!uid) return;
   USERS.doc(uid).get().then(doc => {
     if (!doc.exists) { alert('Usuario no encontrado.'); return; }
     const user = doc.data();
-    SEGUIDORES.where('seguidorUid', '==', currentUser ? currentUser.uid : '').where('seguidoUid', '==', uid).get().then(snap => mostrarPerfilProfesional(user, !snap.empty, uid));
-  });
+    if (currentUser) {
+      SEGUIDORES.where('seguidorUid', '==', currentUser.uid)
+                .where('seguidoUid', '==', uid).get()
+        .then(snap => mostrarPerfilProfesional(user, !snap.empty, uid))
+        .catch(() => mostrarPerfilProfesional(user, false, uid));
+    } else {
+      mostrarPerfilProfesional(user, false, uid);
+    }
+  }).catch(() => alert('No se pudo cargar el perfil.'));
 }
+
 async function mostrarPerfilProfesional(user, esSeguidor, uid) {
   const privacidad = user.privacidad || {};
   const modalContent = document.getElementById('perfilModalContent');
@@ -4175,7 +4250,6 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
     if (v) infoHtml += `<div class="info-item"><i class="fas fa-circle"></i><span class="label">${campo}:</span> <span class="value">${v}</span></div>`;
   });
 
-  // Roles con estrella dorada
   let rolesHtml = '';
   if (user.apoyos && user.apoyos.length) {
     rolesHtml = '<div style="margin-top:8px;">' + user.apoyos.map(r => `<span class="rol-star"><i class="fas fa-star"></i> ${r}</span>`).join('') + '</div>';
@@ -4227,7 +4301,6 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
   cargarPublicacionesUsuario(uid);
   cargarSeguidores(uid);
 
-  // Galería
   USERS.doc(uid).collection('fotos').orderBy('fecha', 'desc').get().then(snapshot => {
     const fotos = []; snapshot.forEach(doc => fotos.push({ id: doc.id, ...doc.data() }));
     const container = document.getElementById('galeriaFotosContainer');
@@ -4249,34 +4322,271 @@ function cargarPublicacionesUsuario(uid) {
     let html = '';
     docs.forEach(p => { html += `<div class="post"><div class="post-content">${p.texto}</div></div>`; });
     container.innerHTML = html;
-  });
+  }).catch(() => { container.innerHTML = '<p style="color:var(--text-secondary);">No se pudieron cargar las publicaciones.</p>'; });
 }
 function cargarSeguidores(uid) {
-  SEGUIDORES.where('seguidoUid', '==', uid).get().then(snap => { const el = document.getElementById('numSeguidores'); if (el) el.textContent = snap.size; });
-  SEGUIDORES.where('seguidorUid', '==', uid).get().then(snap => { const el = document.getElementById('numSeguidos'); if (el) el.textContent = snap.size; });
+  SEGUIDORES.where('seguidoUid', '==', uid).get().then(snap => { const el = document.getElementById('numSeguidores'); if (el) el.textContent = snap.size; }).catch(()=>{});
+  SEGUIDORES.where('seguidorUid', '==', uid).get().then(snap => { const el = document.getElementById('numSeguidos'); if (el) el.textContent = snap.size; }).catch(()=>{});
 }
 
+// ================================================================
+// VISOR DE FOTO CON REACCIONES + COMENTARIOS + RESPUESTAS
+// ================================================================
 function abrirFotoViewer(uid, fotoId) {
   if (fotoViewerUnsub) fotoViewerUnsub();
   fotoViewerUnsub = USERS.doc(uid).collection('fotos').doc(fotoId).onSnapshot(doc => {
     if (!doc.exists) return;
     const foto = doc.data();
     document.getElementById('fotoViewerImg').src = foto.url;
-    const likes = foto.likes || [], orando = foto.orando || [];
-    const liked = currentUser && likes.includes(currentUser.uid);
-    const orado = currentUser && orando.includes(currentUser.uid);
-    document.getElementById('fotoViewerReactions').innerHTML = `<button class="foto-viewer-reaction-btn ${liked ? 'liked' : ''}" onclick="toggleReaccionFoto('${uid}','${fotoId}','likes')"><i class="fas fa-heart"></i> ${likes.length}</button><button class="foto-viewer-reaction-btn ${orado ? 'orando' : ''}" onclick="toggleReaccionFoto('${uid}','${fotoId}','orando')"><i class="fas fa-pray"></i> ${orando.length}</button>`;
-    const comentarios = foto.comentarios || [];
-    document.getElementById('fotoViewerComments').innerHTML = comentarios.map(c => `<div><strong style="color:var(--teal);">${c.autor}</strong>: ${c.texto}</div>`).join('') || '<p style="color:var(--text-secondary); font-size:12px;">Sin comentarios.</p>';
-  });
+    renderFotoViewerContent(uid, fotoId, foto);
+  }, err => { console.warn(err); });
   abrirModal('fotoViewerModal');
 }
-function cerrarFotoViewer() { if (fotoViewerUnsub) fotoViewerUnsub(); fotoViewerUnsub = null; cerrarModal('fotoViewerModal'); }
-function toggleReaccionFoto(uid, fotoId, campo) {
-  if (!currentUser) return;
-  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
-  ref.get().then(doc => { if (!doc.exists) return; const arr = doc.data()[campo] || []; const i = arr.indexOf(currentUser.uid); if (i > -1) arr.splice(i, 1); else arr.push(currentUser.uid); ref.update({ [campo]: arr }); });
+
+function renderFotoViewerContent(uid, fotoId, foto) {
+  const likes = foto.likes || [];
+  const dislikes = foto.dislikes || [];
+  const orando = foto.orando || [];
+  const compartidos = foto.compartidos || 0;
+  const liked = currentUser && likes.includes(currentUser.uid);
+  const disliked = currentUser && dislikes.includes(currentUser.uid);
+  const prayed = currentUser && orando.includes(currentUser.uid);
+
+  document.getElementById('fotoViewerReactions').innerHTML = `
+    <button class="foto-viewer-reaction-btn ${liked ? 'liked' : ''}" onclick="toggleReaccionFoto('${uid}','${fotoId}','likes')">
+      <i class="fas fa-heart"></i> ${likes.length}
+    </button>
+    <button class="foto-viewer-reaction-btn ${disliked ? 'disliked' : ''}" onclick="toggleReaccionFoto('${uid}','${fotoId}','dislikes')">
+      <i class="fas fa-thumbs-down"></i> ${dislikes.length}
+    </button>
+    <button class="foto-viewer-reaction-btn ${prayed ? 'orando' : ''}" onclick="toggleReaccionFoto('${uid}','${fotoId}','orando')">
+      <i class="fas fa-pray"></i> ${orando.length}
+    </button>
+    <button class="foto-viewer-reaction-btn" onclick="compartirFotoViewer('${uid}','${fotoId}')">
+      <i class="fas fa-share"></i> Compartir (${compartidos})
+    </button>
+  `;
+
+  const comentarios = foto.comentarios || [];
+  let ch = '';
+  if (comentarios.length === 0) {
+    ch = '<p style="color:var(--text-secondary); font-size:12px;">Sin comentarios aún.</p>';
+  }
+
+  comentarios.forEach((c, ci) => {
+    const cLikes = c.likes || [];
+    const cDislikes = c.dislikes || [];
+    const cOrando = c.orando || [];
+    const cLiked = currentUser && cLikes.includes(currentUser.uid);
+    const cDisliked = currentUser && cDislikes.includes(currentUser.uid);
+    const cPrayed = currentUser && cOrando.includes(currentUser.uid);
+    const puedoEliminar = currentUser && (c.uid === currentUser.uid || isAdmin || uid === currentUser.uid);
+
+    let respuestasHtml = '';
+    (c.respuestas || []).forEach((r, ri) => {
+      const rLikes = r.likes || [];
+      const rDislikes = r.dislikes || [];
+      const rOrando = r.orando || [];
+      const rLiked = currentUser && rLikes.includes(currentUser.uid);
+      const rDisliked = currentUser && rDislikes.includes(currentUser.uid);
+      const rPrayed = currentUser && rOrando.includes(currentUser.uid);
+      const rPuedoEliminar = currentUser && (r.uid === currentUser.uid || isAdmin || uid === currentUser.uid);
+
+      respuestasHtml += `
+        <div style="margin-left:26px; padding-left:10px; border-left:2px solid var(--border-color); margin-top:6px;">
+          <div style="font-size:11px; color:var(--text-secondary);">
+            <strong style="color:var(--teal);">${r.autor}</strong>
+            · ${new Date(r.fecha).toLocaleString()}
+          </div>
+          <div style="font-size:13px;">${r.texto}</div>
+          <div style="display:flex; gap:6px; margin-top:3px; flex-wrap:wrap;">
+            <button class="foto-mini-btn ${rLiked ? 'liked' : ''}" onclick="reaccionarComentarioFoto('${uid}','${fotoId}',${ci},${ri},'likes')">
+              <i class="fas fa-heart"></i> ${rLikes.length}
+            </button>
+            <button class="foto-mini-btn ${rDisliked ? 'disliked' : ''}" onclick="reaccionarComentarioFoto('${uid}','${fotoId}',${ci},${ri},'dislikes')">
+              <i class="fas fa-thumbs-down"></i> ${rDislikes.length}
+            </button>
+            <button class="foto-mini-btn ${rPrayed ? 'orando' : ''}" onclick="reaccionarComentarioFoto('${uid}','${fotoId}',${ci},${ri},'orando')">
+              <i class="fas fa-pray"></i> ${rOrando.length}
+            </button>
+            ${rPuedoEliminar ? `<button class="foto-mini-btn" onclick="eliminarRespuestaFoto('${uid}','${fotoId}',${ci},${ri})"><i class="fas fa-trash"></i></button>` : ''}
+          </div>
+        </div>`;
+    });
+
+    ch += `
+      <div style="margin-bottom:10px;">
+        <div style="font-size:11px; color:var(--text-secondary);">
+          <strong style="color:var(--teal);">${c.autor}</strong>
+          · ${new Date(c.fecha).toLocaleString()}
+        </div>
+        <div style="font-size:13px;">${c.texto}</div>
+        <div style="display:flex; gap:6px; margin-top:3px; flex-wrap:wrap;">
+          <button class="foto-mini-btn ${cLiked ? 'liked' : ''}" onclick="reaccionarComentarioFoto('${uid}','${fotoId}',${ci},null,'likes')">
+            <i class="fas fa-heart"></i> ${cLikes.length}
+          </button>
+          <button class="foto-mini-btn ${cDisliked ? 'disliked' : ''}" onclick="reaccionarComentarioFoto('${uid}','${fotoId}',${ci},null,'dislikes')">
+            <i class="fas fa-thumbs-down"></i> ${cDislikes.length}
+          </button>
+          <button class="foto-mini-btn ${cPrayed ? 'orando' : ''}" onclick="reaccionarComentarioFoto('${uid}','${fotoId}',${ci},null,'orando')">
+            <i class="fas fa-pray"></i> ${cOrando.length}
+          </button>
+          ${currentUser ? `<button class="foto-mini-btn" onclick="mostrarInputRespuestaFoto(${ci})"><i class="fas fa-reply"></i> Responder</button>` : ''}
+          ${puedoEliminar ? `<button class="foto-mini-btn" onclick="eliminarComentarioFoto('${uid}','${fotoId}',${ci})"><i class="fas fa-trash"></i></button>` : ''}
+        </div>
+        <div id="foto-reply-input-${ci}" class="foto-reply-input" style="display:none;">
+          <input type="text" id="foto-reply-text-${ci}" placeholder="Responder...">
+          <button onclick="enviarRespuestaFoto('${uid}','${fotoId}',${ci})">Enviar</button>
+        </div>
+        ${respuestasHtml}
+      </div>`;
+  });
+
+  if (currentUser) {
+    ch += `
+      <div class="foto-comment-box">
+        <input type="text" id="fotoNuevoComentario" placeholder="Escribe un comentario..." onkeydown="if(event.key==='Enter'){event.preventDefault();comentarFoto('${uid}','${fotoId}');}">
+        <button onclick="comentarFoto('${uid}','${fotoId}')"><i class="fas fa-paper-plane"></i></button>
+      </div>`;
+  } else {
+    ch += `<p style="font-size:12px; color:var(--text-secondary); text-align:center; margin-top:8px;">Inicia sesión para comentar y reaccionar.</p>`;
+  }
+
+  document.getElementById('fotoViewerComments').innerHTML = ch;
 }
+
+function cerrarFotoViewer() {
+  if (fotoViewerUnsub) fotoViewerUnsub();
+  fotoViewerUnsub = null;
+  cerrarModal('fotoViewerModal');
+}
+
+function toggleReaccionFoto(uid, fotoId, campo) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
+  ref.get().then(doc => {
+    if (!doc.exists) return;
+    const data = doc.data();
+    const arr = (data[campo] || []).slice();
+    const i = arr.indexOf(currentUser.uid);
+    const upd = {};
+    if (i > -1) arr.splice(i, 1); else arr.push(currentUser.uid);
+    upd[campo] = arr;
+    if (campo === 'likes') upd.dislikes = (data.dislikes || []).filter(u => u !== currentUser.uid);
+    if (campo === 'dislikes') upd.likes = (data.likes || []).filter(u => u !== currentUser.uid);
+    ref.update(upd);
+  }).catch(() => alert('No se pudo actualizar la reacción.'));
+}
+
+function comentarFoto(uid, fotoId) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const input = document.getElementById('fotoNuevoComentario');
+  if (!input) return;
+  const texto = input.value.trim(); if (!texto) return;
+  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
+  ref.get().then(doc => {
+    if (!doc.exists) return;
+    const comentarios = doc.data().comentarios || [];
+    comentarios.push({
+      uid: currentUser.uid, autor: currentUser.displayName,
+      autorFoto: currentUser.fotoPerfil || '', texto,
+      fecha: new Date().toISOString(),
+      likes: [], dislikes: [], orando: [], respuestas: []
+    });
+    ref.update({ comentarios }).then(() => { input.value = ''; });
+  });
+}
+
+function mostrarInputRespuestaFoto(ci) {
+  const el = document.getElementById('foto-reply-input-' + ci);
+  if (!el) return;
+  el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+  if (el.style.display === 'flex') {
+    const i = document.getElementById('foto-reply-text-' + ci);
+    if (i) i.focus();
+  }
+}
+
+function enviarRespuestaFoto(uid, fotoId, ci) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const inp = document.getElementById('foto-reply-text-' + ci);
+  const texto = inp.value.trim(); if (!texto) return;
+  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
+  ref.get().then(doc => {
+    if (!doc.exists) return;
+    const comentarios = doc.data().comentarios || [];
+    if (!comentarios[ci]) return;
+    comentarios[ci].respuestas = comentarios[ci].respuestas || [];
+    comentarios[ci].respuestas.push({
+      uid: currentUser.uid, autor: currentUser.displayName,
+      autorFoto: currentUser.fotoPerfil || '', texto,
+      fecha: new Date().toISOString(),
+      likes: [], dislikes: [], orando: []
+    });
+    ref.update({ comentarios }).then(() => { inp.value = ''; });
+  });
+}
+
+function reaccionarComentarioFoto(uid, fotoId, ci, ri, tipo) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
+  ref.get().then(doc => {
+    if (!doc.exists) return;
+    const comentarios = doc.data().comentarios || [];
+    if (!comentarios[ci]) return;
+    const target = (ri === null || ri === undefined) ? comentarios[ci] : (comentarios[ci].respuestas || [])[ri];
+    if (!target) return;
+    const arr = (target[tipo] || []).slice();
+    const i = arr.indexOf(currentUser.uid);
+    if (i > -1) arr.splice(i, 1); else arr.push(currentUser.uid);
+    target[tipo] = arr;
+    if (tipo === 'likes') target.dislikes = (target.dislikes || []).filter(u => u !== currentUser.uid);
+    if (tipo === 'dislikes') target.likes = (target.likes || []).filter(u => u !== currentUser.uid);
+    ref.update({ comentarios });
+  });
+}
+
+function eliminarComentarioFoto(uid, fotoId, ci) {
+  if (!currentUser) return;
+  if (!confirm('¿Eliminar este comentario?')) return;
+  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
+  ref.get().then(doc => {
+    if (!doc.exists) return;
+    const comentarios = doc.data().comentarios || [];
+    if (!comentarios[ci]) return;
+    const c = comentarios[ci];
+    if (!(c.uid === currentUser.uid || isAdmin || uid === currentUser.uid)) { alert('Sin permiso.'); return; }
+    comentarios.splice(ci, 1);
+    ref.update({ comentarios });
+  });
+}
+
+function eliminarRespuestaFoto(uid, fotoId, ci, ri) {
+  if (!currentUser) return;
+  if (!confirm('¿Eliminar esta respuesta?')) return;
+  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
+  ref.get().then(doc => {
+    if (!doc.exists) return;
+    const comentarios = doc.data().comentarios || [];
+    if (!comentarios[ci] || !comentarios[ci].respuestas || !comentarios[ci].respuestas[ri]) return;
+    const r = comentarios[ci].respuestas[ri];
+    if (!(r.uid === currentUser.uid || isAdmin || uid === currentUser.uid)) { alert('Sin permiso.'); return; }
+    comentarios[ci].respuestas.splice(ri, 1);
+    ref.update({ comentarios });
+  });
+}
+
+function compartirFotoViewer(uid, fotoId) {
+  const url = window.location.origin + window.location.pathname + '?foto=' + uid + '_' + fotoId;
+  if (navigator.share) navigator.share({ title: 'Foto', url }).catch(()=>{});
+  else navigator.clipboard.writeText(url).then(() => alert('Enlace copiado.')).catch(()=>{});
+
+  const ref = USERS.doc(uid).collection('fotos').doc(fotoId);
+  ref.get().then(doc => {
+    if (doc.exists) ref.update({ compartidos: (doc.data().compartidos || 0) + 1 }).catch(()=>{});
+  });
+}
+
 function compartirPerfil(uid) {
   const url = window.location.origin + window.location.pathname + '?perfil=' + uid;
   if (navigator.share) navigator.share({ title: 'Perfil', url });
@@ -4644,14 +4954,12 @@ function actualizarTabs() {
   else tabEquipo.style.display = 'none';
 }
 
-// Theme init
 if (localStorage.getItem(STORAGE_KEYS.theme) === 'dark') {
   document.body.classList.add('dark');
   const i = document.querySelector('#tabTemaToggle i'); if (i) { i.classList.remove('fa-moon'); i.classList.add('fa-sun'); }
   const s = document.querySelector('#tabTemaToggle span'); if (s) s.textContent = ' Modo claro';
 }
 
-// Versículo del día
 const versiculosDia = [
   { texto: "Porque de tal manera amó Dios al mundo...", ref: "Juan 3:16" },
   { texto: "El Señor es mi pastor; nada me faltará.", ref: "Salmo 23:1" },
@@ -4725,7 +5033,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('historiaCancel').addEventListener('click', () => cerrarModal('historiaModal'));
   document.getElementById('historiaPublicar').addEventListener('click', publicarHistoria);
 
-  // Chat privado: input + archivo
   document.getElementById('chatPrivadoInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') enviarMensajePrivado(); });
   document.getElementById('chatPrivadoFile').addEventListener('change', function() {
     const f = this.files[0]; if (!f) return;
@@ -4828,9 +5135,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   auth.onAuthStateChanged(async (user) => { if (user) await cargarUsuarioActual(user); });
 
-  setInterval(() => { if (currentUser) renderHistorias(); }, 5 * 60 * 1000);
+  setInterval(() => { renderHistorias(); }, 5 * 60 * 1000);
 
-  console.log('✅ SAL Y LUZ v8: historias, proyectos, reels móvil/PC y menú hamburguesa SuperAdmin.');
+  console.log('✅ SAL Y LUZ v9: historias públicas, perfiles sin login y visor de galería completo.');
 });
 
 // Exposición global
@@ -4999,6 +5306,13 @@ window.cargarConfigMenu = cargarConfigMenu;
 window.abrirFotoViewer = abrirFotoViewer;
 window.cerrarFotoViewer = cerrarFotoViewer;
 window.toggleReaccionFoto = toggleReaccionFoto;
+window.comentarFoto = comentarFoto;
+window.mostrarInputRespuestaFoto = mostrarInputRespuestaFoto;
+window.enviarRespuestaFoto = enviarRespuestaFoto;
+window.reaccionarComentarioFoto = reaccionarComentarioFoto;
+window.eliminarComentarioFoto = eliminarComentarioFoto;
+window.eliminarRespuestaFoto = eliminarRespuestaFoto;
+window.compartirFotoViewer = compartirFotoViewer;
 window.toggleTheme = toggleTheme;
 window.renderAdminHistorias = renderAdminHistorias;
 window.renderAdminEventos = renderAdminEventos;

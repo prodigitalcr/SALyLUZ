@@ -128,193 +128,33 @@
     .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
     .card h3 i { color: var(--teal); }
 
-    /* ============================================================
-       HISTORIAS — MINIATURAS VERTICALES (nuevo)
-       ============================================================ */
-    .historias-bar {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding: 12px 8px;
-      background: white;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow);
-      margin-bottom: 16px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
+    /* ============ HISTORIAS VERTICALES ============ */
+    .historias-bar { display: flex; gap: 12px; overflow-x: auto; padding: 12px 6px; background: white; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow); margin-bottom: 16px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
     body.dark .historias-bar { background: #1a1a2e; }
     .historias-bar::-webkit-scrollbar { display: none; }
-    .historia-item {
-      flex-shrink: 0;
-      width: 104px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      text-align: center;
-      position: relative;
-    }
-    .historia-thumb {
-      width: 100px;
-      height: 150px;
-      border-radius: 14px;
-      padding: 3px;
-      background: linear-gradient(135deg, #D4AF37, #A67C00);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      transition: transform 0.2s;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-    }
-    .historia-thumb.visto { background: var(--border-color); }
-    .historia-thumb.activa { animation: pulseRing 2s infinite; }
+    .historia-item { flex-shrink: 0; width: 92px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; text-align: center; position: relative; transition: transform 0.2s; }
+    .historia-item:hover { transform: translateY(-3px); }
+    .historia-ring { width: 92px; height: 144px; border-radius: 14px; padding: 3px; background: linear-gradient(135deg, #D4AF37, #A67C00); display: flex; align-items: center; justify-content: center; transition: transform 0.2s; position: relative; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .historia-ring.visto { background: var(--border-color); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    .historia-ring.activa { animation: pulseRing 2s infinite; }
     @keyframes pulseRing { 0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.7); } 50% { box-shadow: 0 0 0 8px rgba(212,175,55,0); } }
-    .historia-thumb:hover { transform: scale(1.04); }
-    .historia-thumb-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 11px;
-      background-size: cover;
-      background-position: center;
-      background-color: var(--bg-body);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--teal-dark);
-      font-weight: 700;
-      font-size: 28px;
-      border: 2px solid white;
-      overflow: hidden;
-      position: relative;
-    }
-    body.dark .historia-thumb-inner { border-color: #1a1a2e; }
-    .historia-thumb-inner::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      height: 55%;
-      background: linear-gradient(transparent, rgba(0,0,0,0.7));
-      pointer-events: none;
-      z-index: 1;
-    }
-    .historia-thumb-nombre {
-      position: absolute;
-      left: 8px; right: 8px; bottom: 8px;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 600;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      z-index: 2;
-      text-align: left;
-    }
-    .historia-nombre {
-      font-size: 11px;
-      color: var(--text-primary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 96px;
-      font-weight: 500;
-    }
-    .historia-add-icon {
-      position: absolute;
-      bottom: -6px;
-      right: 2px;
-      width: 26px;
-      height: 26px;
-      background: var(--teal);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      border: 2px solid white;
-      z-index: 3;
-    }
-    body.dark .historia-add-icon { border-color: #1a1a2e; }
-
-    /* ============================================================
-       MINIATURAS DE HISTORIAS EN EL PERFIL (nuevo)
-       ============================================================ */
-    .perfil-historias-row {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 4px 0 6px;
-      scrollbar-width: none;
-    }
-    .perfil-historias-row::-webkit-scrollbar { display: none; }
-    .perfil-historia-thumb {
-      flex-shrink: 0;
-      width: 68px;
-      height: 96px;
-      border-radius: 10px;
-      padding: 2px;
-      background: linear-gradient(135deg, #D4AF37, #A67C00);
-      cursor: pointer;
-      transition: transform 0.2s;
-      position: relative;
-    }
-    .perfil-historia-thumb:hover { transform: scale(1.05); }
-    .perfil-historia-thumb.visto { background: var(--border-color); }
-    .perfil-historia-thumb-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 8px;
-      background-size: cover;
-      background-position: center;
-      background-color: var(--bg-body);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--teal-dark);
-      font-weight: 700;
-      font-size: 22px;
-    }
-    .perfil-historia-thumb-inner::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
-      height: 60%;
-      background: linear-gradient(transparent, rgba(0,0,0,0.65));
-      pointer-events: none;
-    }
-    .perfil-historia-hora {
-      position: absolute;
-      bottom: 4px; left: 5px; right: 5px;
-      color: #fff;
-      font-size: 9px;
-      font-weight: 600;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.9);
-      z-index: 2;
-      text-align: left;
+    .historia-ring:hover { transform: scale(1.04); }
+    .historia-avatar { width: 100%; height: 100%; border-radius: 11px; background: var(--bg-body); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: var(--teal-dark); font-weight: 700; font-size: 28px; overflow: hidden; position: relative; }
+    .historia-avatar::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.55) 100%); border-radius: 11px; pointer-events: none; }
+    .historia-mini-avatar { position: absolute; top: 6px; left: 6px; width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; background-size: cover; background-position: center; background-color: var(--teal); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+    .historia-nombre { font-size: 11px; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px; font-weight: 500; }
+    .historia-add-icon { position: absolute; bottom: 8px; right: 8px; width: 26px; height: 26px; background: var(--teal); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; border: 2px solid white; z-index: 3; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+    .historia-add-label { position: absolute; bottom: 6px; left: 0; right: 0; color: #fff; font-size: 10px; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.8); z-index: 2; }
+    @media (max-width: 640px) {
+      .historia-item { width: 78px; }
+      .historia-ring { width: 78px; height: 122px; border-radius: 12px; }
+      .historia-avatar { border-radius: 9px; }
+      .historia-mini-avatar { width: 24px; height: 24px; font-size: 10px; top: 4px; left: 4px; }
+      .historia-nombre { font-size: 10px; max-width: 76px; }
     }
 
-    /* ============================================================
-       PERFIL — Publicaciones con estilo consistente
-       ============================================================ */
-    .perfil-pub-mini {
-      background: var(--bg-body);
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-      border: 1px solid var(--border-color);
-    }
-    .perfil-pub-mini .pp-texto { font-size: 13px; line-height: 1.5; }
-    .perfil-pub-mini .pp-fecha { font-size: 11px; color: var(--text-secondary); margin-top: 3px; }
-    .perfil-pub-mini .pp-media { width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; margin-top: 6px; }
-
-    .story-viewer { position: fixed; inset: 0; background: #000; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+    /* ============ STORY VIEWER TIPO REEL ============ */
+    .story-viewer { position: fixed; inset: 0; background: #000; z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
     .story-viewer.show { display: flex; }
     .story-progress-bar { position: absolute; top: 8px; left: 8px; right: 8px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 3px; z-index: 30; display: flex; gap: 3px; }
     .story-progress-seg { flex: 1; background: rgba(255,255,255,0.35); border-radius: 3px; overflow: hidden; }
@@ -325,8 +165,14 @@
     .story-header .name { font-weight: 600; font-size: 14px; }
     .story-header .time { font-size: 11px; opacity: 0.75; }
     .story-header .close-btn { background: rgba(0,0,0,0.5); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 16px; cursor: pointer; }
-    .story-content { position: relative; width: 100%; height: 100%; max-width: 500px; display: flex; align-items: center; justify-content: center; }
-    .story-content img, .story-content video { max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; }
+    .story-content { position: relative; width: 100%; height: 100%; max-width: 100%; max-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .story-content img, .story-content video {
+      max-width: 100%; max-height: 100vh; width: auto; height: auto;
+      object-fit: contain; border-radius: 0; display: block;
+    }
+    @media (max-width: 640px) {
+      .story-content img, .story-content video { width: 100%; height: auto; max-height: 100vh; }
+    }
     .story-content .story-link { background: #fff; color: #12121a; padding: 24px; border-radius: 12px; max-width: 90%; text-align: center; }
     .story-content .story-link a { color: var(--teal); font-weight: 600; word-break: break-all; }
     .story-content .story-encuesta { background: #fff; color: #12121a; padding: 20px; border-radius: 12px; max-width: 90%; width: 320px; }
@@ -339,6 +185,18 @@
     .story-nav-right { right: 0; }
     .story-delete-btn { position: absolute; bottom: 20px; right: 20px; z-index: 20; background: rgba(231,76,60,0.8); color: #fff; border: none; padding: 8px 16px; border-radius: 30px; cursor: pointer; font-size: 13px; }
     .story-views-info { position: absolute; bottom: 20px; left: 20px; z-index: 20; background: rgba(0,0,0,0.5); color: #fff; padding: 6px 14px; border-radius: 30px; font-size: 12px; }
+
+    /* ============ SELECTOR USUARIOS HISTORIA ============ */
+    .historia-user-pick { display: flex; align-items: center; gap: 8px; padding: 6px 2px; cursor: pointer; border-bottom: 1px solid var(--border-color); }
+    .historia-user-pick:last-child { border-bottom: none; }
+    .historia-user-pick input[type="checkbox"] { width: auto; margin: 0; }
+    .historia-user-avatar {
+      width: 28px; height: 28px; border-radius: 50%; background-size: cover;
+      background-position: center; background-color: var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 11px; font-weight: 600; flex-shrink: 0;
+    }
+
     .chat-privado-box { max-width: 500px !important; padding: 0 !important; overflow: hidden; }
     .chat-privado-header { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: #fff; padding: 14px 16px; display: flex; align-items: center; gap: 10px; }
     .chat-privado-header img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: rgba(255,255,255,0.2); }
@@ -373,9 +231,9 @@
     .reel-volume-slider::-moz-range-thumb { width: 14px; height: 14px; background: #fff; border-radius: 50%; cursor: pointer; border: none; }
     .reel-double-hint { position: absolute; top: 50%; left: 0; right: 0; transform: translateY(-50%); pointer-events: none; z-index: 14; display: flex; justify-content: space-between; padding: 0 20px; color: rgba(255,255,255,0.7); font-size: 40px; opacity: 0; transition: opacity 0.3s; }
     .reel-double-hint.show { opacity: 1; }
-    .reel-acciones-vertical { position: absolute; right: 8px; bottom: 100px; z-index: 20; display: flex; flex-direction: column; gap: 12px; align-items: center; }
-    .reel-accion-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; background: transparent; border: none; cursor: pointer; color: #fff; font-size: 10px; font-weight: 600; }
-    .reel-accion-btn .circulo { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.22); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; font-size: 18px; transition: transform 0.2s, background 0.2s; border: 1px solid rgba(255,255,255,0.15); }
+    .reel-acciones-vertical { position: absolute; right: 10px; bottom: 120px; z-index: 20; display: flex; flex-direction: column; gap: 14px; align-items: center; }
+    .reel-accion-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; background: transparent; border: none; cursor: pointer; color: #fff; font-size: 11px; font-weight: 600; }
+    .reel-accion-btn .circulo { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.22); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; font-size: 20px; transition: transform 0.2s, background 0.2s; border: 1px solid rgba(255,255,255,0.15); }
     .reel-accion-btn .circulo:hover { transform: scale(1.1); background: rgba(255,255,255,0.35); }
     .reel-accion-btn.liked .circulo { background: rgba(231,76,60,0.85); }
     .reel-accion-btn.disliked .circulo { background: rgba(230,126,34,0.85); }
@@ -432,28 +290,6 @@
     .reel-info-comment-box input::placeholder { color: rgba(255,255,255,0.5); }
     .reel-info-comment-box button { background: var(--teal); color: white; border: none; padding: 8px 18px; border-radius: 30px; cursor: pointer; font-size: 13px; font-weight: 500; }
 
-    /* Botón toggle comentarios (solo móvil) */
-    .reel-comments-toggle {
-      display: none;
-      width: 100%;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #fff;
-      padding: 10px 14px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 4px;
-      transition: background 0.2s;
-    }
-    .reel-comments-toggle:hover { background: rgba(255,255,255,0.15); }
-    .reel-comments-toggle .chev { transition: transform 0.3s; }
-    .reel-comments-toggle.abierto .chev { transform: rotate(180deg); }
-
     @media (min-width: 769px) {
       .reel-slide-full { flex-direction: row; }
       .reel-full-video { flex: 0 0 70%; }
@@ -464,35 +300,79 @@
       .reel-seguir-btn { display: none; }
       .reel-comments-toggle { display: none !important; }
     }
+
+    /* ============ REELS MÓVIL SIMÉTRICO + COMENTARIOS TOGGLE ============ */
     @media (max-width: 768px) {
-      .reel-acciones-vertical { display: flex; }
-      .reel-seguir-btn { display: block; }
-      .reel-info-actions { display: none; }
-      /* Info más compacta y simétrica */
-      .reel-full-info { max-height: 40vh; padding: 12px 14px; gap: 8px; }
-      .reel-info-author { gap: 8px; }
-      .reel-info-author img { width: 34px; height: 34px; }
+      .reel-slide-full {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        padding: 0;
+      }
+      .reel-full-video {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .reel-full-video video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .reel-full-info {
+        flex: 0 0 auto;
+        max-height: none;
+        padding: 12px 14px 16px;
+        background: #12121a;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .reel-info-author img { width: 36px; height: 36px; }
       .reel-info-author .name { font-size: 13px; }
-      .reel-info-desc { font-size: 12.5px; }
-      /* Comentarios colapsados por defecto */
-      .reel-info-comments { display: none; max-height: 30vh; }
-      .reel-info-comments.abierto { display: flex; }
-      .reel-info-comment-box { display: none; }
-      .reel-info-comment-box.abierto { display: flex; }
-      .reel-comments-toggle { display: flex; }
-      /* Botón "seguir" y acciones mejor alineadas */
-      .reel-acciones-vertical { right: 6px; bottom: 90px; gap: 10px; }
-      .reel-accion-btn .circulo { width: 38px; height: 38px; font-size: 17px; }
+      .reel-info-author .date { font-size: 10px; }
+      .reel-info-desc { font-size: 12px; line-height: 1.4; }
+      .reel-info-actions { display: none; }
+      .reel-acciones-vertical { display: flex; right: 8px; bottom: 100px; gap: 12px; }
+      .reel-accion-btn .circulo { width: 40px; height: 40px; font-size: 18px; }
       .reel-accion-btn .num { font-size: 10px; }
-      .reel-seguir-btn { top: 10px; right: 10px; font-size: 22px; }
+      .reel-seguir-btn { display: block; }
+      /* Comentarios ocultos por defecto en móvil */
+      .reel-info-comments { display: none !important; }
+      .reel-info-comment-box { display: none !important; }
+      .reel-full-info.comments-open .reel-info-comments { display: flex !important; max-height: 32vh; overflow-y: auto; }
+      .reel-full-info.comments-open .reel-info-comment-box { display: flex !important; }
+      .reel-full-info.comments-open { max-height: 65vh; overflow-y: auto; }
+      .reel-comments-toggle { display: flex !important; }
     }
+    .reel-comments-toggle { display: none; }
+
     .reels-placeholder { text-align: center; padding: 40px 20px; color: var(--text-secondary); }
     .reels-placeholder i { font-size: 60px; color: var(--teal); display: block; margin-bottom: 16px; }
     .reels-placeholder h3 { font-size: 20px; margin-bottom: 8px; color: var(--text-primary); }
     .reels-placeholder p { font-size: 14px; margin-bottom: 16px; }
-    .reels-main-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px 0; }
-    .reels-add-btn-main { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: #fff; border: none; padding: 12px 24px; border-radius: 40px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; box-shadow: 0 6px 16px rgba(29,158,117,0.35); transition: transform 0.2s; }
-    .reels-add-btn-main:hover { transform: scale(1.05); }
+
+    /* ============ REELS: BOTONES SOLO ICONOS ============ */
+    .reels-main-actions { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 18px; padding: 24px 0; }
+    .reels-icon-btn {
+      width: 62px; height: 62px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      color: #fff; border: none; font-size: 24px;
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 20px rgba(29,158,117,0.4);
+    }
+    .reels-icon-btn:hover { transform: scale(1.1); box-shadow: 0 10px 26px rgba(29,158,117,0.55); }
+    .reels-icon-btn.reels-icon-add {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      box-shadow: 0 8px 20px rgba(212,175,55,0.5);
+    }
+    .reels-icon-btn.reels-icon-add:hover { box-shadow: 0 10px 26px rgba(212,175,55,0.7); }
+
     .amigos-comun { display: inline-flex; align-items: center; gap: 6px; background: var(--teal-light); color: var(--teal-dark); padding: 3px 12px; border-radius: 30px; font-size: 12px; font-weight: 500; }
     .amigos-comun i { font-size: 11px; }
     .proyecto-card { background: white; border-radius: var(--radius); padding: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow); margin-bottom: 14px; transition: 0.2s; }
@@ -944,10 +824,8 @@
       <h3>Reels de la comunidad</h3>
       <p>Comparte y descubre videos cortos con la comunidad.</p>
       <div class="reels-main-actions">
-        <button class="btn-primary" onclick="abrirReelsViewer()"><i class="fas fa-play"></i> Ver Reels</button>
-        <button class="reels-add-btn-main" id="btnSubirReelMain" onclick="abrirReelModal()" style="display:none;">
-          <i class="fas fa-plus"></i> Subir Reel
-        </button>
+        <button class="reels-icon-btn" onclick="abrirReelsViewer()" title="Ver Reels"><i class="fas fa-play"></i></button>
+        <button class="reels-icon-btn reels-icon-add" id="btnSubirReelMain" onclick="abrirReelModal()" title="Subir Reel" style="display:none;"><i class="fas fa-plus"></i></button>
       </div>
     </div>
   </div>
@@ -1744,12 +1622,29 @@
     <div class="modal-box">
       <h3><i class="fas fa-plus-circle"></i> Nueva Historia (24h)</h3>
       <label>Tipo de historia</label>
-      <select id="historiaTipo">
+      <select id="historiaTipo" onchange="actualizarBloquesHistoria()">
         <option value="imagen">Foto</option>
         <option value="video">Video (máx 60 seg)</option>
         <option value="enlace">Enlace</option>
         <option value="encuesta">Encuesta</option>
       </select>
+
+      <label>Visibilidad</label>
+      <select id="historiaVisibilidad" onchange="actualizarVisibilidadHistoria()">
+        <option value="publica">🌐 Pública (todos la ven)</option>
+        <option value="seguidores">👥 Solo mis seguidores</option>
+        <option value="personalizada">⭐ Personalizada (elegir usuarios)</option>
+        <option value="privada">🔒 Privada (solo yo)</option>
+      </select>
+
+      <div id="historiaPermitidosBlock" style="display:none; margin-top:8px;">
+        <label>Usuarios que podrán verla</label>
+        <input type="text" id="historiaBuscarUsuario" placeholder="Buscar usuario..." oninput="filtrarUsuariosHistoria()" style="margin-bottom:6px;">
+        <div id="historiaUsuariosLista" style="max-height:200px; overflow-y:auto; padding:6px; border:1px solid var(--border-color); border-radius:8px; background:var(--bg-body);">
+          <p style="color:var(--text-secondary); font-size:12px;">Cargando usuarios...</p>
+        </div>
+      </div>
+
       <div id="historiaFotoBlock">
         <label>Selecciona imagen</label>
         <input type="file" id="historiaFileImg" accept="image/*">
@@ -2333,63 +2228,65 @@ function agregarElementoCarrusel() {
 function eliminarElementoCarrusel(id) { if (!isAdmin) return; if (!confirm('¿Eliminar?')) return; CARRUSEL.doc(id).delete().then(() => renderListaCarrusel()); }
 
 // ================================================================
-// 6.2 HISTORIAS (24h) — MINIATURAS VERTICALES EN EL INICIO
+// 6.2 HISTORIAS (24h) — VISIBILIDAD CONTROLADA POR EL AUTOR
 // ================================================================
+// Determina si el usuario actual puede ver la historia
+function puedeVerHistoria(h, misSeguidos) {
+  if (!h) return false;
+  if (currentUser && h.uid === currentUser.uid) return true;
+  if (isAdmin) return true;
+
+  let vis = h.visibilidad;
+  if (!vis) {
+    if (h.publica === true) vis = 'publica';
+    else if (h.publica === false) vis = 'privada';
+    else vis = 'publica';
+  }
+
+  if (vis === 'publica') return true;
+  if (vis === 'privada') return false;
+  if (vis === 'seguidores') {
+    if (!currentUser) return false;
+    return misSeguidos ? misSeguidos.has(h.uid) : false;
+  }
+  if (vis === 'personalizada') {
+    if (!currentUser) return false;
+    return (h.permitidos || []).includes(currentUser.uid);
+  }
+  return false;
+}
+
 function renderHistorias() {
   const bar = document.getElementById('historiasBar');
   if (!bar) return;
   bar.style.display = 'flex';
 
   if (listeners.historias) { listeners.historias(); listeners.historias = null; }
-  if (listeners.historiasPropias) { listeners.historiasPropias(); listeners.historiasPropias = null; }
 
-  let publicas = [], propias = [];
-
-  const mergeYRender = () => {
-    const map = new Map();
-    [...publicas, ...propias].forEach(h => map.set(h.id, h));
-    pintarBarraHistorias(Array.from(map.values()));
-  };
-
-  // Historias públicas (visibles a todos los usuarios autenticados)
-  listeners.historias = HISTORIAS.where('publica', '==', true)
-    .orderBy('fecha', 'desc')
-    .onSnapshot(snap => {
-      publicas = [];
-      snap.forEach(d => publicas.push({ id: d.id, ...d.data() }));
-      mergeYRender();
-    }, err => {
-      // Fallback sin filtro por si el índice no existe
-      HISTORIAS.orderBy('fecha', 'desc').limit(60).get().then(snap2 => {
-        publicas = [];
-        snap2.forEach(d => {
-          const data = d.data();
-          if (data.publica !== false) publicas.push({ id: d.id, ...data });
-        });
-        mergeYRender();
-      }).catch(() => { publicas = []; mergeYRender(); });
+  // Traemos TODAS las historias (de los últimos 24h) y filtramos por visibilidad en cliente
+  listeners.historias = HISTORIAS.orderBy('fecha', 'desc').limit(300).onSnapshot(async snap => {
+    const ahora = Date.now();
+    const todas = [];
+    snap.forEach(d => {
+      const h = { id: d.id, ...d.data() };
+      if (!h.fecha || !h.fecha.seconds) return;
+      if (h.fecha.seconds * 1000 + 24 * 60 * 60 * 1000 <= ahora) return;
+      todas.push(h);
     });
 
-  if (currentUser) {
-    listeners.historiasPropias = HISTORIAS.where('uid', '==', currentUser.uid)
-      .orderBy('fecha', 'desc')
-      .onSnapshot(snap => {
-        propias = [];
-        snap.forEach(d => propias.push({ id: d.id, ...d.data() }));
-        mergeYRender();
-      }, err => { console.warn('historias propias err', err); propias = []; mergeYRender(); });
-  } else {
-    propias = [];
-    mergeYRender();
-  }
-}
+    // Cargar seguidos del usuario actual
+    let misSeguidos = new Set();
+    if (currentUser) {
+      try {
+        const segSnap = await SEGUIDORES.where('seguidorUid', '==', currentUser.uid).get();
+        segSnap.forEach(d => misSeguidos.add(d.data().seguidoUid));
+      } catch(e) {}
+    }
 
-function _thumbHistoria(h) {
-  // Devuelve una URL de imagen para la miniatura de la historia
-  if (!h) return '';
-  if (h.tipo === 'imagen' || (!h.tipo && h.url)) return h.url || '';
-  if (h.tipo === 'video') return ''; // mostramos icono de play
-  return '';
+    // Filtrar por visibilidad
+    const visibles = todas.filter(h => puedeVerHistoria(h, misSeguidos));
+    pintarBarraHistorias(visibles);
+  }, err => { console.warn('historias err', err); });
 }
 
 async function pintarBarraHistorias(historias) {
@@ -2411,11 +2308,12 @@ async function pintarBarraHistorias(historias) {
 
   let html = '';
   if (currentUser) {
-    // Botón "Mi historia" con miniatura vertical
+    const fotoPropia = currentUser.fotoPerfil || '';
     html += `<div class="historia-item" onclick="abrirModalHistoria()">
-      <div class="historia-thumb" style="background: var(--teal);">
-        <div class="historia-thumb-inner" style="background-image:url('${currentUser.fotoPerfil || ''}');">
-          ${currentUser.fotoPerfil ? '' : '<i class="fas fa-user"></i>'}
+      <div class="historia-ring" style="background:linear-gradient(135deg,var(--teal),var(--teal-dark));">
+        <div class="historia-avatar" style="background-image:url('${fotoPropia}'); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center;">
+          ${fotoPropia ? '' : '<i class="fas fa-user" style="font-size:32px;color:#fff;"></i>'}
+          <div class="historia-add-label">Crear historia</div>
         </div>
         <div class="historia-add-icon"><i class="fas fa-plus"></i></div>
       </div>
@@ -2439,37 +2337,33 @@ async function pintarBarraHistorias(historias) {
     if (!u) return;
     const historiasU = porUsuario[uid];
     const todasVistas = historiasU.every(h => vistas[h.id]);
+    const foto = u.fotoPerfil || '';
     const nombre = u.displayName || 'Usuario';
     const activa = currentUser && uid === currentUser.uid;
 
-    // Miniatura: usar la ÚLTIMA historia no vista (o la última)
-    let ultima = historiasU[historiasU.length - 1];
-    const primeraNoVista = historiasU.find(h => !vistas[h.id]);
-    if (primeraNoVista) ultima = primeraNoVista;
-
-    const thumbUrl = _thumbHistoria(ultima);
-    const esVideo = ultima && ultima.tipo === 'video';
-    const esEnlace = ultima && ultima.tipo === 'enlace';
-    const esEncuesta = ultima && ultima.tipo === 'encuesta';
-
-    let innerContent = '';
-    if (thumbUrl) {
-      innerContent = `<div class="historia-thumb-inner" style="background-image:url('${thumbUrl}');">
-        <div class="historia-thumb-nombre">${nombre.split(' ')[0]}</div>
-      </div>`;
-    } else {
-      // Placeholder para video / enlace / encuesta
-      const icono = esVideo ? 'fa-play' : esEnlace ? 'fa-link' : esEncuesta ? 'fa-poll' : 'fa-user';
-      const inicial = nombre.charAt(0).toUpperCase();
-      innerContent = `<div class="historia-thumb-inner" style="background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: #fff;">
-        <i class="fas ${icono}" style="font-size:32px; opacity:0.9; position:relative; z-index:0;"></i>
-        <div class="historia-thumb-nombre">${nombre.split(' ')[0]}</div>
-      </div>`;
+    const ultima = historiasU[historiasU.length - 1];
+    let thumbUrl = '';
+    let thumbIcon = '<i class="fas fa-image" style="font-size:30px;color:#fff;"></i>';
+    if (ultima.tipo === 'imagen' || (!ultima.tipo && ultima.url)) {
+      thumbUrl = ultima.url || '';
+      thumbIcon = '';
+    } else if (ultima.tipo === 'video') {
+      thumbUrl = '';
+      thumbIcon = '<i class="fas fa-play-circle" style="font-size:34px;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));"></i>';
+    } else if (ultima.tipo === 'enlace') {
+      thumbIcon = '<i class="fas fa-link" style="font-size:30px;color:#fff;"></i>';
+    } else if (ultima.tipo === 'encuesta') {
+      thumbIcon = '<i class="fas fa-poll" style="font-size:30px;color:#fff;"></i>';
     }
 
     html += `<div class="historia-item" onclick="abrirStoryViewer('${uid}')">
-      <div class="historia-thumb ${todasVistas ? 'visto' : 'activa'}">
-        ${innerContent}
+      <div class="historia-ring ${todasVistas ? 'visto' : ''} ${!todasVistas ? 'activa' : ''}">
+        <div class="historia-avatar" style="background-image:url('${thumbUrl}'); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; background-color:${thumbUrl ? 'transparent' : '#1a1a2e'};">
+          ${thumbUrl ? '' : thumbIcon}
+        </div>
+        <div class="historia-mini-avatar" style="background-image:url('${foto}'); background-size:cover; background-position:center;">
+          ${foto ? '' : nombre.charAt(0).toUpperCase()}
+        </div>
       </div>
       <div class="historia-nombre">${activa ? 'Tu historia' : nombre.split(' ')[0]}</div>
     </div>`;
@@ -2480,6 +2374,7 @@ async function pintarBarraHistorias(historias) {
 function abrirModalHistoria() {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   document.getElementById('historiaTipo').value = 'imagen';
+  document.getElementById('historiaVisibilidad').value = 'publica';
   document.getElementById('historiaFileImg').value = '';
   document.getElementById('historiaFileVideo').value = '';
   document.getElementById('historiaLink').value = '';
@@ -2488,6 +2383,8 @@ function abrirModalHistoria() {
   document.getElementById('historiaEncuestaOpciones').value = '';
   document.getElementById('historiaPreviewImg').innerHTML = '';
   document.getElementById('historiaPreviewVideo').innerHTML = '';
+  document.getElementById('historiaPermitidosBlock').style.display = 'none';
+  document.getElementById('historiaBuscarUsuario').value = '';
   actualizarBloquesHistoria();
   abrirModal('historiaModal');
 }
@@ -2500,18 +2397,66 @@ function actualizarBloquesHistoria() {
   document.getElementById('historiaEncuestaBlock').style.display = tipo === 'encuesta' ? 'block' : 'none';
 }
 
+function actualizarVisibilidadHistoria() {
+  const vis = document.getElementById('historiaVisibilidad').value;
+  const block = document.getElementById('historiaPermitidosBlock');
+  if (vis === 'personalizada') {
+    block.style.display = 'block';
+    cargarUsuariosHistoria();
+  } else {
+    block.style.display = 'none';
+  }
+}
+
+function cargarUsuariosHistoria() {
+  const lista = document.getElementById('historiaUsuariosLista');
+  if (!lista) return;
+  lista.innerHTML = '<p style="color:var(--text-secondary); font-size:12px;">Cargando usuarios...</p>';
+  USERS.get().then(snap => {
+    if (snap.empty) { lista.innerHTML = '<p style="color:var(--text-secondary); font-size:12px;">No hay usuarios.</p>'; return; }
+    let html = '';
+    snap.forEach(doc => {
+      const u = doc.data();
+      if (currentUser && u.uid === currentUser.uid) return;
+      const foto = u.fotoPerfil || '';
+      const inicial = (u.displayName || '?').charAt(0).toUpperCase();
+      html += `<label class="historia-user-pick" data-nombre="${(u.displayName||'').toLowerCase()}">
+        <input type="checkbox" class="historiaUserCheck" value="${u.uid}">
+        <div class="historia-user-avatar" style="background-image:url('${foto}');">${foto ? '' : inicial}</div>
+        <span style="font-size:13px;">${u.displayName || 'Usuario'}</span>
+      </label>`;
+    });
+    lista.innerHTML = html || '<p style="color:var(--text-secondary); font-size:12px;">No hay otros usuarios.</p>';
+  });
+}
+
+function filtrarUsuariosHistoria() {
+  const q = (document.getElementById('historiaBuscarUsuario').value || '').toLowerCase().trim();
+  document.querySelectorAll('#historiaUsuariosLista .historia-user-pick').forEach(el => {
+    const nombre = el.dataset.nombre || '';
+    el.style.display = nombre.includes(q) ? 'flex' : 'none';
+  });
+}
+
 function publicarHistoria() {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   const tipo = document.getElementById('historiaTipo').value;
-  const publica = (currentUser.privacidad && currentUser.privacidad.historias !== undefined)
-    ? !!currentUser.privacidad.historias
-    : true;
+  const visibilidad = document.getElementById('historiaVisibilidad').value || 'publica';
+
+  const permitidos = [];
+  if (visibilidad === 'personalizada') {
+    document.querySelectorAll('#historiaUsuariosLista .historiaUserCheck:checked').forEach(cb => permitidos.push(cb.value));
+    if (permitidos.length === 0) { alert('Selecciona al menos un usuario.'); return; }
+  }
+
   const dataBase = {
     uid: currentUser.uid,
     autorNombre: currentUser.displayName,
     autorFoto: currentUser.fotoPerfil || '',
     tipo,
-    publica,
+    visibilidad,
+    permitidos: visibilidad === 'personalizada' ? permitidos : [],
+    publica: visibilidad === 'publica',
     vistas: [],
     fecha: firebase.firestore.FieldValue.serverTimestamp()
   };
@@ -2559,21 +2504,23 @@ function publicarHistoria() {
 
 async function abrirStoryViewer(uid) {
   const ahora = Date.now();
-  let query;
   const esPropia = currentUser && currentUser.uid === uid;
-  if (esPropia) {
-    query = HISTORIAS.where('uid', '==', uid).orderBy('fecha', 'asc');
-  } else {
-    query = HISTORIAS.where('uid', '==', uid).where('publica', '==', true).orderBy('fecha', 'asc');
-  }
-  let snap;
-  try { snap = await query.get(); }
-  catch (e) {
-    // Fallback: sin filtro por si no existe el índice
+
+  let misSeguidos = new Set();
+  if (currentUser) {
     try {
-      const snap2 = await HISTORIAS.where('uid', '==', uid).get();
-      snap = snap2;
-    } catch (e2) { console.warn(e2); alert('No se pudieron cargar las historias.'); return; }
+      const segSnap = await SEGUIDORES.where('seguidorUid', '==', currentUser.uid).get();
+      segSnap.forEach(d => misSeguidos.add(d.data().seguidoUid));
+    } catch(e) {}
+  }
+
+  let snap;
+  try {
+    snap = await HISTORIAS.where('uid', '==', uid).orderBy('fecha', 'asc').get();
+  } catch (e) {
+    console.warn(e);
+    alert('No se pudieron cargar las historias.');
+    return;
   }
 
   const historias = [];
@@ -2581,10 +2528,15 @@ async function abrirStoryViewer(uid) {
     const h = { id: doc.id, ...doc.data() };
     if (!h.fecha || !h.fecha.seconds) return;
     if (h.fecha.seconds * 1000 + 24 * 60 * 60 * 1000 <= ahora) return;
-    if (!esPropia && h.publica === false) return;
-    historias.push(h);
+    if (esPropia || isAdmin || puedeVerHistoria(h, misSeguidos)) {
+      historias.push(h);
+    }
   });
-  if (historias.length === 0) { alert('No hay historias activas de este usuario.'); return; }
+
+  if (historias.length === 0) {
+    alert('No hay historias activas visibles para ti de este usuario.');
+    return;
+  }
   storyActual = { historias, index: 0, uid };
   document.getElementById('storyViewer').classList.add('show');
   document.body.style.overflow = 'hidden';
@@ -2611,7 +2563,7 @@ function mostrarHistoriaActual() {
   if (h.tipo === 'imagen' || (!h.tipo && h.url)) {
     contentHtml += `<img src="${h.url}" alt="historia">`;
   } else if (h.tipo === 'video') {
-    contentHtml += `<video src="${h.url}" autoplay playsinline controls style="max-height:80vh;"></video>`;
+    contentHtml += `<video src="${h.url}" autoplay playsinline controls style="max-height:100vh;"></video>`;
   } else if (h.tipo === 'enlace') {
     contentHtml += `<div class="story-link"><p style="font-size:15px; margin-bottom:12px;">${h.texto || 'Ver enlace'}</p><a href="${h.link}" target="_blank">${h.link}</a></div>`;
   } else if (h.tipo === 'encuesta') {
@@ -2980,6 +2932,10 @@ async function renderReelsSlides(reels) {
             <span class="circulo"><i class="fas fa-pray"></i></span>
             <span class="num">${orando.length}</span>
           </button>
+          <button class="reel-accion-btn reel-comments-toggle" onclick="toggleReelComments('${r.id}')">
+            <span class="circulo"><i class="fas fa-comment"></i></span>
+            <span class="num">${numComentarios}</span>
+          </button>
           <button class="reel-accion-btn" onclick="compartirReel('${r.id}')">
             <span class="circulo"><i class="fas fa-share"></i></span>
             <span class="num">Compartir</span>
@@ -3002,7 +2958,7 @@ async function renderReelsSlides(reels) {
           <span><i class="fas fa-forward"></i></span>
         </div>
       </div>
-      <div class="reel-full-info">
+      <div class="reel-full-info" id="reel-info-${r.id}">
         <div class="reel-info-author">
           <img src="${autorFoto}" onerror="this.style.display='none'" onclick="cerrarReelsViewer(); verPerfil('${r.uid}')" style="cursor:pointer;">
           <div style="flex:1;">
@@ -3022,18 +2978,10 @@ async function renderReelsSlides(reels) {
           <button onclick="compartirReel('${r.id}')"><i class="fas fa-share"></i> Compartir</button>
           ${puedeEliminar ? `<button class="danger" onclick="eliminarReelViewer('${r.id}')"><i class="fas fa-trash"></i> Eliminar</button>` : ''}
         </div>
-
-        <!-- Botón toggle de comentarios (móvil) -->
-        <button class="reel-comments-toggle" onclick="toggleReelComments('${r.id}', this)">
-          <i class="fas fa-comment"></i>
-          <span>Comentarios (${numComentarios})</span>
-          <i class="fas fa-chevron-down chev"></i>
-        </button>
-
         <div class="reel-info-comments" id="reel-comments-${r.id}">
           ${comentariosRender}
         </div>
-        ${currentUser ? `<div class="reel-info-comment-box" id="reel-comment-box-${r.id}">
+        ${currentUser ? `<div class="reel-info-comment-box">
           <input type="text" id="reel-comment-input-${r.id}" placeholder="Escribe un comentario..." onkeydown="if(event.key==='Enter'){event.preventDefault();comentarReelFull('${r.id}');}">
           <button onclick="comentarReelFull('${r.id}')"><i class="fas fa-paper-plane"></i></button>
         </div>` : ''}
@@ -3094,19 +3042,10 @@ async function renderReelsSlides(reels) {
   });
 }
 
-// Toggle comentarios en reels (móvil)
-function toggleReelComments(id, btn) {
-  const panel = document.getElementById('reel-comments-' + id);
-  const box = document.getElementById('reel-comment-box-' + id);
-  if (!panel) return;
-  const abierto = panel.classList.toggle('abierto');
-  if (box) box.classList.toggle('abierto', abierto);
-  if (btn) btn.classList.toggle('abierto', abierto);
-  // Cambiar texto del botón
-  if (btn) {
-    const span = btn.querySelector('span');
-    if (span) span.textContent = abierto ? 'Ocultar comentarios' : (span.textContent.startsWith('Comentarios') ? span.textContent : 'Comentarios');
-  }
+function toggleReelComments(id) {
+  const info = document.getElementById('reel-info-' + id);
+  if (!info) return;
+  info.classList.toggle('comments-open');
 }
 
 function renderReelsComments(r) {
@@ -4396,8 +4335,8 @@ function renderAdminHistorias() {
       const h = doc.data();
       const fecha = h.fecha ? new Date(h.fecha.seconds * 1000).toLocaleString() : '';
       const expira = h.fecha ? new Date((h.fecha.seconds + 86400) * 1000).toLocaleString() : '';
-      const publica = h.publica === true ? '🌐 Pública' : '🔒 Privada';
-      html += `<div class="admin-list-item"><span class="info"><strong>${h.autorNombre}</strong> [${h.tipo}] · ${publica} · ${fecha} · Expira: ${expira}</span><div class="actions"><button class="btn-danger" onclick="HISTORIAS.doc('${doc.id}').delete(); renderAdminHistorias();" style="font-size:10px;">Eliminar</button></div></div>`;
+      const vis = h.visibilidad || (h.publica ? 'publica' : 'privada');
+      html += `<div class="admin-list-item"><span class="info"><strong>${h.autorNombre}</strong> [${h.tipo}] · ${vis} · ${fecha} · Expira: ${expira}</span><div class="actions"><button class="btn-danger" onclick="HISTORIAS.doc('${doc.id}').delete(); renderAdminHistorias();" style="font-size:10px;">Eliminar</button></div></div>`;
     });
     list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin historias.</p>';
   });
@@ -4502,7 +4441,6 @@ function eliminarNoticia(id) { if (!isAdmin || !confirm('¿Eliminar?')) return; 
 
 // ================================================================
 // 19. PERFIL (público, sin necesidad de iniciar sesión)
-//     + MINIATURAS DE HISTORIAS Y PUBLICACIONES
 // ================================================================
 function verPerfil(uid) {
   if (!uid) return;
@@ -4574,11 +4512,13 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
         <span><strong id="numSeguidores">0</strong> Seguidores</span>
         <span><strong id="numSeguidos">0</strong> Siguiendo</span>
       </div>
-      <!-- NUEVO: Miniaturas de historias -->
-      <div id="perfilHistoriasContainer" style="margin:14px 0 8px;"></div>
+      <div id="perfilHistoriasSection" style="margin-top:16px;">
+        <h4 style="display:flex; align-items:center; gap:6px;"><i class="fas fa-circle-notch" style="color:var(--gold);"></i> Historias activas</h4>
+        <div id="perfilHistoriasContainer"><p style="color:var(--text-secondary); font-size:13px;">Cargando historias...</p></div>
+      </div>
       <div id="galeriaFotosContainer"><p style="color:var(--text-secondary);">Cargando fotos...</p></div>
       ${infoHtml ? `<div class="info-grid">${infoHtml}</div>` : ''}
-      <div id="perfilPublicaciones" style="margin-top:20px;"><h4>Publicaciones</h4><div id="perfilFeed"></div></div>
+      <div id="perfilPublicaciones" style="margin-top:20px;"><h4 style="display:flex; align-items:center; gap:6px;"><i class="fas fa-newspaper" style="color:var(--teal);"></i> Publicaciones</h4><div id="perfilFeed"></div></div>
     </div>
   </div>
   <div class="modal-actions"><button class="btn-cancel" onclick="cerrarModal('perfilModal')">Cerrar</button></div>`;
@@ -4586,13 +4526,13 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
   abrirModal('perfilModal');
   cargarPublicacionesUsuario(uid);
   cargarSeguidores(uid);
-  cargarHistoriasDeUsuario(uid);
+  cargarHistoriasPerfil(uid);
 
   USERS.doc(uid).collection('fotos').orderBy('fecha', 'desc').get().then(snapshot => {
     const fotos = []; snapshot.forEach(doc => fotos.push({ id: doc.id, ...doc.data() }));
     const container = document.getElementById('galeriaFotosContainer');
     if (!container) return;
-    if (fotos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay fotos.</p>'; return; }
+    if (fotos.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No hay fotos en la galería.</p>'; return; }
     let ghtml = '<div style="margin:10px 0;"><h4>📸 Galería</h4><div class="galeria-grid">';
     fotos.forEach(foto => { ghtml += `<div class="galeria-item" data-foto-id="${foto.id}" data-uid="${uid}" style="cursor:pointer;"><div class="galeria-img-wrapper"><img src="${foto.url}" alt=""></div>${foto.desc ? `<div class="foto-desc">${foto.desc}</div>` : ''}</div>`; });
     ghtml += '</div></div>';
@@ -4600,66 +4540,71 @@ async function mostrarPerfilProfesional(user, esSeguidor, uid) {
   });
 }
 
-// NUEVO: Cargar historias activas del usuario para mostrar en su perfil
-async function cargarHistoriasDeUsuario(uid) {
+// ============ HISTORIAS EN EL PERFIL ============
+async function cargarHistoriasPerfil(uid) {
   const container = document.getElementById('perfilHistoriasContainer');
   if (!container) return;
   const ahora = Date.now();
-  let historias = [];
+  const esPropio = currentUser && currentUser.uid === uid;
   try {
-    const snap = await HISTORIAS.where('uid', '==', uid).orderBy('fecha', 'desc').get();
-    snap.forEach(d => {
-      const h = { id: d.id, ...d.data() };
+    const snap = await HISTORIAS.where('uid', '==', uid).orderBy('fecha', 'asc').get();
+
+    let misSeguidos = new Set();
+    if (currentUser) {
+      try {
+        const segSnap = await SEGUIDORES.where('seguidorUid', '==', currentUser.uid).get();
+        segSnap.forEach(d => misSeguidos.add(d.data().seguidoUid));
+      } catch(e) {}
+    }
+
+    const historias = [];
+    snap.forEach(doc => {
+      const h = { id: doc.id, ...doc.data() };
       if (!h.fecha || !h.fecha.seconds) return;
       if (h.fecha.seconds * 1000 + 24 * 60 * 60 * 1000 <= ahora) return;
-      historias.push(h);
-    });
-  } catch (e) {
-    // Fallback sin índice
-    try {
-      const snap2 = await HISTORIAS.where('uid', '==', uid).get();
-      snap2.forEach(d => {
-        const h = { id: d.id, ...d.data() };
-        if (!h.fecha || !h.fecha.seconds) return;
-        if (h.fecha.seconds * 1000 + 24 * 60 * 60 * 1000 <= ahora) return;
+      if (esPropio || isAdmin || puedeVerHistoria(h, misSeguidos)) {
         historias.push(h);
-      });
-    } catch (e2) { console.warn(e2); }
-  }
-
-  if (historias.length === 0) { container.innerHTML = ''; return; }
-
-  // Orden ascendente por fecha
-  historias.sort((a, b) => a.fecha.seconds - b.fecha.seconds);
-
-  const vistasLocales = JSON.parse(localStorage.getItem('historias_vistas') || '{}');
-  let html = '<h4 style="margin-bottom:6px;">📖 Historias activas (24h)</h4><div class="perfil-historias-row">';
-  historias.forEach(h => {
-    const vista = !!vistasLocales[h.id];
-    const thumbUrl = _thumbHistoria(h);
-    const hora = h.fecha ? new Date(h.fecha.seconds * 1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : '';
-    let inner = '';
-    if (thumbUrl) {
-      inner = `<div class="perfil-historia-thumb-inner" style="background-image:url('${thumbUrl}');">
-        <div class="perfil-historia-hora">${hora}</div>
-      </div>`;
-    } else {
-      const icono = h.tipo === 'video' ? 'fa-play' : h.tipo === 'enlace' ? 'fa-link' : h.tipo === 'encuesta' ? 'fa-poll' : 'fa-image';
-      inner = `<div class="perfil-historia-thumb-inner" style="background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color:#fff;">
-        <i class="fas ${icono}"></i>
-        <div class="perfil-historia-hora">${hora}</div>
-      </div>`;
+      }
+    });
+    if (historias.length === 0) {
+      container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No hay historias activas.</p>';
+      return;
     }
-    html += `<div class="perfil-historia-thumb ${vista ? 'visto' : ''}" onclick="cerrarModal('perfilModal'); abrirStoryViewer('${uid}')" title="Ver historia">${inner}</div>`;
-  });
-  html += '</div>';
-  container.innerHTML = html;
+    historias.sort((a, b) => (a.fecha.seconds || 0) - (b.fecha.seconds || 0));
+    let html = '<div style="display:flex; gap:10px; overflow-x:auto; padding:4px 0; scrollbar-width:none;">';
+    historias.forEach(h => {
+      let thumbUrl = '';
+      let iconHtml = '<i class="fas fa-image" style="font-size:24px;color:#fff;"></i>';
+      if (h.tipo === 'imagen' || (!h.tipo && h.url)) {
+        thumbUrl = h.url || '';
+        iconHtml = '';
+      } else if (h.tipo === 'video') {
+        thumbUrl = '';
+        iconHtml = '<i class="fas fa-play-circle" style="font-size:28px;color:#fff;"></i>';
+      } else if (h.tipo === 'enlace') {
+        iconHtml = '<i class="fas fa-link" style="font-size:24px;color:#fff;"></i>';
+      } else if (h.tipo === 'encuesta') {
+        iconHtml = '<i class="fas fa-poll" style="font-size:24px;color:#fff;"></i>';
+      }
+      html += `<div class="historia-item" onclick="cerrarModal('perfilModal'); setTimeout(()=>abrirStoryViewer('${uid}'), 200);" style="width:78px;">
+        <div class="historia-ring" style="width:78px; height:122px; border-radius:12px;">
+          <div class="historia-avatar" style="border-radius:9px; background-image:url('${thumbUrl}'); background-color:${thumbUrl ? 'transparent' : '#1a1a2e'}; display:flex; align-items:center; justify-content:center;">
+            ${thumbUrl ? '' : iconHtml}
+          </div>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  } catch (e) {
+    container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">No se pudieron cargar las historias.</p>';
+  }
 }
 
+// ============ PUBLICACIONES EN EL PERFIL (con tarjetas completas) ============
 function cargarPublicacionesUsuario(uid) {
   const container = document.getElementById('perfilFeed');
   if (!container) return;
-  container.innerHTML = '<p style="color:var(--text-secondary); font-size:13px;">Cargando publicaciones...</p>';
   POSTS.where('uid', '==', uid).get().then(snapshot => {
     if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones.</p>'; return; }
     const docs = []; snapshot.forEach(d => docs.push({ id: d.id, ...d.data() }));
@@ -4667,16 +4612,21 @@ function cargarPublicacionesUsuario(uid) {
     let html = '';
     docs.forEach(p => {
       const fecha = p.fecha ? new Date(p.fecha.seconds * 1000).toLocaleString() : '';
-      let mediaHtml = '';
+      const catLabels = { testimonio: 'Testimonio', obra: 'Obra', oracion: 'Oración', encuesta: 'Encuesta', campania: 'Campaña', otro: 'Otro' };
+      html += `<div class="post" style="margin-bottom:12px;">
+        <div class="post-time" style="font-size:11px; color:var(--text-secondary); margin-bottom:4px;">${fecha}</div>
+        ${p.categoria ? `<span class="post-categoria">${catLabels[p.categoria] || p.categoria}</span>` : ''}
+        <div class="post-content">${p.texto || ''}</div>`;
       if (p.media) {
-        if (p.media.type === 'image') mediaHtml = `<img class="pp-media" src="${p.media.data}" onclick="event.stopPropagation(); abrirMediaViewer(['${p.media.data}'], 0, 'image')">`;
-        else if (p.media.type === 'video') mediaHtml = `<video class="pp-media" controls src="${p.media.data}"></video>`;
+        if (p.media.type === 'image') html += `<img src="${p.media.data}" class="post-media" style="max-height:220px; cursor:pointer;" onclick="event.stopPropagation(); abrirMediaViewer(['${p.media.data}'], 0, 'image')">`;
+        else if (p.media.type === 'video') html += `<video controls class="post-media" src="${p.media.data}" style="max-height:220px;"></video>`;
       }
-      html += `<div class="perfil-pub-mini">
-        <div class="pp-texto">${p.texto || ''}</div>
-        ${mediaHtml}
-        ${p.link ? `<div style="margin-top:4px;"><a href="${p.link}" target="_blank" style="color:var(--teal); font-size:12px;">${p.link}</a></div>` : ''}
-        <div class="pp-fecha"><i class="fas fa-clock"></i> ${fecha}</div>
+      if (p.link) html += `<div style="margin:4px 0;"><a href="${p.link}" target="_blank" style="color:var(--teal); font-size:13px;">${p.link}</a></div>`;
+      html += `<div class="post-actions" style="border-top:1px solid var(--border-color); padding-top:6px; margin-top:6px; display:flex; gap:14px;">
+        <span style="font-size:12px; color:var(--text-secondary);"><i class="fas fa-heart" style="color:#e74c3c;"></i> ${p.likes ? p.likes.length : 0}</span>
+        <span style="font-size:12px; color:var(--text-secondary);"><i class="fas fa-pray" style="color:#6a1b9a;"></i> ${p.orando ? p.orando.length : 0}</span>
+        <span style="font-size:12px; color:var(--text-secondary);"><i class="fas fa-comment"></i> ${p.comentarios ? p.comentarios.length : 0}</span>
+      </div>
       </div>`;
     });
     container.innerHTML = html;
@@ -5495,7 +5445,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   setInterval(() => { renderHistorias(); }, 5 * 60 * 1000);
 
-  console.log('✅ SAL Y LUZ v10: historias miniaturas verticales + perfil con historias + reels móvil simétrico.');
+  console.log('✅ SAL Y LUZ v11: historias con visibilidad avanzada, story viewer tipo reel y botones de reel minimalistas.');
 });
 
 // Exposición global
@@ -5547,6 +5497,10 @@ window.storySiguiente = storySiguiente;
 window.storyAnterior = storyAnterior;
 window.votarHistoria = votarHistoria;
 window.eliminarHistoriaActual = eliminarHistoriaActual;
+window.actualizarVisibilidadHistoria = actualizarVisibilidadHistoria;
+window.cargarUsuariosHistoria = cargarUsuariosHistoria;
+window.filtrarUsuariosHistoria = filtrarUsuariosHistoria;
+window.puedeVerHistoria = puedeVerHistoria;
 window.renderProyectos = renderProyectos;
 window.abrirModalProyecto = abrirModalProyecto;
 window.crearProyecto = crearProyecto;
@@ -5676,6 +5630,7 @@ window.toggleTheme = toggleTheme;
 window.renderAdminHistorias = renderAdminHistorias;
 window.renderAdminEventos = renderAdminEventos;
 window.renderAdminNoticias = renderAdminNoticias;
+window.cargarHistoriasPerfil = cargarHistoriasPerfil;
 window.getServiciosRef = getServiciosRef;
 window.getReportesRef = getReportesRef;
 window.USERS = USERS;

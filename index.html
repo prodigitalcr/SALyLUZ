@@ -778,6 +778,7 @@
     .map-search button { padding: 6px 14px; border-radius: 30px; border: none; background: var(--teal); color: white; cursor: pointer; }
     .mapa-ver-btn { font-size: 11px; padding: 2px 10px; border-radius: 20px; background: var(--teal-light); color: var(--teal-dark); border: none; cursor: pointer; font-weight: 600; }
     .mapa-ruta-btn { font-size: 11px; padding: 2px 10px; border-radius: 20px; background: var(--gold-light); color: var(--gold-dark); border: none; cursor: pointer; font-weight: 600; margin-left: 4px; }
+    .mapa-share-btn { font-size: 11px; padding: 2px 10px; border-radius: 20px; background: #e8f0fe; color: #1a73e8; border: none; cursor: pointer; font-weight: 600; margin-left: 4px; }
     .chat-mensajes-container { max-height: 400px; overflow-y: auto; background: var(--bg-body); border-radius: var(--radius); padding: 12px; margin-bottom: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 4px; }
     body.dark .chat-mensajes-container { background: #0f0f16; }
     .chat-input { display: flex; gap: 6px; }
@@ -857,68 +858,54 @@
     .mapa-leyenda-item > span.icono { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px; }
     .mapa-leyenda-wrap { display:flex; flex-wrap:wrap; gap:8px; }
 
+    /* ==================== BOTÓN MI UBICACIÓN (estilo clásico blanco/azul) ==================== */
     .mapa-mi-ubicacion-btn {
       position: absolute; top: 14px; right: 14px; z-index: 25;
-      width: 48px; height: 48px; border-radius: 50%;
-      background: linear-gradient(135deg, #FFD700, #FFA500);
-      color: #fff; border: 3px solid #fff;
-      font-size: 22px; cursor: pointer;
-      box-shadow: 0 4px 14px rgba(255,165,0,0.55);
+      width: 46px; height: 46px; border-radius: 50%;
+      background: #ffffff;
+      color: #4285F4;
+      border: 2px solid #ffffff;
+      font-size: 20px; cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.28);
       display: flex; align-items: center; justify-content: center;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
     }
-    .mapa-mi-ubicacion-btn:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(255,165,0,0.75); }
-    .mapa-mi-ubicacion-btn.activo { background: linear-gradient(135deg, #00C853, #00E676); box-shadow: 0 4px 14px rgba(0,200,83,0.65); }
-    .mapa-mi-ubicacion-btn i { text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+    .mapa-mi-ubicacion-btn:hover { transform: scale(1.08); box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
+    .mapa-mi-ubicacion-btn.activo {
+      background: #4285F4;
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(66,133,244,0.65), 0 0 0 3px rgba(66,133,244,0.25);
+    }
+    .mapa-mi-ubicacion-btn i { font-size: 20px; }
 
-    /* ============ LEYENDA FLOTANTE SOBRE EL MAPA ============ */
-    .mapa-leyenda-flotante {
-      position: absolute; top: 14px; left: 14px; z-index: 20;
-      background: rgba(255,255,255,0.96); border-radius: 12px; padding: 10px 12px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-      max-width: 200px; font-size: 12px;
-    }
-    body.dark .mapa-leyenda-flotante { background: rgba(26,26,46,0.96); }
-    .mapa-leyenda-flotante .titulo {
-      font-size: 12px; font-weight: 700; margin-bottom: 8px;
-      display: flex; align-items: center; gap: 6px; color: var(--text-primary);
-    }
-    .mapa-leyenda-flotante .item {
-      display: flex; align-items: center; gap: 8px; padding: 3px 0;
-      font-size: 12px; color: var(--text-primary);
-    }
-    .mapa-leyenda-flotante .icono-mini {
-      width: 22px; height: 22px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-size: 11px; flex-shrink: 0; font-weight: 700;
-    }
-
-    /* ============ PANEL DE RUTA ============ */
+    /* ============ PANEL DE RUTA (compacto) ============ */
     .ruta-info-panel {
-      position: absolute; bottom: 20px; left: 14px; right: 14px; z-index: 20;
-      background: rgba(255,255,255,0.97); border-radius: 12px; padding: 12px 40px 12px 14px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2); display: none;
+      position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+      z-index: 20; width: calc(100% - 28px); max-width: 720px;
+      background: rgba(255,255,255,0.97); border-radius: 10px;
+      padding: 8px 34px 8px 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2); display: none;
     }
     body.dark .ruta-info-panel { background: rgba(26,26,46,0.97); }
     .ruta-info-panel.show { display: block; }
     .ruta-info-panel .ruta-titulo {
-      font-size: 13px; font-weight: 700; margin-bottom: 4px;
+      font-size: 12px; font-weight: 700; margin-bottom: 2px;
       display: flex; align-items: center; gap: 6px; color: var(--text-primary);
     }
     .ruta-info-panel .ruta-titulo i { color: var(--teal); }
-    .ruta-info-panel .ruta-meta { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
-    .ruta-info-panel .ruta-acciones { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ruta-info-panel .ruta-meta { font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; }
+    .ruta-info-panel .ruta-acciones { display: flex; gap: 5px; flex-wrap: wrap; }
     .ruta-info-panel .ruta-acciones button {
       background: var(--teal); color: #fff; border: none;
-      padding: 5px 12px; border-radius: 30px; font-size: 11px; cursor: pointer;
+      padding: 4px 10px; border-radius: 30px; font-size: 10.5px; cursor: pointer;
     }
     .ruta-info-panel .ruta-acciones button.btn-cerrar-ruta {
       background: var(--border-color); color: var(--text-secondary);
     }
     .ruta-info-panel .ruta-close {
-      position: absolute; top: 8px; right: 8px;
-      background: transparent; border: none; font-size: 16px; cursor: pointer;
-      color: var(--text-secondary); width: 28px; height: 28px;
+      position: absolute; top: 6px; right: 6px;
+      background: transparent; border: none; font-size: 14px; cursor: pointer;
+      color: var(--text-secondary); width: 24px; height: 24px;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
     }
     .ruta-info-panel .ruta-close:hover { background: var(--border-color); }
@@ -929,27 +916,31 @@
     .chat-bubble.mio .chat-archivo-thumb a { background: rgba(255,255,255,0.22); color: #fff; }
     .chat-bubble.otro .chat-archivo-thumb a { background: rgba(0,0,0,0.06); }
 
-    /* ==================== MAPA CUADRADO GRANDE ==================== */
+    /* ==================== MAPA RECTANGULAR FULL SCREEN PC ==================== */
     #mapa3d {
       width: 100%;
-      height: 480px;
-      border-radius: 18px;
+      height: 520px;
+      border-radius: 14px;
       overflow: hidden;
       box-shadow: 0 12px 40px rgba(0,0,0,0.18);
       margin: 0 auto;
       position: relative;
     }
-    @media (min-width: 640px) {
+    @media (min-width: 900px) {
       #mapa3d {
-        max-width: 760px;
-        aspect-ratio: 1 / 1;
-        height: auto;
-        min-height: 520px;
-        max-height: 760px;
+        width: 100%;
+        max-width: none;
+        height: 70vh;
+        min-height: 480px;
+        max-height: 820px;
+        border-radius: 14px;
       }
     }
+    @media (min-width: 1400px) {
+      #mapa3d { height: 76vh; max-height: 900px; }
+    }
 
-    /* ==================== MARCADORES PUNTO SIMPLE (SIN IMÁGENES) ==================== */
+    /* ==================== MARCADORES PUNTO SIMPLE ==================== */
     .mapa-marker-dot {
       width: 18px; height: 18px;
       border-radius: 50%;
@@ -965,20 +956,101 @@
     .mapa-marker-evento    { background: #9b59b6; }
     .mapa-marker-servicio  { background: #f39c12; }
 
-    /* ==================== MI UBICACIÓN (PUNTO DORADO DIFERENTE) ==================== */
+    /* ==================== MI UBICACIÓN (PUNTERO TRADICIONAL - PUNTO AZUL CON FLECHA) ==================== */
     .mi-ubicacion-marker-dot {
-      width: 22px; height: 22px;
+      width: 26px; height: 26px;
       border-radius: 50%;
-      background: #FFD700;
-      border: 3px solid #fff;
-      box-shadow: 0 0 0 6px rgba(255,215,0,0.35), 0 0 22px rgba(255,200,0,0.85);
+      background: #4285F4;
+      border: 3px solid #ffffff;
+      box-shadow: 0 0 0 2px rgba(66,133,244,0.45), 0 3px 12px rgba(66,133,244,0.75);
       cursor: pointer;
       animation: dotPulse 1.8s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 13px;
+      position: relative;
+      z-index: 5;
+    }
+    .mi-ubicacion-marker-dot i {
+      color: #ffffff;
+      font-size: 13px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+      transition: transform 0.3s ease;
+    }
+    .mi-ubicacion-marker-dot::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border-radius: 50%;
+      background: rgba(66,133,244,0.18);
+      z-index: -1;
+      animation: haloPulse 1.8s ease-in-out infinite;
+      pointer-events: none;
     }
     @keyframes dotPulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255,215,0,0.35), 0 0 22px rgba(255,200,0,0.85); }
-      50% { transform: scale(1.15); box-shadow: 0 0 0 14px rgba(255,215,0,0.05), 0 0 28px rgba(255,200,0,1); }
+      0%, 100% { box-shadow: 0 0 0 2px rgba(66,133,244,0.45), 0 3px 12px rgba(66,133,244,0.75); }
+      50% { box-shadow: 0 0 0 8px rgba(66,133,244,0.12), 0 3px 16px rgba(66,133,244,0.95); }
     }
+    @keyframes haloPulse {
+      0%, 100% { transform: scale(1); opacity: 0.55; }
+      50% { transform: scale(1.5); opacity: 0; }
+    }
+
+    /* ==================== ACORDEÓN DE CATEGORÍAS DEL MAPA ==================== */
+    .mapa-acordeon { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .mapa-acordeon-item {
+      background: var(--bg-body);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .mapa-acordeon-item.open { box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+    .mapa-acordeon-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px; cursor: pointer; user-select: none;
+      font-weight: 600; font-size: 14px; color: var(--text-primary);
+      background: transparent;
+    }
+    .mapa-acordeon-header:hover { background: rgba(29,158,117,0.06); }
+    .mapa-acordeon-header .titulo {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .mapa-acordeon-header .titulo .icono {
+      width: 26px; height: 26px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 12px;
+    }
+    .mapa-acordeon-header .contador {
+      background: var(--teal-light); color: var(--teal-dark);
+      font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 20px;
+      margin-left: 6px;
+    }
+    .mapa-acordeon-header .flecha {
+      transition: transform 0.25s ease;
+      color: var(--text-secondary); font-size: 12px;
+    }
+    .mapa-acordeon-item.open .mapa-acordeon-header .flecha { transform: rotate(180deg); }
+    .mapa-acordeon-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.2s ease;
+      padding: 0 12px;
+    }
+    .mapa-acordeon-item.open .mapa-acordeon-body {
+      max-height: 1200px; padding: 4px 12px 12px 12px;
+      border-top: 1px solid var(--border-color);
+    }
+    .mapa-categoria-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 6px; border-bottom: 1px dashed var(--border-color);
+      font-size: 13px; flex-wrap: wrap;
+    }
+    .mapa-categoria-item:last-child { border-bottom: none; }
+    .mapa-categoria-item .nombre { font-weight: 600; flex: 1; min-width: 120px; }
+    .mapa-categoria-item .acciones { display: flex; gap: 4px; flex-wrap: wrap; }
+    .mapa-vacio { font-size: 12px; color: var(--text-secondary); padding: 6px 4px; }
 
     /* ==================== REELS BOTONES MEJORADOS ==================== */
     .reels-main-actions { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 28px; padding: 32px 0; flex-wrap: wrap; }
@@ -1063,6 +1135,7 @@
     .mapa-popup-actions .popup-btn-google { background: #4285F4; }
     .mapa-popup-actions .popup-btn-waze { background: #33CCFF; }
     .mapa-popup-actions .popup-btn-ver { background: #6a1b9a; }
+    .mapa-popup-actions .popup-btn-share { background: #1a73e8; }
 
     /* ==================== SOLICITUDES PROYECTO ==================== */
     .solicitud-proyecto-item {
@@ -1509,32 +1582,14 @@
           <button class="btn-primary" onclick="abrirModalIglesia()"><i class="fas fa-place-of-worship"></i> Registrar Iglesia</button>
         </div>
       </div>
+
       <div class="card">
-        <h3><i class="fas fa-palette"></i> Leyenda de categorías del mapa</h3>
-        <div class="mapa-leyenda-wrap">
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#e74c3c;">●</span> Misioneros</span>
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#2ecc71;">●</span> Iglesias</span>
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#3498db;">●</span> Grupos</span>
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#9b59b6;">●</span> Eventos</span>
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#f39c12;">●</span> Servicios</span>
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#FFD700;">●</span> Mi ubicación</span>
-        </div>
-      </div>
-      <div class="card"><h3><i class="fas fa-users"></i> Grupos de conexión con ubicación</h3><div id="gruposMapaList"></div></div>
-      <div class="card">
-        <h3><i class="fas fa-globe-americas"></i> Mapa general (iglesias, misioneros, grupos, eventos y servicios)</h3>
+        <h3><i class="fas fa-globe-americas"></i> Mapa general</h3>
         <div class="map-wrapper" id="mapa3d">
           <div id="mapboxMap" class="mapboxgl-map" style="height:100%;width:100%;"></div>
-          <button type="button" class="mapa-mi-ubicacion-btn" id="btnMiUbicacion" onclick="activarMiUbicacion()" title="Mi ubicación"><i class="fas fa-lightbulb"></i></button>
-          <div class="mapa-leyenda-flotante">
-            <div class="titulo"><i class="fas fa-map-pin" style="color:var(--teal);"></i> Categorías</div>
-            <div class="item"><span class="icono-mini" style="background:#e74c3c;">●</span> Misioneros</div>
-            <div class="item"><span class="icono-mini" style="background:#2ecc71;">●</span> Iglesias</div>
-            <div class="item"><span class="icono-mini" style="background:#3498db;">●</span> Grupos</div>
-            <div class="item"><span class="icono-mini" style="background:#9b59b6;">●</span> Eventos</div>
-            <div class="item"><span class="icono-mini" style="background:#f39c12;">●</span> Servicios</div>
-            <div class="item"><span class="icono-mini" style="background:#FFD700;">●</span> Mi ubicación</div>
-          </div>
+          <!-- Botón clásico de "Mi ubicación" (sin bombilla, ícono crosshairs) -->
+          <button type="button" class="mapa-mi-ubicacion-btn" id="btnMiUbicacion" onclick="activarMiUbicacion()" title="Mi ubicación"><i class="fas fa-crosshairs"></i></button>
+
           <div class="ruta-info-panel" id="rutaInfoPanel">
             <button class="ruta-close" onclick="cerrarRuta()" title="Cerrar"><i class="fas fa-times"></i></button>
             <div class="ruta-titulo"><i class="fas fa-route"></i> Ruta hacia: <span id="rutaDestinoNombre">—</span></div>
@@ -1546,10 +1601,88 @@
             </div>
           </div>
         </div>
-        <div id="misionerosMapaList" style="margin-top:10px;"></div>
-        <div id="iglesiasMapaList" style="margin-top:6px;"></div>
-        <div id="eventosMapaList" style="margin-top:6px;"></div>
-        <div id="serviciosMapaList" style="margin-top:6px;"></div>
+      </div>
+
+      <div class="card">
+        <h3><i class="fas fa-layer-group"></i> Categorías del mapa</h3>
+        <div class="mapa-acordeon" id="mapaAcordeon">
+
+          <!-- MISIONEROS -->
+          <div class="mapa-acordeon-item" data-cat="misioneros">
+            <div class="mapa-acordeon-header" onclick="toggleMapaCategoria('misioneros')">
+              <div class="titulo">
+                <span class="icono" style="background:#e74c3c;"><i class="fas fa-globe"></i></span>
+                <span>Misioneros</span>
+                <span class="contador" id="countMisioneros">0</span>
+              </div>
+              <span class="flecha"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="mapa-acordeon-body">
+              <div id="listaMisioneros" class="mapa-vacio">Cargando...</div>
+            </div>
+          </div>
+
+          <!-- IGLESIAS -->
+          <div class="mapa-acordeon-item" data-cat="iglesias">
+            <div class="mapa-acordeon-header" onclick="toggleMapaCategoria('iglesias')">
+              <div class="titulo">
+                <span class="icono" style="background:#2ecc71;"><i class="fas fa-place-of-worship"></i></span>
+                <span>Iglesias</span>
+                <span class="contador" id="countIglesias">0</span>
+              </div>
+              <span class="flecha"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="mapa-acordeon-body">
+              <div id="listaIglesias" class="mapa-vacio">Cargando...</div>
+            </div>
+          </div>
+
+          <!-- GRUPOS -->
+          <div class="mapa-acordeon-item" data-cat="grupos">
+            <div class="mapa-acordeon-header" onclick="toggleMapaCategoria('grupos')">
+              <div class="titulo">
+                <span class="icono" style="background:#3498db;"><i class="fas fa-users"></i></span>
+                <span>Grupos de conexión</span>
+                <span class="contador" id="countGrupos">0</span>
+              </div>
+              <span class="flecha"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="mapa-acordeon-body">
+              <div id="listaGrupos" class="mapa-vacio">Cargando...</div>
+            </div>
+          </div>
+
+          <!-- EVENTOS -->
+          <div class="mapa-acordeon-item" data-cat="eventos">
+            <div class="mapa-acordeon-header" onclick="toggleMapaCategoria('eventos')">
+              <div class="titulo">
+                <span class="icono" style="background:#9b59b6;"><i class="fas fa-calendar-alt"></i></span>
+                <span>Eventos</span>
+                <span class="contador" id="countEventos">0</span>
+              </div>
+              <span class="flecha"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="mapa-acordeon-body">
+              <div id="listaEventos" class="mapa-vacio">Cargando...</div>
+            </div>
+          </div>
+
+          <!-- SERVICIOS -->
+          <div class="mapa-acordeon-item" data-cat="servicios">
+            <div class="mapa-acordeon-header" onclick="toggleMapaCategoria('servicios')">
+              <div class="titulo">
+                <span class="icono" style="background:#f39c12;"><i class="fas fa-utensils"></i></span>
+                <span>Servicios alimentarios</span>
+                <span class="contador" id="countServicios">0</span>
+              </div>
+              <span class="flecha"><i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="mapa-acordeon-body">
+              <div id="listaServicios" class="mapa-vacio">Cargando...</div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
@@ -2627,6 +2760,7 @@ let miUbicacionMarkerGlobal = null;
 let miUbicacionActiva = false;
 let rutaActiva = null;
 let miUbicacionActual = null;
+let ultimoPuntoRuta = null;
 
 const STORAGE_KEYS = {
   historialBiblia: 'iglesia_historial_biblia',
@@ -2757,7 +2891,7 @@ window.cerrarMuroCols = function() {
   if (overlay) overlay.classList.remove('show');
 };
 
-// ==================== MARCADOR PUNTO SIMPLE (SIN IMÁGENES) ====================
+// ==================== MARCADOR PUNTO SIMPLE ====================
 function crearMarkerElemento(tipo, iconFallback) {
   const el = document.createElement('div');
   el.className = 'mapa-marker-dot mapa-marker-' + (tipo || 'iglesia');
@@ -2982,6 +3116,7 @@ async function cargarUsuarioActual(user) {
     renderWidgetPlanLectura();
     renderWidgetAnuncios();
     renderWidgetPlaylist();
+    renderMapaAcordeon();
     if (isSuperAdmin) renderSolicitudesPassword();
   } catch (error) { console.error('Error cargando perfil:', error); }
 }
@@ -3001,18 +3136,14 @@ window.logoutUser = async function() {
     renderChatEquipo(); renderMisionerosMapa(); renderIglesiasMapa();
     renderEventos(); renderNoticias(); renderReels();
     renderDevocionales(); renderHistorias(); renderHistoriasMuro();
-    renderIglesiasPanel();
+    renderIglesiasPanel(); renderMapaAcordeon();
     renderWidgetPerfilRapido(); renderWidgetGrupos(); renderWidgetOracion();
     renderWidgetEventos(); renderWidgetCumple(); renderWidgetSermones(); renderVersiculoDia();
     renderWidgetMiniChat(); renderWidgetContactos(); renderWidgetGuardados(); renderWidgetOfrendas();
     renderWidgetTestimonios(); renderWidgetTendencias(); renderWidgetPlanLectura(); renderWidgetAnuncios(); renderWidgetPlaylist();
     actualizarBotonesPorRol(); actualizarTabs();
     if (mapboxMap) { mapboxMarkers.forEach(m => m.remove()); mapboxMarkers = []; }
-    if (miUbicacionWatchId !== null && navigator.geolocation) {
-      navigator.geolocation.clearWatch(miUbicacionWatchId);
-      miUbicacionWatchId = null;
-    }
-    miUbicacionMarker = null;
+    detenerSeguimientoUbicacion();
     cerrarChatPrivado();
     cerrarReelsViewer();
     cerrarGaleriaViewer();
@@ -3146,7 +3277,7 @@ function switchPanel(name) {
     case 'chatadmin': renderChatAdmin(); break;
     case 'chatequipo': renderChatEquipo(); break;
     case 'iglesias': renderIglesiasPanel(); break;
-    case 'mapa': if (currentUser) { renderGruposMapa(); renderMisionerosMapa(); renderIglesiasMapa(); renderEventosMapa(); renderServiciosMapa(); setTimeout(()=>initMapboxMap(), 100); } break;
+    case 'mapa': if (currentUser) { renderMapaAcordeon(); setTimeout(()=>initMapboxMap(), 100); } break;
     case 'biblia': cargarHistorial(); break;
     case 'devocionales': renderDevocionales(); break;
     case 'inicio': renderCarrusel(); renderEventos(); renderNoticias(); renderHistorias(); break;
@@ -3186,6 +3317,158 @@ document.getElementById('tabConvertirHamburguesa').addEventListener('click', fun
     alert(activo ? '✅ Menú hamburguesa.' : '✅ Menú horizontal.');
   });
 });
+
+// ==================== ACORDEÓN MAPA ====================
+window.toggleMapaCategoria = function(cat) {
+  const item = document.querySelector(`.mapa-acordeon-item[data-cat="${cat}"]`);
+  if (!item) return;
+  item.classList.toggle('open');
+};
+
+window.renderMapaAcordeon = function() {
+  if (!currentUser) return;
+  // Misioneros
+  if (listeners.mapaMisioneros) listeners.mapaMisioneros();
+  listeners.mapaMisioneros = MISIONEROS.orderBy('nombre', 'asc').onSnapshot(snap => {
+    const c = document.getElementById('listaMisioneros');
+    const cnt = document.getElementById('countMisioneros');
+    const total = snap.size;
+    if (cnt) cnt.textContent = total;
+    if (total === 0) { c.innerHTML = '<div class="mapa-vacio">Sin misioneros registrados.</div>'; return; }
+    let html = '';
+    snap.forEach(doc => {
+      const m = doc.data();
+      const tieneUbicacion = m.lat && m.lng;
+      html += `<div class="mapa-categoria-item">
+        <span class="nombre">${m.nombre || 'Sin nombre'}</span>
+        <div class="acciones">
+          ${tieneUbicacion ? `<button type="button" class="mapa-ver-btn" onclick="verEnMapa(${m.lat},${m.lng},'${(m.nombre||'').replace(/'/g,"")}')"><i class="fas fa-eye"></i> Ver</button>` : ''}
+          ${tieneUbicacion ? `<button type="button" class="mapa-ruta-btn" onclick="trazarRutaA(${m.lat},${m.lng},'${(m.nombre||'').replace(/'/g,"")}')"><i class="fas fa-route"></i> Ruta</button>` : ''}
+          ${tieneUbicacion ? `<button type="button" class="mapa-share-btn" onclick="compartirUbicacion(${m.lat},${m.lng},'${(m.nombre||'').replace(/'/g,"")}','misionero')"><i class="fas fa-share-alt"></i> Compartir</button>` : ''}
+        </div>
+      </div>`;
+    });
+    c.innerHTML = html;
+  });
+
+  // Iglesias
+  if (listeners.mapaIglesias) listeners.mapaIglesias();
+  listeners.mapaIglesias = IGLESIAS.orderBy('nombre', 'asc').onSnapshot(snap => {
+    const c = document.getElementById('listaIglesias');
+    const cnt = document.getElementById('countIglesias');
+    const total = snap.size;
+    if (cnt) cnt.textContent = total;
+    if (total === 0) { c.innerHTML = '<div class="mapa-vacio">Sin iglesias registradas.</div>'; return; }
+    let html = '';
+    snap.forEach(doc => {
+      const i = doc.data();
+      const tieneUbicacion = i.lat && i.lng;
+      html += `<div class="mapa-categoria-item">
+        <span class="nombre">${i.nombre || 'Sin nombre'}</span>
+        <div class="acciones">
+          ${tieneUbicacion ? `<button type="button" class="mapa-ver-btn" onclick="verEnMapa(${i.lat},${i.lng},'${(i.nombre||'').replace(/'/g,"")}')"><i class="fas fa-eye"></i> Ver</button>` : ''}
+          ${tieneUbicacion ? `<button type="button" class="mapa-ruta-btn" onclick="trazarRutaA(${i.lat},${i.lng},'${(i.nombre||'').replace(/'/g,"")}')"><i class="fas fa-route"></i> Ruta</button>` : ''}
+          ${tieneUbicacion ? `<button type="button" class="mapa-share-btn" onclick="compartirUbicacion(${i.lat},${i.lng},'${(i.nombre||'').replace(/'/g,"")}','iglesia')"><i class="fas fa-share-alt"></i> Compartir</button>` : ''}
+        </div>
+      </div>`;
+    });
+    c.innerHTML = html;
+  });
+
+  // Grupos
+  if (listeners.mapaGrupos) listeners.mapaGrupos();
+  listeners.mapaGrupos = GRUPOS.orderBy('nombre', 'asc').onSnapshot(snap => {
+    const c = document.getElementById('listaGrupos');
+    const cnt = document.getElementById('countGrupos');
+    const total = snap.size;
+    if (cnt) cnt.textContent = total;
+    if (total === 0) { c.innerHTML = '<div class="mapa-vacio">Sin grupos registrados.</div>'; return; }
+    let html = '';
+    snap.forEach(doc => {
+      const g = doc.data();
+      const tieneUbicacion = g.lat && g.lng;
+      html += `<div class="mapa-categoria-item">
+        <span class="nombre">${g.nombre || 'Sin nombre'}</span>
+        <div class="acciones">
+          ${tieneUbicacion ? `<button type="button" class="mapa-ver-btn" onclick="verEnMapa(${g.lat},${g.lng},'${(g.nombre||'').replace(/'/g,"")}')"><i class="fas fa-eye"></i> Ver</button>` : ''}
+          ${tieneUbicacion ? `<button type="button" class="mapa-ruta-btn" onclick="trazarRutaA(${g.lat},${g.lng},'${(g.nombre||'').replace(/'/g,"")}')"><i class="fas fa-route"></i> Ruta</button>` : ''}
+          ${tieneUbicacion ? `<button type="button" class="mapa-share-btn" onclick="compartirUbicacion(${g.lat},${g.lng},'${(g.nombre||'').replace(/'/g,"")}','grupo')"><i class="fas fa-share-alt"></i> Compartir</button>` : ''}
+        </div>
+      </div>`;
+    });
+    c.innerHTML = html;
+  });
+
+  // Eventos
+  if (listeners.mapaEventos) listeners.mapaEventos();
+  listeners.mapaEventos = EVENTOS.orderBy('fecha', 'asc').onSnapshot(snap => {
+    const c = document.getElementById('listaEventos');
+    const cnt = document.getElementById('countEventos');
+    let total = 0;
+    let html = '';
+    snap.forEach(doc => {
+      const e = doc.data();
+      const tieneUbicacion = e.lat && e.lng;
+      total++;
+      html += `<div class="mapa-categoria-item">
+        <span class="nombre">${e.titulo || 'Evento'} ${e.fecha ? '· ' + e.fecha : ''}</span>
+        <div class="acciones">
+          ${tieneUbicacion ? `<button type="button" class="mapa-ver-btn" onclick="verEnMapa(${e.lat},${e.lng},'${(e.titulo||'').replace(/'/g,"")}')"><i class="fas fa-eye"></i> Ver</button>` : ''}
+          ${tieneUbicacion ? `<button type="button" class="mapa-ruta-btn" onclick="trazarRutaA(${e.lat},${e.lng},'${(e.titulo||'').replace(/'/g,"")}')"><i class="fas fa-route"></i> Ruta</button>` : ''}
+          ${tieneUbicacion ? `<button type="button" class="mapa-share-btn" onclick="compartirUbicacion(${e.lat},${e.lng},'${(e.titulo||'').replace(/'/g,"")}','evento')"><i class="fas fa-share-alt"></i> Compartir</button>` : ''}
+        </div>
+      </div>`;
+    });
+    if (cnt) cnt.textContent = total;
+    if (total === 0) { c.innerHTML = '<div class="mapa-vacio">Sin eventos registrados.</div>'; return; }
+    c.innerHTML = html;
+  });
+
+  // Servicios
+  if (listeners.mapaServicios) listeners.mapaServicios();
+  listeners.mapaServicios = getServiciosRef().orderBy('fechaRegistro', 'desc').onSnapshot(snap => {
+    const c = document.getElementById('listaServicios');
+    const cnt = document.getElementById('countServicios');
+    let total = 0;
+    let html = '';
+    snap.forEach(doc => {
+      const s = doc.data();
+      const tieneUbicacion = s.lat && s.lng;
+      total++;
+      html += `<div class="mapa-categoria-item">
+        <span class="nombre">${s.nombre || 'Servicio'} ${s.direccion ? '· ' + s.direccion : ''}</span>
+        <div class="acciones">
+          ${tieneUbicacion ? `<button type="button" class="mapa-ver-btn" onclick="verEnMapa(${s.lat},${s.lng},'${(s.nombre||'').replace(/'/g,"")}')"><i class="fas fa-eye"></i> Ver</button>` : ''}
+          ${tieneUbicacion ? `<button type="button" class="mapa-ruta-btn" onclick="trazarRutaA(${s.lat},${s.lng},'${(s.nombre||'').replace(/'/g,"")}')"><i class="fas fa-route"></i> Ruta</button>` : ''}
+          ${tieneUbicacion ? `<button type="button" class="mapa-share-btn" onclick="compartirUbicacion(${s.lat},${s.lng},'${(s.nombre||'').replace(/'/g,"")}','servicio')"><i class="fas fa-share-alt"></i> Compartir</button>` : ''}
+        </div>
+      </div>`;
+    });
+    if (cnt) cnt.textContent = total;
+    if (total === 0) { c.innerHTML = '<div class="mapa-vacio">Sin servicios registrados.</div>'; return; }
+    c.innerHTML = html;
+  });
+};
+
+// ==================== COMPARTIR UBICACIÓN ====================
+window.compartirUbicacion = async function(lat, lng, nombre, tipo) {
+  const latN = parseFloat(lat), lngN = parseFloat(lng);
+  if (isNaN(latN) || isNaN(lngN)) { alert('Coordenadas inválidas.'); return; }
+  const urlGoogle = `https://www.google.com/maps/search/?api=1&query=${latN},${lngN}`;
+  const texto = `📍 ${nombre || 'Ubicación'} (${tipo || ''})\n${urlGoogle}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: nombre || 'Ubicación', text: texto, url: urlGoogle });
+      return;
+    } catch (e) { /* usuario canceló o no soportado */ }
+  }
+  try {
+    await navigator.clipboard.writeText(texto);
+    alert('✅ Ubicación copiada al portapapeles.');
+  } catch (e) {
+    prompt('Copia esta ubicación:', texto);
+  }
+};
 
 function renderWidgetPerfilRapido() {
   const cont = document.getElementById('widgetPerfilContenido');
@@ -5176,6 +5459,7 @@ window.verEnMapa = function(lat, lng, nombre, info) {
           <button class="popup-btn-ruta" onclick="trazarRutaA(${latN},${lngN},'${nombreSafe}')"><i class="fas fa-route"></i> Ruta</button>
           <button class="popup-btn-google" onclick="abrirEnGoogleMaps(${latN},${lngN})"><i class="fab fa-google"></i> Google</button>
           <button class="popup-btn-waze" onclick="abrirEnWaze(${latN},${lngN})"><i class="fas fa-car"></i> Waze</button>
+          <button class="popup-btn-share" onclick="compartirUbicacion(${latN},${lngN},'${nombreSafe}','lugar')"><i class="fas fa-share-alt"></i> Compartir</button>
         </div>
       </div>`)
       .addTo(mapboxMap);
@@ -5301,6 +5585,7 @@ function addMarkerMapa(lat, lng, nombre, desc, color, tipo) {
         <button class="popup-btn-ruta" onclick="trazarRutaA(${latN},${lngN},'${nombreSafe}')"><i class="fas fa-route"></i> Ruta</button>
         <button class="popup-btn-google" onclick="abrirEnGoogleMaps(${latN},${lngN})"><i class="fab fa-google"></i> Google</button>
         <button class="popup-btn-waze" onclick="abrirEnWaze(${latN},${lngN})"><i class="fas fa-car"></i> Waze</button>
+        <button class="popup-btn-share" onclick="compartirUbicacion(${latN},${lngN},'${nombreSafe}','${tipo}')"><i class="fas fa-share-alt"></i> Compartir</button>
       </div>
     </div>`;
     const el = crearMarkerElemento(tipo, '');
@@ -5312,55 +5597,173 @@ function addMarkerMapa(lat, lng, nombre, desc, color, tipo) {
   } catch(e) { console.warn('addMarkerMapa:', e); }
 }
 
+// ============================================================
+// ====== SEGUIMIENTO DE UBICACIÓN EN TIEMPO REAL (MAP) =======
+// ============================================================
+
+// Detiene el seguimiento de ubicación (watchPosition) y quita el marcador
+function detenerSeguimientoUbicacion() {
+  if (miUbicacionWatchIdGlobal !== null && navigator.geolocation) {
+    navigator.geolocation.clearWatch(miUbicacionWatchIdGlobal);
+  }
+  miUbicacionWatchIdGlobal = null;
+  if (miUbicacionMarkerGlobal) {
+    try { miUbicacionMarkerGlobal.remove(); } catch(e) {}
+    miUbicacionMarkerGlobal = null;
+  }
+  miUbicacionActiva = false;
+  const btn = document.getElementById('btnMiUbicacion');
+  if (btn) btn.classList.remove('activo');
+}
+
+// Inicia el seguimiento en tiempo real (usa watchPosition)
+function iniciarSeguimientoUbicacion(centrarInicial) {
+  if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
+  miUbicacionActiva = true;
+  const btn = document.getElementById('btnMiUbicacion');
+  if (btn) btn.classList.add('activo');
+
+  if (miUbicacionWatchIdGlobal !== null) {
+    navigator.geolocation.clearWatch(miUbicacionWatchIdGlobal);
+    miUbicacionWatchIdGlobal = null;
+  }
+  let primeraVez = true;
+  miUbicacionWatchIdGlobal = navigator.geolocation.watchPosition(
+    (pos) => {
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+      const heading = (pos.coords.heading != null && !isNaN(pos.coords.heading)) ? pos.coords.heading : null;
+      miUbicacionActual = { lat, lng, heading };
+      actualizarMarcadorMiUbicacion(lat, lng, heading, centrarInicial && primeraVez);
+      primeraVez = false;
+
+      // Si hay ruta activa, recalcular solo si nos movemos > 50 m
+      if (rutaActiva && rutaActiva.destino) {
+        const dist = ultimoPuntoRuta
+          ? calcularDistanciaKm(ultimoPuntoRuta.lat, ultimoPuntoRuta.lng, lat, lng)
+          : 999;
+        if (dist > 0.05) {
+          ultimoPuntoRuta = { lat, lng };
+          recalcularRutaActual();
+        }
+      }
+    },
+    (err) => {
+      console.warn('Error de geolocalización:', err);
+    },
+    { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 }
+  );
+}
+
+// Actualiza o crea el marcador azul (puntero tradicional) del usuario
+function actualizarMarcadorMiUbicacion(lat, lng, heading, centrar) {
+  if (!mapboxMap) return;
+  if (!miUbicacionMarkerGlobal) {
+    const el = document.createElement('div');
+    el.className = 'mi-ubicacion-marker-dot';
+    el.innerHTML = '<i class="fas fa-location-arrow"></i>';
+    try {
+      miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el, anchor: 'center' })
+        .setLngLat([lng, lat])
+        .addTo(mapboxMap);
+    } catch(e) { return; }
+  } else {
+    miUbicacionMarkerGlobal.setLngLat([lng, lat]);
+  }
+  // Rotar la flecha según la dirección de avance (si existe heading)
+  try {
+    const icono = miUbicacionMarkerGlobal.getElement().querySelector('i');
+    if (icono && heading != null && !isNaN(heading)) {
+      // fa-location-arrow apunta al noreste por defecto (45°), así que restamos 45°.
+      icono.style.transform = 'rotate(' + (heading - 45) + 'deg)';
+    } else if (icono) {
+      icono.style.transform = 'rotate(45deg)';
+    }
+  } catch(e) {}
+
+  if (centrar) {
+    try { mapboxMap.flyTo({ center: [lng, lat], zoom: 16, essential: true }); } catch(e) {}
+  }
+}
+
+// Botón "Mi ubicación" clásico: activa / desactiva seguimiento
+window.activarMiUbicacion = function() {
+  if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
+  if (miUbicacionActiva) {
+    detenerSeguimientoUbicacion();
+    return;
+  }
+  iniciarSeguimientoUbicacion(true);
+};
+
+// Traza la ruta desde la posición ACTUAL del usuario hasta el destino
 window.trazarRutaA = function(latDestino, lngDestino, nombreDestino) {
   if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
   if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
   const latD = parseFloat(latDestino), lngD = parseFloat(lngDestino);
   if (isNaN(latD) || isNaN(lngD)) { alert('Coordenadas inválidas.'); return; }
+
   const panel = document.getElementById('rutaInfoPanel');
   document.getElementById('rutaDestinoNombre').textContent = nombreDestino || 'Destino';
   document.getElementById('rutaMeta').textContent = 'Obteniendo tu ubicación...';
   if (panel) panel.classList.add('show');
 
-  const calcular = (latOrigen, lngOrigen) => {
-    miUbicacionActual = { lat: latOrigen, lng: lngOrigen };
-    if (mapboxToken) {
-      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${lngOrigen},${latOrigen};${lngD},${latD}?geometries=geojson&overview=full&access_token=${mapboxToken}`;
-      fetch(url).then(r => r.json()).then(data => {
-        if (data.routes && data.routes.length > 0) {
-          const ruta = data.routes[0];
-          const geometry = ruta.geometry;
-          const distanciaKm = (ruta.distance / 1000).toFixed(1);
-          const duracionMin = Math.round(ruta.duration / 60);
-          document.getElementById('rutaMeta').textContent = `Distancia: ${distanciaKm} km · Tiempo aprox: ${duracionMin} min`;
-          dibujarRutaEnMapa(geometry, latOrigen, lngOrigen, latD, lngD, nombreDestino);
-          rutaActiva = { origen: { lat: latOrigen, lng: lngOrigen }, destino: { lat: latD, lng: lngD }, nombreDestino };
-        } else {
-          const coords = [[lngOrigen, latOrigen], [lngD, latD]];
-          dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latD, lngD, nombreDestino);
-        }
-      }).catch(() => {
-        const coords = [[lngOrigen, latOrigen], [lngD, latD]];
-        dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latD, lngD, nombreDestino);
-      });
-    } else {
-      const coords = [[lngOrigen, latOrigen], [lngD, latD]];
-      dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latD, lngD, nombreDestino);
-    }
-  };
+  // Asegurar que el puntero azul del usuario esté visible y en seguimiento
+  if (!miUbicacionActiva) iniciarSeguimientoUbicacion(true);
 
-  if (miUbicacionActual) {
-    calcular(miUbicacionActual.lat, miUbicacionActual.lng);
-  } else {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => calcular(pos.coords.latitude, pos.coords.longitude),
-      (err) => {
-        document.getElementById('rutaMeta').textContent = '⚠️ No se pudo obtener tu ubicación: ' + (err.message || err.code);
-      },
-      { enableHighAccuracy: true, timeout: 15000 }
-    );
-  }
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const latO = pos.coords.latitude;
+      const lngO = pos.coords.longitude;
+      const heading = (pos.coords.heading != null && !isNaN(pos.coords.heading)) ? pos.coords.heading : null;
+      miUbicacionActual = { lat: latO, lng: lngO, heading };
+      ultimoPuntoRuta = { lat: latO, lng: lngO };
+      actualizarMarcadorMiUbicacion(latO, lngO, heading, false);
+      calcularYMostrarRuta(latO, lngO, latD, lngD, nombreDestino);
+    },
+    (err) => {
+      document.getElementById('rutaMeta').textContent = '⚠️ No se pudo obtener tu ubicación: ' + (err.message || err.code);
+    },
+    { enableHighAccuracy: true, timeout: 15000 }
+  );
 };
+
+// Calcula (con Mapbox Directions) y dibuja la ruta desde el origen al destino
+function calcularYMostrarRuta(latO, lngO, latD, lngD, nombreDestino) {
+  if (mapboxToken) {
+    const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${lngO},${latO};${lngD},${latD}?geometries=geojson&overview=full&access_token=${mapboxToken}`;
+    fetch(url).then(r => r.json()).then(data => {
+      if (data.routes && data.routes.length > 0) {
+        const ruta = data.routes[0];
+        const geometry = ruta.geometry;
+        const distanciaKm = (ruta.distance / 1000).toFixed(1);
+        const duracionMin = Math.round(ruta.duration / 60);
+        document.getElementById('rutaMeta').textContent = `Distancia: ${distanciaKm} km · Tiempo aprox: ${duracionMin} min`;
+        dibujarRutaEnMapa(geometry, latO, lngO, latD, lngD, nombreDestino);
+        rutaActiva = { origen: { lat: latO, lng: lngO }, destino: { lat: latD, lng: lngD }, nombreDestino };
+      } else {
+        const coords = [[lngO, latO], [lngD, latD]];
+        dibujarRutaLineaRecta(coords, latO, lngO, latD, lngD, nombreDestino);
+      }
+    }).catch(() => {
+      const coords = [[lngO, latO], [lngD, latD]];
+      dibujarRutaLineaRecta(coords, latO, lngO, latD, lngD, nombreDestino);
+    });
+  } else {
+    const coords = [[lngO, latO], [lngD, latD]];
+    dibujarRutaLineaRecta(coords, latO, lngO, latD, lngD, nombreDestino);
+  }
+}
+
+// Recalcula la ruta actual cuando el usuario se mueve
+function recalcularRutaActual() {
+  if (!rutaActiva || !miUbicacionActual) return;
+  const latO = miUbicacionActual.lat, lngO = miUbicacionActual.lng;
+  const latD = rutaActiva.destino.lat, lngD = rutaActiva.destino.lng;
+  const nombre = rutaActiva.nombreDestino;
+  calcularYMostrarRuta(latO, lngO, latD, lngD, nombre);
+}
+
 function dibujarRutaEnMapa(geometry, latO, lngO, latD, lngD, nombre) {
   try {
     if (!mapboxMap.getSource('ruta-source')) {
@@ -5399,6 +5802,7 @@ window.cerrarRuta = function() {
     }
   } catch(e) {}
   rutaActiva = null;
+  ultimoPuntoRuta = null;
   const panel = document.getElementById('rutaInfoPanel');
   if (panel) panel.classList.remove('show');
 };
@@ -5414,45 +5818,6 @@ window.abrirRutaEnWaze = function() {
   const d = rutaActiva.destino;
   const url = `https://waze.com/ul?ll=${d.lat},${d.lng}&navigate=yes`;
   window.open(url, '_blank');
-};
-
-// MI UBICACIÓN (PUNTO DORADO DIFERENTE)
-window.activarMiUbicacion = function() {
-  if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
-  const btn = document.getElementById('btnMiUbicacion');
-  if (miUbicacionActiva) {
-    if (miUbicacionWatchIdGlobal !== null && navigator.geolocation) navigator.geolocation.clearWatch(miUbicacionWatchIdGlobal);
-    miUbicacionWatchIdGlobal = null;
-    if (miUbicacionMarkerGlobal) { miUbicacionMarkerGlobal.remove(); miUbicacionMarkerGlobal = null; }
-    miUbicacionActiva = false;
-    if (btn) btn.classList.remove('activo');
-    return;
-  }
-  if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
-  miUbicacionActiva = true;
-  if (btn) btn.classList.add('activo');
-  const el = document.createElement('div');
-  el.className = 'mi-ubicacion-marker-dot';
-  el.title = 'Mi ubicación en tiempo real';
-  miUbicacionWatchIdGlobal = navigator.geolocation.watchPosition(
-    (pos) => {
-      const lat = pos.coords.latitude, lng = pos.coords.longitude;
-      miUbicacionActual = { lat, lng };
-      if (miUbicacionMarkerGlobal) miUbicacionMarkerGlobal.setLngLat([lng, lat]);
-      else {
-        try {
-          miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el, anchor: 'center' }).setLngLat([lng, lat]).addTo(mapboxMap);
-          mapboxMap.flyTo({ center: [lng, lat], zoom: 16 });
-        } catch(e) {}
-      }
-    },
-    (err) => {
-      alert('No se pudo obtener tu ubicación: ' + (err.message || err.code));
-      miUbicacionActiva = false;
-      if (btn) btn.classList.remove('activo');
-    },
-    { enableHighAccuracy: true, maximumAge: 3000, timeout: 20000 }
-  );
 };
 
 // ESTILOS
@@ -7343,6 +7708,7 @@ document.addEventListener('DOMContentLoaded', function() {
   renderReportes(); renderChatAdmin(); renderChatEquipo();
   renderCarrusel(); renderEventos(); renderNoticias(); renderReels();
   renderDevocionales(); renderHistorias(); renderHistoriasMuro(); renderIglesiasPanel();
+  renderMapaAcordeon();
   renderWidgetPerfilRapido(); renderWidgetGrupos(); renderWidgetOracion();
   renderWidgetEventos(); renderWidgetCumple(); renderWidgetSermones(); renderVersiculoDia();
   renderWidgetMiniChat(); renderWidgetContactos(); renderWidgetGuardados(); renderWidgetOfrendas();
@@ -7357,7 +7723,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v26: marcadores como puntos simples con colores por categoría (sin imágenes).');
+  console.log('✅ SAL Y LUZ v28: puntero tradicional azul, ruta desde ubicación actual, seguimiento en tiempo real.');
 });
 
 window.switchPanel = switchPanel;
@@ -7499,6 +7865,11 @@ window.verHistorialOfrendas = verHistorialOfrendas;
 window.verDirectorioCompleto = verDirectorioCompleto;
 window.toggleMuroCol = toggleMuroCol;
 window.cerrarMuroCols = cerrarMuroCols;
+window.toggleMapaCategoria = toggleMapaCategoria;
+window.renderMapaAcordeon = renderMapaAcordeon;
+window.compartirUbicacion = compartirUbicacion;
+window.detenerSeguimientoUbicacion = detenerSeguimientoUbicacion;
+window.iniciarSeguimientoUbicacion = iniciarSeguimientoUbicacion;
 window.USERS = USERS;
 window.POSTS = POSTS;
 window.GRUPOS = GRUPOS;

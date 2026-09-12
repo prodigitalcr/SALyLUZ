@@ -857,8 +857,9 @@
     .mapa-leyenda-item > span.icono { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px; }
     .mapa-leyenda-wrap { display:flex; flex-wrap:wrap; gap:8px; }
 
+    /* ============ BOTÓN MI UBICACIÓN (ARRIBA IZQUIERDA) ============ */
     .mapa-mi-ubicacion-btn {
-      position: absolute; top: 14px; right: 14px; z-index: 25;
+      position: absolute; top: 14px; left: 14px; z-index: 25;
       width: 48px; height: 48px; border-radius: 50%;
       background: linear-gradient(135deg, #FFD700, #FFA500);
       color: #fff; border: 3px solid #fff;
@@ -909,7 +910,6 @@
     .chat-bubble.mio .chat-archivo-thumb a { background: rgba(255,255,255,0.22); color: #fff; }
     .chat-bubble.otro .chat-archivo-thumb a { background: rgba(0,0,0,0.06); }
 
-    /* ==================== MAPA RECTANGULAR FULL SCREEN PC ==================== */
     #mapa3d {
       width: 100%;
       height: 520px;
@@ -949,7 +949,45 @@
     .mapa-marker-evento    { background: #9b59b6; }
     .mapa-marker-servicio  { background: #f39c12; }
 
-    /* ==================== MI UBICACIÓN (PUNTO AZUL CLÁSICO) ==================== */
+    /* ==================== MI UBICACIÓN (PUNTO AZUL CLÁSICO + ANIMACIÓN) ==================== */
+    .mi-ubicacion-wrapper {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      pointer-events: none;
+      transition: transform 0.9s linear; /* suaviza el desplazamiento */
+    }
+    .mi-ubicacion-punto {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      background: #4285F4;
+      border: 3px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.55), 0 0 0 1px rgba(66,133,244,0.35);
+      z-index: 2;
+    }
+    .mi-ubicacion-pulso {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      background: rgba(66,133,244,0.55);
+      border-radius: 50%;
+      z-index: 1;
+      animation: miUbicacionPulso 2.2s ease-out infinite;
+    }
+    @keyframes miUbicacionPulso {
+      0%   { width: 18px; height: 18px; opacity: 0.85; }
+      80%  { width: 68px; height: 68px; opacity: 0; }
+      100% { width: 68px; height: 68px; opacity: 0; }
+    }
+    /* Punto histórico "no animación wrapper" por si acaso */
     .mi-ubicacion-marker-dot {
       width: 22px;
       height: 22px;
@@ -958,21 +996,6 @@
       border: 3px solid #fff;
       box-shadow: 0 0 0 0 rgba(66,133,244,0.6), 0 2px 8px rgba(0,0,0,0.4);
       cursor: pointer;
-      animation: ubicacionPulse 1.6s ease-in-out infinite;
-    }
-    @keyframes ubicacionPulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(66,133,244,0.55), 0 2px 8px rgba(0,0,0,0.4);
-        transform: scale(1);
-      }
-      70% {
-        box-shadow: 0 0 0 18px rgba(66,133,244,0), 0 2px 8px rgba(0,0,0,0.4);
-        transform: scale(1.05);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(66,133,244,0), 0 2px 8px rgba(0,0,0,0.4);
-        transform: scale(1);
-      }
     }
 
     /* ==================== ACORDEÓN DE CATEGORÍAS DEL MAPA ==================== */
@@ -1135,6 +1158,14 @@
     .solicitud-proyecto-item .acciones { display: flex; gap: 4px; flex-shrink: 0; }
     .btn-aprobar { background: #2ecc71; color: #fff; border: none; padding: 4px 10px; border-radius: 20px; font-size: 11px; cursor: pointer; font-weight: 600; }
     .btn-rechazar { background: #e74c3c; color: #fff; border: none; padding: 4px 10px; border-radius: 20px; font-size: 11px; cursor: pointer; font-weight: 600; }
+
+    /* ==================== BIBLIA FUENTE ==================== */
+    .biblia-fuente-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; padding: 2px 8px; border-radius: 20px;
+      background: var(--teal-light); color: var(--teal-dark);
+      font-weight: 600; margin-left: 6px;
+    }
   </style>
 </head>
 <body>
@@ -1239,7 +1270,7 @@
 
   <div class="panel" id="panel-biblia">
     <div class="card">
-      <h3><i class="fas fa-bible"></i> Lectura Bíblica</h3>
+      <h3><i class="fas fa-bible"></i> Lectura Bíblica <span id="bibliaFuenteBadge" class="biblia-fuente-badge"><i class="fas fa-sync"></i> Cargando...</span></h3>
       <div class="biblia-selectores">
         <div class="grupo"><label for="libro"><i class="fas fa-book"></i> Libro</label><select id="libro"><option value="">Selecciona</option></select></div>
         <div class="grupo"><label for="capitulo"><i class="fas fa-chapter"></i> Capítulo</label><select id="capitulo"><option value="">Selecciona</option></select></div>
@@ -1838,6 +1869,52 @@
       </div>
     </div>
 
+    <!-- NUEVO: Configuración de Biblia -->
+    <div class="card config-solo-admin" id="cardBibliaConfig">
+      <h3><i class="fas fa-bible"></i> Configuración Bíblica (GitHub / Multimedia)</h3>
+      <div class="admin-ia-config">
+        <label>Fuente principal</label>
+        <select id="bibliaFuenteSelect">
+          <option value="github">📁 GitHub (carpeta remota "Biblia")</option>
+          <option value="custom">☁️ Biblias personalizadas (subidas por ti)</option>
+          <option value="local">💾 Local (textos-biblicos.json)</option>
+          <option value="auto">🔄 Auto (GitHub → personalizadas → local)</option>
+        </select>
+
+        <label>GitHub Usuario / Organización</label>
+        <input type="text" id="bibliaGithubOwner" placeholder="ej: mi-usuario">
+        <label>Repositorio</label>
+        <input type="text" id="bibliaGithubRepo" placeholder="ej: mi-biblia">
+        <label>Rama</label>
+        <input type="text" id="bibliaGithubBranch" placeholder="main">
+        <label>Carpeta dentro del repo</label>
+        <input type="text" id="bibliaGithubPath" placeholder="Biblia">
+        <p style="font-size:11px;color:var(--text-secondary);margin-top:6px;">
+          Estructura esperada: <code>Biblia/Antiguo Testamento/*.json</code> y <code>Biblia/Nuevo Testamento/*.json</code>. Cada archivo puede ser <code>{"1":["v1","v2"],...}</code> o <code>[{"chapter":1,"verses":[...]}]</code>.
+        </p>
+        <button type="button" class="btn-primary" id="btnGuardarBibliaConfig" style="margin-top:10px;">Guardar Configuración</button>
+        <button type="button" class="btn-outline" id="btnRecargarBiblia" style="margin-top:10px;">🔄 Recargar libros</button>
+      </div>
+      <hr style="border-color:var(--border-color);margin:14px 0;">
+      <h5><i class="fas fa-upload"></i> Subir libro de la Biblia (JSON) — Multimedia</h5>
+      <div class="admin-ia-config">
+        <label>Testamento</label>
+        <select id="subirBibliaTestamento">
+          <option value="antiguoTestamento">Antiguo Testamento</option>
+          <option value="nuevoTestamento">Nuevo Testamento</option>
+        </select>
+        <label>Nombre del libro (tal como aparecerá)</label>
+        <input type="text" id="subirBibliaNombre" placeholder="Ej: Génesis">
+        <label>Versión / Traducción (opcional)</label>
+        <input type="text" id="subirBibliaVersion" placeholder="Ej: Reina Valera 1960">
+        <label>Archivo JSON</label>
+        <input type="file" id="subirBibliaFile" accept=".json,application/json">
+        <button type="button" class="btn-primary" id="btnSubirLibroBiblia" style="margin-top:10px;"><i class="fas fa-upload"></i> Subir libro</button>
+        <div id="listaBibliasPersonalizadas" style="margin-top:12px;"></div>
+      </div>
+    </div>
+    <div class="config-msg" id="msgBibliaConfig"><p>⚠️ Solo SuperAdmin.</p></div>
+
     <div class="card config-solo-admin" id="cardEstilosConfig">
       <h3><i class="fas fa-palette"></i> Personalización de Estilos</h3>
       <div class="admin-ia-config">
@@ -1959,6 +2036,7 @@
     <div class="config-msg" id="msgPaypalConfig"><p>⚠️ Solo SuperAdmin.</p></div>
   </div>
 
+  <!-- MODALES -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
       <h3><i class="fas fa-user"></i> Iniciar sesión / Registrarse</h3>
@@ -2678,6 +2756,8 @@ const APP_CONFIG = db.collection('appConfig').doc('config');
 const CONFIG_MAPBOX = db.collection('config_mapbox').doc('config');
 const CONFIG_CALLMEBOT = db.collection('config_callmebot').doc('config');
 const CONFIG_PAYPAL = db.collection('config_paypal').doc('config');
+const CONFIG_BIBLIA = db.collection('config_biblia').doc('config');
+const BIBLIAS_PERSONALIZADAS = db.collection('biblias_personalizadas');
 const EVENTOS = db.collection('eventos');
 const NOTICIAS = db.collection('noticias');
 const REELS = db.collection('reels');
@@ -2702,8 +2782,7 @@ let mapboxMap = null;
 let mapboxMarkers = [];
 let mapboxToken = '';
 let mapboxPickers = {};
-let miUbicacionMarker = null;
-let miUbicacionWatchId = null;
+let miUbicacionMarker = null; // legado
 let fotoViewerUnsub = null;
 let reelsViewerUnsub = null;
 let reelsAll = [];
@@ -2726,13 +2805,36 @@ let paypalConfig = { clientId: '', secretKey: '', email: '', moneda: 'USD' };
 let loginMode = 'login';
 let chatAdminArchivo = null;
 let chatEquipoArchivo = null;
+
+// ==== UBICACIÓN EN TIEMPO REAL (nuevo) ====
 let miUbicacionWatchIdGlobal = null;
 let miUbicacionMarkerGlobal = null;
 let miUbicacionActiva = false;
-let rutaActiva = null;
 let miUbicacionActual = null;
-let rutaWatchId = null;      // <-- watch de posición para la ruta activa
-let rutaDestino = null;      // <-- destino actual {lat, lng, nombre}
+let miUbicacionAnimId = null;
+let miUbicacionTargetLat = null;
+let miUbicacionTargetLng = null;
+
+// ==== RUTA ====
+let rutaActiva = null;
+let rutaWatchId = null;
+let rutaDestino = null;
+let rutaSiguiendoUsuario = true;
+
+// ==== BIBLIA ====
+let bibliaConfig = {
+  fuente: 'auto', // 'github' | 'custom' | 'local' | 'auto'
+  githubOwner: '',
+  githubRepo: '',
+  githubBranch: 'main',
+  githubPath: 'Biblia'
+};
+let librosBiblia = { antiguoTestamento: {}, nuevoTestamento: {} }; // { libro: url }
+let textosCapitulosCache = {}; // { libro: { capitulo: [versos] } }
+let libroActual = '';
+let capituloActual = '';
+let capitulosCache = {};
+let capituloKeys = [];
 
 const STORAGE_KEYS = {
   historialBiblia: 'iglesia_historial_biblia',
@@ -2741,8 +2843,6 @@ const STORAGE_KEYS = {
   visitanteId: 'iglesia_visitante_id'
 };
 let bibliaFuenteSize = parseInt(localStorage.getItem(STORAGE_KEYS.bibliaFuente)) || 14;
-let capitulosCache = {};
-let capituloKeys = [];
 const MAX_GALERIA = 100;
 
 function tieneRol(rol) { return currentUser && currentUser.apoyos && currentUser.apoyos.includes(rol); }
@@ -2870,21 +2970,59 @@ function crearMarkerElemento(tipo, iconFallback) {
   return el;
 }
 
-// ==================== UBICACIÓN EN TIEMPO REAL (PUNTO AZUL) ====================
+// ==================== MI UBICACIÓN (punto azul clásico con animación) ====================
 function crearMarkerUbicacion() {
-  const el = document.createElement('div');
-  el.className = 'mi-ubicacion-marker-dot';
-  el.title = 'Mi ubicación';
-  return el;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'mi-ubicacion-wrapper';
+  wrapper.innerHTML = '<div class="mi-ubicacion-pulso"></div><div class="mi-ubicacion-punto"></div>';
+  return wrapper;
 }
 
-// Inicia el watch de ubicación en tiempo real (una sola vez)
-function iniciarWatchUbicacion(opciones = {}) {
-  if (!navigator.geolocation) return;
-  if (miUbicacionWatchIdGlobal !== null) {
-    // Ya está activo, solo actualizamos el marcador si existe
+// Animación suave del marcador hacia el objetivo (interpolación lineal)
+function animarMarcadorUbicacion(lat, lng) {
+  miUbicacionTargetLat = lat;
+  miUbicacionTargetLng = lng;
+  if (!miUbicacionMarkerGlobal) return;
+  if (miUbicacionAnimId) return; // ya animando hacia el objetivo
+  const step = () => {
+    if (!miUbicacionMarkerGlobal) { miUbicacionAnimId = null; return; }
+    const cur = miUbicacionMarkerGlobal.getLngLat();
+    const dLat = miUbicacionTargetLat - cur.lat;
+    const dLng = miUbicacionTargetLng - cur.lng;
+    const dist = Math.sqrt(dLat*dLat + dLng*dLng);
+    if (dist < 0.0000008) {
+      try { miUbicacionMarkerGlobal.setLngLat([miUbicacionTargetLng, miUbicacionTargetLat]); } catch(e){}
+      miUbicacionAnimId = null;
+      return;
+    }
+    const newLat = cur.lat + dLat * 0.18;
+    const newLng = cur.lng + dLng * 0.18;
+    try { miUbicacionMarkerGlobal.setLngLat([newLng, newLat]); } catch(e){}
+    miUbicacionAnimId = requestAnimationFrame(step);
+  };
+  miUbicacionAnimId = requestAnimationFrame(step);
+}
+
+function asegurarMarcadorUbicacion(lat, lng) {
+  if (!mapboxMap) return;
+  if (miUbicacionMarkerGlobal) {
+    animarMarcadorUbicacion(lat, lng);
     return;
   }
+  try {
+    const el = crearMarkerUbicacion();
+    miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el, anchor: 'center' })
+      .setLngLat([lng, lat])
+      .addTo(mapboxMap);
+    // Iniciar animación con un pequeño pulso visual
+    miUbicacionAnimId = null;
+    animarMarcadorUbicacion(lat, lng);
+  } catch(e) { console.warn('No se pudo crear marcador de ubicación:', e); }
+}
+
+function iniciarWatchUbicacion(opciones = {}) {
+  if (!navigator.geolocation) return;
+  if (miUbicacionWatchIdGlobal !== null) return; // ya activo
   miUbicacionWatchIdGlobal = navigator.geolocation.watchPosition(
     (pos) => {
       const lat = pos.coords.latitude, lng = pos.coords.longitude;
@@ -2892,20 +3030,26 @@ function iniciarWatchUbicacion(opciones = {}) {
       miUbicacionActiva = true;
       const btn = document.getElementById('btnMiUbicacion');
       if (btn) btn.classList.add('activo');
-      if (miUbicacionMarkerGlobal) {
-        miUbicacionMarkerGlobal.setLngLat([lng, lat]);
-      } else if (mapboxMap) {
+      asegurarMarcadorUbicacion(lat, lng);
+
+      // Si hay una ruta activa, recalcular suavemente (con throttle)
+      if (rutaActiva && mapboxToken) {
+        const o = rutaActiva.origen;
+        const dist = Math.abs(o.lat - lat) + Math.abs(o.lng - lng);
+        if (dist > 0.00012) { // ~15m
+          rutaActiva.origen = { lat, lng };
+          recalcularRuta(lat, lng);
+        }
+      }
+      // Seguir cámara suavemente si hay ruta activa
+      if (rutaActiva && rutaSiguiendoUsuario && mapboxMap) {
         try {
-          const el = crearMarkerUbicacion();
-          miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el, anchor: 'center' })
-            .setLngLat([lng, lat])
-            .addTo(mapboxMap);
-        } catch(e) { console.warn('No se pudo crear marcador:', e); }
+          mapboxMap.easeTo({ center: [lng, lat], duration: 900, essential: true });
+        } catch(e){}
       }
     },
     (err) => {
       console.warn('Geolocation error:', err);
-      // Solo avisamos si el usuario lo pidió manualmente
       if (opciones.mostrarError) {
         alert('No se pudo obtener tu ubicación: ' + (err.message || err.code));
       }
@@ -2914,7 +3058,6 @@ function iniciarWatchUbicacion(opciones = {}) {
   );
 }
 
-// Detiene el watch
 function detenerWatchUbicacion() {
   if (miUbicacionWatchIdGlobal !== null && navigator.geolocation) {
     navigator.geolocation.clearWatch(miUbicacionWatchIdGlobal);
@@ -2925,41 +3068,31 @@ function detenerWatchUbicacion() {
     miUbicacionMarkerGlobal = null;
   }
   miUbicacionActiva = false;
+  if (miUbicacionAnimId) { cancelAnimationFrame(miUbicacionAnimId); miUbicacionAnimId = null; }
   const btn = document.getElementById('btnMiUbicacion');
   if (btn) btn.classList.remove('activo');
 }
 
 window.activarMiUbicacion = function() {
   if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
-  const btn = document.getElementById('btnMiUbicacion');
   if (miUbicacionActiva) {
     detenerWatchUbicacion();
     return;
   }
   if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
-  // Forzar primer fix rápido y hacer flyTo
+  // Primer fix rápido + flyTo + watch continuo
   navigator.geolocation.getCurrentPosition(
     (pos) => {
       const lat = pos.coords.latitude, lng = pos.coords.longitude;
       miUbicacionActual = { lat, lng };
       miUbicacionActiva = true;
+      const btn = document.getElementById('btnMiUbicacion');
       if (btn) btn.classList.add('activo');
-      if (miUbicacionMarkerGlobal) miUbicacionMarkerGlobal.setLngLat([lng, lat]);
-      else {
-        try {
-          const el = crearMarkerUbicacion();
-          miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el, anchor: 'center' })
-            .setLngLat([lng, lat])
-            .addTo(mapboxMap);
-        } catch(e) {}
-      }
-      try { mapboxMap.flyTo({ center: [lng, lat], zoom: 16 }); } catch(e) {}
-      // Y luego seguimos con watch continuo
+      asegurarMarcadorUbicacion(lat, lng);
+      try { mapboxMap.flyTo({ center: [lng, lat], zoom: 16, duration: 1200 }); } catch(e) {}
       iniciarWatchUbicacion();
     },
-    (err) => {
-      alert('No se pudo obtener tu ubicación: ' + (err.message || err.code));
-    },
+    (err) => { alert('No se pudo obtener tu ubicación: ' + (err.message || err.code)); },
     { enableHighAccuracy: true, timeout: 15000 }
   );
 };
@@ -3160,6 +3293,7 @@ async function cargarUsuarioActual(user) {
     cargarEstilosConfig();
     cargarConfigCallMeBot();
     cargarConfigPaypal();
+    cargarConfigBiblia();
     renderEventos();
     renderNoticias();
     renderReels();
@@ -3296,11 +3430,11 @@ function actualizarUIUsuario() {
   }
 
   const isConfigAllowed = isSuperAdmin;
-  ['cardLogoConfig', 'cardIAConfig', 'cardMapboxConfig', 'cardMenuConfig', 'cardEstilosConfig', 'cardCallMeBotConfig', 'cardPaypalConfig'].forEach(id => {
+  ['cardLogoConfig', 'cardIAConfig', 'cardMapboxConfig', 'cardMenuConfig', 'cardEstilosConfig', 'cardCallMeBotConfig', 'cardPaypalConfig', 'cardBibliaConfig'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = isConfigAllowed ? 'block' : 'none';
   });
-  ['msgLogoConfig', 'msgIAConfig', 'msgMapboxConfig', 'msgMenuConfig', 'msgEstilosConfig', 'msgCallMeBotConfig', 'msgPaypalConfig'].forEach(id => {
+  ['msgLogoConfig', 'msgIAConfig', 'msgMapboxConfig', 'msgMenuConfig', 'msgEstilosConfig', 'msgCallMeBotConfig', 'msgPaypalConfig', 'msgBibliaConfig'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = isConfigAllowed ? 'none' : 'block';
   });
@@ -3348,7 +3482,7 @@ function switchPanel(name) {
     case 'chatequipo': renderChatEquipo(); break;
     case 'iglesias': renderIglesiasPanel(); break;
     case 'mapa': if (currentUser) { renderMapaAcordeon(); setTimeout(()=>{ initMapboxMap(); }, 100); } break;
-    case 'biblia': cargarHistorial(); break;
+    case 'biblia': cargarHistorial(); llenarSelectorLibros(); break;
     case 'devocionales': renderDevocionales(); break;
     case 'inicio': renderCarrusel(); renderEventos(); renderNoticias(); renderHistorias(); break;
     case 'admin': if (isAdmin) renderAdminPanel(); break;
@@ -3530,7 +3664,7 @@ window.compartirUbicacion = async function(lat, lng, nombre, tipo) {
     try {
       await navigator.share({ title: nombre || 'Ubicación', text: texto, url: urlGoogle });
       return;
-    } catch (e) { /* usuario canceló o no soportado */ }
+    } catch (e) { }
   }
   try {
     await navigator.clipboard.writeText(texto);
@@ -5376,6 +5510,7 @@ function renderIglesiasMapa() {
   if (listeners.iglesias) listeners.iglesias();
   listeners.iglesias = IGLESIAS.orderBy('nombre', 'asc').onSnapshot(snap => {
     const c = document.getElementById('iglesiasMapaList');
+    if (!c) return;
     let html = '';
     snap.forEach(doc => {
       const i = doc.data();
@@ -5418,6 +5553,7 @@ function renderGruposMapa() {
   if (!currentUser) return;
   GRUPOS.get().then(snap => {
     const c = document.getElementById('gruposMapaList');
+    if (!c) return;
     let html = '';
     snap.forEach(doc => {
       const g = doc.data();
@@ -5559,7 +5695,6 @@ function initMapboxMap() {
   try { mapboxMap = new mapboxgl.Map({ container: 'mapboxMap', style: 'mapbox://styles/mapbox/streets-v12', center: [-84.0907, 9.9281], zoom: 7 }); } catch (e) { return; }
   mapboxMap.addControl(new mapboxgl.NavigationControl());
   cargarPuntosMapbox();
-  // Iniciar automáticamente la ubicación en tiempo real (silenciosa, sin alertas)
   setTimeout(() => { iniciarWatchUbicacion(); }, 700);
 }
 
@@ -5669,6 +5804,25 @@ function addMarkerMapa(lat, lng, nombre, desc, color, tipo) {
   } catch(e) { console.warn('addMarkerMapa:', e); }
 }
 
+// ============================================================
+// RUTA: recalcula + cámara sigue al usuario
+// ============================================================
+function recalcularRuta(latO, lngO) {
+  if (!rutaActiva || !mapboxToken) return;
+  const d = rutaActiva.destino;
+  const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${lngO},${latO};${d.lng},${d.lat}?geometries=geojson&overview=full&access_token=${mapboxToken}`;
+  fetch(url).then(r => r.json()).then(data => {
+    if (data.routes && data.routes.length > 0) {
+      const ruta = data.routes[0];
+      const distanciaKm = (ruta.distance / 1000).toFixed(1);
+      const duracionMin = Math.round(ruta.duration / 60);
+      const metaEl = document.getElementById('rutaMeta');
+      if (metaEl) metaEl.textContent = `Distancia: ${distanciaKm} km · Tiempo aprox: ${duracionMin} min`;
+      dibujarRutaEnMapa(ruta.geometry, latO, lngO, d.lat, d.lng, rutaActiva.nombreDestino);
+    }
+  }).catch(()=>{});
+}
+
 window.trazarRutaA = function(latDestino, lngDestino, nombreDestino) {
   if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
   if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
@@ -5680,10 +5834,9 @@ window.trazarRutaA = function(latDestino, lngDestino, nombreDestino) {
   document.getElementById('rutaMeta').textContent = 'Obteniendo tu ubicación...';
   if (panel) panel.classList.add('show');
 
-  // Asegurar que el marcador de ubicación exista (silencioso)
+  // Asegurar marcador de ubicación y watcher
   iniciarWatchUbicacion();
 
-  // Detener watcher previo de ruta si existe
   if (rutaWatchId !== null && navigator.geolocation) {
     navigator.geolocation.clearWatch(rutaWatchId);
     rutaWatchId = null;
@@ -5691,44 +5844,35 @@ window.trazarRutaA = function(latDestino, lngDestino, nombreDestino) {
 
   const calcular = (latOrigen, lngOrigen) => {
     miUbicacionActual = { lat: latOrigen, lng: lngOrigen };
-    // Asegurar marcador en la posición inicial
-    if (miUbicacionMarkerGlobal) {
-      miUbicacionMarkerGlobal.setLngLat([lngOrigen, latOrigen]);
-    } else if (mapboxMap) {
-      try {
-        const el = crearMarkerUbicacion();
-        miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el, anchor: 'center' })
-          .setLngLat([lngOrigen, latOrigen])
-          .addTo(mapboxMap);
-      } catch(e) {}
-    }
+    asegurarMarcadorUbicacion(latOrigen, lngOrigen);
 
     if (mapboxToken) {
       const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${lngOrigen},${latOrigen};${lngD},${latD}?geometries=geojson&overview=full&access_token=${mapboxToken}`;
       fetch(url).then(r => r.json()).then(data => {
         if (data.routes && data.routes.length > 0) {
           const ruta = data.routes[0];
-          const geometry = ruta.geometry;
           const distanciaKm = (ruta.distance / 1000).toFixed(1);
           const duracionMin = Math.round(ruta.duration / 60);
           document.getElementById('rutaMeta').textContent = `Distancia: ${distanciaKm} km · Tiempo aprox: ${duracionMin} min`;
-          dibujarRutaEnMapa(geometry, latOrigen, lngOrigen, latD, lngD, nombreDestino);
+          dibujarRutaEnMapa(ruta.geometry, latOrigen, lngOrigen, latD, lngD, nombreDestino);
           rutaActiva = { origen: { lat: latOrigen, lng: lngOrigen }, destino: { lat: latD, lng: lngD }, nombreDestino };
         } else {
           const coords = [[lngOrigen, latOrigen], [lngD, latD]];
           dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latD, lngD, nombreDestino);
+          rutaActiva = { origen: { lat: latOrigen, lng: lngOrigen }, destino: { lat: latD, lng: lngD }, nombreDestino };
         }
       }).catch(() => {
         const coords = [[lngOrigen, latOrigen], [lngD, latD]];
         dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latD, lngD, nombreDestino);
+        rutaActiva = { origen: { lat: latOrigen, lng: lngOrigen }, destino: { lat: latD, lng: lngD }, nombreDestino };
       });
     } else {
       const coords = [[lngOrigen, latOrigen], [lngD, latD]];
       dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latD, lngD, nombreDestino);
+      rutaActiva = { origen: { lat: latOrigen, lng: lngOrigen }, destino: { lat: latD, lng: lngD }, nombreDestino };
     }
   };
 
-  // Primer fix rápido
   if (miUbicacionActual) {
     calcular(miUbicacionActual.lat, miUbicacionActual.lng);
   } else {
@@ -5740,36 +5884,6 @@ window.trazarRutaA = function(latDestino, lngDestino, nombreDestino) {
       { enableHighAccuracy: true, timeout: 15000 }
     );
   }
-
-  // Y actualizar continuamente (tiempo real)
-  rutaWatchId = navigator.geolocation.watchPosition(
-    (pos) => {
-      const lat = pos.coords.latitude, lng = pos.coords.longitude;
-      miUbicacionActual = { lat, lng };
-      if (miUbicacionMarkerGlobal) miUbicacionMarkerGlobal.setLngLat([lng, lat]);
-      // Actualizar el origen de la ruta activa
-      if (rutaActiva && mapboxToken) {
-        const o = rutaActiva.origen;
-        // Solo recalcular si se movió más de ~15 metros para no saturar
-        const dist = Math.abs(o.lat - lat) + Math.abs(o.lng - lng);
-        if (dist > 0.00015) {
-          rutaActiva.origen = { lat, lng };
-          const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${lng},${lat};${rutaActiva.destino.lng},${rutaActiva.destino.lat}?geometries=geojson&overview=full&access_token=${mapboxToken}`;
-          fetch(url).then(r => r.json()).then(data => {
-            if (data.routes && data.routes.length > 0) {
-              const ruta = data.routes[0];
-              const distanciaKm = (ruta.distance / 1000).toFixed(1);
-              const duracionMin = Math.round(ruta.duration / 60);
-              document.getElementById('rutaMeta').textContent = `Distancia: ${distanciaKm} km · Tiempo aprox: ${duracionMin} min`;
-              dibujarRutaEnMapa(ruta.geometry, lat, lng, rutaActiva.destino.lat, rutaActiva.destino.lng, rutaActiva.nombreDestino);
-            }
-          }).catch(()=>{});
-        }
-      }
-    },
-    (err) => { console.warn('Watch ruta error:', err); },
-    { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 }
-  );
 };
 function dibujarRutaEnMapa(geometry, latO, lngO, latD, lngD, nombre) {
   try {
@@ -5948,37 +6062,297 @@ window.preguntarIA = function() {
   });
 };
 
-// BIBLIA
-let textosBiblicos = {};
-let libroActual = '';
-let capituloActual = '';
-const libroSelect = document.getElementById('libro');
-const capituloSelect = document.getElementById('capitulo');
-const versiculoContainer = document.getElementById('versiculoContainer');
-fetch('textos-biblicos.json').then(r => r.json()).then(data => {
-  textosBiblicos = data;
-  const all = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
-  Object.keys(all).forEach(libro => { const o = document.createElement('option'); o.value = libro; o.textContent = libro; libroSelect.appendChild(o); });
-}).catch(() => {
-  const fallback = ['Génesis','Éxodo','Salmos','Proverbios','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','Apocalipsis'];
-  fallback.forEach(l => { const o = document.createElement('option'); o.value = l; o.textContent = l; libroSelect.appendChild(o); });
-});
-libroSelect.addEventListener('change', function() { if (this.value) { libroActual = this.value; cargarCapitulos(libroActual); guardarHistorial(libroActual); } });
-capituloSelect.addEventListener('change', function() { if (this.value) { capituloActual = this.value; guardarHistorial(libroActual + ' ' + capituloActual); actualizarInfoCap(); } });
-function guardarHistorial(t) { let h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]'); if (!h.includes(t)) { h.unshift(t); if (h.length > 10) h.pop(); localStorage.setItem(STORAGE_KEYS.historialBiblia, JSON.stringify(h)); cargarHistorial(); } }
+// ============================================================
+// BIBLIA: GitHub / Personalizadas / Local
+// ============================================================
+async function cargarConfigBiblia() {
+  try {
+    const doc = await CONFIG_BIBLIA.get();
+    if (doc.exists) {
+      const d = doc.data();
+      bibliaConfig = {
+        fuente: d.fuente || 'auto',
+        githubOwner: d.githubOwner || '',
+        githubRepo: d.githubRepo || '',
+        githubBranch: d.githubBranch || 'main',
+        githubPath: d.githubPath || 'Biblia'
+      };
+    }
+  } catch(e) { console.warn('cargarConfigBiblia', e); }
+  const f = document.getElementById('bibliaFuenteSelect'); if (f) f.value = bibliaConfig.fuente;
+  const go = document.getElementById('bibliaGithubOwner'); if (go) go.value = bibliaConfig.githubOwner;
+  const gr = document.getElementById('bibliaGithubRepo'); if (gr) gr.value = bibliaConfig.githubRepo;
+  const gb = document.getElementById('bibliaGithubBranch'); if (gb) gb.value = bibliaConfig.githubBranch;
+  const gp = document.getElementById('bibliaGithubPath'); if (gp) gp.value = bibliaConfig.githubPath;
+  await cargarLibrosBiblia();
+  await renderBibliasPersonalizadas();
+}
+
+async function cargarLibrosBiblia() {
+  librosBiblia = { antiguoTestamento: {}, nuevoTestamento: {} };
+  const badge = document.getElementById('bibliaFuenteBadge');
+
+  const cargarDesdeGitHub = async () => {
+    if (!bibliaConfig.githubOwner || !bibliaConfig.githubRepo) return 0;
+    try {
+      const url = `https://api.github.com/repos/${bibliaConfig.githubOwner}/${bibliaConfig.githubRepo}/git/trees/${bibliaConfig.githubBranch}?recursive=1`;
+      const resp = await fetch(url);
+      if (!resp.ok) return 0;
+      const data = await resp.json();
+      const prefix = bibliaConfig.githubPath ? bibliaConfig.githubPath.replace(/\/+$/,'') + '/' : '';
+      let count = 0;
+      data.tree.filter(item => item.type === 'blob' && item.path.startsWith(prefix) && item.path.toLowerCase().endsWith('.json')).forEach(item => {
+        const rel = item.path.substring(prefix.length);
+        // Determinar testamento
+        let testamento = 'antiguoTestamento';
+        const lower = rel.toLowerCase();
+        if (lower.includes('nuevo') || lower.includes('nt/') || lower.startsWith('nt ') || /^nt[\/\\]/.test(lower)) testamento = 'nuevoTestamento';
+        // Nombre libro = último segmento sin .json (o el nombre del archivo si hay carpeta)
+        const partes = rel.split('/').filter(s => s);
+        let nombreLibro = partes[partes.length - 1].replace(/\.json$/i, '');
+        // Si está en subcarpeta, usar el nombre del archivo
+        if (partes.length > 1) nombreLibro = partes[partes.length - 1].replace(/\.json$/i, '');
+        const rawUrl = `https://raw.githubusercontent.com/${bibliaConfig.githubOwner}/${bibliaConfig.githubRepo}/${bibliaConfig.githubBranch}/${item.path}`;
+        librosBiblia[testamento][nombreLibro] = rawUrl;
+        count++;
+      });
+      return count;
+    } catch(e) { console.warn('GitHub bible error:', e); return 0; }
+  };
+
+  const cargarDesdeCustom = async () => {
+    try {
+      const snap = await BIBLIAS_PERSONALIZADAS.get();
+      let count = 0;
+      snap.forEach(doc => {
+        const d = doc.data();
+        const testamento = d.testamento || 'nuevoTestamento';
+        const nombre = d.nombre || 'Sin nombre';
+        if (!librosBiblia[testamento]) librosBiblia[testamento] = {};
+        librosBiblia[testamento][nombre] = d.url;
+        count++;
+      });
+      return count;
+    } catch(e) { return 0; }
+  };
+
+  const cargarDesdeLocal = async () => {
+    try {
+      const resp = await fetch('textos-biblicos.json');
+      if (!resp.ok) return 0;
+      const data = await resp.json();
+      let count = 0;
+      if (data.antiguoTestamento) { Object.assign(librosBiblia.antiguoTestamento, data.antiguoTestamento); count += Object.keys(data.antiguoTestamento).length; }
+      if (data.nuevoTestamento) { Object.assign(librosBiblia.nuevoTestamento, data.nuevoTestamento); count += Object.keys(data.nuevoTestamento).length; }
+      return count;
+    } catch(e) { return 0; }
+  };
+
+  let fuenteUsada = '';
+  let total = 0;
+  if (bibliaConfig.fuente === 'github') {
+    total = await cargarDesdeGitHub();
+    fuenteUsada = 'GitHub';
+  } else if (bibliaConfig.fuente === 'custom') {
+    total = await cargarDesdeCustom();
+    fuenteUsada = 'Personalizadas';
+  } else if (bibliaConfig.fuente === 'local') {
+    total = await cargarDesdeLocal();
+    fuenteUsada = 'Local';
+  } else {
+    // auto
+    total = await cargarDesdeGitHub();
+    if (total > 0) fuenteUsada = 'GitHub';
+    else { total = await cargarDesdeCustom(); if (total > 0) fuenteUsada = 'Personalizadas'; }
+    if (total === 0) { total = await cargarDesdeLocal(); if (total > 0) fuenteUsada = 'Local'; }
+  }
+
+  if (badge) {
+    if (total > 0) badge.innerHTML = `<i class="fas fa-check-circle"></i> ${total} libros · ${fuenteUsada}`;
+    else badge.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Sin fuente configurada`;
+  }
+  llenarSelectorLibros();
+}
+
+function llenarSelectorLibros() {
+  const libroSelect = document.getElementById('libro');
+  if (!libroSelect) return;
+  const valorPrevio = libroSelect.value;
+  libroSelect.innerHTML = '<option value="">Selecciona</option>';
+  const todos = { ...librosBiblia.antiguoTestamento, ...librosBiblia.nuevoTestamento };
+  const nombres = Object.keys(todos).sort((a,b) => a.localeCompare(b, 'es'));
+  nombres.forEach(libro => {
+    const o = document.createElement('option');
+    o.value = libro;
+    o.textContent = libro;
+    libroSelect.appendChild(o);
+  });
+  if (valorPrevio && todos[valorPrevio]) libroSelect.value = valorPrevio;
+}
+
+function normalizarCapitulos(data) {
+  if (Array.isArray(data)) {
+    const obj = {};
+    data.forEach(ch => {
+      const n = ch.chapter || ch.capitulo || ch.number || ch.n || 1;
+      const v = ch.verses || ch.versiculos || ch.text || ch.v || [];
+      obj[n] = Array.isArray(v) ? v : (typeof v === 'object' ? Object.keys(v).sort((a,b)=>parseInt(a)-parseInt(b)).map(k => v[k]) : []);
+    });
+    return obj;
+  }
+  if (data && typeof data === 'object') {
+    // { "1": [...], "2": [...] } o { "1": { "1": "...", "2": "..." } }
+    if (data.chapters && Array.isArray(data.chapters)) return normalizarCapitulos(data.chapters);
+    if (data.capitulos && Array.isArray(data.capitulos)) return normalizarCapitulos(data.capitulos);
+    const obj = {};
+    Object.keys(data).forEach(k => {
+      if (isNaN(parseInt(k))) return;
+      const v = data[k];
+      if (Array.isArray(v)) obj[k] = v;
+      else if (v && typeof v === 'object') {
+        if (Array.isArray(v.verses)) obj[k] = v.verses;
+        else if (Array.isArray(v.versiculos)) obj[k] = v.versiculos;
+        else obj[k] = Object.keys(v).sort((a,b)=>parseInt(a)-parseInt(b)).map(kk => v[kk]);
+      }
+    });
+    return obj;
+  }
+  return {};
+}
+
 function cargarCapitulos(libro) {
-  const test = textosBiblicos.antiguoTestamento?.[libro] ? 'antiguoTestamento' : (textosBiblicos.nuevoTestamento?.[libro] ? 'nuevoTestamento' : null);
-  if (!test) { capituloSelect.innerHTML = '<option>No disponible</option>'; return; }
-  const ruta = textosBiblicos[test][libro];
-  fetch(ruta).then(r => r.json()).then(data => {
-    capituloKeys = Object.keys(data).sort((a,b) => parseInt(a) - parseInt(b));
+  const url = librosBiblia.antiguoTestamento[libro] || librosBiblia.nuevoTestamento[libro];
+  if (!url) { document.getElementById('capitulo').innerHTML = '<option>No disponible</option>'; return; }
+  const capituloSelect = document.getElementById('capitulo');
+  capituloSelect.innerHTML = '<option value="">Cargando...</option>';
+  fetch(url).then(r => r.json()).then(data => {
+    const chaptersObj = normalizarCapitulos(data);
+    textosCapitulosCache[libro] = chaptersObj;
+    capituloKeys = Object.keys(chaptersObj).sort((a,b) => parseInt(a) - parseInt(b));
     capituloSelect.innerHTML = '<option value="">Selecciona capítulo</option>';
     capituloKeys.forEach(cap => { const o = document.createElement('option'); o.value = cap; o.textContent = 'Capítulo ' + cap; capituloSelect.appendChild(o); });
-    if (capituloKeys.length > 0) { capituloSelect.value = capituloKeys[0]; capituloActual = capituloKeys[0]; actualizarInfoCap(); }
+    if (capituloKeys.length > 0) {
+      capituloSelect.value = capituloKeys[0];
+      capituloActual = capituloKeys[0];
+      actualizarInfoCap();
+      cargarVersiculos(libro, capituloActual);
+    }
+  }).catch(err => {
+    console.warn('Error cargando capítulos:', err);
+    capituloSelect.innerHTML = '<option>Error al cargar</option>';
   });
 }
+
+function cargarVersiculos(libro, capitulo) {
+  const container = document.getElementById('versiculoContainer');
+  if (!container) return;
+  const data = textosCapitulosCache[libro];
+  if (!data) { container.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Cargando...</p>'; return; }
+  const verses = data[capitulo];
+  if (!verses || verses.length === 0) { container.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Sin datos para este capítulo.</p>'; return; }
+  let html = '';
+  verses.forEach((v, i) => {
+    const text = typeof v === 'string' ? v : (v.text || v.texto || v.t || '');
+    html += `<p><strong style="color:var(--teal);margin-right:6px;">${i+1}</strong> ${text}</p>`;
+  });
+  container.innerHTML = html;
+  container.style.fontSize = bibliaFuenteSize + 'px';
+}
+
 function actualizarInfoCap() { document.getElementById('capInfo').textContent = libroActual && capituloActual ? libroActual + ' ' + capituloActual : 'Capítulo'; }
-function cargarHistorial() { const h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]'); const c = document.getElementById('historialContainer'); c.innerHTML = h.length ? h.map(t => `<span class="historial-tag">${t}</span>`).join('') : '<span style="color:var(--text-secondary);font-size:12px;">Sin búsquedas.</span>'; }
+function cargarHistorial() { const h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]'); const c = document.getElementById('historialContainer'); c.innerHTML = h.length ? h.map(t => `<span class="historial-tag" onclick="irAHistorial('${t}')" style="cursor:pointer;">${t}</span>`).join('') : '<span style="color:var(--text-secondary);font-size:12px;">Sin búsquedas.</span>'; }
+function irAHistorial(t) {
+  const partes = t.split(' ');
+  if (partes.length < 2) return;
+  const cap = partes[partes.length-1];
+  const libro = partes.slice(0, -1).join(' ');
+  document.getElementById('libro').value = libro;
+  libroActual = libro;
+  cargarCapitulos(libro);
+  setTimeout(() => {
+    if (capituloKeys.includes(cap)) {
+      document.getElementById('capitulo').value = cap;
+      capituloActual = cap;
+      actualizarInfoCap();
+      cargarVersiculos(libro, cap);
+    }
+  }, 500);
+}
+
+// Config Biblia (SuperAdmin)
+window.guardarConfigBiblia = function() {
+  if (!isSuperAdmin) return;
+  const fuente = document.getElementById('bibliaFuenteSelect').value;
+  const githubOwner = document.getElementById('bibliaGithubOwner').value.trim();
+  const githubRepo = document.getElementById('bibliaGithubRepo').value.trim();
+  const githubBranch = document.getElementById('bibliaGithubBranch').value.trim() || 'main';
+  const githubPath = document.getElementById('bibliaGithubPath').value.trim() || 'Biblia';
+  CONFIG_BIBLIA.set({ fuente, githubOwner, githubRepo, githubBranch, githubPath, actualizado: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true })
+    .then(async () => {
+      bibliaConfig = { fuente, githubOwner, githubRepo, githubBranch, githubPath };
+      await cargarLibrosBiblia();
+      alert('✅ Configuración de Biblia guardada.');
+    }).catch(err => alert('Error: ' + err.message));
+};
+
+window.recargarBiblias = async function() {
+  await cargarLibrosBiblia();
+  alert('✅ Libros recargados: ' + (Object.keys(librosBiblia.antiguoTestamento).length + Object.keys(librosBiblia.nuevoTestamento).length) + ' disponibles.');
+};
+
+window.subirLibroBiblia = async function() {
+  if (!isSuperAdmin) return;
+  const testamento = document.getElementById('subirBibliaTestamento').value;
+  const nombre = document.getElementById('subirBibliaNombre').value.trim();
+  const version = document.getElementById('subirBibliaVersion').value.trim();
+  const file = document.getElementById('subirBibliaFile').files[0];
+  if (!nombre || !file) { alert('Nombre y archivo JSON requeridos.'); return; }
+  if (!file.name.toLowerCase().endsWith('.json')) { alert('Debe ser un archivo .json'); return; }
+  try {
+    // Validar JSON
+    const texto = await file.text();
+    JSON.parse(texto); // lanzará si no es válido
+    const path = `biblias/${testamento}/${Date.now()}_${file.name}`;
+    const url = await subirArchivoStorage(file, path);
+    await BIBLIAS_PERSONALIZADAS.add({ testamento, nombre, version, url, fileName: file.name, uid: currentUser.uid, fecha: firebase.firestore.FieldValue.serverTimestamp() });
+    document.getElementById('subirBibliaNombre').value = '';
+    document.getElementById('subirBibliaVersion').value = '';
+    document.getElementById('subirBibliaFile').value = '';
+    alert('✅ Libro subido correctamente.');
+    await renderBibliasPersonalizadas();
+    await cargarLibrosBiblia();
+  } catch(err) {
+    alert('Error: ' + err.message);
+  }
+};
+
+async function renderBibliasPersonalizadas() {
+  const cont = document.getElementById('listaBibliasPersonalizadas');
+  if (!cont) return;
+  try {
+    const snap = await BIBLIAS_PERSONALIZADAS.orderBy('fecha', 'desc').get();
+    if (snap.empty) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">No hay libros subidos.</p>'; return; }
+    let html = '<div style="font-weight:600;font-size:13px;margin-bottom:6px;">Libros subidos:</div>';
+    snap.forEach(doc => {
+      const d = doc.data();
+      html += `<div class="admin-list-item" style="font-size:12px;">
+        <span class="info"><strong>${d.nombre}</strong> <small style="color:var(--text-secondary);">(${d.testamento === 'nuevoTestamento' ? 'NT' : 'AT'}${d.version ? ' · ' + d.version : ''})</small></span>
+        <div class="actions"><button type="button" class="btn-danger" onclick="eliminarLibroBiblia('${doc.id}')" style="font-size:10px;">X</button></div>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  } catch(e) { cont.innerHTML = ''; }
+}
+
+window.eliminarLibroBiblia = async function(id) {
+  if (!isSuperAdmin) return;
+  if (!confirm('¿Eliminar este libro de la Biblia?')) return;
+  try {
+    await BIBLIAS_PERSONALIZADAS.doc(id).delete();
+    await renderBibliasPersonalizadas();
+    await cargarLibrosBiblia();
+  } catch(e) { alert('Error: ' + e.message); }
+};
 
 function actualizarBotonesPorRol() {
   const btnGrupo = document.getElementById('btnCrearGrupo');
@@ -6022,7 +6396,7 @@ window.mostrarNotificaciones = function() {
       else if (n.tipo === 'seguidor') t = `${n.emisorNombre} te sigue`;
       else if (n.tipo === 'mensaje_privado') t = `${n.emisorNombre}: "${n.texto}"`;
       else if (n.tipo === 'solicitud_proyecto') t = `${n.emisorNombre} ${n.texto || 'quiere unirse a tu proyecto'}`;
-      else if (n.tipo === 'solicitud_proyecto_aprobada') t = `${n.emisorNombre} aprobó tu solicitud al proyecto "${n.proyectoId || ''}"`;
+      else if (n.tipo === 'solicitud_proyecto_aprobada') t = `${n.emisorNombre} aprobó tu solicitud al proyecto`;
       else if (n.tipo === 'solicitud_proyecto_rechazada') t = `${n.emisorNombre} rechazó tu solicitud`;
       else if (n.texto) t = `${n.emisorNombre}: ${n.texto}`;
       msg += '- ' + t + '\n';
@@ -6037,7 +6411,7 @@ function renderAdminPanel() {
   cargarConfigIA();
   cargarConfigCallMeBot();
   cargarConfigPaypal();
-  if (isSuperAdmin) renderSolicitudesPassword();
+  if (isSuperAdmin) { cargarConfigBiblia(); renderBibliasPersonalizadas(); }
   const stats = { users:0, posts:0, iglesias:0 };
   Promise.all([USERS.get().then(s => stats.users = s.size), POSTS.get().then(s => stats.posts = s.size), IGLESIAS.get().then(s => stats.iglesias = s.size)]).then(() => {
     document.getElementById('statUsers').textContent = stats.users;
@@ -7705,6 +8079,10 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('notifBell').addEventListener('click', mostrarNotificaciones);
   document.getElementById('btnPreguntarIA').addEventListener('click', preguntarIA);
   document.getElementById('iaPregunta').addEventListener('keypress', (e) => { if (e.key === 'Enter') preguntarIA(); });
+  // Biblia
+  document.getElementById('btnGuardarBibliaConfig')?.addEventListener('click', guardarConfigBiblia);
+  document.getElementById('btnRecargarBiblia')?.addEventListener('click', recargarBiblias);
+  document.getElementById('btnSubirLibroBiblia')?.addEventListener('click', subirLibroBiblia);
   document.getElementById('btnBuscarBiblia').addEventListener('click', () => alert('Búsqueda en versión completa.'));
 
   const btnCrearProyecto = document.getElementById('btnCrearProyecto');
@@ -7713,6 +8091,38 @@ document.addEventListener('DOMContentLoaded', function() {
   if (proyectoCancel) proyectoCancel.addEventListener('click', () => cerrarModal('proyectoModal'));
   const proyectoCrear = document.getElementById('proyectoCrear');
   if (proyectoCrear) proyectoCrear.addEventListener('click', crearProyecto);
+
+  // Biblia: eventos de selects
+  const libroSelect = document.getElementById('libro');
+  const capituloSelect = document.getElementById('capitulo');
+  if (libroSelect) libroSelect.addEventListener('change', function() {
+    if (this.value) { libroActual = this.value; cargarCapitulos(libroActual); guardarHistorial(libroActual); }
+  });
+  if (capituloSelect) capituloSelect.addEventListener('change', function() {
+    if (this.value) { capituloActual = this.value; guardarHistorial(libroActual + ' ' + capituloActual); actualizarInfoCap(); cargarVersiculos(libroActual, capituloActual); }
+  });
+  document.getElementById('btnCapAnterior')?.addEventListener('click', function() {
+    const idx = capituloKeys.indexOf(capituloActual);
+    if (idx > 0) { capituloActual = capituloKeys[idx-1]; capituloSelect.value = capituloActual; actualizarInfoCap(); cargarVersiculos(libroActual, capituloActual); }
+  });
+  document.getElementById('btnCapSiguiente')?.addEventListener('click', function() {
+    const idx = capituloKeys.indexOf(capituloActual);
+    if (idx >= 0 && idx < capituloKeys.length - 1) { capituloActual = capituloKeys[idx+1]; capituloSelect.value = capituloActual; actualizarInfoCap(); cargarVersiculos(libroActual, capituloActual); }
+  });
+  document.getElementById('btnAumentarFuente')?.addEventListener('click', function() {
+    bibliaFuenteSize = Math.min(bibliaFuenteSize + 2, 28);
+    document.getElementById('versiculoContainer').style.fontSize = bibliaFuenteSize + 'px';
+    document.getElementById('fuenteInfo').textContent = 'Tamaño: ' + bibliaFuenteSize + 'px';
+    localStorage.setItem(STORAGE_KEYS.bibliaFuente, bibliaFuenteSize);
+  });
+  document.getElementById('btnDisminuirFuente')?.addEventListener('click', function() {
+    bibliaFuenteSize = Math.max(bibliaFuenteSize - 2, 10);
+    document.getElementById('versiculoContainer').style.fontSize = bibliaFuenteSize + 'px';
+    document.getElementById('fuenteInfo').textContent = 'Tamaño: ' + bibliaFuenteSize + 'px';
+    localStorage.setItem(STORAGE_KEYS.bibliaFuente, bibliaFuenteSize);
+  });
+  const vc = document.getElementById('versiculoContainer'); if (vc) vc.style.fontSize = bibliaFuenteSize + 'px';
+  const fi = document.getElementById('fuenteInfo'); if (fi) fi.textContent = 'Tamaño: ' + bibliaFuenteSize + 'px';
 
   renderFeed(); renderGrupos(); renderDiscipulados(); renderOraciones();
   renderNecesidades(); renderServicios(); renderMisServicios(); renderConsejos();
@@ -7727,6 +8137,7 @@ document.addEventListener('DOMContentLoaded', function() {
   renderProyectos();
   actualizarBotonesPorRol(); actualizarTabs();
   cargarHistorial(); cargarMapboxToken(); cargarConfigMenu(); cargarEstilosConfig(); cargarConfigCallMeBot(); cargarConfigPaypal();
+  cargarConfigBiblia();
 
   auth.onAuthStateChanged(async (user) => {
     if (user) { await cargarUsuarioActual(user); cargarLogoConfig(); }
@@ -7734,9 +8145,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v28: punto azul clásico en tiempo real, ruta desde tu ubicación, sin bombilla.');
+  console.log('✅ SAL Y LUZ v29: punto azul animado, cámara sigue la ruta, Biblia GitHub + multimedia.');
 });
 
+// ==================== EXPORTS ====================
 window.switchPanel = switchPanel;
 window.abrirModal = abrirModal;
 window.cerrarModal = cerrarModal;
@@ -7879,6 +8291,11 @@ window.cerrarMuroCols = cerrarMuroCols;
 window.toggleMapaCategoria = toggleMapaCategoria;
 window.renderMapaAcordeon = renderMapaAcordeon;
 window.compartirUbicacion = compartirUbicacion;
+window.guardarConfigBiblia = guardarConfigBiblia;
+window.recargarBiblias = recargarBiblias;
+window.subirLibroBiblia = subirLibroBiblia;
+window.eliminarLibroBiblia = eliminarLibroBiblia;
+window.irAHistorial = irAHistorial;
 window.USERS = USERS;
 window.POSTS = POSTS;
 window.GRUPOS = GRUPOS;

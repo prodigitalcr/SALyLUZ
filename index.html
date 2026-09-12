@@ -178,6 +178,76 @@
     .search-result-info .subtitle { font-size: 11px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .search-result-type { font-size: 10px; padding: 2px 8px; border-radius: 20px; background: var(--teal-light); color: var(--teal-dark); font-weight: 600; }
 
+    /* ==================== MURO CON COLUMNAS LATERALES (NUEVO) ==================== */
+    .muro-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 1100px) {
+      .muro-layout { grid-template-columns: 300px minmax(0, 1fr) 300px; }
+    }
+    .muro-col-left, .muro-col-center, .muro-col-right { min-width: 0; }
+    @media (max-width: 1099px) { .muro-col-left, .muro-col-right { order: 2; } .muro-col-center { order: 1; } }
+    .widget { background: white; border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+    body.dark .widget { background: #1a1a2e; }
+    .widget-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .widget-title i { color: var(--teal); }
+    .widget-oracion-item { padding: 8px 0; border-bottom: 1px dashed var(--border-color); }
+    .widget-oracion-item:last-child { border-bottom: none; }
+    .widget-oracion-autor { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+    .widget-oracion-texto { font-size: 13px; line-height: 1.4; color: var(--text-secondary); margin: 4px 0; }
+    .widget-oracion-btn { width: 100%; background: var(--teal-light); color: var(--teal-dark); border: none; padding: 6px 12px; border-radius: 30px; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 4px; transition: 0.2s; }
+    .widget-oracion-btn:hover { background: var(--teal); color: #fff; }
+    .widget-oracion-btn.orado { background: var(--teal); color: #fff; }
+    .widget-grupo-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; cursor: pointer; border-radius: 10px; transition: 0.15s; position: relative; }
+    .widget-grupo-item:hover { background: var(--bg-body); }
+    body.dark .widget-grupo-item:hover { background: #2a2a3e; }
+    .widget-grupo-icon { width: 38px; height: 38px; border-radius: 50%; background: var(--teal-light); color: var(--teal-dark); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .widget-grupo-info { flex: 1; min-width: 0; }
+    .widget-grupo-nombre { font-size: 13px; font-weight: 600; }
+    .widget-grupo-meta { font-size: 11px; color: var(--text-secondary); }
+    .widget-grupo-dot { width: 10px; height: 10px; border-radius: 50%; background: #2ecc71; box-shadow: 0 0 0 3px rgba(46,204,113,0.2); }
+    .widget-perfil-mini { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+    .widget-perfil-mini .avatar-placeholder { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background: var(--teal-light); color: var(--teal-dark); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; border: 3px solid var(--teal); }
+    .widget-perfil-mini .nombre { font-weight: 700; font-size: 14px; }
+    .widget-perfil-mini .sub { font-size: 12px; color: var(--text-secondary); }
+    .widget-actions { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+    .widget-actions button { background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-primary); padding: 6px 10px; border-radius: 30px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px; justify-content: center; }
+    .widget-actions button:hover { background: var(--teal-light); border-color: var(--teal); color: var(--teal-dark); }
+    .widget-versiculo { background: linear-gradient(135deg, var(--teal), var(--teal-dark)); color: #fff; padding: 20px; border-radius: var(--radius); position: relative; overflow: hidden; box-shadow: var(--shadow); margin-bottom: 16px; }
+    .widget-versiculo::before { content: '"'; position: absolute; top: -20px; left: 10px; font-size: 120px; opacity: 0.15; font-family: Georgia, serif; line-height: 1; }
+    .widget-versiculo .v-texto { font-size: 15px; line-height: 1.5; font-style: italic; margin-bottom: 10px; position: relative; z-index: 1; }
+    .widget-versiculo .v-cita { font-size: 12px; font-weight: 700; opacity: 0.95; text-align: right; position: relative; z-index: 1; }
+    .widget-versiculo .v-acciones { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; position: relative; z-index: 1; }
+    .widget-versiculo .v-acciones button { background: rgba(255,255,255,0.18); color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 5px 12px; border-radius: 30px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+    .widget-versiculo .v-acciones button:hover { background: rgba(255,255,255,0.3); }
+    .widget-evento-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--border-color); }
+    .widget-evento-item:last-child { border-bottom: none; }
+    .widget-evento-fecha { flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px; background: var(--teal-light); color: var(--teal-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 700; }
+    .widget-evento-fecha .dia { font-size: 16px; line-height: 1; }
+    .widget-evento-fecha .mes { font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .widget-evento-info { flex: 1; min-width: 0; }
+    .widget-evento-titulo { font-size: 13px; font-weight: 600; }
+    .widget-evento-meta { font-size: 11px; color: var(--text-secondary); }
+    .widget-evento-btn { background: var(--teal-light); color: var(--teal-dark); border: none; padding: 3px 10px; border-radius: 20px; font-size: 11px; cursor: pointer; margin-top: 4px; }
+    .widget-evento-btn.confirmado { background: var(--teal); color: #fff; }
+    .widget-cumple-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--border-color); }
+    .widget-cumple-item:last-child { border-bottom: none; }
+    .widget-cumple-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--gold-light); color: var(--gold-dark); display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; background-size: cover; background-position: center; }
+    .widget-cumple-info { flex: 1; min-width: 0; }
+    .widget-cumple-nombre { font-size: 13px; font-weight: 600; }
+    .widget-cumple-edad { font-size: 11px; color: var(--text-secondary); }
+    .widget-cumple-btn { background: var(--gold-light); color: var(--gold-dark); border: none; padding: 4px 10px; border-radius: 30px; font-size: 11px; cursor: pointer; font-weight: 600; }
+    .widget-cumple-btn:hover { background: var(--gold); color: #fff; }
+    .widget-live-banner { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; box-shadow: 0 6px 20px rgba(231,76,60,0.35); animation: livePulse 2s infinite; }
+    @keyframes livePulse { 0%, 100% { box-shadow: 0 6px 20px rgba(231,76,60,0.35); } 50% { box-shadow: 0 6px 28px rgba(231,76,60,0.65); } }
+    .widget-live-dot { width: 12px; height: 12px; border-radius: 50%; background: #fff; animation: dotBlink 1.2s infinite; }
+    @keyframes dotBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .widget-live-text { font-weight: 700; font-size: 14px; }
+    .widget-live-sub { font-size: 11px; opacity: 0.9; }
+    .widget-sermon { background: var(--bg-body); border-radius: 10px; padding: 10px; display: flex; gap: 10px; align-items: center; }
+    .widget-sermon i.big { font-size: 28px; color: var(--teal); }
+    .widget-sermon-info { flex: 1; min-width: 0; }
+    .widget-sermon-titulo { font-size: 13px; font-weight: 600; }
+    .widget-sermon-meta { font-size: 11px; color: var(--text-secondary); }
+
     .muro-toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
     .muro-publish-btn { background: var(--teal); color: #fff; border: none; padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
     .muro-filter-select { padding: 8px 12px; border-radius: 30px; border: 1px solid var(--border-color); background: white; color: var(--text-primary); font-size: 12px; flex: 1; max-width: 140px; }
@@ -395,7 +465,7 @@
     .proyecto-tabs { display: flex; gap: 6px; margin-bottom: 14px; border-bottom: 1px solid var(--border-color); }
     .proyecto-tabs button { background: transparent; border: none; padding: 10px 16px; cursor: pointer; color: var(--text-secondary); font-weight: 500; font-size: 13px; border-bottom: 3px solid transparent; }
     .proyecto-tabs button.active { color: var(--teal); border-bottom-color: var(--teal); }
-    @media (min-width: 769px) { #panel-muro { max-width: 680px; margin: 0 auto; } }
+    @media (min-width: 769px) { #panel-muro { max-width: 1400px; margin: 0 auto; } }
     .preview-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; position: relative; }
     .preview-container img, .preview-container video { max-width: 100px; max-height: 100px; border-radius: 8px; border: 1px solid var(--border-color); }
     .preview-container .file-preview { display: flex; align-items: center; gap: 4px; background: var(--bg-body); padding: 4px 8px; border-radius: 20px; border: 1px solid var(--border-color); }
@@ -592,6 +662,7 @@
     .map-search input { flex: 1; padding: 6px 12px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-primary); font-size: 13px; }
     .map-search button { padding: 6px 14px; border-radius: 30px; border: none; background: var(--teal); color: white; cursor: pointer; }
     .mapa-ver-btn { font-size: 11px; padding: 2px 10px; border-radius: 20px; background: var(--teal-light); color: var(--teal-dark); border: none; cursor: pointer; font-weight: 600; }
+    .mapa-ruta-btn { font-size: 11px; padding: 2px 10px; border-radius: 20px; background: var(--gold-light); color: var(--gold-dark); border: none; cursor: pointer; font-weight: 600; margin-left: 4px; }
     .chat-mensajes-container { max-height: 400px; overflow-y: auto; background: var(--bg-body); border-radius: var(--radius); padding: 12px; margin-bottom: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 4px; }
     body.dark .chat-mensajes-container { background: #0f0f16; }
     .chat-input { display: flex; gap: 6px; }
@@ -667,12 +738,10 @@
 
     .mapa-add-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
 
-    /* ============ LEYENDA DEL MAPA (NUEVO) ============ */
     .mapa-leyenda-item { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:20px; background:var(--bg-body); border:1px solid var(--border-color); font-size:12px; font-weight:500; }
     .mapa-leyenda-item > span.icono { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px; }
     .mapa-leyenda-wrap { display:flex; flex-wrap:wrap; gap:8px; }
 
-    /* ============ BOTÓN MI UBICACIÓN (NUEVO) ============ */
     .mapa-mi-ubicacion-btn {
       position: absolute; top: 14px; right: 14px; z-index: 25;
       width: 48px; height: 48px; border-radius: 50%;
@@ -687,7 +756,6 @@
     .mapa-mi-ubicacion-btn.activo { background: linear-gradient(135deg, #00C853, #00E676); box-shadow: 0 4px 14px rgba(0,200,83,0.65); }
     .mapa-mi-ubicacion-btn i { text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
 
-    /* ============ MARCADOR MI UBICACIÓN BOMBILLA (NUEVO) ============ */
     .mi-ubicacion-marker {
       width: 44px; height: 44px; border-radius: 50%;
       background: radial-gradient(circle, #FFEB3B 0%, #FFC107 60%, #FF9800 100%);
@@ -703,7 +771,58 @@
       50% { transform: scale(1.1); box-shadow: 0 0 0 14px rgba(255,215,0,0.05), 0 0 28px rgba(255,200,0,1); }
     }
 
-    /* ============ MINIATURAS DE ARCHIVO EN CHAT (NUEVO) ============ */
+    /* ============ LEYENDA FLOTANTE SOBRE EL MAPA (NUEVO) ============ */
+    .mapa-leyenda-flotante {
+      position: absolute; top: 14px; left: 14px; z-index: 20;
+      background: rgba(255,255,255,0.96); border-radius: 12px; padding: 10px 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      max-width: 200px; font-size: 12px;
+    }
+    body.dark .mapa-leyenda-flotante { background: rgba(26,26,46,0.96); }
+    .mapa-leyenda-flotante .titulo {
+      font-size: 12px; font-weight: 700; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px; color: var(--text-primary);
+    }
+    .mapa-leyenda-flotante .item {
+      display: flex; align-items: center; gap: 8px; padding: 3px 0;
+      font-size: 12px; color: var(--text-primary);
+    }
+    .mapa-leyenda-flotante .icono-mini {
+      width: 22px; height: 22px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 11px; flex-shrink: 0; font-weight: 700;
+    }
+
+    /* ============ PANEL DE RUTA (NUEVO) ============ */
+    .ruta-info-panel {
+      position: absolute; bottom: 20px; left: 14px; right: 14px; z-index: 20;
+      background: rgba(255,255,255,0.97); border-radius: 12px; padding: 12px 40px 12px 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2); display: none;
+    }
+    body.dark .ruta-info-panel { background: rgba(26,26,46,0.97); }
+    .ruta-info-panel.show { display: block; }
+    .ruta-info-panel .ruta-titulo {
+      font-size: 13px; font-weight: 700; margin-bottom: 4px;
+      display: flex; align-items: center; gap: 6px; color: var(--text-primary);
+    }
+    .ruta-info-panel .ruta-titulo i { color: var(--teal); }
+    .ruta-info-panel .ruta-meta { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+    .ruta-info-panel .ruta-acciones { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ruta-info-panel .ruta-acciones button {
+      background: var(--teal); color: #fff; border: none;
+      padding: 5px 12px; border-radius: 30px; font-size: 11px; cursor: pointer;
+    }
+    .ruta-info-panel .ruta-acciones button.btn-cerrar-ruta {
+      background: var(--border-color); color: var(--text-secondary);
+    }
+    .ruta-info-panel .ruta-close {
+      position: absolute; top: 8px; right: 8px;
+      background: transparent; border: none; font-size: 16px; cursor: pointer;
+      color: var(--text-secondary); width: 28px; height: 28px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+    .ruta-info-panel .ruta-close:hover { background: var(--border-color); }
+
     .chat-archivo-thumb { margin-top: 6px; }
     .chat-archivo-thumb img { max-width: 180px; max-height: 180px; border-radius: 10px; cursor: pointer; display: block; border: 1px solid rgba(0,0,0,0.15); }
     .chat-archivo-thumb a { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 10px; background: rgba(255,255,255,0.15); color: inherit; text-decoration: none; font-size: 12px; word-break: break-all; }
@@ -922,54 +1041,100 @@
     <div id="devocionalesContainer"><p style="color:var(--text-secondary); text-align:center; padding:20px;">Cargando devocionales...</p></div>
   </div>
 
+  <!-- ==================== MURO CON COLUMNAS LATERALES (ACTUALIZADO) ==================== -->
   <div class="panel" id="panel-muro">
-    <div class="historias-bar-muro" id="historiasBarMuro"></div>
+    <div class="muro-layout">
 
-    <div class="muro-toolbar">
-      <button class="muro-publish-btn" id="muroPublishToggle"><i class="fas fa-edit"></i> Publicar</button>
-      <select class="muro-filter-select" id="feedFiltro">
-        <option value="todos">Todos</option>
-        <option value="siguiendo">Siguiendo</option>
-      </select>
-      <div class="muro-quick-icons">
-        <button class="muro-quick-icon" onclick="abrirReelsViewer()" title="Reels"><i class="fas fa-video"></i></button>
-        <button class="muro-quick-icon" onclick="switchPanel('mapa')" title="Mapa"><i class="fas fa-map-marked-alt"></i></button>
-        <button class="muro-quick-icon" onclick="switchPanel('biblia')" title="Biblia"><i class="fas fa-bible"></i></button>
+      <!-- COLUMNA IZQUIERDA -->
+      <aside class="muro-col-left">
+        <div class="widget" id="widgetPerfilRapido">
+          <div class="widget-title"><i class="fas fa-id-card"></i> Mi perfil</div>
+          <div id="widgetPerfilContenido">
+            <p style="font-size:12px;color:var(--text-secondary);text-align:center;">Inicia sesión para ver tu perfil.</p>
+          </div>
+        </div>
+        <div class="widget" id="widgetOracion">
+          <div class="widget-title"><i class="fas fa-pray"></i> Muro de Oración</div>
+          <div id="widgetOracionLista"><p style="font-size:12px;color:var(--text-secondary);">Cargando peticiones...</p></div>
+        </div>
+        <div class="widget" id="widgetGrupos">
+          <div class="widget-title"><i class="fas fa-users"></i> Mis Comunidades</div>
+          <div id="widgetGruposLista"><p style="font-size:12px;color:var(--text-secondary);">Inicia sesión para ver tus grupos.</p></div>
+        </div>
+      </aside>
+
+      <!-- COLUMNA CENTRAL -->
+      <div class="muro-col-center">
+        <div class="historias-bar-muro" id="historiasBarMuro"></div>
+        <div class="muro-toolbar">
+          <button class="muro-publish-btn" id="muroPublishToggle"><i class="fas fa-edit"></i> Publicar</button>
+          <select class="muro-filter-select" id="feedFiltro">
+            <option value="todos">Todos</option>
+            <option value="siguiendo">Siguiendo</option>
+          </select>
+          <div class="muro-quick-icons">
+            <button class="muro-quick-icon" onclick="abrirReelsViewer()" title="Reels"><i class="fas fa-video"></i></button>
+            <button class="muro-quick-icon" onclick="switchPanel('mapa')" title="Mapa"><i class="fas fa-map-marked-alt"></i></button>
+            <button class="muro-quick-icon" onclick="switchPanel('biblia')" title="Biblia"><i class="fas fa-bible"></i></button>
+          </div>
+        </div>
+        <div class="muro-publish-panel" id="muroPublishPanel">
+          <select id="postCategoria" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
+            <option value="testimonio">Testimonio</option>
+            <option value="obra">Obra / Servicio</option>
+            <option value="oracion">Petición de Oración</option>
+            <option value="encuesta">Encuesta</option>
+            <option value="campania">Campaña de Recaudación</option>
+            <option value="otro">Otro</option>
+          </select>
+          <textarea id="postInput" placeholder="¿Qué quieres compartir?" rows="3" style="width:100%; border-radius:10px; border:1px solid var(--border-color); padding:8px; background:var(--bg-body); color:var(--text-primary); resize:vertical; font-size:13px;"></textarea>
+          <div id="encuestaOpciones" style="display:none; margin:6px 0;">
+            <label>Opciones (separadas por comas)</label>
+            <input type="text" id="encuestaOpcionesInput" placeholder="Opción 1, Opción 2" style="width:100%; padding:6px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
+          </div>
+          <div id="campaniaMonto" style="display:none; margin:6px 0;">
+            <label>Monto objetivo</label>
+            <input type="number" id="campaniaMontoInput" placeholder="Monto" style="width:100%; padding:6px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
+            <label>Beneficiario</label>
+            <input type="text" id="campaniaBeneficiario" placeholder="Nombre" style="width:100%; padding:6px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
+          </div>
+          <div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
+            <input type="file" id="postImage" accept="image/jpeg,image/png" style="display:none;">
+            <button class="btn-outline" id="btnSubirFoto"><i class="fas fa-image"></i> Foto</button>
+            <input type="file" id="postVideo" accept="video/*" style="display:none;">
+            <button class="btn-outline" id="btnSubirVideo"><i class="fas fa-video"></i> Video</button>
+            <input type="url" id="postLink" placeholder="Enlace..." style="flex:1; min-width:120px; padding:6px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
+            <button class="btn-primary" id="btnPublicarPost">Publicar</button>
+          </div>
+          <div id="postPreviewContainer" class="preview-container"></div>
+        </div>
+        <div id="feedContainer"></div>
       </div>
+
+      <!-- COLUMNA DERECHA -->
+      <aside class="muro-col-right">
+        <div class="widget-versiculo" id="widgetVersiculoDia">
+          <div class="v-texto" id="widgetVersiculoTexto">"Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito..."</div>
+          <div class="v-cita" id="widgetVersiculoCita">— Juan 3:16</div>
+          <div class="v-acciones">
+            <button onclick="copiarVersiculoDia()"><i class="fas fa-copy"></i> Copiar</button>
+            <button onclick="compartirVersiculoDia()"><i class="fas fa-share"></i> Compartir</button>
+          </div>
+        </div>
+        <div class="widget">
+          <div class="widget-title"><i class="fas fa-calendar-alt"></i> Esta semana en Sal y Luz</div>
+          <div id="widgetEventosLista"><p style="font-size:12px;color:var(--text-secondary);">Cargando eventos...</p></div>
+        </div>
+        <div class="widget">
+          <div class="widget-title"><i class="fas fa-birthday-cake"></i> Cumpleaños de hoy</div>
+          <div id="widgetCumpleLista"><p style="font-size:12px;color:var(--text-secondary);">Cargando...</p></div>
+        </div>
+        <div class="widget">
+          <div class="widget-title"><i class="fas fa-broadcast-tower"></i> Sermones y Transmisión</div>
+          <div id="widgetSermonesContenido"><p style="font-size:12px;color:var(--text-secondary);">Cargando...</p></div>
+        </div>
+      </aside>
     </div>
-
-    <div class="muro-publish-panel" id="muroPublishPanel">
-      <select id="postCategoria" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); margin-bottom:6px; font-size:13px;">
-        <option value="testimonio">Testimonio</option>
-        <option value="obra">Obra / Servicio</option>
-        <option value="oracion">Petición de Oración</option>
-        <option value="encuesta">Encuesta</option>
-        <option value="campania">Campaña de Recaudación</option>
-        <option value="otro">Otro</option>
-      </select>
-      <textarea id="postInput" placeholder="¿Qué quieres compartir?" rows="3" style="width:100%; border-radius:10px; border:1px solid var(--border-color); padding:8px; background:var(--bg-body); color:var(--text-primary); resize:vertical; font-size:13px;"></textarea>
-      <div id="encuestaOpciones" style="display:none; margin:6px 0;">
-        <label>Opciones (separadas por comas)</label>
-        <input type="text" id="encuestaOpcionesInput" placeholder="Opción 1, Opción 2" style="width:100%; padding:6px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
-      </div>
-      <div id="campaniaMonto" style="display:none; margin:6px 0;">
-        <label>Monto objetivo</label>
-        <input type="number" id="campaniaMontoInput" placeholder="Monto" style="width:100%; padding:6px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
-        <label>Beneficiario</label>
-        <input type="text" id="campaniaBeneficiario" placeholder="Nombre" style="width:100%; padding:6px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
-      </div>
-      <div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
-        <input type="file" id="postImage" accept="image/jpeg,image/png" style="display:none;">
-        <button class="btn-outline" id="btnSubirFoto"><i class="fas fa-image"></i> Foto</button>
-        <input type="file" id="postVideo" accept="video/*" style="display:none;">
-        <button class="btn-outline" id="btnSubirVideo"><i class="fas fa-video"></i> Video</button>
-        <input type="url" id="postLink" placeholder="Enlace..." style="flex:1; min-width:120px; padding:6px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
-        <button class="btn-primary" id="btnPublicarPost">Publicar</button>
-      </div>
-      <div id="postPreviewContainer" class="preview-container"></div>
-    </div>
-
-    <div id="feedContainer"></div>
   </div>
 
   <div class="panel" id="panel-reels">
@@ -1053,6 +1218,26 @@
         <div class="map-wrapper" id="mapa3d">
           <div id="mapboxMap" class="mapboxgl-map" style="height:100%;width:100%;"></div>
           <button type="button" class="mapa-mi-ubicacion-btn" id="btnMiUbicacion" onclick="activarMiUbicacion()" title="Mi ubicación"><i class="fas fa-lightbulb"></i></button>
+          <!-- LEYENDA FLOTANTE SOBRE EL MAPA -->
+          <div class="mapa-leyenda-flotante">
+            <div class="titulo"><i class="fas fa-map-pin" style="color:var(--teal);"></i> Categorías</div>
+            <div class="item"><span class="icono-mini" style="background:#e74c3c;">✝</span> Misioneros</div>
+            <div class="item"><span class="icono-mini" style="background:#2ecc71;">⛪</span> Iglesias</div>
+            <div class="item"><span class="icono-mini" style="background:#3498db;">👥</span> Grupos</div>
+            <div class="item"><span class="icono-mini" style="background:#9b59b6;">📅</span> Eventos</div>
+            <div class="item"><span class="icono-mini" style="background:#f39c12;">🍽</span> Servicios</div>
+            <div class="item"><span class="icono-mini" style="background:linear-gradient(135deg,#FFD700,#FFA500);"><i class="fas fa-lightbulb"></i></span> Mi ubicación</div>
+          </div>
+          <!-- PANEL DE RUTA -->
+          <div class="ruta-info-panel" id="rutaInfoPanel">
+            <button class="ruta-close" onclick="cerrarRuta()" title="Cerrar"><i class="fas fa-times"></i></button>
+            <div class="ruta-titulo"><i class="fas fa-route"></i> Ruta hacia: <span id="rutaDestinoNombre">—</span></div>
+            <div class="ruta-meta" id="rutaMeta">Calculando...</div>
+            <div class="ruta-acciones">
+              <button onclick="abrirRutaEnGoogleMaps()"><i class="fas fa-external-link-alt"></i> Abrir en Google Maps</button>
+              <button class="btn-cerrar-ruta" onclick="cerrarRuta()"><i class="fas fa-times"></i> Cerrar ruta</button>
+            </div>
+          </div>
         </div>
         <div id="misionerosMapaList" style="margin-top:10px;"></div>
         <div id="iglesiasMapaList" style="margin-top:6px;"></div>
@@ -1988,6 +2173,7 @@
 <footer class="footer">
   <span>Norlan Cárcamo López - prodigital</span> &copy; 2026 · Todos los derechos reservados.
 </footer>
+
 <script>
 // ================================================================
 // FIREBASE CONFIG + INIT
@@ -2007,9 +2193,6 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
 
-// ================================================================
-// COLECCIONES
-// ================================================================
 const USERS = db.collection('users');
 const POSTS = db.collection('posts');
 const GRUPOS = db.collection('grupos');
@@ -2040,9 +2223,7 @@ const PROYECTOS = db.collection('proyectos');
 const GALERIA_FOTOS = (uid) => USERS.doc(uid).collection('fotos');
 const MAPA_COL = db.collection('mapa');
 
-// ================================================================
 // ESTADO GLOBAL
-// ================================================================
 let currentUser = null;
 let isAdmin = false;
 let isSuperAdmin = false;
@@ -2075,15 +2256,14 @@ let searchDebounceTimer = null;
 let lastProfileViewed = null;
 let callmebotConfig = { enabled: false, phone: '', apikey: '' };
 let loginMode = 'login';
-
-// NUEVO: estado para adjuntos en chat admin/equipo
 let chatAdminArchivo = null;
 let chatEquipoArchivo = null;
-
-// NUEVO: seguimiento en tiempo real de mi ubicación
 let miUbicacionWatchIdGlobal = null;
 let miUbicacionMarkerGlobal = null;
 let miUbicacionActiva = false;
+// NUEVO: ruta activa
+let rutaActiva = null;
+let miUbicacionActual = null;
 
 const STORAGE_KEYS = {
   historialBiblia: 'iglesia_historial_biblia',
@@ -2096,9 +2276,7 @@ let capitulosCache = {};
 let capituloKeys = [];
 const MAX_GALERIA = 100;
 
-// ================================================================
 // UTILIDADES
-// ================================================================
 function tieneRol(rol) { return currentUser && currentUser.apoyos && currentUser.apoyos.includes(rol); }
 function tieneAlgunRolApoyo() {
   const roles = ['facilitador','asistente','anfitrion','misionero','servidor','consejero','oracion','ayuda_alimentaria'];
@@ -2126,7 +2304,6 @@ function subirArchivoStorage(file, path) {
 }
 function fmtTime(s) { s = Math.floor(s || 0); const m = Math.floor(s/60), ss = s % 60; return m + ':' + (ss < 10 ? '0' : '') + ss; }
 function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
-
 function colorFromUid(uid) {
   if (!uid) return '#1D9E75';
   const colors = ['#1D9E75','#2563EB','#7C3AED','#DC2626','#EA580C','#DB2777','#0891B2','#65A30D','#9333EA','#C026D3','#0D9488','#D97706','#059669','#7C2D12','#BE185D','#4338CA','#B91C1C','#047857','#6D28D9','#C2410C'];
@@ -2140,8 +2317,6 @@ function hexToRgba(hex, alpha) {
   const b = parseInt(hex.slice(5,7), 16);
   return `rgba(${r},${g},${b},${alpha})`;
 }
-
-// NUEVO: obtener ID de reactor (usuario o visitante)
 function getReactorId() {
   if (currentUser && currentUser.uid) return currentUser.uid;
   let vid = localStorage.getItem(STORAGE_KEYS.visitanteId);
@@ -2152,9 +2327,6 @@ function getReactorId() {
   return vid;
 }
 
-// ================================================================
-// COLECCIÓN UNIFICADA DE MAPA
-// ================================================================
 async function agregarAlMapa(tipo, refId, datos) {
   const id = `${tipo}_${refId}`;
   try {
@@ -2189,22 +2361,14 @@ window.manejarClickUserBadge = function(event) {
   verPerfil(currentUser.uid);
 };
 
-// ================================================================
-// CALLMEBOT (WhatsApp)
-// ================================================================
+// CALLMEBOT
 async function cargarConfigCallMeBot() {
   try {
     const doc = await CONFIG_CALLMEBOT.get();
     if (doc.exists) {
       const d = doc.data();
-      callmebotConfig = {
-        enabled: d.enabled === true,
-        phone: d.phone || '',
-        apikey: d.apikey || ''
-      };
-      const en = document.getElementById('callmebotEnabled');
-      const ph = document.getElementById('callmebotPhone');
-      const ak = document.getElementById('callmebotApikey');
+      callmebotConfig = { enabled: d.enabled === true, phone: d.phone || '', apikey: d.apikey || '' };
+      const en = document.getElementById('callmebotEnabled'); const ph = document.getElementById('callmebotPhone'); const ak = document.getElementById('callmebotApikey');
       if (en) en.checked = callmebotConfig.enabled;
       if (ph) ph.value = callmebotConfig.phone;
       if (ak) ak.value = callmebotConfig.apikey;
@@ -2217,15 +2381,12 @@ window.guardarConfigCallMeBot = function() {
   const phone = document.getElementById('callmebotPhone').value.trim();
   const apikey = document.getElementById('callmebotApikey').value.trim();
   CONFIG_CALLMEBOT.set({ enabled, phone, apikey, actualizado: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true })
-    .then(() => {
-      callmebotConfig = { enabled, phone, apikey };
-      alert('✅ Configuración CallMeBot guardada.');
-    })
+    .then(() => { callmebotConfig = { enabled, phone, apikey }; alert('✅ Configuración CallMeBot guardada.'); })
     .catch(err => alert('Error: ' + err.message));
 };
 window.probarCallMeBot = function() {
   if (!isSuperAdmin) return;
-  enviarWhatsAppCallMeBot('✅ Prueba de CallMeBot desde SAL Y LUZ. Si recibes este mensaje, todo está configurado correctamente.');
+  enviarWhatsAppCallMeBot('✅ Prueba de CallMeBot desde SAL Y LUZ.');
 };
 window.enviarWhatsAppCallMeBot = function(mensaje) {
   if (!callmebotConfig.enabled || !callmebotConfig.phone || !callmebotConfig.apikey) return;
@@ -2233,9 +2394,7 @@ window.enviarWhatsAppCallMeBot = function(mensaje) {
   fetch(url, { method: 'GET', mode: 'no-cors' }).catch(() => {});
 };
 
-// ================================================================
 // AUTENTICACIÓN
-// ================================================================
 window.loginUser = async function(email, password) {
   try {
     const cred = await auth.signInWithEmailAndPassword(email, password);
@@ -2333,6 +2492,14 @@ async function cargarUsuarioActual(user) {
     renderHistorias();
     renderHistoriasMuro();
     renderIglesiasPanel();
+    // NUEVO: iniciar widgets del muro
+    renderWidgetPerfilRapido();
+    renderWidgetGrupos();
+    renderWidgetOracion();
+    renderWidgetEventos();
+    renderWidgetCumple();
+    renderWidgetSermones();
+    renderVersiculoDia();
     if (isSuperAdmin) renderSolicitudesPassword();
   } catch (error) { console.error('Error cargando perfil:', error); }
 }
@@ -2353,6 +2520,8 @@ window.logoutUser = async function() {
     renderEventos(); renderNoticias(); renderReels();
     renderDevocionales(); renderHistorias(); renderHistoriasMuro();
     renderIglesiasPanel();
+    renderWidgetPerfilRapido(); renderWidgetGrupos(); renderWidgetOracion();
+    renderWidgetEventos(); renderWidgetCumple(); renderWidgetSermones(); renderVersiculoDia();
     actualizarBotonesPorRol(); actualizarTabs();
     if (mapboxMap) { mapboxMarkers.forEach(m => m.remove()); mapboxMarkers = []; }
     if (miUbicacionWatchId !== null && navigator.geolocation) {
@@ -2455,9 +2624,7 @@ function actualizarUIUsuario() {
   actualizarTabs();
 }
 
-// ================================================================
 // NAVEGACIÓN
-// ================================================================
 function switchPanel(name) {
   if (!currentUser && ['mapa', 'reportes', 'chatadmin', 'proyectos', 'admin', 'chatequipo'].includes(name)) {
     alert('Debes iniciar sesión.');
@@ -2476,7 +2643,11 @@ function switchPanel(name) {
   if (tabs && tabs.classList.contains('open')) tabs.classList.remove('open');
 
   switch (name) {
-    case 'muro': renderFeed(); renderHistoriasMuro(); break;
+    case 'muro':
+      renderFeed(); renderHistoriasMuro();
+      renderWidgetPerfilRapido(); renderWidgetGrupos(); renderWidgetOracion();
+      renderWidgetEventos(); renderWidgetCumple(); renderWidgetSermones(); renderVersiculoDia();
+      break;
     case 'reels': setTimeout(() => abrirReelsViewer(), 80); break;
     case 'proyectos': renderProyectos(); break;
     case 'grupos': renderGrupos(); break;
@@ -2497,9 +2668,7 @@ function switchPanel(name) {
   }
 }
 
-// ================================================================
 // MENÚ
-// ================================================================
 document.getElementById('menuToggle').addEventListener('click', function(e) {
   e.stopPropagation();
   document.getElementById('mainTabs').classList.toggle('open');
@@ -2533,9 +2702,190 @@ document.getElementById('tabConvertirHamburguesa').addEventListener('click', fun
   });
 });
 
-// ================================================================
-// CARRUSEL
-// ================================================================
+// ==================== NUEVO: WIDGETS DEL MURO ====================
+function renderWidgetPerfilRapido() {
+  const cont = document.getElementById('widgetPerfilContenido');
+  if (!cont) return;
+  if (!currentUser) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;">Inicia sesión para ver tu perfil.</p>'; return; }
+  const foto = currentUser.fotoPerfil || '';
+  cont.innerHTML = `
+    <div class="widget-perfil-mini">
+      <div class="avatar-placeholder" style="${foto ? `background-image:url('${foto}');background-size:cover;background-position:center;` : ''}">${foto ? '' : (currentUser.displayName || '?').charAt(0).toUpperCase()}</div>
+      <div class="nombre">${currentUser.displayName}</div>
+      <div class="sub">${currentUser.iglesia || 'Miembro de Sal y Luz'}</div>
+    </div>
+    <div class="widget-actions">
+      <button onclick="verPerfil('${currentUser.uid}')"><i class="fas fa-user"></i> Mi perfil</button>
+      <button onclick="abrirEditarPerfil()"><i class="fas fa-edit"></i> Editar perfil</button>
+      <button onclick="switchPanel('chatadmin')"><i class="fas fa-comments"></i> Mis mensajes</button>
+    </div>`;
+}
+function renderWidgetGrupos() {
+  const cont = document.getElementById('widgetGruposLista');
+  if (!cont) return;
+  if (listeners.widgetGrupos) listeners.widgetGrupos();
+  listeners.widgetGrupos = GRUPOS.orderBy('fechaCreacion', 'desc').limit(20).onSnapshot(snap => {
+    if (snap.empty) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Sin grupos aún.</p>'; return; }
+    let html = '';
+    snap.forEach(doc => {
+      const g = doc.data();
+      if (!currentUser || (g.miembros || []).includes(currentUser.uid)) {
+        html += `<div class="widget-grupo-item" onclick="abrirChatGrupo('${doc.id}')">
+          <div class="widget-grupo-icon"><i class="fas fa-users"></i></div>
+          <div class="widget-grupo-info">
+            <div class="widget-grupo-nombre">${g.nombre}</div>
+            <div class="widget-grupo-meta">${g.facilitador || ''} · ${(g.miembros||[]).length}/${g.max||15}</div>
+          </div>
+          <div class="widget-grupo-dot"></div>
+        </div>`;
+      }
+    });
+    cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">No perteneces a ningún grupo aún.</p>';
+  });
+}
+function renderWidgetOracion() {
+  const cont = document.getElementById('widgetOracionLista');
+  if (!cont) return;
+  if (listeners.widgetOracion) listeners.widgetOracion();
+  listeners.widgetOracion = ORACIONES.orderBy('fecha', 'desc').limit(3).onSnapshot(snap => {
+    if (snap.empty) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Sin peticiones aún.</p>'; return; }
+    const rid = getReactorId();
+    let html = '';
+    snap.forEach(doc => {
+      const o = doc.data();
+      const orado = (o.orado || []).includes(rid);
+      const num = (o.orado || []).length;
+      html += `<div class="widget-oracion-item">
+        <div class="widget-oracion-autor">${o.autorNombre || 'Anónimo'}</div>
+        <div class="widget-oracion-texto">${(o.texto || '').substring(0, 120)}${o.texto && o.texto.length > 120 ? '...' : ''}</div>
+        <button class="widget-oracion-btn ${orado ? 'orado' : ''}" onclick="orarOracion('${doc.id}')"><i class="fas fa-pray"></i> ${orado ? 'Estoy orando' : '🙏 Estoy orando'} (${num})</button>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  });
+}
+function renderWidgetEventos() {
+  const cont = document.getElementById('widgetEventosLista');
+  if (!cont) return;
+  if (listeners.widgetEventos) listeners.widgetEventos();
+  listeners.widgetEventos = EVENTOS.orderBy('fecha', 'asc').limit(5).onSnapshot(snap => {
+    const hoy = new Date();
+    let html = '';
+    snap.forEach(doc => {
+      const e = doc.data();
+      const f = new Date(e.fecha + 'T' + (e.hora || '00:00'));
+      if (f < hoy) return;
+      const mes = f.toLocaleString('es', { month: 'short' }).substring(0, 3);
+      html += `<div class="widget-evento-item">
+        <div class="widget-evento-fecha"><div class="dia">${f.getDate()}</div><div class="mes">${mes}</div></div>
+        <div class="widget-evento-info">
+          <div class="widget-evento-titulo">${e.titulo}</div>
+          <div class="widget-evento-meta">${e.hora || ''} ${e.lugar ? '· ' + e.lugar : ''}</div>
+          <button class="widget-evento-btn" onclick="event.stopPropagation(); alert('Interés registrado. ¡Te esperamos!'); this.classList.add('confirmado'); this.innerHTML='<i class=\\'fas fa-check\\'></i> Asistiré';">Me interesa</button>
+        </div>
+      </div>`;
+    });
+    cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">Sin eventos próximos.</p>';
+  });
+}
+function renderWidgetCumple() {
+  const cont = document.getElementById('widgetCumpleLista');
+  if (!cont) return;
+  USERS.get().then(snap => {
+    const hoy = new Date();
+    const hoyMD = (hoy.getMonth()+1) + '-' + hoy.getDate();
+    let html = '';
+    snap.forEach(doc => {
+      const u = doc.data();
+      if (!u.fechaNacimiento) return;
+      const p = u.fechaNacimiento.split('-');
+      if (p.length < 3) return;
+      const md = parseInt(p[1]) + '-' + parseInt(p[2]);
+      if (md === hoyMD) {
+        const edad = u.edad || (new Date().getFullYear() - parseInt(p[0]));
+        const foto = u.fotoPerfil || '';
+        html += `<div class="widget-cumple-item">
+          <div class="widget-cumple-avatar" style="background-image:url('${foto}');background-size:cover;">${foto ? '' : (u.displayName||'?').charAt(0)}</div>
+          <div class="widget-cumple-info">
+            <div class="widget-cumple-nombre">${u.displayName}</div>
+            <div class="widget-cumple-edad">Cumple ${edad} años 🎂</div>
+          </div>
+          <button class="widget-cumple-btn" onclick="enviarSaludoCumple('${doc.id}','${(u.displayName||'').replace(/'/g,"")}')"><i class="fas fa-birthday-cake"></i> Saludar</button>
+        </div>`;
+      }
+    });
+    cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">Sin cumpleaños hoy.</p>';
+  });
+}
+window.enviarSaludoCumple = function(uid, nombre) {
+  if (!currentUser) { alert('Inicia sesión para enviar saludo.'); return; }
+  POSTS.add({
+    uid: currentUser.uid, autorNombre: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '',
+    texto: `🎉 ¡Feliz cumpleaños, ${nombre}! Que Dios te bendiga abundantemente en este nuevo año de vida. 🙏🎂`,
+    categoria: 'otro', fecha: firebase.firestore.FieldValue.serverTimestamp(),
+    likes: [], orando: [], comentarios: [], compartidos: 0
+  }).then(() => { alert('¡Saludo publicado en el muro!'); renderFeed(); });
+  NOTIFICACIONES(uid).add({ tipo: 'saludo_cumple', emisorUid: currentUser.uid, emisorNombre: currentUser.displayName, texto: 'te envió un saludo de cumpleaños', leido: false, fecha: firebase.firestore.FieldValue.serverTimestamp() });
+};
+function renderWidgetSermones() {
+  const cont = document.getElementById('widgetSermonesContenido');
+  if (!cont) return;
+  const hoy = new Date();
+  const esDomingo = hoy.getDay() === 0;
+  const h = hoy.getHours();
+  const enVivoAhora = esDomingo && (h >= 8 && h < 13);
+  let html = '';
+  if (enVivoAhora) {
+    html += `<div class="widget-live-banner" onclick="alert('🔴 Transmisión EN VIVO — ¡Únete al culto!')">
+      <div class="widget-live-dot"></div>
+      <div style="flex:1;"><div class="widget-live-text">🔴 EN VIVO</div><div class="widget-live-sub">Culto dominical en transmisión</div></div>
+      <i class="fas fa-play-circle" style="font-size:24px;"></i>
+    </div>`;
+  }
+  html += `<div class="widget-sermon">
+    <i class="fas fa-play-circle big"></i>
+    <div class="widget-sermon-info">
+      <div class="widget-sermon-titulo">Último sermón disponible</div>
+      <div class="widget-sermon-meta">Prédica reciente · Sal y Luz</div>
+    </div>
+  </div>`;
+  cont.innerHTML = html;
+}
+function renderVersiculoDia() {
+  const versiculos = [
+    { t: '"Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito, para que todo aquel que en él cree, no se pierda, mas tenga vida eterna."', c: 'Juan 3:16' },
+    { t: '"Jehová es mi pastor; nada me faltará."', c: 'Salmos 23:1' },
+    { t: '"Todo lo puedo en Cristo que me fortalece."', c: 'Filipenses 4:13' },
+    { t: '"El Señor es mi luz y mi salvación; ¿a quién temeré?"', c: 'Salmos 27:1' },
+    { t: '"Confía en Jehová con todo tu corazón, y no te apoyes en tu propia prudencia."', c: 'Proverbios 3:5' },
+    { t: '"Esfuérzate y sé valiente; no temas ni desmayes, porque Jehová tu Dios estará contigo."', c: 'Josué 1:9' },
+    { t: '"Encomienda a Jehová tus obras, y tus pensamientos serán afirmados."', c: 'Proverbios 16:3' },
+    { t: '"El que habita al abrigo del Altísimo morará bajo la sombra del Omnipotente."', c: 'Salmos 91:1' }
+  ];
+  const idx = new Date().getDate() % versiculos.length;
+  const v = versiculos[idx];
+  const tEl = document.getElementById('widgetVersiculoTexto');
+  const cEl = document.getElementById('widgetVersiculoCita');
+  if (tEl) tEl.textContent = v.t;
+  if (cEl) cEl.textContent = '— ' + v.c;
+}
+window.copiarVersiculoDia = function() {
+  const t = document.getElementById('widgetVersiculoTexto').textContent;
+  const c = document.getElementById('widgetVersiculoCita').textContent;
+  navigator.clipboard.writeText(`${t} ${c}`).then(() => alert('✅ Versículo copiado.'));
+};
+window.compartirVersiculoDia = function() {
+  if (!currentUser) { alert('Inicia sesión para compartir.'); return; }
+  const t = document.getElementById('widgetVersiculoTexto').textContent;
+  const c = document.getElementById('widgetVersiculoCita').textContent;
+  POSTS.add({
+    uid: currentUser.uid, autorNombre: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '',
+    texto: `${t}\n${c}`, categoria: 'otro', fecha: firebase.firestore.FieldValue.serverTimestamp(),
+    likes: [], orando: [], comentarios: [], compartidos: 0
+  }).then(() => { alert('✅ Compartido en el muro.'); switchPanel('muro'); });
+};
+
+// ==================== CARRUSEL ====================
 function renderCarrusel() {
   if (listeners.carrusel) listeners.carrusel();
   listeners.carrusel = CARRUSEL.orderBy('order', 'asc').onSnapshot(snapshot => {
@@ -2593,9 +2943,7 @@ function agregarElementoCarrusel() {
 }
 function eliminarElementoCarrusel(id) { if (!isAdmin) return; if (!confirm('¿Eliminar?')) return; CARRUSEL.doc(id).delete().then(() => renderListaCarrusel()); }
 
-// ================================================================
 // HISTORIAS
-// ================================================================
 function puedeVerHistoria(h, misSeguidos) {
   if (!h) return false;
   if (currentUser && h.uid === currentUser.uid) return true;
@@ -2928,7 +3276,6 @@ function votarHistoria(historiaId, opcion) {
     });
   });
 }
-// MODIFICADO: reacción de historia permite a visitantes (usa reactorId)
 function reaccionarHistoria(tipo) {
   const h = storyActual.historias[storyActual.index];
   if (!h) return;
@@ -2986,9 +3333,7 @@ function eliminarHistoriaActual() {
   });
 }
 
-// ================================================================
-// BUSCADOR GENERAL
-// ================================================================
+// BUSCADOR
 const searchInput = document.getElementById('searchGeneralInput');
 const searchResults = document.getElementById('searchGeneralResults');
 const searchClear = document.getElementById('searchGeneralClear');
@@ -3072,9 +3417,7 @@ function cerrarBusquedaGeneral() {
   if (searchClear) searchClear.style.display = 'none';
 }
 
-// ================================================================
 // MURO
-// ================================================================
 document.getElementById('muroPublishToggle').addEventListener('click', function() {
   const panel = document.getElementById('muroPublishPanel');
   panel.classList.toggle('show');
@@ -3197,7 +3540,6 @@ function likePost(id) {
     POSTS.doc(id).update({ likes });
   });
 }
-// MODIFICADO: orando permite a visitantes
 function orandoPost(id) {
   const reactorId = getReactorId();
   POSTS.doc(id).get().then(doc => {
@@ -3249,9 +3591,7 @@ function donarCampania(postId) {
   });
 }
 
-// ================================================================
 // REELS
-// ================================================================
 function abrirReelModal() {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   document.getElementById('reelFile').value = '';
@@ -3487,7 +3827,6 @@ function dislikeReel(id) {
     REELS.doc(id).update({ dislikes, likes });
   });
 }
-// MODIFICADO: orar permite visitantes
 function orarReel(id) {
   const reactorId = getReactorId();
   REELS.doc(id).get().then(doc => {
@@ -3565,7 +3904,7 @@ function setupReelsFullObserver() {
 </script>
 <script>
 // ================================================================
-// DEVOCIONALES
+// DEVOCIONALES / IGLESIAS / MAPA / WIDGETS / RUTA
 // ================================================================
 function puedeSubirDevocional() { return isAdmin || tieneRol('facilitador') || tieneRol('consejero'); }
 document.getElementById('btnMostrarFormDevocional')?.addEventListener('click', function() {
@@ -3661,7 +4000,6 @@ function likeDevocional(id) {
     DEVOCIONALES.doc(id).update({ likes });
   });
 }
-// MODIFICADO: orar permite visitantes
 function orarDevocional(id) {
   const reactorId = getReactorId();
   DEVOCIONALES.doc(id).get().then(doc => {
@@ -3693,9 +4031,7 @@ function renderAdminDevocionales() {
   });
 }
 
-// ================================================================
 // IGLESIAS
-// ================================================================
 function renderIglesiasPanel() {
   const container = document.getElementById('iglesiasPanelContainer');
   if (!container) return;
@@ -3785,7 +4121,7 @@ function renderIglesiasMapa() {
     let html = '';
     snap.forEach(doc => {
       const i = doc.data();
-      html += `<div style="padding:4px 0;border-bottom:1px solid var(--border-color);"><strong>${i.nombre}</strong> (${i.direccion || ''})${i.lat && i.lng ? ` <button type="button" class="mapa-ver-btn" onclick="verEnMapa(${i.lat},${i.lng},'${i.nombre}')">Ver</button>` : ''}</div>`;
+      html += `<div style="padding:4px 0;border-bottom:1px solid var(--border-color);"><strong>${i.nombre}</strong> (${i.direccion || ''})${i.lat && i.lng ? ` <button type="button" class="mapa-ver-btn" onclick="verEnMapa(${i.lat},${i.lng},'${i.nombre}')">Ver</button> <button type="button" class="mapa-ruta-btn" onclick="trazarRutaA(${i.lat},${i.lng},'${i.nombre.replace(/'/g,"")}')"><i class="fas fa-route"></i> Ruta</button>` : ''}</div>`;
     });
     c.innerHTML = html || '<p style="color:var(--text-secondary);">No hay iglesias.</p>';
   });
@@ -3800,7 +4136,7 @@ function renderEventosMapa() {
     snap.forEach(doc => {
       const e = doc.data();
       if (!e.lat || !e.lng) return;
-      html += `<div style="padding:4px 0;border-bottom:1px solid var(--border-color);"><strong>${e.titulo}</strong> — ${e.fecha} <button type="button" class="mapa-ver-btn" onclick="verEnMapa(${e.lat},${e.lng},'${e.titulo}','${(e.lugar||'').replace(/'/g,"")}')">Ver</button></div>`;
+      html += `<div style="padding:4px 0;border-bottom:1px solid var(--border-color);"><strong>${e.titulo}</strong> — ${e.fecha} <button type="button" class="mapa-ver-btn" onclick="verEnMapa(${e.lat},${e.lng},'${e.titulo}','${(e.lugar||'').replace(/'/g,"")}')">Ver</button> <button type="button" class="mapa-ruta-btn" onclick="trazarRutaA(${e.lat},${e.lng},'${e.titulo.replace(/'/g,"")}')"><i class="fas fa-route"></i> Ruta</button></div>`;
     });
     c.innerHTML = html || '<p style="color:var(--text-secondary);">No hay eventos con ubicación.</p>';
   });
@@ -3815,14 +4151,773 @@ function renderServiciosMapa() {
     snap.forEach(doc => {
       const s = doc.data();
       if (!s.lat || !s.lng) return;
-      html += `<div style="padding:4px 0;border-bottom:1px solid var(--border-color);"><strong>${s.nombre}</strong> — ${s.direccion} <button type="button" class="mapa-ver-btn" onclick="verEnMapa(${s.lat},${s.lng},'${s.nombre}','${(s.direccion||'').replace(/'/g,"")}')">Ver</button></div>`;
+      html += `<div style="padding:4px 0;border-bottom:1px solid var(--border-color);"><strong>${s.nombre}</strong> — ${s.direccion} <button type="button" class="mapa-ver-btn" onclick="verEnMapa(${s.lat},${s.lng},'${s.nombre}','${(s.direccion||'').replace(/'/g,"")}')">Ver</button> <button type="button" class="mapa-ruta-btn" onclick="trazarRutaA(${s.lat},${s.lng},'${s.nombre.replace(/'/g,"")}')"><i class="fas fa-route"></i> Ruta</button></div>`;
     });
     c.innerHTML = html || '<p style="color:var(--text-secondary);">No hay servicios con ubicación.</p>';
   });
 }
+function renderGruposMapa() {
+  if (!currentUser) return;
+  GRUPOS.get().then(snap => {
+    const c = document.getElementById('gruposMapaList');
+    let html = '';
+    snap.forEach(doc => {
+      const g = doc.data();
+      html += `<div style="padding:4px 0;border-bottom:1px solid var(--border-color);"><strong>${g.nombre}</strong>${g.lat && g.lng ? ` <button type="button" class="mapa-ver-btn" onclick="verEnMapa(${g.lat},${g.lng},'${g.nombre}','${(g.ubicacion||'').replace(/'/g,"")}')">Ver</button> <button type="button" class="mapa-ruta-btn" onclick="trazarRutaA(${g.lat},${g.lng},'${g.nombre.replace(/'/g,"")}')"><i class="fas fa-route"></i> Ruta</button>` : ''}</div>`;
+    });
+    c.innerHTML = html || '<p style="color:var(--text-secondary);">Sin grupos.</p>';
+  });
+}
+function renderMisionerosMapa() {
+  if (!currentUser) return;
+  if (listeners.misioneros) listeners.misioneros();
+  listeners.misioneros = MISIONEROS.orderBy('nombre', 'asc').onSnapshot(snap => {
+    const c = document.getElementById('misionerosMapaList');
+    if (!c) return;
+    let html = '';
+    snap.forEach(doc => {
+      const m = doc.data();
+      html += `<div style="padding:4px 0;border-bottom:1px solid var(--border-color);"><strong>${m.nombre}</strong> (${m.ciudad || ''})${m.lat && m.lng ? ` <button type="button" class="mapa-ver-btn" onclick="verEnMapa(${m.lat},${m.lng},'${m.nombre}','${(m.ciudad||'').replace(/'/g,"")}')">Ver</button> <button type="button" class="mapa-ruta-btn" onclick="trazarRutaA(${m.lat},${m.lng},'${m.nombre.replace(/'/g,"")}')"><i class="fas fa-route"></i> Ruta</button>` : ''}</div>`;
+    });
+    c.innerHTML = html || '<p style="color:var(--text-secondary);">Sin misioneros.</p>';
+  });
+}
 
+// MAPBOX
+function cargarMapboxToken() {
+  CONFIG_MAPBOX.get().then(doc => { if (doc.exists && doc.data().token) { mapboxToken = doc.data().token; if (typeof mapboxgl !== 'undefined') mapboxgl.accessToken = mapboxToken; } });
+}
+window.guardarMapboxToken = function() {
+  if (!isSuperAdmin) return;
+  const token = document.getElementById('mapboxToken').value.trim();
+  if (!token) return;
+  CONFIG_MAPBOX.set({ token }).then(() => { mapboxToken = token; mapboxgl.accessToken = token; alert('Token guardado.'); });
+};
+
+function initMapboxPicker(containerId, searchId, latId, lngId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  if (!mapboxToken || typeof mapboxgl === 'undefined') {
+    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);font-size:13px;text-align:center;padding:12px;">⚠️ Mapa Mapbox no configurado.</div>';
+    return;
+  }
+  if (mapboxPickers[containerId]) { try { mapboxPickers[containerId].map.remove(); } catch(e) {} delete mapboxPickers[containerId]; }
+  try { mapboxgl.accessToken = mapboxToken; } catch(e) {}
+  let map;
+  try { map = new mapboxgl.Map({ container: containerId, style: 'mapbox://styles/mapbox/streets-v12', center: [-84.0907, 9.9281], zoom: 7, attributionControl: true }); } catch (e) { return; }
+  map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+  let marker = null;
+  const picker = { map, getMarker: () => marker, setMarker: (m) => { marker = m; }, searchId, latId, lngId };
+  mapboxPickers[containerId] = picker;
+  function colocarMarcador(lat, lng, recentrar) {
+    if (marker) marker.remove();
+    marker = new mapboxgl.Marker({ color: '#1D9E75', draggable: true }).setLngLat([parseFloat(lng), parseFloat(lat)]).addTo(map);
+    marker.on('dragend', () => { const p = marker.getLngLat(); document.getElementById(latId).value = p.lat; document.getElementById(lngId).value = p.lng; });
+    document.getElementById(latId).value = lat; document.getElementById(lngId).value = lng;
+    if (recentrar) map.setCenter([parseFloat(lng), parseFloat(lat)]);
+  }
+  map.on('click', (e) => colocarMarcador(e.lngLat.lat, e.lngLat.lng, false));
+  const latPrev = document.getElementById(latId)?.value;
+  const lngPrev = document.getElementById(lngId)?.value;
+  if (latPrev && lngPrev) { colocarMarcador(parseFloat(latPrev), parseFloat(lngPrev), true); map.setZoom(14); }
+  setTimeout(() => { try { map.resize(); } catch(e) {} }, 350);
+  setTimeout(() => { try { map.resize(); } catch(e) {} }, 800);
+}
+window.buscarEnMapa = function(containerId) {
+  const picker = mapboxPickers[containerId];
+  if (!picker) return;
+  const inp = document.getElementById(picker.searchId);
+  if (!inp) return;
+  const q = inp.value.trim();
+  if (!q) return;
+  const aplicar = (lng, lat) => {
+    if (picker.getMarker()) picker.getMarker().remove();
+    const newMarker = new mapboxgl.Marker({ color: '#1D9E75', draggable: true }).setLngLat([lng, lat]).addTo(picker.map);
+    newMarker.on('dragend', () => { const p = newMarker.getLngLat(); document.getElementById(picker.latId).value = p.lat; document.getElementById(picker.lngId).value = p.lng; });
+    picker.setMarker(newMarker);
+    document.getElementById(picker.latId).value = lat;
+    document.getElementById(picker.lngId).value = lng;
+    picker.map.flyTo({ center: [lng, lat], zoom: 15 });
+  };
+  if (mapboxToken) {
+    fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURIComponent(q) + '.json?access_token=' + mapboxToken + '&limit=1')
+      .then(r => r.json()).then(data => {
+        if (data.features && data.features.length > 0) { const [lng, lat] = data.features[0].center; aplicar(lng, lat); }
+        else {
+          fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q)).then(r => r.json()).then(d2 => {
+            if (d2 && d2.length > 0) aplicar(parseFloat(d2[0].lon), parseFloat(d2[0].lat)); else alert('No encontrado.');
+          });
+        }
+      });
+  } else {
+    fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q)).then(r => r.json()).then(d2 => {
+      if (d2 && d2.length > 0) aplicar(parseFloat(d2[0].lon), parseFloat(d2[0].lat)); else alert('No encontrado.');
+    });
+  }
+};
+window.verEnMapa = function(lat, lng, nombre, info) {
+  if (!currentUser) return;
+  if (mapboxMap && lat && lng) {
+    mapboxMap.flyTo({ center: [lng, lat], zoom: 14 });
+    new mapboxgl.Popup({ closeOnClick: true }).setLngLat([lng, lat])
+      .setHTML(`<strong>${nombre}</strong>${info ? '<br>' + info : ''}<br><button onclick="trazarRutaA(${lat},${lng},'${(nombre||'').replace(/'/g,"")}')" style="margin-top:6px;background:#D4AF37;color:#fff;border:none;padding:4px 10px;border-radius:20px;font-size:11px;cursor:pointer;">🛣 Trazar ruta</button>`)
+      .addTo(mapboxMap);
+  }
+};
+function initMapboxMap() {
+  if (!currentUser || !mapboxToken || typeof mapboxgl === 'undefined') return;
+  const container = document.getElementById('mapboxMap');
+  if (!container) return;
+  let webglOK = false;
+  try { const c = document.createElement('canvas'); webglOK = !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl'))); } catch (e) { webglOK = false; }
+  if (!webglOK) { container.innerHTML = '<p style="padding:24px;text-align:center;">WebGL no disponible.</p>'; return; }
+  if (mapboxMap) { mapboxMap.remove(); mapboxMap = null; mapboxMarkers.forEach(m => m.remove()); mapboxMarkers = []; }
+  try { mapboxMap = new mapboxgl.Map({ container: 'mapboxMap', style: 'mapbox://styles/mapbox/streets-v12', center: [-84.0907, 9.9281], zoom: 7 }); } catch (e) { return; }
+  mapboxMap.addControl(new mapboxgl.NavigationControl());
+  cargarPuntosMapbox();
+}
+function cargarPuntosMapbox() {
+  if (!mapboxMap) return;
+  mapboxMarkers.forEach(m => m.remove());
+  mapboxMarkers = [];
+  // Capa de ruta (se inicializa vacía)
+  if (!mapboxMap.getSource('ruta-source')) {
+    mapboxMap.on('load', () => {
+      if (!mapboxMap.getSource('ruta-source')) {
+        mapboxMap.addSource('ruta-source', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+        mapboxMap.addLayer({ id: 'ruta-line', type: 'line', source: 'ruta-source', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#D4AF37', 'line-width': 5, 'line-opacity': 0.85 } });
+      }
+    });
+  }
+  function addMarker(lat, lng, nombre, desc, color, icon, tipo) {
+    if (!lat || !lng) return;
+    try {
+      const popupHtml = `<strong>${icon} ${nombre}</strong><br>${desc || ''}<br><button onclick="trazarRutaA(${lat},${lng},'${(nombre||'').replace(/'/g,"")}')" style="margin-top:6px;background:#D4AF37;color:#fff;border:none;padding:4px 10px;border-radius:20px;font-size:11px;cursor:pointer;">🛣 Trazar ruta hasta aquí</button>`;
+      const marker = new mapboxgl.Marker({ color })
+        .setLngLat([parseFloat(lng), parseFloat(lat)])
+        .setPopup(new mapboxgl.Popup().setHTML(popupHtml))
+        .addTo(mapboxMap);
+      mapboxMarkers.push(marker);
+    } catch(e) {}
+  }
+  MISIONEROS.get().then(snap => snap.forEach(doc => { const m = doc.data(); addMarker(m.lat, m.lng, m.nombre, m.ciudad || '', '#e74c3c', '✝', 'misionero'); }));
+  IGLESIAS.get().then(snap => snap.forEach(doc => { const i = doc.data(); addMarker(i.lat, i.lng, i.nombre, i.direccion || '', '#2ecc71', '⛪', 'iglesia'); }));
+  GRUPOS.get().then(snap => snap.forEach(doc => { const g = doc.data(); addMarker(g.lat, g.lng, g.nombre, g.ubicacion || '', '#3498db', '👥', 'grupo'); }));
+  EVENTOS.get().then(snap => snap.forEach(doc => { const e = doc.data(); addMarker(e.lat, e.lng, e.titulo, e.lugar || '', '#9b59b6', '📅', 'evento'); }));
+  getServiciosRef().get().then(snap => snap.forEach(doc => { const s = doc.data(); addMarker(s.lat, s.lng, s.nombre, s.direccion || '', '#f39c12', '🍽', 'servicio'); }));
+  MAPA_COL.get().then(snap => {
+    const total = snap.size;
+    const el = document.getElementById('adminMapaCount');
+    if (el) el.textContent = total;
+  });
+}
+
+// ==================== NUEVO: RUTA DESDE MI UBICACIÓN ====================
+window.trazarRutaA = function(latDestino, lngDestino, nombreDestino) {
+  if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
+  if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
+  const panel = document.getElementById('rutaInfoPanel');
+  document.getElementById('rutaDestinoNombre').textContent = nombreDestino || 'Destino';
+  document.getElementById('rutaMeta').textContent = 'Obteniendo tu ubicación...';
+  if (panel) panel.classList.add('show');
+
+  // Si ya tenemos mi ubicación, usarla; si no, pedirla
+  const calcular = (latOrigen, lngOrigen) => {
+    miUbicacionActual = { lat: latOrigen, lng: lngOrigen };
+    // Si mapbox tiene Directions API usarla
+    if (mapboxToken) {
+      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${lngOrigen},${latOrigen};${lngDestino},${latDestino}?geometries=geojson&overview=full&access_token=${mapboxToken}`;
+      fetch(url).then(r => r.json()).then(data => {
+        if (data.routes && data.routes.length > 0) {
+          const ruta = data.routes[0];
+          const geometry = ruta.geometry;
+          const distanciaKm = (ruta.distance / 1000).toFixed(1);
+          const duracionMin = Math.round(ruta.duration / 60);
+          document.getElementById('rutaMeta').textContent = `Distancia: ${distanciaKm} km · Tiempo aprox: ${duracionMin} min`;
+          // Dibujar la ruta
+          dibujarRutaEnMapa(geometry, latOrigen, lngOrigen, latDestino, lngDestino, nombreDestino);
+          rutaActiva = { origen: { lat: latOrigen, lng: lngOrigen }, destino: { lat: latDestino, lng: lngDestino }, nombreDestino };
+        } else {
+          // Fallback: línea recta
+          const coords = [[lngOrigen, latOrigen], [lngDestino, latDestino]];
+          dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latDestino, lngDestino, nombreDestino);
+        }
+      }).catch(() => {
+        const coords = [[lngOrigen, latOrigen], [lngDestino, latDestino]];
+        dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latDestino, lngDestino, nombreDestino);
+      });
+    } else {
+      const coords = [[lngOrigen, latOrigen], [lngDestino, latDestino]];
+      dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latDestino, lngDestino, nombreDestino);
+    }
+  };
+
+  if (miUbicacionActual) {
+    calcular(miUbicacionActual.lat, miUbicacionActual.lng);
+  } else {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => calcular(pos.coords.latitude, pos.coords.longitude),
+      (err) => {
+        document.getElementById('rutaMeta').textContent = '⚠️ No se pudo obtener tu ubicación: ' + (err.message || err.code);
+      },
+      { enableHighAccuracy: true, timeout: 15000 }
+    );
+  }
+};
+function dibujarRutaEnMapa(geometry, latO, lngO, latD, lngD, nombre) {
+  try {
+    if (!mapboxMap.getSource('ruta-source')) {
+      mapboxMap.addSource('ruta-source', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
+      mapboxMap.addLayer({ id: 'ruta-line', type: 'line', source: 'ruta-source', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#D4AF37', 'line-width': 5, 'line-opacity': 0.85 } });
+    }
+    mapboxMap.getSource('ruta-source').setData({
+      type: 'Feature',
+      properties: {},
+      geometry: geometry
+    });
+    // Ajustar vista para mostrar la ruta
+    const bounds = new mapboxgl.LngLatBounds();
+    bounds.extend([lngO, latO]);
+    bounds.extend([lngD, latD]);
+    if (geometry.coordinates) geometry.coordinates.forEach(c => bounds.extend(c));
+    mapboxMap.fitBounds(bounds, { padding: 60 });
+  } catch(e) { console.warn('Error dibujando ruta:', e); }
+}
+function dibujarRutaLineaRecta(coords, latO, lngO, latD, lngD, nombre) {
+  document.getElementById('rutaMeta').textContent = `Distancia aprox (línea recta): ~${calcularDistanciaKm(latO, lngO, latD, lngD).toFixed(1)} km (ruta detallada no disponible)`;
+  const geometry = { type: 'LineString', coordinates: coords };
+  dibujarRutaEnMapa(geometry, latO, lngO, latD, lngD, nombre);
+}
+function calcularDistanciaKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R * c;
+}
+window.cerrarRuta = function() {
+  try {
+    if (mapboxMap && mapboxMap.getSource('ruta-source')) {
+      mapboxMap.getSource('ruta-source').setData({ type: 'FeatureCollection', features: [] });
+    }
+  } catch(e) {}
+  rutaActiva = null;
+  const panel = document.getElementById('rutaInfoPanel');
+  if (panel) panel.classList.remove('show');
+};
+window.abrirRutaEnGoogleMaps = function() {
+  if (!rutaActiva) return;
+  const o = rutaActiva.origen;
+  const d = rutaActiva.destino;
+  const url = `https://www.google.com/maps/dir/?api=1&origin=${o.lat},${o.lng}&destination=${d.lat},${d.lng}&travelmode=driving`;
+  window.open(url, '_blank');
+};
+
+// MI UBICACIÓN EN TIEMPO REAL
+window.activarMiUbicacion = function() {
+  if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
+  const btn = document.getElementById('btnMiUbicacion');
+  if (miUbicacionActiva) {
+    if (miUbicacionWatchIdGlobal !== null && navigator.geolocation) navigator.geolocation.clearWatch(miUbicacionWatchIdGlobal);
+    miUbicacionWatchIdGlobal = null;
+    if (miUbicacionMarkerGlobal) { miUbicacionMarkerGlobal.remove(); miUbicacionMarkerGlobal = null; }
+    miUbicacionActiva = false;
+    if (btn) btn.classList.remove('activo');
+    return;
+  }
+  if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
+  miUbicacionActiva = true;
+  if (btn) btn.classList.add('activo');
+  const el = document.createElement('div');
+  el.className = 'mi-ubicacion-marker';
+  el.innerHTML = '<i class="fas fa-lightbulb"></i>';
+  el.title = 'Mi ubicación precisa';
+  miUbicacionWatchIdGlobal = navigator.geolocation.watchPosition(
+    (pos) => {
+      const lat = pos.coords.latitude, lng = pos.coords.longitude;
+      miUbicacionActual = { lat, lng };
+      if (miUbicacionMarkerGlobal) miUbicacionMarkerGlobal.setLngLat([lng, lat]);
+      else {
+        try {
+          miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el }).setLngLat([lng, lat]).addTo(mapboxMap);
+          mapboxMap.flyTo({ center: [lng, lat], zoom: 16 });
+        } catch(e) {}
+      }
+    },
+    (err) => {
+      alert('No se pudo obtener tu ubicación: ' + (err.message || err.code));
+      miUbicacionActiva = false;
+      if (btn) btn.classList.remove('activo');
+    },
+    { enableHighAccuracy: true, maximumAge: 3000, timeout: 20000 }
+  );
+};
+
+// ESTILOS
+function cargarEstilosConfig() {
+  APP_CONFIG.get().then(doc => {
+    if (doc.exists) {
+      const data = doc.data();
+      if (data.primaryColor) aplicarColorTema(data.primaryColor);
+      if (data.animationsEnabled !== undefined) {
+        document.body.classList.toggle('animations-on', data.animationsEnabled);
+        const cb = document.getElementById('animationsToggle');
+        if (cb) cb.checked = data.animationsEnabled;
+      }
+      if (data.primaryColor) {
+        document.querySelectorAll('.theme-color-option').forEach(el => {
+          el.classList.toggle('active', el.dataset.color === data.primaryColor);
+        });
+      }
+    }
+  });
+}
+function aplicarColorTema(hex) {
+  document.documentElement.style.setProperty('--teal', hex);
+  document.documentElement.style.setProperty('--teal-dark', shadeColor(hex, -25));
+  document.documentElement.style.setProperty('--teal-light', hexToRgba(hex, 0.15));
+}
+function shadeColor(color, percent) {
+  const num = parseInt(color.replace('#',''), 16);
+  const amt = Math.round(2.55 * percent);
+  const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+  const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+  const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+  return '#' + (0x1000000 + R*0x10000 + G*0x100 + B).toString(16).slice(1);
+}
+document.querySelectorAll('.theme-color-option').forEach(el => {
+  el.addEventListener('click', function() {
+    document.querySelectorAll('.theme-color-option').forEach(o => o.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+window.guardarEstilos = function() {
+  if (!isSuperAdmin) return;
+  const selected = document.querySelector('.theme-color-option.active');
+  const color = selected ? selected.dataset.color : '#1D9E75';
+  const animations = document.getElementById('animationsToggle').checked;
+  APP_CONFIG.set({ primaryColor: color, animationsEnabled: animations }, { merge: true }).then(() => {
+    aplicarColorTema(color);
+    document.body.classList.toggle('animations-on', animations);
+    alert('✅ Estilos guardados.');
+  });
+};
+function cargarLogoConfig() {
+  APP_CONFIG.get().then(doc => {
+    const logoEl = document.getElementById('logoIcon');
+    const previewEl = document.getElementById('logoPreview');
+    if (doc.exists && doc.data().logoUrl) {
+      if (logoEl) logoEl.innerHTML = `<img src="${doc.data().logoUrl}">`;
+      if (previewEl) previewEl.innerHTML = `<img src="${doc.data().logoUrl}" style="width:100%;height:100%;object-fit:contain;">`;
+    } else {
+      if (logoEl) logoEl.innerHTML = '<i class="fas fa-church"></i>';
+      if (previewEl) previewEl.innerHTML = '<i class="fas fa-image" style="font-size:24px;color:var(--text-secondary);"></i>';
+    }
+  }).catch(() => {});
+}
+window.subirLogo = function() {
+  if (!isSuperAdmin) return;
+  const f = document.getElementById('logoFileInput').files[0]; if (!f) return;
+  subirArchivoStorage(f, `logo/logo_${Date.now()}_${f.name}`).then(url => APP_CONFIG.set({ logoUrl: url }, { merge: true })).then(() => { alert('Logo actualizado.'); cargarLogoConfig(); });
+};
+window.eliminarLogo = function() { if (!isSuperAdmin) return; APP_CONFIG.set({ logoUrl: firebase.firestore.FieldValue.delete() }, { merge: true }).then(() => cargarLogoConfig()); };
+function cargarConfigMenu() {
+  APP_CONFIG.get().then(doc => {
+    if (doc.exists && doc.data().forceHamburger) {
+      document.body.classList.add('force-hamburger');
+      const cb = document.getElementById('forceHamburgerCheck');
+      if (cb) cb.checked = true;
+    }
+  });
+}
+window.guardarConfigMenu = function() {
+  if (!isSuperAdmin) return;
+  const force = document.getElementById('forceHamburgerCheck').checked;
+  APP_CONFIG.set({ forceHamburger: force }, { merge: true }).then(() => { if (force) document.body.classList.add('force-hamburger'); else document.body.classList.remove('force-hamburger'); alert('Guardado.'); });
+};
+window.guardarConfigIA = function() {
+  if (!isSuperAdmin) return;
+  CONFIG_IA.set({ apiKey: document.getElementById('openrouterKey').value.trim(), selectedModel: document.getElementById('openrouterModelSelect').value }).then(() => alert('Guardado.'));
+};
+function cargarConfigIA() {
+  CONFIG_IA.get().then(doc => {
+    if (doc.exists) {
+      const d = doc.data();
+      const k = document.getElementById('openrouterKey');
+      if (k) k.value = d.apiKey || '';
+      if (d.selectedModel) { const s = document.getElementById('openrouterModelSelect'); if (s) s.value = d.selectedModel; }
+    }
+  });
+}
+window.preguntarIA = function() {
+  const pregunta = document.getElementById('iaPregunta').value.trim(); if (!pregunta) return;
+  const chat = document.getElementById('iaChat');
+  chat.innerHTML += `<div class="msg"><strong>Tú:</strong> ${pregunta}</div>`;
+  document.getElementById('iaPregunta').value = '';
+  CONFIG_IA.get().then(doc => {
+    const config = doc.exists ? doc.data() : null;
+    const key = config ? config.apiKey : '';
+    if (!key) { chat.innerHTML += '<div class="msg">⚠️ API no configurada.</div>'; return; }
+    fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+      body: JSON.stringify({ model: config.selectedModel || 'openai/gpt-3.5-turbo', messages: [{ role: 'user', content: pregunta }], max_tokens: 700 })
+    }).then(r => r.json()).then(data => {
+      const reply = data.choices?.[0]?.message?.content || 'Sin respuesta.';
+      chat.innerHTML += `<div class="msg"><strong>Asistente:</strong> ${reply}</div>`;
+      chat.scrollTop = chat.scrollHeight;
+    });
+  });
+};
+
+// BIBLIA
+let textosBiblicos = {};
+let libroActual = '';
+let capituloActual = '';
+const libroSelect = document.getElementById('libro');
+const capituloSelect = document.getElementById('capitulo');
+const versiculoContainer = document.getElementById('versiculoContainer');
+fetch('textos-biblicos.json').then(r => r.json()).then(data => {
+  textosBiblicos = data;
+  const all = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
+  Object.keys(all).forEach(libro => { const o = document.createElement('option'); o.value = libro; o.textContent = libro; libroSelect.appendChild(o); });
+}).catch(() => {
+  const fallback = ['Génesis','Éxodo','Salmos','Proverbios','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','Apocalipsis'];
+  fallback.forEach(l => { const o = document.createElement('option'); o.value = l; o.textContent = l; libroSelect.appendChild(o); });
+});
+libroSelect.addEventListener('change', function() { if (this.value) { libroActual = this.value; cargarCapitulos(libroActual); guardarHistorial(libroActual); } });
+capituloSelect.addEventListener('change', function() { if (this.value) { capituloActual = this.value; guardarHistorial(libroActual + ' ' + capituloActual); actualizarInfoCap(); } });
+function guardarHistorial(t) { let h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]'); if (!h.includes(t)) { h.unshift(t); if (h.length > 10) h.pop(); localStorage.setItem(STORAGE_KEYS.historialBiblia, JSON.stringify(h)); cargarHistorial(); } }
+function cargarCapitulos(libro) {
+  const test = textosBiblicos.antiguoTestamento?.[libro] ? 'antiguoTestamento' : (textosBiblicos.nuevoTestamento?.[libro] ? 'nuevoTestamento' : null);
+  if (!test) { capituloSelect.innerHTML = '<option>No disponible</option>'; return; }
+  const ruta = textosBiblicos[test][libro];
+  fetch(ruta).then(r => r.json()).then(data => {
+    capituloKeys = Object.keys(data).sort((a,b) => parseInt(a) - parseInt(b));
+    capituloSelect.innerHTML = '<option value="">Selecciona capítulo</option>';
+    capituloKeys.forEach(cap => { const o = document.createElement('option'); o.value = cap; o.textContent = 'Capítulo ' + cap; capituloSelect.appendChild(o); });
+    if (capituloKeys.length > 0) { capituloSelect.value = capituloKeys[0]; capituloActual = capituloKeys[0]; actualizarInfoCap(); }
+  });
+}
+function actualizarInfoCap() { document.getElementById('capInfo').textContent = libroActual && capituloActual ? libroActual + ' ' + capituloActual : 'Capítulo'; }
+function cargarHistorial() { const h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]'); const c = document.getElementById('historialContainer'); c.innerHTML = h.length ? h.map(t => `<span class="historial-tag">${t}</span>`).join('') : '<span style="color:var(--text-secondary);font-size:12px;">Sin búsquedas.</span>'; }
+
+// AUX
+function actualizarBotonesPorRol() {
+  const btnGrupo = document.getElementById('btnCrearGrupo');
+  const btnDiscipulado = document.getElementById('btnCrearDiscipulado');
+  const servicioForm = document.getElementById('servicioFormContainer');
+  const servicioMsg = document.getElementById('servicioMensaje');
+  const misServicios = document.getElementById('misServiciosContainer');
+  const btnRegIglesiaPanel = document.getElementById('btnRegistrarIglesiaPanel');
+  const devSubirCard = document.getElementById('devocionalSubirCard');
+  if (btnGrupo) btnGrupo.style.display = puedeCrearGrupo() ? 'inline-block' : 'none';
+  if (btnDiscipulado) btnDiscipulado.style.display = puedeCrearGrupo() ? 'inline-block' : 'none';
+  if (servicioForm && servicioMsg) {
+    if (tieneRol('servidor') || tieneRol('ayuda_alimentaria')) { servicioForm.style.display = 'block'; servicioMsg.style.display = 'none'; }
+    else { servicioForm.style.display = 'none'; servicioMsg.style.display = 'block'; }
+  }
+  if (misServicios) misServicios.style.display = currentUser ? 'block' : 'none';
+  if (btnRegIglesiaPanel) btnRegIglesiaPanel.style.display = puedeAgregarIglesia() ? 'inline-block' : 'none';
+  if (devSubirCard) devSubirCard.style.display = puedeSubirDevocional() ? 'block' : 'none';
+}
+function actualizarTabs() {
+  const tabEquipo = document.getElementById('tabChatEquipo');
+  if (tabEquipo) tabEquipo.style.display = (tieneAlgunRolApoyo() || isAdmin) ? 'inline-block' : 'none';
+}
+function cargarContadorNotificaciones() {
+  if (!currentUser) return;
+  if (listeners.notificaciones) listeners.notificaciones();
+  listeners.notificaciones = NOTIFICACIONES(currentUser.uid).where('leido', '==', false).onSnapshot(snap => {
+    const badge = document.getElementById('notifCount');
+    if (badge) { badge.textContent = snap.size; badge.style.display = snap.size > 0 ? 'flex' : 'none'; }
+  });
+}
+window.mostrarNotificaciones = function() {
+  if (!currentUser) return;
+  NOTIFICACIONES(currentUser.uid).orderBy('fecha', 'desc').limit(20).get().then(snap => {
+    if (snap.empty) { alert('Sin notificaciones.'); return; }
+    let msg = '📬\n\n';
+    snap.forEach(doc => {
+      const n = doc.data();
+      let t = '';
+      if (n.tipo === 'like') t = `${n.emisorNombre} le dio like`;
+      else if (n.tipo === 'seguidor') t = `${n.emisorNombre} te sigue`;
+      else if (n.tipo === 'mensaje_privado') t = `${n.emisorNombre}: "${n.texto}"`;
+      msg += '- ' + t + '\n';
+      doc.ref.update({ leido: true });
+    });
+    alert(msg);
+  });
+};
+
+// ADMIN
+function renderAdminPanel() {
+  if (!isAdmin) return;
+  cargarConfigIA();
+  cargarConfigCallMeBot();
+  if (isSuperAdmin) renderSolicitudesPassword();
+  const stats = { users:0, posts:0, iglesias:0 };
+  Promise.all([USERS.get().then(s => stats.users = s.size), POSTS.get().then(s => stats.posts = s.size), IGLESIAS.get().then(s => stats.iglesias = s.size)]).then(() => {
+    document.getElementById('statUsers').textContent = stats.users;
+    document.getElementById('statPosts').textContent = stats.posts;
+    document.getElementById('statIglesias').textContent = stats.iglesias;
+  });
+  renderAdminUsuarios();
+  renderAdminPublicaciones();
+  renderAdminGrupos();
+  renderAdminDiscipulados();
+  renderAdminOraciones();
+  renderAdminNecesidades();
+  renderAdminServicios();
+  renderAdminMisioneros();
+  renderAdminIglesias();
+  renderAdminConsejos();
+  renderAdminDevocionales();
+  renderAdminEventos();
+  renderAdminNoticias();
+  renderAdminReels();
+  renderAdminHistorias();
+  renderAdminProyectos();
+  renderAdminCarrusel();
+  renderAdminReportes();
+  renderAdminMapa();
+  renderAdminMensajes();
+}
+function renderAdminUsuarios() {
+  USERS.get().then(snapshot => {
+    const list = document.getElementById('adminUserList');
+    if (!list) return;
+    let html = '';
+    snapshot.forEach(doc => {
+      const u = doc.data();
+      const esSuper = u.email === 'salyluz@comunidad.com';
+      html += `<div class="admin-list-item"><span class="info"><strong>${u.displayName}</strong> · ${u.email}${esSuper ? ' ⭐' : ''}</span><div class="actions">${!esSuper ? `<button type="button" class="btn-primary" onclick="abrirEditarUsuario('${u.uid}')" style="font-size:10px;">Editar</button>` : ''}</div></div>`;
+    });
+    list.innerHTML = html;
+  });
+}
+function renderAdminPublicaciones() {
+  const list = document.getElementById('adminPostsList');
+  if (!list) return;
+  POSTS.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const p = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${(p.texto||'').substring(0,50)}</strong> — ${p.autorNombre}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))POSTS.doc('${doc.id}').delete().then(()=>renderAdminPublicaciones())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin publicaciones.</p>';
+  });
+}
+function renderAdminGrupos() {
+  const list = document.getElementById('adminGruposList');
+  if (!list) return;
+  GRUPOS.get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const g = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${g.nombre}</strong> — ${(g.miembros||[]).length} miembros${g.lat?' · 📍':''}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))GRUPOS.doc('${doc.id}').delete().then(()=>{eliminarDelMapa('grupo','${doc.id}');renderAdminGrupos();})" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin grupos.</p>';
+  });
+}
+function renderAdminDiscipulados() {
+  const list = document.getElementById('adminDiscipuladosList');
+  if (!list) return;
+  DISCIPULADOS.get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const d = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${d.titulo}</strong> — ${d.facilitador}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))DISCIPULADOS.doc('${doc.id}').delete().then(()=>renderAdminDiscipulados())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin discipulados.</p>';
+  });
+}
+function renderAdminOraciones() {
+  const list = document.getElementById('adminOracionesList');
+  if (!list) return;
+  ORACIONES.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const o = doc.data();
+      html += `<div class="admin-list-item"><span class="info">${(o.texto||'').substring(0,60)} — ${o.autorNombre}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))ORACIONES.doc('${doc.id}').delete().then(()=>renderAdminOraciones())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin oraciones.</p>';
+  });
+}
+function renderAdminNecesidades() {
+  const list = document.getElementById('adminNecesidadesList');
+  if (!list) return;
+  NECESIDADES.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const n = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${n.categoria}</strong> — ${(n.desc||'').substring(0,40)}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))NECESIDADES.doc('${doc.id}').delete().then(()=>renderAdminNecesidades())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin necesidades.</p>';
+  });
+}
+function renderAdminServicios() {
+  const list = document.getElementById('adminServiciosList');
+  if (!list) return;
+  getServiciosRef().orderBy('fechaRegistro', 'desc').limit(50).get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const s = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${s.nombre}</strong> — ${s.direccion}${s.lat?' · 📍':''}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))getServiciosRef().doc('${doc.id}').delete().then(()=>{eliminarDelMapa('servicio','${doc.id}');renderAdminServicios();})" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin servicios.</p>';
+  });
+}
+function renderAdminMisioneros() {
+  const list = document.getElementById('adminMisionerosList');
+  if (!list) return;
+  MISIONEROS.get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const m = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${m.nombre}</strong> — ${m.ciudad}${m.lat?' · 📍':''}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))MISIONEROS.doc('${doc.id}').delete().then(()=>{eliminarDelMapa('misionero','${doc.id}');renderAdminMisioneros();})" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin misioneros.</p>';
+  });
+}
+function renderAdminConsejos() {
+  const list = document.getElementById('adminConsejosList');
+  if (!list) return;
+  CONSEJOS.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const c = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${c.titulo}</strong> — ${c.autorNombre}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))CONSEJOS.doc('${doc.id}').delete().then(()=>renderAdminConsejos())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin consejerías.</p>';
+  });
+}
+function renderAdminReels() {
+  const list = document.getElementById('adminReelsList');
+  if (!list) return;
+  REELS.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const r = doc.data();
+      html += `<div class="admin-list-item"><span class="info">${r.autorNombre} — ${(r.desc||'').substring(0,40)}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))REELS.doc('${doc.id}').delete().then(()=>renderAdminReels())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin reels.</p>';
+  });
+}
+function renderAdminHistorias() {
+  const list = document.getElementById('adminHistoriasList');
+  if (!list) return;
+  HISTORIAS.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
+    const ahora = Date.now();
+    let html = '';
+    snapshot.forEach(doc => {
+      const h = doc.data();
+      const activa = h.fecha && (h.fecha.seconds * 1000 + 24*60*60*1000) > ahora;
+      html += `<div class="admin-list-item"><span class="info"><strong>${h.autorNombre || 'Usuario'}</strong> — ${h.tipo || 'imagen'} ${activa ? '🟢' : '⚪'}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))HISTORIAS.doc('${doc.id}').delete().then(()=>renderAdminHistorias())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin historias.</p>';
+  });
+}
+function renderAdminProyectos() {
+  const list = document.getElementById('adminProyectosList');
+  if (!list) return;
+  PROYECTOS.orderBy('fechaCreacion', 'desc').limit(50).get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const p = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${p.nombre}</strong> — ${(p.miembros||[]).length}/${p.max||30}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))PROYECTOS.doc('${doc.id}').delete().then(()=>renderAdminProyectos())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin proyectos.</p>';
+  });
+}
+function renderAdminCarrusel() {
+  const list = document.getElementById('adminCarruselList');
+  if (!list) return;
+  CARRUSEL.orderBy('order', 'asc').get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const c = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${c.title || 'Sin título'}</strong></span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))CARRUSEL.doc('${doc.id}').delete().then(()=>renderAdminCarrusel())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin elementos.</p>';
+  });
+}
+function renderAdminReportes() {
+  const list = document.getElementById('adminReportesList');
+  if (!list) return;
+  getReportesRef().orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const r = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${r.titulo}</strong> — ${r.usuario}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))getReportesRef().doc('${doc.id}').delete().then(()=>renderAdminReportes())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin reportes.</p>';
+  });
+}
+function renderAdminMapa() {
+  const list = document.getElementById('adminMapaList');
+  if (!list) return;
+  MAPA_COL.orderBy('fecha', 'desc').limit(100).get().then(snapshot => {
+    let html = '';
+    snapshot.forEach(doc => {
+      const m = doc.data();
+      html += `<div class="admin-list-item"><span class="info"><strong>${m.tipo}</strong> — ${m.nombre} ${m.lat && m.lng ? '📍' : ''}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))MAPA_COL.doc('${doc.id}').delete().then(()=>renderAdminMapa())" style="font-size:10px;">Eliminar</button></div></div>`;
+    });
+    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin puntos en el mapa.</p>';
+    const countEl = document.getElementById('adminMapaCount');
+    if (countEl) countEl.textContent = snapshot.size;
+  });
+}
+function renderAdminMensajes() {
+  const c1 = document.getElementById('adminChatAdminList');
+  const c2 = document.getElementById('adminChatEquipoList');
+  if (c1) {
+    CHAT_ADMIN.orderBy('timestamp', 'desc').limit(30).get().then(snapshot => {
+      let html = '';
+      snapshot.forEach(doc => {
+        const m = doc.data();
+        html += `<div class="admin-list-item"><span class="info"><strong>${m.remitente}</strong>: ${(m.texto||'').substring(0,50)}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))CHAT_ADMIN.doc('${doc.id}').delete().then(()=>renderAdminMensajes())" style="font-size:10px;">X</button></div></div>`;
+      });
+      c1.innerHTML = html || '<p style="color:var(--text-secondary);">Sin mensajes.</p>';
+    });
+  }
+  if (c2) {
+    CHAT_EQUIPO.orderBy('timestamp', 'desc').limit(30).get().then(snapshot => {
+      let html = '';
+      snapshot.forEach(doc => {
+        const m = doc.data();
+        html += `<div class="admin-list-item"><span class="info"><strong>${m.remitente}</strong>: ${(m.texto||'').substring(0,50)}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))CHAT_EQUIPO.doc('${doc.id}').delete().then(()=>renderAdminMensajes())" style="font-size:10px;">X</button></div></div>`;
+      });
+      c2.innerHTML = html || '<p style="color:var(--text-secondary);">Sin mensajes.</p>';
+    });
+  }
+}
+function renderSolicitudesPassword() {
+  if (!isSuperAdmin) return;
+  SOLICITUDES_PASSWORD.where('estado', '==', 'pendiente').get().then(snapshot => {
+    const container = document.getElementById('solicitudesPasswordList');
+    if (!container) return;
+    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay solicitudes.</p>'; return; }
+    let html = '';
+    snapshot.forEach(doc => { const s = doc.data(); html += `<div class="solicitud-item"><strong>${s.nombre}</strong> <button type="button" class="btn-primary" onclick="SOLICITUDES_PASSWORD.doc('${doc.id}').update({estado:'aprobado'}).then(()=>renderSolicitudesPassword())" style="font-size:10px;">Aprobar</button></div>`; });
+    container.innerHTML = html;
+  });
+}
+window.abrirMediaViewer = function(items, index, type) {
+  mediaViewerItems = items.map(u => ({ url: u, type: type || 'image' }));
+  mediaViewerIndex = index;
+  const img = document.getElementById('mediaViewerImage');
+  img.src = mediaViewerItems[mediaViewerIndex].url; img.style.display = 'block';
+  document.getElementById('mediaViewer').classList.add('show');
+};
+window.cerrarMediaViewer = function() { document.getElementById('mediaViewer').classList.remove('show'); };
+window.navegarMediaViewer = function(d) { mediaViewerIndex = (mediaViewerIndex + d + mediaViewerItems.length) % mediaViewerItems.length; document.getElementById('mediaViewerImage').src = mediaViewerItems[mediaViewerIndex].url; };
+</script>
+<script>
 // ================================================================
-// CHATS - cada usuario con color diferente
+// CHATS ADMIN/EQUIPO con archivos
 // ================================================================
 function renderChatAdmin() {
   if (!currentUser) return;
@@ -3977,7 +5072,7 @@ function enviarMensajeChat() {
 </script>
 <script>
 // ================================================================
-// PERFIL
+// PERFIL / SERVICIOS / NECESIDADES / ORACIONES / GRUPOS / EVENTOS
 // ================================================================
 async function verPerfil(uid) {
   if (!uid) return;
@@ -4513,7 +5608,6 @@ document.addEventListener('change', function(e) {
     subirArchivoStorage(f, `cover_pictures/${currentUser.uid}/${Date.now()}_${f.name}`).then(url => USERS.doc(currentUser.uid).update({ portada: url }))
       .then(() => USERS.doc(currentUser.uid).get().then(d => { currentUser.portada = d.data().portada; renderEditMiniPreviews(); }));
   }
-  // NUEVO: cambios de archivo para chat admin y equipo
   if (e.target && e.target.id === 'chatAdminFile') {
     const f = e.target.files[0]; if (!f) return;
     chatAdminArchivo = f;
@@ -4547,9 +5641,7 @@ async function procesarMultiplesFotosGaleria(files) {
     alert('✅ Fotos subidas.');
   } catch(err) { alert('Error: ' + err.message); }
 }
-window.cerrarEditarPerfilModal = function() {
-  cerrarModal('editarPerfilModal');
-};
+window.cerrarEditarPerfilModal = function() { cerrarModal('editarPerfilModal'); };
 window.guardarPerfilExtendido = async function() {
   if (!currentUser) { alert('No hay usuario.'); return; }
   const nombre = document.getElementById('editNombre').value.trim();
@@ -4580,7 +5672,7 @@ window.guardarPerfilExtendido = async function() {
   try {
     await USERS.doc(currentUser.uid).update(updateData);
     Object.assign(currentUser, updateData);
-    actualizarUIUsuario();
+    actualizarUIUsuario(); renderWidgetPerfilRapido();
     cerrarModal('editarPerfilModal');
     alert('Perfil actualizado.');
   } catch(err) { alert('Error: ' + err.message); }
@@ -4704,11 +5796,8 @@ window.enviarMensajePrivado = function() {
     subirArchivoStorage(chatPrivadoArchivo, `chats/${chatId}/${Date.now()}_${chatPrivadoArchivo.name}`).then(url => enviar({ url, nombre: chatPrivadoArchivo.name }));
   } else enviar(null);
 };
-</script>
-<script>
-// ================================================================
-// SERVICIOS / NECESIDADES / ORACIONES / CONSEJOS / REPORTES
-// ================================================================
+
+// SERVICIOS
 function getServiciosRef() { return db.collection('servicios'); }
 function puedeOfrecerServicio() { return tieneRol('servidor') || tieneRol('ayuda_alimentaria'); }
 function puedeGestionarServicio() { return isAdmin || tieneRol('servidor') || tieneRol('ayuda_alimentaria'); }
@@ -4725,9 +5814,7 @@ window.ofrecerServicio = function() {
   if (!nombre || !direccion || !fecha || !horario || !personas || !telefono) { alert('Completa todos los campos.'); return; }
   getServiciosRef().add({ nombre, direccion, fecha, horario, comidas: document.getElementById('servicioComidas').value, personas, telefono, lat, lng, usuario: currentUser.displayName, uid: currentUser.uid, fechaRegistro: firebase.firestore.FieldValue.serverTimestamp(), solicitantes: [] })
     .then((ref) => {
-      if (lat && lng) {
-        agregarAlMapa('servicio', ref.id, { nombre, descripcion: `${personas} personas · ${document.getElementById('servicioComidas').value}`, direccion, lat, lng, uid: currentUser.uid, autorNombre: currentUser.displayName });
-      }
+      if (lat && lng) agregarAlMapa('servicio', ref.id, { nombre, descripcion: `${personas} personas · ${document.getElementById('servicioComidas').value}`, direccion, lat, lng, uid: currentUser.uid, autorNombre: currentUser.displayName });
       alert('Servicio ofrecido.');
       ['servicioNombre','servicioDireccion','servicioFecha','servicioHorario','servicioPersonas','servicioTelefono'].forEach(id => document.getElementById(id).value = '');
     });
@@ -4744,7 +5831,7 @@ function renderServicios() {
       const fechaServicio = new Date(s.fecha + 'T' + (s.horario ? s.horario.split('-')[0].trim() : '00:00'));
       const finalizado = fechaServicio < ahora;
       html += `<div class="serv-item ${finalizado ? 'finalizado' : ''}"><strong>${s.nombre}</strong> ${finalizado ? '<span class="badge-finalizado">Finalizado</span>' : ''} <small>(${s.usuario})</small><p>${s.fecha} · ${s.horario}</p><p>${s.direccion}</p><p>${s.comidas} · ${s.personas} personas · ${s.telefono}</p>`;
-      if (s.lat && s.lng) html += `<button type="button" class="mapa-ver-btn" onclick="switchPanel('mapa'); setTimeout(()=>verEnMapa(${s.lat},${s.lng},'${s.nombre}','${(s.direccion||'').replace(/'/g,"")}'),500)"><i class="fas fa-map-marked-alt"></i> Ver en mapa</button> `;
+      if (s.lat && s.lng) html += `<button type="button" class="mapa-ver-btn" onclick="switchPanel('mapa'); setTimeout(()=>verEnMapa(${s.lat},${s.lng},'${s.nombre}','${(s.direccion||'').replace(/'/g,"")}'),500)"><i class="fas fa-map-marked-alt"></i> Ver</button> <button type="button" class="mapa-ruta-btn" onclick="switchPanel('mapa'); setTimeout(()=>{initMapboxMap(); setTimeout(()=>trazarRutaA(${s.lat},${s.lng},'${s.nombre.replace(/'/g,"")}'),800);},300)"><i class="fas fa-route"></i> Ruta</button> `;
       if (!finalizado && currentUser && currentUser.uid !== s.uid) html += `<button type="button" class="btn-primary" onclick="solicitarServicio('${s.id}')"><i class="fas fa-hand-paper"></i> Solicitar</button>`;
       if (puedeGestionarServicio()) html += `<button type="button" class="btn-danger" onclick="eliminarServicio('${s.id}')" style="margin-top:6px;font-size:11px;">Eliminar</button>`;
       html += '</div>';
@@ -4820,7 +5907,6 @@ window.publicarOracion = function() {
   if (!texto) return;
   ORACIONES.add({ uid: currentUser.uid, autorNombre: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '', texto, fecha: firebase.firestore.FieldValue.serverTimestamp(), orado: [] }).then(() => document.getElementById('oracionInput').value = '');
 };
-// MODIFICADO: orar permite visitantes
 window.orarOracion = function(id) {
   const reactorId = getReactorId();
   ORACIONES.doc(id).get().then(doc => {
@@ -4842,7 +5928,7 @@ function renderGrupos() {
     snapshot.forEach(doc => {
       const g = { id: doc.id, ...doc.data() };
       const esMiembro = g.miembros && g.miembros.includes(currentUser ? currentUser.uid : null);
-      html += `<div class="grupo-item"><div class="grupo-info"><strong>${g.nombre}</strong><small>Facilitador: ${g.facilitador}</small><br><small>Miembros: ${g.miembros ? g.miembros.length : 0}/${g.max || 15}</small>${g.ubicacion ? `<br><small><i class="fas fa-map-pin"></i> ${g.ubicacion}</small>` : ''}${g.lat && g.lng ? ` <button type="button" class="mapa-ver-btn" onclick="switchPanel('mapa'); setTimeout(()=>verEnMapa(${g.lat},${g.lng},'${g.nombre}'),500)">Ver en mapa</button>` : ''}</div><div class="grupo-actions">${esMiembro ? `<button type="button" class="btn-primary" onclick="abrirChatGrupo('${g.id}')"><i class="fas fa-comments"></i></button>` : ''}${!esMiembro && currentUser && (!g.miembros || g.miembros.length < (g.max || 15)) ? `<button type="button" class="btn-primary" onclick="unirseGrupo('${g.id}')">Unirse</button>` : ''}${isAdmin ? `<button type="button" class="btn-danger" onclick="eliminarGrupo('${g.id}')"><i class="fas fa-trash"></i></button>` : ''}</div></div>`;
+      html += `<div class="grupo-item"><div class="grupo-info"><strong>${g.nombre}</strong><small>Facilitador: ${g.facilitador}</small><br><small>Miembros: ${g.miembros ? g.miembros.length : 0}/${g.max || 15}</small>${g.ubicacion ? `<br><small><i class="fas fa-map-pin"></i> ${g.ubicacion}</small>` : ''}${g.lat && g.lng ? ` <button type="button" class="mapa-ver-btn" onclick="switchPanel('mapa'); setTimeout(()=>verEnMapa(${g.lat},${g.lng},'${g.nombre}'),500)">Ver</button> <button type="button" class="mapa-ruta-btn" onclick="switchPanel('mapa'); setTimeout(()=>{initMapboxMap(); setTimeout(()=>trazarRutaA(${g.lat},${g.lng},'${g.nombre.replace(/'/g,"")}'),800);},300)"><i class="fas fa-route"></i> Ruta</button>` : ''}</div><div class="grupo-actions">${esMiembro ? `<button type="button" class="btn-primary" onclick="abrirChatGrupo('${g.id}')"><i class="fas fa-comments"></i></button>` : ''}${!esMiembro && currentUser && (!g.miembros || g.miembros.length < (g.max || 15)) ? `<button type="button" class="btn-primary" onclick="unirseGrupo('${g.id}')">Unirse</button>` : ''}${isAdmin ? `<button type="button" class="btn-danger" onclick="eliminarGrupo('${g.id}')"><i class="fas fa-trash"></i></button>` : ''}</div></div>`;
     });
     container.innerHTML = html;
   });
@@ -4883,9 +5969,7 @@ window.crearGrupo = function() {
     miembros: [currentUser.uid], max: 15,
     fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
   }).then((ref) => {
-    if (lat && lng) {
-      agregarAlMapa('grupo', ref.id, { nombre, descripcion: `Facilitador: ${facilitador}`, direccion: ubicacion, lat, lng, uid: currentUser.uid, autorNombre: currentUser.displayName });
-    }
+    if (lat && lng) agregarAlMapa('grupo', ref.id, { nombre, descripcion: `Facilitador: ${facilitador}`, direccion: ubicacion, lat, lng, uid: currentUser.uid, autorNombre: currentUser.displayName });
     cerrarModal('grupoModal');
   });
 };
@@ -5015,9 +6099,7 @@ window.guardarEvento = function() {
   const lng = document.getElementById('eventoLng').value || '';
   const lugar = document.getElementById('eventoLugar').value.trim();
   EVENTOS.add({ titulo, fecha, hora: document.getElementById('eventoHora').value, lugar, desc: document.getElementById('eventoDesc').value.trim(), lat, lng, creadoPor: currentUser.uid, fechaCreacion: firebase.firestore.FieldValue.serverTimestamp() }).then((ref) => {
-    if (lat && lng) {
-      agregarAlMapa('evento', ref.id, { nombre: titulo, descripcion: document.getElementById('eventoDesc').value.trim(), direccion: lugar, lat, lng, uid: currentUser.uid, autorNombre: currentUser.displayName });
-    }
+    if (lat && lng) agregarAlMapa('evento', ref.id, { nombre: titulo, descripcion: document.getElementById('eventoDesc').value.trim(), direccion: lugar, lat, lng, uid: currentUser.uid, autorNombre: currentUser.displayName });
     cerrarModal('eventoModal'); renderAdminEventos();
   });
 };
@@ -5033,7 +6115,7 @@ function renderEventos() {
       const e = doc.data();
       const fechaObj = new Date(e.fecha + 'T' + (e.hora || '00:00'));
       if (fechaObj < hoy) return;
-      html += `<div class="event-card"><div class="date-badge">${e.fecha} ${e.hora || ''}</div><h5>${e.titulo}</h5>${e.lugar ? `<p><i class="fas fa-map-pin"></i> ${e.lugar}</p>` : ''}${e.desc ? `<p>${e.desc}</p>` : ''}${e.lat && e.lng ? `<button type="button" class="mapa-ver-btn" onclick="switchPanel('mapa'); setTimeout(()=>verEnMapa(${e.lat},${e.lng},'${e.titulo}','${(e.lugar||'').replace(/'/g,"")}'),500)"><i class="fas fa-map-marked-alt"></i> Ver mapa</button>` : ''}</div>`;
+      html += `<div class="event-card"><div class="date-badge">${e.fecha} ${e.hora || ''}</div><h5>${e.titulo}</h5>${e.lugar ? `<p><i class="fas fa-map-pin"></i> ${e.lugar}</p>` : ''}${e.desc ? `<p>${e.desc}</p>` : ''}${e.lat && e.lng ? `<button type="button" class="mapa-ver-btn" onclick="switchPanel('mapa'); setTimeout(()=>verEnMapa(${e.lat},${e.lng},'${e.titulo}','${(e.lugar||'').replace(/'/g,"")}'),500)"><i class="fas fa-map-marked-alt"></i> Ver</button> <button type="button" class="mapa-ruta-btn" onclick="switchPanel('mapa'); setTimeout(()=>{initMapboxMap(); setTimeout(()=>trazarRutaA(${e.lat},${e.lng},'${e.titulo.replace(/'/g,"")}'),800);},300)"><i class="fas fa-route"></i> Ruta</button>` : ''}</div>`;
     });
     container.innerHTML = html || '<p style="color:var(--text-secondary);grid-column:1/-1;text-align:center;">No hay eventos.</p>';
   });
@@ -5075,251 +6157,6 @@ function renderAdminNoticias() {
   });
 }
 
-// ================================================================
-// MAPBOX
-// ================================================================
-function cargarMapboxToken() {
-  CONFIG_MAPBOX.get().then(doc => { if (doc.exists && doc.data().token) { mapboxToken = doc.data().token; if (typeof mapboxgl !== 'undefined') mapboxgl.accessToken = mapboxToken; } });
-}
-window.guardarMapboxToken = function() {
-  if (!isSuperAdmin) return;
-  const token = document.getElementById('mapboxToken').value.trim();
-  if (!token) return;
-  CONFIG_MAPBOX.set({ token }).then(() => { mapboxToken = token; mapboxgl.accessToken = token; alert('Token guardado.'); });
-};
-
-function initMapboxPicker(containerId, searchId, latId, lngId) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-
-  if (!mapboxToken || typeof mapboxgl === 'undefined') {
-    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);font-size:13px;text-align:center;padding:12px;">⚠️ Mapa Mapbox no configurado. El SuperAdmin debe ingresar el token en Admin → Configuración Mapbox.</div>';
-    return;
-  }
-
-  if (mapboxPickers[containerId]) {
-    try { mapboxPickers[containerId].map.remove(); } catch(e) {}
-    delete mapboxPickers[containerId];
-  }
-
-  try { mapboxgl.accessToken = mapboxToken; } catch(e) {}
-
-  let map;
-  try {
-    map = new mapboxgl.Map({
-      container: containerId,
-      style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-84.0907, 9.9281],
-      zoom: 7,
-      attributionControl: true
-    });
-  } catch (e) {
-    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary);font-size:13px;padding:12px;">⚠️ No se pudo inicializar Mapbox.</div>';
-    return;
-  }
-
-  map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
-  let marker = null;
-  const picker = {
-    map,
-    getMarker: () => marker,
-    setMarker: (m) => { marker = m; },
-    searchId, latId, lngId
-  };
-  mapboxPickers[containerId] = picker;
-
-  function colocarMarcador(lat, lng, recentrar) {
-    if (marker) marker.remove();
-    marker = new mapboxgl.Marker({ color: '#1D9E75', draggable: true })
-      .setLngLat([parseFloat(lng), parseFloat(lat)])
-      .addTo(map);
-    marker.on('dragend', () => {
-      const p = marker.getLngLat();
-      const latEl = document.getElementById(latId);
-      const lngEl = document.getElementById(lngId);
-      if (latEl) latEl.value = p.lat;
-      if (lngEl) lngEl.value = p.lng;
-    });
-    const latEl = document.getElementById(latId);
-    const lngEl = document.getElementById(lngId);
-    if (latEl) latEl.value = lat;
-    if (lngEl) lngEl.value = lng;
-    if (recentrar) map.setCenter([parseFloat(lng), parseFloat(lat)]);
-  }
-
-  map.on('click', (e) => {
-    colocarMarcador(e.lngLat.lat, e.lngLat.lng, false);
-  });
-
-  const latPrev = document.getElementById(latId)?.value;
-  const lngPrev = document.getElementById(lngId)?.value;
-  if (latPrev && lngPrev) {
-    colocarMarcador(parseFloat(latPrev), parseFloat(lngPrev), true);
-    map.setZoom(14);
-  }
-
-  setTimeout(() => { try { map.resize(); } catch(e) {} }, 350);
-  setTimeout(() => { try { map.resize(); } catch(e) {} }, 800);
-}
-
-window.buscarEnMapa = function(containerId) {
-  const picker = mapboxPickers[containerId];
-  if (!picker) return;
-  const inp = document.getElementById(picker.searchId);
-  if (!inp) return;
-  const q = inp.value.trim();
-  if (!q) return;
-
-  const aplicar = (lng, lat, nombre) => {
-    if (picker.getMarker()) picker.getMarker().remove();
-    const newMarker = new mapboxgl.Marker({ color: '#1D9E75', draggable: true })
-      .setLngLat([lng, lat])
-      .addTo(picker.map);
-    newMarker.on('dragend', () => {
-      const p = newMarker.getLngLat();
-      const latEl = document.getElementById(picker.latId);
-      const lngEl = document.getElementById(picker.lngId);
-      if (latEl) latEl.value = p.lat;
-      if (lngEl) lngEl.value = p.lng;
-    });
-    picker.setMarker(newMarker);
-    const latEl = document.getElementById(picker.latId);
-    const lngEl = document.getElementById(picker.lngId);
-    if (latEl) latEl.value = lat;
-    if (lngEl) lngEl.value = lng;
-    picker.map.flyTo({ center: [lng, lat], zoom: 15 });
-  };
-
-  if (mapboxToken) {
-    fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURIComponent(q) + '.json?access_token=' + mapboxToken + '&limit=1')
-      .then(r => r.json())
-      .then(data => {
-        if (data.features && data.features.length > 0) {
-          const [lng, lat] = data.features[0].center;
-          aplicar(lng, lat, data.features[0].place_name);
-        } else {
-          fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q))
-            .then(r => r.json())
-            .then(d2 => {
-              if (d2 && d2.length > 0) {
-                aplicar(parseFloat(d2[0].lon), parseFloat(d2[0].lat), d2[0].display_name);
-              } else {
-                alert('No encontrado.');
-              }
-            })
-            .catch(() => alert('No encontrado.'));
-        }
-      })
-      .catch(() => {
-        fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q))
-          .then(r => r.json())
-          .then(d2 => {
-            if (d2 && d2.length > 0) {
-              aplicar(parseFloat(d2[0].lon), parseFloat(d2[0].lat), d2[0].display_name);
-            } else alert('No encontrado.');
-          })
-          .catch(() => alert('No encontrado.'));
-      });
-  } else {
-    fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q))
-      .then(r => r.json())
-      .then(d2 => {
-        if (d2 && d2.length > 0) {
-          aplicar(parseFloat(d2[0].lon), parseFloat(d2[0].lat), d2[0].display_name);
-        } else alert('No encontrado.');
-      })
-      .catch(() => alert('No encontrado.'));
-  }
-};
-
-window.verEnMapa = function(lat, lng, nombre, info) {
-  if (!currentUser) return;
-  if (mapboxMap && lat && lng) {
-    mapboxMap.flyTo({ center: [lng, lat], zoom: 14 });
-    new mapboxgl.Popup({ closeOnClick: true }).setLngLat([lng, lat]).setHTML(`<strong>${nombre}</strong>${info ? '<br>' + info : ''}`).addTo(mapboxMap);
-  }
-};
-function initMapboxMap() {
-  if (!currentUser || !mapboxToken || typeof mapboxgl === 'undefined') return;
-  const container = document.getElementById('mapboxMap');
-  if (!container) return;
-  let webglOK = false;
-  try { const c = document.createElement('canvas'); webglOK = !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl'))); } catch (e) { webglOK = false; }
-  if (!webglOK) { container.innerHTML = '<p style="padding:24px;text-align:center;">WebGL no disponible.</p>'; return; }
-  if (mapboxMap) { mapboxMap.remove(); mapboxMap = null; mapboxMarkers.forEach(m => m.remove()); mapboxMarkers = []; }
-  try { mapboxMap = new mapboxgl.Map({ container: 'mapboxMap', style: 'mapbox://styles/mapbox/streets-v12', center: [-84.0907, 9.9281], zoom: 7 }); } catch (e) { return; }
-  mapboxMap.addControl(new mapboxgl.NavigationControl());
-  cargarPuntosMapbox();
-}
-function cargarPuntosMapbox() {
-  if (!mapboxMap) return;
-  mapboxMarkers.forEach(m => m.remove());
-  mapboxMarkers = [];
-
-  function addMarker(lat, lng, nombre, desc, color, icon) {
-    if (!lat || !lng) return;
-    try {
-      const marker = new mapboxgl.Marker({ color })
-        .setLngLat([parseFloat(lng), parseFloat(lat)])
-        .setPopup(new mapboxgl.Popup().setHTML(`<strong>${icon} ${nombre}</strong><br>${desc || ''}`))
-        .addTo(mapboxMap);
-      mapboxMarkers.push(marker);
-    } catch(e) {}
-  }
-
-  MISIONEROS.get().then(snap => snap.forEach(doc => {
-    const m = doc.data();
-    addMarker(m.lat, m.lng, m.nombre, m.ciudad || '', '#e74c3c', '✝');
-  }));
-  IGLESIAS.get().then(snap => snap.forEach(doc => {
-    const i = doc.data();
-    addMarker(i.lat, i.lng, i.nombre, i.direccion || '', '#2ecc71', '⛪');
-  }));
-  GRUPOS.get().then(snap => snap.forEach(doc => {
-    const g = doc.data();
-    addMarker(g.lat, g.lng, g.nombre, g.ubicacion || '', '#3498db', '👥');
-  }));
-  EVENTOS.get().then(snap => snap.forEach(doc => {
-    const e = doc.data();
-    addMarker(e.lat, e.lng, e.titulo, e.lugar || '', '#9b59b6', '📅');
-  }));
-  getServiciosRef().get().then(snap => snap.forEach(doc => {
-    const s = doc.data();
-    addMarker(s.lat, s.lng, s.nombre, s.direccion || '', '#f39c12', '🍽');
-  }));
-  MAPA_COL.get().then(snap => {
-    const total = snap.size;
-    const el = document.getElementById('adminMapaCount');
-    if (el) el.textContent = total;
-  });
-}
-function renderGruposMapa() {
-  if (!currentUser) return;
-  GRUPOS.get().then(snap => {
-    const c = document.getElementById('gruposMapaList');
-    let html = '';
-    snap.forEach(doc => {
-      const g = doc.data();
-      html += `<div style="padding:4px 0;border-bottom:1px solid var(--border-color);"><strong>${g.nombre}</strong>${g.lat && g.lng ? ` <button type="button" class="mapa-ver-btn" onclick="verEnMapa(${g.lat},${g.lng},'${g.nombre}','${(g.ubicacion||'').replace(/'/g,"")}')">Ver</button>` : ''}</div>`;
-    });
-    c.innerHTML = html || '<p style="color:var(--text-secondary);">Sin grupos.</p>';
-  });
-}
-function renderMisionerosMapa() {
-  if (!currentUser) return;
-  if (listeners.misioneros) listeners.misioneros();
-  listeners.misioneros = MISIONEROS.orderBy('nombre', 'asc').onSnapshot(snap => {
-    const c = document.getElementById('misionerosMapaList');
-    if (!c) return;
-    let html = '';
-    snap.forEach(doc => {
-      const m = doc.data();
-      html += `<div style="padding:4px 0;border-bottom:1px solid var(--border-color);"><strong>${m.nombre}</strong> (${m.ciudad || ''})${m.lat && m.lng ? ` <button type="button" class="mapa-ver-btn" onclick="verEnMapa(${m.lat},${m.lng},'${m.nombre}','${(m.ciudad||'').replace(/'/g,"")}')">Ver</button>` : ''}</div>`;
-    });
-    c.innerHTML = html || '<p style="color:var(--text-secondary);">Sin misioneros.</p>';
-  });
-}
 window.abrirModalMisionero = function() {
   if (!isAdmin && !tieneRol('misionero')) { alert('Sin permiso.'); return; }
   ['misioneroNombre','misioneroCiudad','misioneroWhatsapp','misioneroDesc','misioneroLat','misioneroLng'].forEach(id => document.getElementById(id).value = '');
@@ -5336,536 +6173,15 @@ window.registrarMisionero = function() {
   const lng = document.getElementById('misioneroLng').value || '';
   if (!nombre || !ciudad) { alert('Nombre y ciudad requeridos.'); return; }
   MISIONEROS.add({ uidCreador: currentUser.uid, nombre, ciudad, whatsapp, descripcion, lat, lng, fechaRegistro: firebase.firestore.FieldValue.serverTimestamp() }).then((ref) => {
-    if (lat && lng) {
-      agregarAlMapa('misionero', ref.id, { nombre, descripcion, direccion: ciudad, lat, lng, uid: currentUser.uid, autorNombre: currentUser.displayName });
-    }
+    if (lat && lng) agregarAlMapa('misionero', ref.id, { nombre, descripcion, direccion: ciudad, lat, lng, uid: currentUser.uid, autorNombre: currentUser.displayName });
     cerrarModal('misioneroModal');
     alert('✅ Misionero registrado.');
   });
 };
 
-// ================================================================
-// NUEVO: MI UBICACIÓN EN TIEMPO REAL (botón bombilla)
-// ================================================================
-window.activarMiUbicacion = function() {
-  if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
-  const btn = document.getElementById('btnMiUbicacion');
-
-  if (miUbicacionActiva) {
-    if (miUbicacionWatchIdGlobal !== null && navigator.geolocation) {
-      navigator.geolocation.clearWatch(miUbicacionWatchIdGlobal);
-    }
-    miUbicacionWatchIdGlobal = null;
-    if (miUbicacionMarkerGlobal) { miUbicacionMarkerGlobal.remove(); miUbicacionMarkerGlobal = null; }
-    miUbicacionActiva = false;
-    if (btn) btn.classList.remove('activo');
-    return;
-  }
-
-  if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
-
-  miUbicacionActiva = true;
-  if (btn) btn.classList.add('activo');
-
-  const el = document.createElement('div');
-  el.className = 'mi-ubicacion-marker';
-  el.innerHTML = '<i class="fas fa-lightbulb"></i>';
-  el.title = 'Mi ubicación';
-
-  miUbicacionWatchIdGlobal = navigator.geolocation.watchPosition(
-    (pos) => {
-      const lat = pos.coords.latitude, lng = pos.coords.longitude;
-      if (miUbicacionMarkerGlobal) {
-        miUbicacionMarkerGlobal.setLngLat([lng, lat]);
-      } else {
-        try {
-          miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el }).setLngLat([lng, lat]).addTo(mapboxMap);
-          mapboxMap.flyTo({ center: [lng, lat], zoom: 15 });
-        } catch(e) {}
-      }
-    },
-    (err) => {
-      alert('No se pudo obtener tu ubicación: ' + (err.message || err.code));
-      miUbicacionActiva = false;
-      if (btn) btn.classList.remove('activo');
-    },
-    { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 }
-  );
-};
-
-// ESTILOS
-function cargarEstilosConfig() {
-  APP_CONFIG.get().then(doc => {
-    if (doc.exists) {
-      const data = doc.data();
-      if (data.primaryColor) aplicarColorTema(data.primaryColor);
-      if (data.animationsEnabled !== undefined) {
-        document.body.classList.toggle('animations-on', data.animationsEnabled);
-        const cb = document.getElementById('animationsToggle');
-        if (cb) cb.checked = data.animationsEnabled;
-      }
-      if (data.primaryColor) {
-        document.querySelectorAll('.theme-color-option').forEach(el => {
-          el.classList.toggle('active', el.dataset.color === data.primaryColor);
-        });
-      }
-    }
-  });
-}
-function aplicarColorTema(hex) {
-  document.documentElement.style.setProperty('--teal', hex);
-  document.documentElement.style.setProperty('--teal-dark', shadeColor(hex, -25));
-  document.documentElement.style.setProperty('--teal-light', hexToRgba(hex, 0.15));
-}
-function shadeColor(color, percent) {
-  const num = parseInt(color.replace('#',''), 16);
-  const amt = Math.round(2.55 * percent);
-  const R = Math.max(0, Math.min(255, (num >> 16) + amt));
-  const G = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
-  const B = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
-  return '#' + (0x1000000 + R*0x10000 + G*0x100 + B).toString(16).slice(1);
-}
-document.querySelectorAll('.theme-color-option').forEach(el => {
-  el.addEventListener('click', function() {
-    document.querySelectorAll('.theme-color-option').forEach(o => o.classList.remove('active'));
-    this.classList.add('active');
-  });
-});
-window.guardarEstilos = function() {
-  if (!isSuperAdmin) return;
-  const selected = document.querySelector('.theme-color-option.active');
-  const color = selected ? selected.dataset.color : '#1D9E75';
-  const animations = document.getElementById('animationsToggle').checked;
-  APP_CONFIG.set({ primaryColor: color, animationsEnabled: animations }, { merge: true }).then(() => {
-    aplicarColorTema(color);
-    document.body.classList.toggle('animations-on', animations);
-    alert('✅ Estilos guardados.');
-  });
-};
-function cargarLogoConfig() {
-  APP_CONFIG.get().then(doc => {
-    const logoEl = document.getElementById('logoIcon');
-    const previewEl = document.getElementById('logoPreview');
-    if (doc.exists && doc.data().logoUrl) {
-      if (logoEl) logoEl.innerHTML = `<img src="${doc.data().logoUrl}">`;
-      if (previewEl) previewEl.innerHTML = `<img src="${doc.data().logoUrl}" style="width:100%;height:100%;object-fit:contain;">`;
-    } else {
-      if (logoEl) logoEl.innerHTML = '<i class="fas fa-church"></i>';
-      if (previewEl) previewEl.innerHTML = '<i class="fas fa-image" style="font-size:24px;color:var(--text-secondary);"></i>';
-    }
-  }).catch(() => {
-    const logoEl = document.getElementById('logoIcon');
-    if (logoEl) logoEl.innerHTML = '<i class="fas fa-church"></i>';
-  });
-}
-window.subirLogo = function() {
-  if (!isSuperAdmin) return;
-  const f = document.getElementById('logoFileInput').files[0]; if (!f) return;
-  subirArchivoStorage(f, `logo/logo_${Date.now()}_${f.name}`).then(url => APP_CONFIG.set({ logoUrl: url }, { merge: true })).then(() => { alert('Logo actualizado.'); cargarLogoConfig(); });
-};
-window.eliminarLogo = function() { if (!isSuperAdmin) return; APP_CONFIG.set({ logoUrl: firebase.firestore.FieldValue.delete() }, { merge: true }).then(() => cargarLogoConfig()); };
-function cargarConfigMenu() {
-  APP_CONFIG.get().then(doc => {
-    if (doc.exists && doc.data().forceHamburger) {
-      document.body.classList.add('force-hamburger');
-      const cb = document.getElementById('forceHamburgerCheck');
-      if (cb) cb.checked = true;
-    }
-  });
-}
-window.guardarConfigMenu = function() {
-  if (!isSuperAdmin) return;
-  const force = document.getElementById('forceHamburgerCheck').checked;
-  APP_CONFIG.set({ forceHamburger: force }, { merge: true }).then(() => { if (force) document.body.classList.add('force-hamburger'); else document.body.classList.remove('force-hamburger'); alert('Guardado.'); });
-};
-window.guardarConfigIA = function() {
-  if (!isSuperAdmin) return;
-  CONFIG_IA.set({ apiKey: document.getElementById('openrouterKey').value.trim(), selectedModel: document.getElementById('openrouterModelSelect').value }).then(() => alert('Guardado.'));
-};
-function cargarConfigIA() {
-  CONFIG_IA.get().then(doc => {
-    if (doc.exists) {
-      const d = doc.data();
-      const k = document.getElementById('openrouterKey');
-      if (k) k.value = d.apiKey || '';
-      if (d.selectedModel) { const s = document.getElementById('openrouterModelSelect'); if (s) s.value = d.selectedModel; }
-    }
-  });
-}
-window.preguntarIA = function() {
-  const pregunta = document.getElementById('iaPregunta').value.trim(); if (!pregunta) return;
-  const chat = document.getElementById('iaChat');
-  chat.innerHTML += `<div class="msg"><strong>Tú:</strong> ${pregunta}</div>`;
-  document.getElementById('iaPregunta').value = '';
-  CONFIG_IA.get().then(doc => {
-    const config = doc.exists ? doc.data() : null;
-    const key = config ? config.apiKey : '';
-    if (!key) { chat.innerHTML += '<div class="msg">⚠️ API no configurada.</div>'; return; }
-    fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-      body: JSON.stringify({ model: config.selectedModel || 'openai/gpt-3.5-turbo', messages: [{ role: 'user', content: pregunta }], max_tokens: 700 })
-    }).then(r => r.json()).then(data => {
-      const reply = data.choices?.[0]?.message?.content || 'Sin respuesta.';
-      chat.innerHTML += `<div class="msg"><strong>Asistente:</strong> ${reply}</div>`;
-      chat.scrollTop = chat.scrollHeight;
-    });
-  });
-};
-
-// BIBLIA
-let textosBiblicos = {};
-let libroActual = '';
-let capituloActual = '';
-const libroSelect = document.getElementById('libro');
-const capituloSelect = document.getElementById('capitulo');
-const versiculoContainer = document.getElementById('versiculoContainer');
-fetch('textos-biblicos.json').then(r => r.json()).then(data => {
-  textosBiblicos = data;
-  const all = { ...textosBiblicos.antiguoTestamento, ...textosBiblicos.nuevoTestamento };
-  Object.keys(all).forEach(libro => { const o = document.createElement('option'); o.value = libro; o.textContent = libro; libroSelect.appendChild(o); });
-}).catch(() => {
-  const fallback = ['Génesis','Éxodo','Salmos','Proverbios','Mateo','Marcos','Lucas','Juan','Hechos','Romanos','Apocalipsis'];
-  fallback.forEach(l => { const o = document.createElement('option'); o.value = l; o.textContent = l; libroSelect.appendChild(o); });
-});
-libroSelect.addEventListener('change', function() { if (this.value) { libroActual = this.value; cargarCapitulos(libroActual); guardarHistorial(libroActual); } });
-capituloSelect.addEventListener('change', function() { if (this.value) { capituloActual = this.value; guardarHistorial(libroActual + ' ' + capituloActual); actualizarInfoCap(); } });
-function guardarHistorial(t) { let h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]'); if (!h.includes(t)) { h.unshift(t); if (h.length > 10) h.pop(); localStorage.setItem(STORAGE_KEYS.historialBiblia, JSON.stringify(h)); cargarHistorial(); } }
-function cargarCapitulos(libro) {
-  const test = textosBiblicos.antiguoTestamento?.[libro] ? 'antiguoTestamento' : (textosBiblicos.nuevoTestamento?.[libro] ? 'nuevoTestamento' : null);
-  if (!test) { capituloSelect.innerHTML = '<option>No disponible</option>'; return; }
-  const ruta = textosBiblicos[test][libro];
-  fetch(ruta).then(r => r.json()).then(data => {
-    capituloKeys = Object.keys(data).sort((a,b) => parseInt(a) - parseInt(b));
-    capituloSelect.innerHTML = '<option value="">Selecciona capítulo</option>';
-    capituloKeys.forEach(cap => { const o = document.createElement('option'); o.value = cap; o.textContent = 'Capítulo ' + cap; capituloSelect.appendChild(o); });
-    if (capituloKeys.length > 0) { capituloSelect.value = capituloKeys[0]; capituloActual = capituloKeys[0]; actualizarInfoCap(); }
-  });
-}
-function actualizarInfoCap() { document.getElementById('capInfo').textContent = libroActual && capituloActual ? libroActual + ' ' + capituloActual : 'Capítulo'; }
-function cargarHistorial() { const h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]'); const c = document.getElementById('historialContainer'); c.innerHTML = h.length ? h.map(t => `<span class="historial-tag">${t}</span>`).join('') : '<span style="color:var(--text-secondary);font-size:12px;">Sin búsquedas.</span>'; }
-
-// AUX
-function actualizarBotonesPorRol() {
-  const btnGrupo = document.getElementById('btnCrearGrupo');
-  const btnDiscipulado = document.getElementById('btnCrearDiscipulado');
-  const servicioForm = document.getElementById('servicioFormContainer');
-  const servicioMsg = document.getElementById('servicioMensaje');
-  const misServicios = document.getElementById('misServiciosContainer');
-  const btnRegIglesiaPanel = document.getElementById('btnRegistrarIglesiaPanel');
-  const devSubirCard = document.getElementById('devocionalSubirCard');
-  if (btnGrupo) btnGrupo.style.display = puedeCrearGrupo() ? 'inline-block' : 'none';
-  if (btnDiscipulado) btnDiscipulado.style.display = puedeCrearGrupo() ? 'inline-block' : 'none';
-  if (servicioForm && servicioMsg) {
-    if (tieneRol('servidor') || tieneRol('ayuda_alimentaria')) { servicioForm.style.display = 'block'; servicioMsg.style.display = 'none'; }
-    else { servicioForm.style.display = 'none'; servicioMsg.style.display = 'block'; }
-  }
-  if (misServicios) misServicios.style.display = currentUser ? 'block' : 'none';
-  if (btnRegIglesiaPanel) btnRegIglesiaPanel.style.display = puedeAgregarIglesia() ? 'inline-block' : 'none';
-  if (devSubirCard) devSubirCard.style.display = puedeSubirDevocional() ? 'block' : 'none';
-}
-function actualizarTabs() {
-  const tabEquipo = document.getElementById('tabChatEquipo');
-  if (tabEquipo) tabEquipo.style.display = (tieneAlgunRolApoyo() || isAdmin) ? 'inline-block' : 'none';
-}
-function cargarContadorNotificaciones() {
-  if (!currentUser) return;
-  if (listeners.notificaciones) listeners.notificaciones();
-  listeners.notificaciones = NOTIFICACIONES(currentUser.uid).where('leido', '==', false).onSnapshot(snap => {
-    const badge = document.getElementById('notifCount');
-    if (badge) { badge.textContent = snap.size; badge.style.display = snap.size > 0 ? 'flex' : 'none'; }
-  });
-}
-window.mostrarNotificaciones = function() {
-  if (!currentUser) return;
-  NOTIFICACIONES(currentUser.uid).orderBy('fecha', 'desc').limit(20).get().then(snap => {
-    if (snap.empty) { alert('Sin notificaciones.'); return; }
-    let msg = '📬\n\n';
-    snap.forEach(doc => {
-      const n = doc.data();
-      let t = '';
-      if (n.tipo === 'like') t = `${n.emisorNombre} le dio like`;
-      else if (n.tipo === 'seguidor') t = `${n.emisorNombre} te sigue`;
-      else if (n.tipo === 'mensaje_privado') t = `${n.emisorNombre}: "${n.texto}"`;
-      msg += '- ' + t + '\n';
-      doc.ref.update({ leido: true });
-    });
-    alert(msg);
-  });
-};
-
-// ================================================================
-// ADMIN: Panel con TODAS las colecciones
-// ================================================================
-function renderAdminPanel() {
-  if (!isAdmin) return;
-  cargarConfigIA();
-  cargarConfigCallMeBot();
-  if (isSuperAdmin) renderSolicitudesPassword();
-  const stats = { users:0, posts:0, iglesias:0 };
-  Promise.all([USERS.get().then(s => stats.users = s.size), POSTS.get().then(s => stats.posts = s.size), IGLESIAS.get().then(s => stats.iglesias = s.size)]).then(() => {
-    document.getElementById('statUsers').textContent = stats.users;
-    document.getElementById('statPosts').textContent = stats.posts;
-    document.getElementById('statIglesias').textContent = stats.iglesias;
-  });
-  renderAdminUsuarios();
-  renderAdminPublicaciones();
-  renderAdminGrupos();
-  renderAdminDiscipulados();
-  renderAdminOraciones();
-  renderAdminNecesidades();
-  renderAdminServicios();
-  renderAdminMisioneros();
-  renderAdminIglesias();
-  renderAdminConsejos();
-  renderAdminDevocionales();
-  renderAdminEventos();
-  renderAdminNoticias();
-  renderAdminReels();
-  renderAdminHistorias();
-  renderAdminProyectos();
-  renderAdminCarrusel();
-  renderAdminReportes();
-  renderAdminMapa();
-  renderAdminMensajes();
-}
-function renderAdminUsuarios() {
-  USERS.get().then(snapshot => {
-    const list = document.getElementById('adminUserList');
-    if (!list) return;
-    let html = '';
-    snapshot.forEach(doc => {
-      const u = doc.data();
-      const esSuper = u.email === 'salyluz@comunidad.com';
-      html += `<div class="admin-list-item"><span class="info"><strong>${u.displayName}</strong> · ${u.email}${esSuper ? ' ⭐' : ''}</span><div class="actions">${!esSuper ? `<button type="button" class="btn-primary" onclick="abrirEditarUsuario('${u.uid}')" style="font-size:10px;">Editar</button>` : ''}</div></div>`;
-    });
-    list.innerHTML = html;
-  });
-}
-function renderAdminPublicaciones() {
-  const list = document.getElementById('adminPostsList');
-  if (!list) return;
-  POSTS.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const p = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${(p.texto||'').substring(0,50)}</strong> — ${p.autorNombre}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))POSTS.doc('${doc.id}').delete().then(()=>renderAdminPublicaciones())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin publicaciones.</p>';
-  });
-}
-function renderAdminGrupos() {
-  const list = document.getElementById('adminGruposList');
-  if (!list) return;
-  GRUPOS.get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const g = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${g.nombre}</strong> — ${(g.miembros||[]).length} miembros${g.lat?' · 📍':''}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))GRUPOS.doc('${doc.id}').delete().then(()=>{eliminarDelMapa('grupo','${doc.id}');renderAdminGrupos();})" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin grupos.</p>';
-  });
-}
-function renderAdminDiscipulados() {
-  const list = document.getElementById('adminDiscipuladosList');
-  if (!list) return;
-  DISCIPULADOS.get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const d = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${d.titulo}</strong> — ${d.facilitador}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))DISCIPULADOS.doc('${doc.id}').delete().then(()=>renderAdminDiscipulados())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin discipulados.</p>';
-  });
-}
-function renderAdminOraciones() {
-  const list = document.getElementById('adminOracionesList');
-  if (!list) return;
-  ORACIONES.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const o = doc.data();
-      html += `<div class="admin-list-item"><span class="info">${(o.texto||'').substring(0,60)} — ${o.autorNombre}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))ORACIONES.doc('${doc.id}').delete().then(()=>renderAdminOraciones())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin oraciones.</p>';
-  });
-}
-function renderAdminNecesidades() {
-  const list = document.getElementById('adminNecesidadesList');
-  if (!list) return;
-  NECESIDADES.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const n = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${n.categoria}</strong> — ${(n.desc||'').substring(0,40)}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))NECESIDADES.doc('${doc.id}').delete().then(()=>renderAdminNecesidades())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin necesidades.</p>';
-  });
-}
-function renderAdminServicios() {
-  const list = document.getElementById('adminServiciosList');
-  if (!list) return;
-  getServiciosRef().orderBy('fechaRegistro', 'desc').limit(50).get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const s = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${s.nombre}</strong> — ${s.direccion}${s.lat?' · 📍':''}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))getServiciosRef().doc('${doc.id}').delete().then(()=>{eliminarDelMapa('servicio','${doc.id}');renderAdminServicios();})" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin servicios.</p>';
-  });
-}
-function renderAdminMisioneros() {
-  const list = document.getElementById('adminMisionerosList');
-  if (!list) return;
-  MISIONEROS.get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const m = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${m.nombre}</strong> — ${m.ciudad}${m.lat?' · 📍':''}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))MISIONEROS.doc('${doc.id}').delete().then(()=>{eliminarDelMapa('misionero','${doc.id}');renderAdminMisioneros();})" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin misioneros.</p>';
-  });
-}
-function renderAdminConsejos() {
-  const list = document.getElementById('adminConsejosList');
-  if (!list) return;
-  CONSEJOS.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const c = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${c.titulo}</strong> — ${c.autorNombre}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))CONSEJOS.doc('${doc.id}').delete().then(()=>renderAdminConsejos())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin consejerías.</p>';
-  });
-}
-function renderAdminReels() {
-  const list = document.getElementById('adminReelsList');
-  if (!list) return;
-  REELS.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const r = doc.data();
-      html += `<div class="admin-list-item"><span class="info">${r.autorNombre} — ${(r.desc||'').substring(0,40)}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))REELS.doc('${doc.id}').delete().then(()=>renderAdminReels())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin reels.</p>';
-  });
-}
-function renderAdminHistorias() {
-  const list = document.getElementById('adminHistoriasList');
-  if (!list) return;
-  HISTORIAS.orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
-    const ahora = Date.now();
-    let html = '';
-    snapshot.forEach(doc => {
-      const h = doc.data();
-      const activa = h.fecha && (h.fecha.seconds * 1000 + 24*60*60*1000) > ahora;
-      html += `<div class="admin-list-item"><span class="info"><strong>${h.autorNombre || 'Usuario'}</strong> — ${h.tipo || 'imagen'} ${activa ? '🟢' : '⚪'}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))HISTORIAS.doc('${doc.id}').delete().then(()=>renderAdminHistorias())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin historias.</p>';
-  });
-}
-function renderAdminProyectos() {
-  const list = document.getElementById('adminProyectosList');
-  if (!list) return;
-  PROYECTOS.orderBy('fechaCreacion', 'desc').limit(50).get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const p = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${p.nombre}</strong> — ${(p.miembros||[]).length}/${p.max||30}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))PROYECTOS.doc('${doc.id}').delete().then(()=>renderAdminProyectos())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin proyectos.</p>';
-  });
-}
-function renderAdminCarrusel() {
-  const list = document.getElementById('adminCarruselList');
-  if (!list) return;
-  CARRUSEL.orderBy('order', 'asc').get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const c = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${c.title || 'Sin título'}</strong></span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))CARRUSEL.doc('${doc.id}').delete().then(()=>renderAdminCarrusel())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin elementos.</p>';
-  });
-}
-function renderAdminReportes() {
-  const list = document.getElementById('adminReportesList');
-  if (!list) return;
-  getReportesRef().orderBy('fecha', 'desc').limit(50).get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const r = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${r.titulo}</strong> — ${r.usuario}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))getReportesRef().doc('${doc.id}').delete().then(()=>renderAdminReportes())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin reportes.</p>';
-  });
-}
-function renderAdminMapa() {
-  const list = document.getElementById('adminMapaList');
-  if (!list) return;
-  MAPA_COL.orderBy('fecha', 'desc').limit(100).get().then(snapshot => {
-    let html = '';
-    snapshot.forEach(doc => {
-      const m = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${m.tipo}</strong> — ${m.nombre} ${m.lat && m.lng ? '📍' : ''}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))MAPA_COL.doc('${doc.id}').delete().then(()=>renderAdminMapa())" style="font-size:10px;">Eliminar</button></div></div>`;
-    });
-    list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin puntos en el mapa.</p>';
-    const countEl = document.getElementById('adminMapaCount');
-    if (countEl) countEl.textContent = snapshot.size;
-  });
-}
-function renderAdminMensajes() {
-  const c1 = document.getElementById('adminChatAdminList');
-  const c2 = document.getElementById('adminChatEquipoList');
-  if (c1) {
-    CHAT_ADMIN.orderBy('timestamp', 'desc').limit(30).get().then(snapshot => {
-      let html = '';
-      snapshot.forEach(doc => {
-        const m = doc.data();
-        html += `<div class="admin-list-item"><span class="info"><strong>${m.remitente}</strong>: ${(m.texto||'').substring(0,50)}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))CHAT_ADMIN.doc('${doc.id}').delete().then(()=>renderAdminMensajes())" style="font-size:10px;">X</button></div></div>`;
-      });
-      c1.innerHTML = html || '<p style="color:var(--text-secondary);">Sin mensajes.</p>';
-    });
-  }
-  if (c2) {
-    CHAT_EQUIPO.orderBy('timestamp', 'desc').limit(30).get().then(snapshot => {
-      let html = '';
-      snapshot.forEach(doc => {
-        const m = doc.data();
-        html += `<div class="admin-list-item"><span class="info"><strong>${m.remitente}</strong>: ${(m.texto||'').substring(0,50)}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))CHAT_EQUIPO.doc('${doc.id}').delete().then(()=>renderAdminMensajes())" style="font-size:10px;">X</button></div></div>`;
-      });
-      c2.innerHTML = html || '<p style="color:var(--text-secondary);">Sin mensajes.</p>';
-    });
-  }
-}
-function renderSolicitudesPassword() {
-  if (!isSuperAdmin) return;
-  SOLICITUDES_PASSWORD.where('estado', '==', 'pendiente').get().then(snapshot => {
-    const container = document.getElementById('solicitudesPasswordList');
-    if (!container) return;
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay solicitudes.</p>'; return; }
-    let html = '';
-    snapshot.forEach(doc => { const s = doc.data(); html += `<div class="solicitud-item"><strong>${s.nombre}</strong> <button type="button" class="btn-primary" onclick="SOLICITUDES_PASSWORD.doc('${doc.id}').update({estado:'aprobado'}).then(()=>renderSolicitudesPassword())" style="font-size:10px;">Aprobar</button></div>`; });
-    container.innerHTML = html;
-  });
-}
-window.abrirMediaViewer = function(items, index, type) {
-  mediaViewerItems = items.map(u => ({ url: u, type: type || 'image' }));
-  mediaViewerIndex = index;
-  const img = document.getElementById('mediaViewerImage');
-  img.src = mediaViewerItems[mediaViewerIndex].url; img.style.display = 'block';
-  document.getElementById('mediaViewer').classList.add('show');
-};
-window.cerrarMediaViewer = function() { document.getElementById('mediaViewer').classList.remove('show'); };
-window.navegarMediaViewer = function(d) { mediaViewerIndex = (mediaViewerIndex + d + mediaViewerItems.length) % mediaViewerItems.length; document.getElementById('mediaViewerImage').src = mediaViewerItems[mediaViewerIndex].url; };
-</script>
-<script>
-// ================================================================
 // INIT
-// ================================================================
 document.addEventListener('DOMContentLoaded', function() {
   cargarLogoConfig();
-
   document.querySelectorAll('#adminTabs button').forEach(btn => {
     btn.addEventListener('click', function() {
       document.querySelectorAll('#adminTabs button').forEach(b => b.classList.remove('active'));
@@ -5875,17 +6191,13 @@ document.addEventListener('DOMContentLoaded', function() {
       if (panel) panel.classList.add('active');
     });
   });
-
   if (localStorage.getItem(STORAGE_KEYS.theme) === 'dark') {
     document.body.classList.add('dark');
     const i = document.querySelector('#tabTemaToggle i'); if (i) { i.classList.remove('fa-moon'); i.classList.add('fa-sun'); }
     const s = document.querySelector('#tabTemaToggle span'); if (s) s.textContent = ' Modo claro';
   }
-
-  // ============ LOGIN: FIX (handler único que respeta el modo actual) ============
   document.getElementById('loginBtn').addEventListener('click', function() {
     if (currentUser) { window.logoutUser(); return; }
-    // Al abrir desde el botón "Entrar", forzar modo login
     loginMode = 'login';
     document.getElementById('registerFields').style.display = 'none';
     document.getElementById('loginSubmitBtn').textContent = 'Iniciar sesión';
@@ -5902,7 +6214,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('registerFields').style.display = 'block';
     document.getElementById('loginSubmitBtn').textContent = 'Registrarse';
   });
-  // FIX: handler único en el botón Enviar (ya no depende de onclick dinámico)
   document.getElementById('loginSubmitBtn').addEventListener('click', async function() {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value.trim();
@@ -5921,20 +6232,17 @@ document.addEventListener('DOMContentLoaded', function() {
       if (ok) { cerrarModal('loginModal'); cargarLogoConfig(); }
     }
   });
-  // Enter en inputs de login
   ['loginEmail','loginPassword'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('loginSubmitBtn').click(); });
   });
   document.getElementById('loginCancelBtn').addEventListener('click', () => cerrarModal('loginModal'));
-
   document.getElementById('editarPerfilCancel').addEventListener('click', function() { window.cerrarEditarPerfilModal(); });
   document.getElementById('editarPerfilGuardar').addEventListener('click', function() { window.guardarPerfilExtendido(); });
   document.getElementById('btnCambiarPassword').addEventListener('click', function() { window.cambiarPassword(); });
   document.getElementById('btnEliminarCuenta').addEventListener('click', function() { window.eliminarCuenta(); });
   document.getElementById('editUsuarioCancel').addEventListener('click', () => cerrarModal('editarUsuarioModal'));
   document.getElementById('editUsuarioGuardar').addEventListener('click', function() { window.guardarEditarUsuario(); });
-
   document.querySelectorAll('#mainTabs .tab[data-panel]').forEach(tab => {
     tab.addEventListener('click', function() { if (this.dataset.panel) switchPanel(this.dataset.panel); document.getElementById('mainTabs').classList.remove('open'); });
   });
@@ -5942,13 +6250,11 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnIrBiblia').addEventListener('click', () => switchPanel('biblia'));
   document.getElementById('btnIrMuro').addEventListener('click', () => switchPanel('muro'));
   document.getElementById('btnIrOracion').addEventListener('click', () => switchPanel('oracion'));
-
   document.getElementById('carouselPrev').addEventListener('click', () => cambiarSlide(-1));
   document.getElementById('carouselNext').addEventListener('click', () => cambiarSlide(1));
   document.getElementById('gestionarCarruselBtn').addEventListener('click', abrirModalCarrusel);
   document.getElementById('carruselCancel').addEventListener('click', () => cerrarModal('carruselModal'));
   document.getElementById('carruselAgregar').addEventListener('click', agregarElementoCarrusel);
-
   document.getElementById('btnPublicarPost').addEventListener('click', crearPublicacion);
   document.getElementById('btnSubirFoto').addEventListener('click', () => document.getElementById('postImage').click());
   document.getElementById('btnSubirVideo').addEventListener('click', () => document.getElementById('postVideo').click());
@@ -5957,25 +6263,17 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('encuestaOpciones').style.display = this.value === 'encuesta' ? 'block' : 'none';
     document.getElementById('campaniaMonto').style.display = this.value === 'campania' ? 'block' : 'none';
   });
-
   document.getElementById('reelModalCancel').addEventListener('click', () => cerrarModal('reelModal'));
   document.getElementById('reelModalPublicar').addEventListener('click', publicarReel);
-
   document.getElementById('historiaTipo').addEventListener('change', actualizarBloquesHistoria);
   document.getElementById('historiaCancel').addEventListener('click', () => cerrarModal('historiaModal'));
   document.getElementById('historiaPublicar').addEventListener('click', publicarHistoria);
-
   document.getElementById('chatPrivadoInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') window.enviarMensajePrivado(); });
   document.getElementById('chatPrivadoFile').addEventListener('change', function() {
     const f = this.files[0]; if (!f) return;
     chatPrivadoArchivo = f;
     document.getElementById('chatPrivadoPreview').innerHTML = `<div class="chat-preview-archivo"><i class="fas fa-file"></i> <span style="flex:1;">${f.name}</span><button type="button" class="remove-x" onclick="chatPrivadoArchivo=null; document.getElementById('chatPrivadoFile').value=''; document.getElementById('chatPrivadoPreview').innerHTML='';">×</button></div>`;
   });
-
-  document.getElementById('btnCrearProyecto')?.addEventListener('click', abrirModalProyecto);
-  document.getElementById('proyectoCancel')?.addEventListener('click', () => cerrarModal('proyectoModal'));
-  document.getElementById('proyectoCrear')?.addEventListener('click', crearProyecto);
-
   document.getElementById('btnSubirDevocional').addEventListener('click', subirDevocional);
   document.getElementById('devocionalCover').addEventListener('change', function() {
     const f = this.files[0]; if (!f) return;
@@ -5986,14 +6284,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const f = this.files[0]; if (!f) return;
     document.getElementById('devocionalPreview').innerHTML = `<span class="file-preview"><i class="fas fa-file-pdf"></i> ${f.name}</span>`;
   });
-
   document.getElementById('btnCrearGrupo').addEventListener('click', abrirModalGrupo);
   document.getElementById('grupoCancel').addEventListener('click', () => cerrarModal('grupoModal'));
   document.getElementById('grupoCrear').addEventListener('click', crearGrupo);
   document.getElementById('btnCrearDiscipulado').addEventListener('click', abrirModalDiscipulado);
   document.getElementById('discCancel').addEventListener('click', () => cerrarModal('discipuladoModal'));
   document.getElementById('discCrear').addEventListener('click', crearDiscipulado);
-
   document.getElementById('btnPublicarOracion').addEventListener('click', publicarOracion);
   document.getElementById('btnPublicarNecesidad').addEventListener('click', publicarNecesidad);
   document.getElementById('btnOfrecerServicio').addEventListener('click', ofrecerServicio);
@@ -6001,19 +6297,16 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnNuevoReporte').addEventListener('click', abrirModalReporte);
   document.getElementById('reporteCancel').addEventListener('click', () => cerrarModal('reporteModal'));
   document.getElementById('reporteGuardar').addEventListener('click', guardarReporte);
-
   document.getElementById('btnEnviarChatAdmin').addEventListener('click', enviarChatAdmin);
   document.getElementById('chatAdminInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') enviarChatAdmin(); });
   document.getElementById('btnEnviarChatEquipo').addEventListener('click', enviarChatEquipo);
   document.getElementById('chatEquipoInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') enviarChatEquipo(); });
   document.getElementById('btnEnviarMensajeChat').addEventListener('click', enviarMensajeChat);
   document.getElementById('chatMensajeInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') enviarMensajeChat(); });
-
   document.getElementById('btnRegistrarIglesiaPanel')?.addEventListener('click', abrirModalIglesia);
   document.getElementById('iglesiaCancel').addEventListener('click', () => cerrarModal('iglesiaModal'));
   document.getElementById('iglesiaRegistrar').addEventListener('click', registrarIglesia);
   document.getElementById('btnBuscarIglesiaMap').addEventListener('click', () => window.buscarEnMapa('iglesiaMap'));
-
   document.getElementById('btnAgregarEvento').addEventListener('click', abrirModalEvento);
   document.getElementById('eventoCancel').addEventListener('click', () => cerrarModal('eventoModal'));
   document.getElementById('eventoGuardar').addEventListener('click', guardarEvento);
@@ -6029,7 +6322,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnGuardarCallMeBot').addEventListener('click', guardarConfigCallMeBot);
   document.getElementById('btnProbarCallMeBot').addEventListener('click', probarCallMeBot);
   document.getElementById('notifBell').addEventListener('click', mostrarNotificaciones);
-
   document.getElementById('btnPreguntarIA').addEventListener('click', preguntarIA);
   document.getElementById('iaPregunta').addEventListener('keypress', (e) => { if (e.key === 'Enter') preguntarIA(); });
   document.getElementById('btnBuscarBiblia').addEventListener('click', () => alert('Búsqueda en versión completa.'));
@@ -6039,23 +6331,21 @@ document.addEventListener('DOMContentLoaded', function() {
   renderReportes(); renderChatAdmin(); renderChatEquipo();
   renderCarrusel(); renderEventos(); renderNoticias(); renderReels();
   renderDevocionales(); renderHistorias(); renderHistoriasMuro(); renderIglesiasPanel();
+  renderWidgetPerfilRapido(); renderWidgetGrupos(); renderWidgetOracion();
+  renderWidgetEventos(); renderWidgetCumple(); renderWidgetSermones(); renderVersiculoDia();
   actualizarBotonesPorRol(); actualizarTabs();
   cargarHistorial(); cargarMapboxToken(); cargarConfigMenu(); cargarEstilosConfig(); cargarConfigCallMeBot();
 
   auth.onAuthStateChanged(async (user) => {
-    if (user) {
-      await cargarUsuarioActual(user);
-      cargarLogoConfig();
-    } else {
-      actualizarUIUsuario();
-      cargarLogoConfig();
-    }
+    if (user) { await cargarUsuarioActual(user); cargarLogoConfig(); }
+    else { actualizarUIUsuario(); cargarLogoConfig(); renderWidgetPerfilRapido(); }
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v19: fix login, orar visitantes, archivos en chat admin/equipo, leyenda y mi ubicación con bombilla en mapa.');
+  console.log('✅ SAL Y LUZ v22: widgets laterales muro, leyenda flotante sobre mapa, mi ubicación con bombilla en tiempo real, trazado de ruta.');
 });
 
+// EXPONER
 window.switchPanel = switchPanel;
 window.abrirModal = abrirModal;
 window.cerrarModal = cerrarModal;
@@ -6132,36 +6422,55 @@ window.guardarConfigCallMeBot = guardarConfigCallMeBot;
 window.probarCallMeBot = probarCallMeBot;
 window.activarMiUbicacion = activarMiUbicacion;
 window.enviarWhatsAppCallMeBot = enviarWhatsAppCallMeBot;
-window.abrirModalProyecto = function() { if (!currentUser) return; abrirModal('proyectoModal'); };
-window.crearProyecto = function() {
-  if (!currentUser) return;
-  const nombre = document.getElementById('proyectoNombre').value.trim();
-  const descripcion = document.getElementById('proyectoDesc').value.trim();
-  if (!nombre || !descripcion) return;
-  PROYECTOS.add({ nombre, descripcion, tema: document.getElementById('proyectoTema').value.trim(), max: parseInt(document.getElementById('proyectoMax').value) || 30, privado: document.getElementById('proyectoPrivado').checked, uidCreador: currentUser.uid, creadorNombre: currentUser.displayName, miembros: [currentUser.uid], fechaCreacion: firebase.firestore.FieldValue.serverTimestamp() }).then(() => { cerrarModal('proyectoModal'); renderProyectos(); });
-};
-function renderProyectos() {
-  const container = document.getElementById('proyectosContainer');
-  if (!container || !currentUser) return;
-  if (listeners.proyectos) listeners.proyectos();
-  listeners.proyectos = PROYECTOS.orderBy('fechaCreacion', 'desc').onSnapshot(snapshot => {
-    if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:20px;">No hay proyectos aún.</p>'; return; }
-    let html = '';
-    snapshot.forEach(doc => {
-      const p = { id: doc.id, ...doc.data() };
-      const soyMiembro = p.miembros && p.miembros.includes(currentUser.uid);
-      html += `<div class="proyecto-card"><h4>${p.nombre}</h4><div class="desc">${p.descripcion || ''}</div><div class="meta"><span><i class="fas fa-user"></i> ${p.creadorNombre || ''}</span><span><i class="fas fa-users"></i> ${(p.miembros||[]).length}/${p.max||30}</span></div><div class="acciones">${soyMiembro ? '<span style="color:var(--teal);font-size:12px;">✓ Miembro</span>' : `<button type="button" class="btn-primary" onclick="PROYECTOS.doc('${p.id}').get().then(d=>{const m=d.data().miembros||[];m.push('${currentUser.uid}');PROYECTOS.doc('${p.id}').update({miembros:m});})"><i class="fas fa-user-plus"></i> Unirme</button>`}</div></div>`;
-    });
-    container.innerHTML = html;
-  });
-}
-window.ORACIONES = ORACIONES;
-window.IGLESIAS = IGLESIAS;
+window.trazarRutaA = trazarRutaA;
+window.cerrarRuta = cerrarRuta;
+window.abrirRutaEnGoogleMaps = abrirRutaEnGoogleMaps;
+window.copiarVersiculoDia = copiarVersiculoDia;
+window.compartirVersiculoDia = compartirVersiculoDia;
+window.enviarSaludoCumple = enviarSaludoCumple;
+window.mostrarNotificaciones = mostrarNotificaciones;
+window.abrirModalCarrusel = abrirModalCarrusel;
+window.abrirModalGrupo = abrirModalGrupo;
+window.crearGrupo = crearGrupo;
+window.eliminarGrupo = eliminarGrupo;
+window.unirseGrupo = unirseGrupo;
+window.abrirChatGrupo = abrirChatGrupo;
+window.abrirModalDiscipulado = abrirModalDiscipulado;
+window.crearDiscipulado = crearDiscipulado;
+window.publicarOracion = publicarOracion;
+window.orarOracion = orarOracion;
+window.publicarNecesidad = publicarNecesidad;
+window.ofrecerServicio = ofrecerServicio;
+window.publicarConsejo = publicarConsejo;
+window.abrirModalReporte = abrirModalReporte;
+window.guardarReporte = guardarReporte;
+window.abrirModalEvento = abrirModalEvento;
+window.guardarEvento = guardarEvento;
+window.abrirModalNoticia = abrirModalNoticia;
+window.guardarNoticia = guardarNoticia;
+window.enviarChatAdmin = enviarChatAdmin;
+window.enviarChatEquipo = enviarChatEquipo;
+window.enviarMensajeChat = enviarMensajeChat;
+window.abrirChatPrivado = abrirChatPrivado;
+window.eliminarFotoPerfilDesdeEditar = eliminarFotoPerfilDesdeEditar;
+window.eliminarPortadaDesdeEditar = eliminarPortadaDesdeEditar;
+window.guardarEstilos = guardarEstilos;
+window.subirLogo = subirLogo;
+window.eliminarLogo = eliminarLogo;
+window.guardarConfigMenu = guardarConfigMenu;
+window.guardarConfigIA = guardarConfigIA;
+window.guardarMapboxToken = guardarMapboxToken;
+window.eliminarCuenta = eliminarCuenta;
+window.abrirEditarUsuario = abrirEditarUsuario;
+window.guardarEditarUsuario = guardarEditarUsuario;
+window.cerrarEditarPerfilModal = cerrarEditarPerfilModal;
+window.guardarPerfilExtendido = guardarPerfilExtendido;
 window.USERS = USERS;
 window.POSTS = POSTS;
-window.DEVOCIONALES = DEVOCIONALES;
 window.GRUPOS = GRUPOS;
+window.IGLESIAS = IGLESIAS;
 window.EVENTOS = EVENTOS;
+window.ORACIONES = ORACIONES;
 window.MISIONEROS = MISIONEROS;
 window.MAPA_COL = MAPA_COL;
 </script>

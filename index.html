@@ -178,13 +178,128 @@
     .search-result-info .subtitle { font-size: 11px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .search-result-type { font-size: 10px; padding: 2px 8px; border-radius: 20px; background: var(--teal-light); color: var(--teal-dark); font-weight: 600; }
 
-    /* ==================== MURO CON COLUMNAS LATERALES (NUEVO) ==================== */
+    /* ==================== MURO: PC ESTÁTICO + CENTRO SCROLL + MÓVIL PANELES ==================== */
     .muro-layout { display: grid; grid-template-columns: 1fr; gap: 20px; }
-    @media (min-width: 1100px) {
-      .muro-layout { grid-template-columns: 300px minmax(0, 1fr) 300px; }
-    }
     .muro-col-left, .muro-col-center, .muro-col-right { min-width: 0; }
-    @media (max-width: 1099px) { .muro-col-left, .muro-col-right { order: 2; } .muro-col-center { order: 1; } }
+
+    @media (min-width: 1100px) {
+      #panel-muro.active {
+        height: calc(100vh - 118px);
+        max-height: calc(100vh - 118px);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        padding: 12px 10px;
+      }
+      .muro-layout {
+        grid-template-columns: 300px minmax(0, 1fr) 300px;
+        gap: 20px;
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+        overflow: hidden;
+        align-items: stretch;
+      }
+      .muro-col-left, .muro-col-right {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 6px;
+        scrollbar-width: thin;
+        scroll-behavior: smooth;
+      }
+      .muro-col-left::-webkit-scrollbar,
+      .muro-col-right::-webkit-scrollbar { width: 6px; }
+      .muro-col-left::-webkit-scrollbar-thumb,
+      .muro-col-right::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 6px; }
+      .muro-col-center {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 6px;
+        scroll-snap-type: y proximity;
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+      }
+      .muro-col-center::-webkit-scrollbar { width: 6px; }
+      .muro-col-center::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 6px; }
+      .muro-col-center > .historias-bar-muro,
+      .muro-col-center > .muro-toolbar,
+      .muro-col-center > .muro-publish-panel {
+        scroll-snap-align: start;
+      }
+      #feedContainer > .post {
+        scroll-snap-align: start;
+      }
+    }
+
+    .muro-mobile-toolbar { display: none; }
+    .muro-overlay { display: none; }
+    @media (max-width: 1099px) {
+      .muro-mobile-toolbar {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+        justify-content: space-between;
+        position: sticky;
+        top: 54px;
+        background: var(--bg-body);
+        z-index: 50;
+        padding: 6px 0;
+      }
+      body.dark .muro-mobile-toolbar { background: #12121a; }
+      .muro-mobile-btn {
+        flex: 1;
+        background: white;
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 10px 12px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        box-shadow: var(--shadow);
+      }
+      body.dark .muro-mobile-btn { background: #1a1a2e; }
+      .muro-mobile-btn i { color: var(--teal); }
+
+      .muro-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 150;
+      }
+      .muro-overlay.show { display: block; }
+
+      .muro-col-left, .muro-col-right {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 300px;
+        max-width: 85vw;
+        background: var(--bg-body);
+        z-index: 200;
+        overflow-y: auto;
+        padding: 70px 14px 20px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.25);
+        transition: transform 0.3s ease;
+      }
+      body.dark .muro-col-left, body.dark .muro-col-right { background: #12121a; }
+      .muro-col-left { left: 0; transform: translateX(-100%); }
+      .muro-col-right { right: 0; transform: translateX(100%); }
+      .muro-col-left.abierto { transform: translateX(0); }
+      .muro-col-right.abierto { transform: translateX(0); }
+      .muro-col-center { position: relative; z-index: 1; }
+    }
+    @media (max-width: 768px) {
+      .muro-col-left, .muro-col-right { width: 88vw; max-width: 340px; }
+    }
+
     .widget { background: white; border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
     body.dark .widget { background: #1a1a2e; }
     .widget-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
@@ -756,22 +871,7 @@
     .mapa-mi-ubicacion-btn.activo { background: linear-gradient(135deg, #00C853, #00E676); box-shadow: 0 4px 14px rgba(0,200,83,0.65); }
     .mapa-mi-ubicacion-btn i { text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
 
-    .mi-ubicacion-marker {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: radial-gradient(circle, #FFEB3B 0%, #FFC107 60%, #FF9800 100%);
-      color: #fff; display: flex; align-items: center; justify-content: center;
-      font-size: 22px; border: 3px solid #fff;
-      box-shadow: 0 0 0 6px rgba(255,215,0,0.35), 0 0 22px rgba(255,200,0,0.85);
-      animation: bulbPulse 1.8s ease-in-out infinite;
-      cursor: pointer;
-    }
-    .mi-ubicacion-marker i { color: #fff; text-shadow: 0 0 6px rgba(255,255,255,0.9); }
-    @keyframes bulbPulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255,215,0,0.35), 0 0 22px rgba(255,200,0,0.85); }
-      50% { transform: scale(1.1); box-shadow: 0 0 0 14px rgba(255,215,0,0.05), 0 0 28px rgba(255,200,0,1); }
-    }
-
-    /* ============ LEYENDA FLOTANTE SOBRE EL MAPA (NUEVO) ============ */
+    /* ============ LEYENDA FLOTANTE SOBRE EL MAPA ============ */
     .mapa-leyenda-flotante {
       position: absolute; top: 14px; left: 14px; z-index: 20;
       background: rgba(255,255,255,0.96); border-radius: 12px; padding: 10px 12px;
@@ -793,7 +893,7 @@
       color: #fff; font-size: 11px; flex-shrink: 0; font-weight: 700;
     }
 
-    /* ============ PANEL DE RUTA (NUEVO) ============ */
+    /* ============ PANEL DE RUTA ============ */
     .ruta-info-panel {
       position: absolute; bottom: 20px; left: 14px; right: 14px; z-index: 20;
       background: rgba(255,255,255,0.97); border-radius: 12px; padding: 12px 40px 12px 14px;
@@ -828,6 +928,163 @@
     .chat-archivo-thumb a { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 10px; background: rgba(255,255,255,0.15); color: inherit; text-decoration: none; font-size: 12px; word-break: break-all; }
     .chat-bubble.mio .chat-archivo-thumb a { background: rgba(255,255,255,0.22); color: #fff; }
     .chat-bubble.otro .chat-archivo-thumb a { background: rgba(0,0,0,0.06); }
+
+    /* ==================== MAPA CUADRADO GRANDE ==================== */
+    #mapa3d {
+      width: 100%;
+      height: 480px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+      margin: 0 auto;
+      position: relative;
+    }
+    @media (min-width: 640px) {
+      #mapa3d {
+        max-width: 760px;
+        aspect-ratio: 1 / 1;
+        height: auto;
+        min-height: 520px;
+        max-height: 760px;
+      }
+    }
+
+    /* ==================== MARCADORES PUNTO SIMPLE (SIN IMÁGENES) ==================== */
+    .mapa-marker-dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .mapa-marker-dot:hover { transform: scale(1.35); z-index: 999; box-shadow: 0 4px 14px rgba(0,0,0,0.6); }
+    .mapa-marker-misionero { background: #e74c3c; }
+    .mapa-marker-iglesia   { background: #2ecc71; }
+    .mapa-marker-grupo     { background: #3498db; }
+    .mapa-marker-evento    { background: #9b59b6; }
+    .mapa-marker-servicio  { background: #f39c12; }
+
+    /* ==================== MI UBICACIÓN (PUNTO DORADO DIFERENTE) ==================== */
+    .mi-ubicacion-marker-dot {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #FFD700;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 6px rgba(255,215,0,0.35), 0 0 22px rgba(255,200,0,0.85);
+      cursor: pointer;
+      animation: dotPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255,215,0,0.35), 0 0 22px rgba(255,200,0,0.85); }
+      50% { transform: scale(1.15); box-shadow: 0 0 0 14px rgba(255,215,0,0.05), 0 0 28px rgba(255,200,0,1); }
+    }
+
+    /* ==================== REELS BOTONES MEJORADOS ==================== */
+    .reels-main-actions { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 28px; padding: 32px 0; flex-wrap: wrap; }
+    .reels-action-big { display: flex; flex-direction: column; align-items: center; gap: 12px; background: transparent; border: none; cursor: pointer; padding: 0; transition: transform 0.25s ease; }
+    .reels-action-big:hover { transform: translateY(-5px); }
+    .reels-action-big .icon-circle { width: 82px; height: 82px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #fff; background: linear-gradient(135deg, #1D9E75, #085041); box-shadow: 0 12px 28px rgba(29,158,117,0.5), inset 0 -5px 14px rgba(0,0,0,0.25), inset 0 5px 14px rgba(255,255,255,0.4); border: 3px solid #fff; transition: box-shadow 0.25s ease, transform 0.25s ease; position: relative; }
+    .reels-action-big:hover .icon-circle { box-shadow: 0 16px 36px rgba(29,158,117,0.75), inset 0 -5px 14px rgba(0,0,0,0.3), inset 0 5px 14px rgba(255,255,255,0.5); }
+    .reels-action-big .label { font-size: 14px; font-weight: 700; color: var(--text-primary); letter-spacing: 0.4px; }
+    .reels-action-add .icon-circle { background: linear-gradient(135deg, #D4AF37, #A67C00); box-shadow: 0 12px 28px rgba(212,175,55,0.6), inset 0 -5px 14px rgba(0,0,0,0.25), inset 0 5px 14px rgba(255,255,255,0.4); animation: add3DPulse 2.6s ease-in-out infinite; }
+    .reels-action-add:hover .icon-circle { box-shadow: 0 16px 36px rgba(212,175,55,0.85), inset 0 -5px 14px rgba(0,0,0,0.3), inset 0 5px 14px rgba(255,255,255,0.5); animation: none; }
+    @keyframes add3DPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+    /* ==================== WIDGETS DEL MURO (extendidos) ==================== */
+    .widget-mini-chat-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; cursor: pointer; border-radius: 10px; transition: 0.15s; }
+    .widget-mini-chat-item:hover { background: var(--bg-body); }
+    body.dark .widget-mini-chat-item:hover { background: #2a2a3e; }
+    .widget-mini-chat-avatar { width: 40px; height: 40px; border-radius: 50%; background-size: cover; background-position: center; background-color: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; flex-shrink: 0; position: relative; }
+    .widget-mini-chat-dot { position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; background: #2ecc71; border: 2px solid #fff; }
+    .widget-mini-chat-info { flex: 1; min-width: 0; }
+    .widget-mini-chat-name { font-size: 13px; font-weight: 600; }
+    .widget-mini-chat-preview { font-size: 11px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .widget-contacto-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; cursor: pointer; border-radius: 10px; transition: 0.15s; }
+    .widget-contacto-item:hover { background: var(--bg-body); }
+    body.dark .widget-contacto-item:hover { background: #2a2a3e; }
+    .widget-contacto-avatar { width: 36px; height: 36px; border-radius: 50%; background-size: cover; background-position: center; background-color: var(--gold); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; flex-shrink: 0; }
+    .widget-contacto-info { flex: 1; min-width: 0; }
+    .widget-contacto-name { font-size: 13px; font-weight: 600; }
+    .widget-contacto-meta { font-size: 11px; color: var(--text-secondary); }
+    .widget-guardado-item { display: flex; gap: 8px; padding: 8px 0; border-bottom: 1px dashed var(--border-color); font-size: 12px; }
+    .widget-guardado-item:last-child { border-bottom: none; }
+    .widget-guardado-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--teal-light); color: var(--teal-dark); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+    .widget-guardado-texto { flex: 1; min-width: 0; }
+    .widget-guardado-texto strong { display: block; font-size: 12px; margin-bottom: 2px; }
+    .widget-guardado-texto small { font-size: 10px; color: var(--text-secondary); }
+    .widget-ofrenda-card { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #fff; padding: 14px; border-radius: 12px; text-align: center; box-shadow: 0 6px 18px rgba(212,175,55,0.4); }
+    .widget-ofrenda-card h5 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .widget-ofrenda-card p { font-size: 11px; opacity: 0.95; margin-bottom: 10px; }
+    .widget-ofrenda-btn { background: #fff; color: var(--gold-dark); border: none; padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 12px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: transform 0.2s; }
+    .widget-ofrenda-btn:hover { transform: scale(1.06); }
+    .widget-tendencia-item { display: flex; gap: 8px; padding: 8px 0; border-bottom: 1px dashed var(--border-color); cursor: pointer; }
+    .widget-tendencia-item:last-child { border-bottom: none; }
+    .widget-tendencia-rank { font-size: 20px; font-weight: 800; color: var(--teal); width: 26px; text-align: center; flex-shrink: 0; }
+    .widget-tendencia-body { flex: 1; min-width: 0; }
+    .widget-tendencia-texto { font-size: 12px; line-height: 1.35; }
+    .widget-tendencia-meta { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
+    .widget-plan-lectura .barra { height: 10px; background: var(--border-color); border-radius: 30px; overflow: hidden; margin: 8px 0; }
+    .widget-plan-lectura .barra-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold)); border-radius: 30px; transition: width 0.6s ease; }
+    .widget-plan-lectura .dia-info { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); }
+    .widget-plan-lectura .pasaje-hoy { font-size: 13px; font-weight: 600; color: var(--teal-dark); margin-top: 4px; }
+    body.dark .widget-plan-lectura .pasaje-hoy { color: #7ee2c2; }
+    .widget-anuncio-item { background: var(--orange-light); border-left: 3px solid var(--orange); padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; font-size: 12px; }
+    body.dark .widget-anuncio-item { background: rgba(239,159,39,0.15); }
+    .widget-anuncio-item strong { display: block; margin-bottom: 3px; }
+    .widget-playlist-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; cursor: pointer; border-radius: 8px; }
+    .widget-playlist-item:hover { background: var(--bg-body); }
+    body.dark .widget-playlist-item:hover { background: #2a2a3e; }
+    .widget-playlist-icon { width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #1db954, #0d7c33); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .widget-playlist-info { flex: 1; min-width: 0; }
+    .widget-playlist-title { font-size: 12px; font-weight: 600; }
+    .widget-playlist-artist { font-size: 10px; color: var(--text-secondary); }
+    .widget-footer-links { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 8px 0; font-size: 10px; }
+    .widget-footer-links a { color: var(--text-secondary); text-decoration: none; }
+    .widget-footer-links a:hover { color: var(--teal); text-decoration: underline; }
+
+    /* ==================== PAYPAL ==================== */
+    .paypal-donar-box { background: linear-gradient(135deg, #003087, #0070ba); color: #fff; padding: 20px; border-radius: 14px; text-align: center; margin: 10px 0; }
+    .paypal-donar-box h4 { font-size: 16px; margin-bottom: 6px; }
+    .paypal-donar-box p { font-size: 12px; opacity: 0.9; margin-bottom: 12px; }
+    .paypal-donar-btn { background: #ffc439; color: #003087; border: none; padding: 10px 24px; border-radius: 30px; font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .paypal-donar-btn:hover { background: #f5b800; }
+
+    /* ==================== BOTONES WAZE Y GOOGLE MAPS EN POPUP ==================== */
+    .mapa-popup-actions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .mapa-popup-actions button {
+      border: none; padding: 5px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 4px;
+      color: #fff; transition: transform 0.15s;
+    }
+    .mapa-popup-actions button:hover { transform: scale(1.06); }
+    .mapa-popup-actions .popup-btn-ruta { background: linear-gradient(135deg, #D4AF37, #A67C00); }
+    .mapa-popup-actions .popup-btn-google { background: #4285F4; }
+    .mapa-popup-actions .popup-btn-waze { background: #33CCFF; }
+    .mapa-popup-actions .popup-btn-ver { background: #6a1b9a; }
+
+    /* ==================== SOLICITUDES PROYECTO ==================== */
+    .solicitud-proyecto-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; margin: 6px 0;
+      background: var(--bg-body); border-radius: 10px;
+      border: 1px solid var(--border-color);
+      font-size: 13px;
+    }
+    .solicitud-proyecto-item .avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--teal); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 13px; flex-shrink: 0;
+      background-size: cover; background-position: center;
+    }
+    .solicitud-proyecto-item .info { flex: 1; min-width: 0; }
+    .solicitud-proyecto-item .info .nombre { font-weight: 600; font-size: 13px; }
+    .solicitud-proyecto-item .info .fecha { font-size: 11px; color: var(--text-secondary); }
+    .solicitud-proyecto-item .acciones { display: flex; gap: 4px; flex-shrink: 0; }
+    .btn-aprobar { background: #2ecc71; color: #fff; border: none; padding: 4px 10px; border-radius: 20px; font-size: 11px; cursor: pointer; font-weight: 600; }
+    .btn-rechazar { background: #e74c3c; color: #fff; border: none; padding: 4px 10px; border-radius: 20px; font-size: 11px; cursor: pointer; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -1041,12 +1298,15 @@
     <div id="devocionalesContainer"><p style="color:var(--text-secondary); text-align:center; padding:20px;">Cargando devocionales...</p></div>
   </div>
 
-  <!-- ==================== MURO CON COLUMNAS LATERALES (ACTUALIZADO) ==================== -->
   <div class="panel" id="panel-muro">
-    <div class="muro-layout">
+    <div class="muro-mobile-toolbar">
+      <button class="muro-mobile-btn" onclick="toggleMuroCol('left')"><i class="fas fa-bars"></i> Mi Panel</button>
+      <button class="muro-mobile-btn" onclick="toggleMuroCol('right')"><i class="fas fa-info-circle"></i> Info & Anuncios</button>
+    </div>
+    <div class="muro-overlay" id="muroOverlay" onclick="cerrarMuroCols()"></div>
 
-      <!-- COLUMNA IZQUIERDA -->
-      <aside class="muro-col-left">
+    <div class="muro-layout">
+      <aside class="muro-col-left" id="muroColLeft">
         <div class="widget" id="widgetPerfilRapido">
           <div class="widget-title"><i class="fas fa-id-card"></i> Mi perfil</div>
           <div id="widgetPerfilContenido">
@@ -1061,9 +1321,24 @@
           <div class="widget-title"><i class="fas fa-users"></i> Mis Comunidades</div>
           <div id="widgetGruposLista"><p style="font-size:12px;color:var(--text-secondary);">Inicia sesión para ver tus grupos.</p></div>
         </div>
+        <div class="widget" id="widgetMiniChat">
+          <div class="widget-title"><i class="fas fa-comments"></i> Mensajería reciente</div>
+          <div id="widgetMiniChatLista"><p style="font-size:12px;color:var(--text-secondary);">Inicia sesión para ver tus chats.</p></div>
+        </div>
+        <div class="widget" id="widgetContactos">
+          <div class="widget-title"><i class="fas fa-user-friends"></i> Hermanos sugeridos</div>
+          <div id="widgetContactosLista"><p style="font-size:12px;color:var(--text-secondary);">Cargando...</p></div>
+        </div>
+        <div class="widget" id="widgetGuardados">
+          <div class="widget-title"><i class="fas fa-bookmark"></i> Mis guardados</div>
+          <div id="widgetGuardadosLista"><p style="font-size:12px;color:var(--text-secondary);">Aún no tienes guardados.</p></div>
+        </div>
+        <div class="widget" id="widgetOfrendas">
+          <div class="widget-title"><i class="fas fa-hand-holding-usd"></i> Mis ofrendas</div>
+          <div id="widgetOfrendasLista"><p style="font-size:12px;color:var(--text-secondary);">Inicia sesión para dar tu ofrenda.</p></div>
+        </div>
       </aside>
 
-      <!-- COLUMNA CENTRAL -->
       <div class="muro-col-center">
         <div class="historias-bar-muro" id="historiasBarMuro"></div>
         <div class="muro-toolbar">
@@ -1111,8 +1386,7 @@
         <div id="feedContainer"></div>
       </div>
 
-      <!-- COLUMNA DERECHA -->
-      <aside class="muro-col-right">
+      <aside class="muro-col-right" id="muroColRight">
         <div class="widget-versiculo" id="widgetVersiculoDia">
           <div class="v-texto" id="widgetVersiculoTexto">"Porque de tal manera amó Dios al mundo, que ha dado a su Hijo unigénito..."</div>
           <div class="v-cita" id="widgetVersiculoCita">— Juan 3:16</div>
@@ -1133,6 +1407,34 @@
           <div class="widget-title"><i class="fas fa-broadcast-tower"></i> Sermones y Transmisión</div>
           <div id="widgetSermonesContenido"><p style="font-size:12px;color:var(--text-secondary);">Cargando...</p></div>
         </div>
+        <div class="widget" id="widgetTestimonios">
+          <div class="widget-title"><i class="fas fa-fire"></i> Testimonios recientes</div>
+          <div id="widgetTestimoniosLista"><p style="font-size:12px;color:var(--text-secondary);">Cargando...</p></div>
+        </div>
+        <div class="widget" id="widgetTendencias">
+          <div class="widget-title"><i class="fas fa-chart-line"></i> Lo más popular</div>
+          <div id="widgetTendenciasLista"><p style="font-size:12px;color:var(--text-secondary);">Cargando...</p></div>
+        </div>
+        <div class="widget widget-plan-lectura" id="widgetPlanLectura">
+          <div class="widget-title"><i class="fas fa-book-open"></i> Plan de lectura bíblica</div>
+          <div id="widgetPlanLecturaContenido"></div>
+        </div>
+        <div class="widget" id="widgetAnuncios">
+          <div class="widget-title"><i class="fas fa-bullhorn"></i> Anuncios oficiales</div>
+          <div id="widgetAnunciosLista"><p style="font-size:12px;color:var(--text-secondary);">Cargando...</p></div>
+        </div>
+        <div class="widget" id="widgetPlaylist">
+          <div class="widget-title"><i class="fas fa-music"></i> Alabanza de la semana</div>
+          <div id="widgetPlaylistLista"></div>
+        </div>
+        <div class="widget">
+          <div class="widget-footer-links">
+            <a href="#" onclick="alert('Centro de ayuda próximamente.');return false;">Centro de ayuda</a>
+            <a href="#" onclick="alert('Reglas de la comunidad.');return false;">Reglas</a>
+            <a href="#" onclick="alert('Política de privacidad.');return false;">Privacidad</a>
+            <a href="#" onclick="alert('Contacto: info@salyluz.com');return false;">Contacto</a>
+          </div>
+        </div>
       </aside>
     </div>
   </div>
@@ -1143,8 +1445,14 @@
       <h3>Reels de la comunidad</h3>
       <p>Comparte y descubre videos cortos con la comunidad.</p>
       <div class="reels-main-actions">
-        <button class="reels-icon-btn" onclick="abrirReelsViewer()" title="Ver Reels"><i class="fas fa-play"></i></button>
-        <button class="reels-icon-btn reels-icon-add" id="btnSubirReelMain" onclick="abrirReelModal()" title="Subir Reel" style="display:none;"><i class="fas fa-plus"></i></button>
+        <button class="reels-action-big" onclick="abrirReelsViewer()" title="Ver Reels">
+          <span class="icon-circle"><i class="fas fa-play"></i></span>
+          <span class="label">Ver Reels</span>
+        </button>
+        <button class="reels-action-big reels-action-add" id="btnSubirReelMain" onclick="abrirReelModal()" title="Subir Reel" style="display:none;">
+          <span class="icon-circle"><i class="fas fa-plus"></i></span>
+          <span class="label">Subir Reel</span>
+        </button>
       </div>
     </div>
   </div>
@@ -1204,12 +1512,12 @@
       <div class="card">
         <h3><i class="fas fa-palette"></i> Leyenda de categorías del mapa</h3>
         <div class="mapa-leyenda-wrap">
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#e74c3c;">✝</span> Misioneros</span>
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#2ecc71;">⛪</span> Iglesias</span>
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#3498db;">👥</span> Grupos</span>
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#9b59b6;">📅</span> Eventos</span>
-          <span class="mapa-leyenda-item"><span class="icono" style="background:#f39c12;">🍽</span> Servicios</span>
-          <span class="mapa-leyenda-item"><span class="icono" style="background:linear-gradient(135deg,#FFD700,#FFA500);"><i class="fas fa-lightbulb" style="color:#fff;font-size:11px;"></i></span> Mi ubicación</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#e74c3c;">●</span> Misioneros</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#2ecc71;">●</span> Iglesias</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#3498db;">●</span> Grupos</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#9b59b6;">●</span> Eventos</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#f39c12;">●</span> Servicios</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#FFD700;">●</span> Mi ubicación</span>
         </div>
       </div>
       <div class="card"><h3><i class="fas fa-users"></i> Grupos de conexión con ubicación</h3><div id="gruposMapaList"></div></div>
@@ -1218,23 +1526,22 @@
         <div class="map-wrapper" id="mapa3d">
           <div id="mapboxMap" class="mapboxgl-map" style="height:100%;width:100%;"></div>
           <button type="button" class="mapa-mi-ubicacion-btn" id="btnMiUbicacion" onclick="activarMiUbicacion()" title="Mi ubicación"><i class="fas fa-lightbulb"></i></button>
-          <!-- LEYENDA FLOTANTE SOBRE EL MAPA -->
           <div class="mapa-leyenda-flotante">
             <div class="titulo"><i class="fas fa-map-pin" style="color:var(--teal);"></i> Categorías</div>
-            <div class="item"><span class="icono-mini" style="background:#e74c3c;">✝</span> Misioneros</div>
-            <div class="item"><span class="icono-mini" style="background:#2ecc71;">⛪</span> Iglesias</div>
-            <div class="item"><span class="icono-mini" style="background:#3498db;">👥</span> Grupos</div>
-            <div class="item"><span class="icono-mini" style="background:#9b59b6;">📅</span> Eventos</div>
-            <div class="item"><span class="icono-mini" style="background:#f39c12;">🍽</span> Servicios</div>
-            <div class="item"><span class="icono-mini" style="background:linear-gradient(135deg,#FFD700,#FFA500);"><i class="fas fa-lightbulb"></i></span> Mi ubicación</div>
+            <div class="item"><span class="icono-mini" style="background:#e74c3c;">●</span> Misioneros</div>
+            <div class="item"><span class="icono-mini" style="background:#2ecc71;">●</span> Iglesias</div>
+            <div class="item"><span class="icono-mini" style="background:#3498db;">●</span> Grupos</div>
+            <div class="item"><span class="icono-mini" style="background:#9b59b6;">●</span> Eventos</div>
+            <div class="item"><span class="icono-mini" style="background:#f39c12;">●</span> Servicios</div>
+            <div class="item"><span class="icono-mini" style="background:#FFD700;">●</span> Mi ubicación</div>
           </div>
-          <!-- PANEL DE RUTA -->
           <div class="ruta-info-panel" id="rutaInfoPanel">
             <button class="ruta-close" onclick="cerrarRuta()" title="Cerrar"><i class="fas fa-times"></i></button>
             <div class="ruta-titulo"><i class="fas fa-route"></i> Ruta hacia: <span id="rutaDestinoNombre">—</span></div>
             <div class="ruta-meta" id="rutaMeta">Calculando...</div>
             <div class="ruta-acciones">
-              <button onclick="abrirRutaEnGoogleMaps()"><i class="fas fa-external-link-alt"></i> Abrir en Google Maps</button>
+              <button onclick="abrirRutaEnGoogleMaps()"><i class="fas fa-external-link-alt"></i> Google Maps</button>
+              <button onclick="abrirRutaEnWaze()"><i class="fas fa-route"></i> Waze</button>
               <button class="btn-cerrar-ruta" onclick="cerrarRuta()"><i class="fas fa-times"></i> Cerrar ruta</button>
             </div>
           </div>
@@ -1521,6 +1828,31 @@
       </div>
     </div>
     <div class="config-msg" id="msgCallMeBotConfig"><p>⚠️ Solo SuperAdmin.</p></div>
+
+    <div class="card config-solo-admin" id="cardPaypalConfig">
+      <h3><i class="fab fa-paypal"></i> Configuración PayPal (Ofrendas)</h3>
+      <div class="admin-ia-config">
+        <p style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">
+          Configura PayPal para recibir ofrendas y apoyar a las familias misioneras.
+        </p>
+        <label>Client ID</label>
+        <input type="text" id="paypalClientId" placeholder="AX...">
+        <label>Secret Key</label>
+        <input type="text" id="paypalSecretKey" placeholder="EL...">
+        <label>Email PayPal</label>
+        <input type="email" id="paypalEmail" placeholder="ofrendas@salyluz.com">
+        <label>Moneda</label>
+        <select id="paypalMoneda">
+          <option value="USD">USD - Dólar</option>
+          <option value="EUR">EUR - Euro</option>
+          <option value="MXN">MXN - Peso Mexicano</option>
+          <option value="CRC">CRC - Colón Costarricense</option>
+        </select>
+        <button type="button" class="btn-primary" id="btnGuardarPaypal" style="margin-top:8px;">Guardar</button>
+        <button type="button" class="btn-outline" id="btnProbarPaypal" style="margin-top:8px;">Vista previa</button>
+      </div>
+    </div>
+    <div class="config-msg" id="msgPaypalConfig"><p>⚠️ Solo SuperAdmin.</p></div>
   </div>
 
   <div class="modal-overlay" id="loginModal">
@@ -2111,6 +2443,35 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="ofrendaModal">
+    <div class="modal-box" style="max-width:500px;">
+      <h3><i class="fas fa-hand-holding-usd"></i> Ofrendar</h3>
+      <div class="paypal-donar-box">
+        <h4><i class="fab fa-paypal"></i> Tu ofrenda bendice vidas</h4>
+        <p>Apoya la obra y a las familias misioneras</p>
+      </div>
+      <label>Monto *</label>
+      <input type="number" id="ofrendaMonto" placeholder="0.00" step="0.01" min="1">
+      <label>Método de pago</label>
+      <select id="ofrendaMetodo">
+        <option value="paypal">PayPal</option>
+        <option value="efectivo">Efectivo (registro interno)</option>
+      </select>
+      <label>Destino</label>
+      <select id="ofrendaDestino">
+        <option value="general">Obra general</option>
+        <option value="misioneros">Familias misioneras</option>
+        <option value="ayuda_social">Ayuda social</option>
+      </select>
+      <label>Nota (opcional)</label>
+      <input type="text" id="ofrendaNota" placeholder="Motivo o dedicatoria">
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" onclick="cerrarModal('ofrendaModal')">Cancelar</button>
+        <button type="button" class="btn-confirm" id="btnConfirmarOfrenda" onclick="confirmarOfrenda()"><i class="fab fa-paypal"></i> Ofrendar</button>
+      </div>
+    </div>
+  </div>
+
   <div class="story-viewer" id="storyViewer">
     <div class="story-progress-bar" id="storyProgressBar"></div>
     <div class="story-header" id="storyHeader"></div>
@@ -2212,6 +2573,7 @@ const CONFIG_IA = db.collection('config_ia').doc('config');
 const APP_CONFIG = db.collection('appConfig').doc('config');
 const CONFIG_MAPBOX = db.collection('config_mapbox').doc('config');
 const CONFIG_CALLMEBOT = db.collection('config_callmebot').doc('config');
+const CONFIG_PAYPAL = db.collection('config_paypal').doc('config');
 const EVENTOS = db.collection('eventos');
 const NOTICIAS = db.collection('noticias');
 const REELS = db.collection('reels');
@@ -2220,10 +2582,11 @@ const DEVOCIONALES = db.collection('devocionales');
 const HISTORIAS = db.collection('historias');
 const CHATS_PRIVADOS = db.collection('chats_privados');
 const PROYECTOS = db.collection('proyectos');
+const OFRENDAS = db.collection('ofrendas');
 const GALERIA_FOTOS = (uid) => USERS.doc(uid).collection('fotos');
+const GUARDADOS = (uid) => USERS.doc(uid).collection('guardados');
 const MAPA_COL = db.collection('mapa');
 
-// ESTADO GLOBAL
 let currentUser = null;
 let isAdmin = false;
 let isSuperAdmin = false;
@@ -2255,13 +2618,13 @@ let galeriaViewerIndex = 0;
 let searchDebounceTimer = null;
 let lastProfileViewed = null;
 let callmebotConfig = { enabled: false, phone: '', apikey: '' };
+let paypalConfig = { clientId: '', secretKey: '', email: '', moneda: 'USD' };
 let loginMode = 'login';
 let chatAdminArchivo = null;
 let chatEquipoArchivo = null;
 let miUbicacionWatchIdGlobal = null;
 let miUbicacionMarkerGlobal = null;
 let miUbicacionActiva = false;
-// NUEVO: ruta activa
 let rutaActiva = null;
 let miUbicacionActual = null;
 
@@ -2276,7 +2639,6 @@ let capitulosCache = {};
 let capituloKeys = [];
 const MAX_GALERIA = 100;
 
-// UTILIDADES
 function tieneRol(rol) { return currentUser && currentUser.apoyos && currentUser.apoyos.includes(rol); }
 function tieneAlgunRolApoyo() {
   const roles = ['facilitador','asistente','anfitrion','misionero','servidor','consejero','oracion','ayuda_alimentaria'];
@@ -2361,7 +2723,47 @@ window.manejarClickUserBadge = function(event) {
   verPerfil(currentUser.uid);
 };
 
-// CALLMEBOT
+window.toggleMuroCol = function(lado) {
+  const left = document.getElementById('muroColLeft');
+  const right = document.getElementById('muroColRight');
+  const overlay = document.getElementById('muroOverlay');
+  if (!left || !right || !overlay) return;
+  if (lado === 'left') {
+    if (left.classList.contains('abierto')) {
+      left.classList.remove('abierto');
+      overlay.classList.remove('show');
+    } else {
+      right.classList.remove('abierto');
+      left.classList.add('abierto');
+      overlay.classList.add('show');
+    }
+  } else {
+    if (right.classList.contains('abierto')) {
+      right.classList.remove('abierto');
+      overlay.classList.remove('show');
+    } else {
+      left.classList.remove('abierto');
+      right.classList.add('abierto');
+      overlay.classList.add('show');
+    }
+  }
+};
+window.cerrarMuroCols = function() {
+  const left = document.getElementById('muroColLeft');
+  const right = document.getElementById('muroColRight');
+  const overlay = document.getElementById('muroOverlay');
+  if (left) left.classList.remove('abierto');
+  if (right) right.classList.remove('abierto');
+  if (overlay) overlay.classList.remove('show');
+};
+
+// ==================== MARCADOR PUNTO SIMPLE (SIN IMÁGENES) ====================
+function crearMarkerElemento(tipo, iconFallback) {
+  const el = document.createElement('div');
+  el.className = 'mapa-marker-dot mapa-marker-' + (tipo || 'iglesia');
+  return el;
+}
+
 async function cargarConfigCallMeBot() {
   try {
     const doc = await CONFIG_CALLMEBOT.get();
@@ -2394,7 +2796,78 @@ window.enviarWhatsAppCallMeBot = function(mensaje) {
   fetch(url, { method: 'GET', mode: 'no-cors' }).catch(() => {});
 };
 
-// AUTENTICACIÓN
+async function cargarConfigPaypal() {
+  try {
+    const doc = await CONFIG_PAYPAL.get();
+    if (doc.exists) {
+      const d = doc.data();
+      paypalConfig = { clientId: d.clientId||'', secretKey: d.secretKey||'', email: d.email||'', moneda: d.moneda||'USD' };
+      const ci = document.getElementById('paypalClientId'); if (ci) ci.value = paypalConfig.clientId;
+      const sk = document.getElementById('paypalSecretKey'); if (sk) sk.value = paypalConfig.secretKey;
+      const em = document.getElementById('paypalEmail'); if (em) em.value = paypalConfig.email;
+      const mo = document.getElementById('paypalMoneda'); if (mo) mo.value = paypalConfig.moneda;
+    }
+  } catch(e) { console.warn('cargarConfigPaypal', e); }
+}
+window.guardarConfigPaypal = function() {
+  if (!isSuperAdmin) return;
+  const clientId = document.getElementById('paypalClientId').value.trim();
+  const secretKey = document.getElementById('paypalSecretKey').value.trim();
+  const email = document.getElementById('paypalEmail').value.trim();
+  const moneda = document.getElementById('paypalMoneda').value;
+  CONFIG_PAYPAL.set({ clientId, secretKey, email, moneda, actualizado: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true })
+    .then(() => { paypalConfig = { clientId, secretKey, email, moneda }; alert('✅ Configuración PayPal guardada.'); })
+    .catch(err => alert('Error: ' + err.message));
+};
+window.probarPaypal = function() { alert('💳 PayPal configurado para: ' + (paypalConfig.email || 'No configurado') + '\nMoneda: ' + paypalConfig.moneda); };
+window.abrirOfrendaModal = function() {
+  if (!currentUser) { alert('Inicia sesión para ofrendar.'); return; }
+  if (!paypalConfig.clientId && !paypalConfig.email) {
+    alert('El administrador aún no ha configurado PayPal. Puedes registrar tu ofrenda en efectivo.');
+  }
+  const montoEl = document.getElementById('ofrendaMonto'); if (montoEl) montoEl.value = '';
+  const notaEl = document.getElementById('ofrendaNota'); if (notaEl) notaEl.value = '';
+  abrirModal('ofrendaModal');
+};
+window.confirmarOfrenda = function() {
+  if (!currentUser) return;
+  const monto = parseFloat(document.getElementById('ofrendaMonto').value);
+  const metodo = document.getElementById('ofrendaMetodo').value;
+  const destino = document.getElementById('ofrendaDestino').value;
+  const nota = document.getElementById('ofrendaNota').value.trim();
+  if (!monto || monto <= 0) { alert('Ingresa un monto válido.'); return; }
+  OFRENDAS.add({
+    uid: currentUser.uid,
+    nombre: currentUser.displayName,
+    email: currentUser.email || '',
+    monto, metodo, destino, nota,
+    moneda: paypalConfig.moneda || 'USD',
+    estado: metodo === 'paypal' ? 'pendiente' : 'registrada',
+    fecha: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(ref => {
+    if (metodo === 'paypal' && (paypalConfig.email || paypalConfig.clientId)) {
+      const emailPaypal = paypalConfig.email || '';
+      const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(emailPaypal)}&amount=${monto}&currency_code=${paypalConfig.moneda||'USD'}&item_name=${encodeURIComponent('Ofrenda - ' + destino)}&custom=${ref.id}`;
+      window.open(url, '_blank');
+    }
+    cerrarModal('ofrendaModal');
+    alert('✅ Ofrenda registrada. ¡Dios te bendiga!');
+    renderWidgetOfrendas();
+  }).catch(err => alert('Error: ' + err.message));
+};
+window.verHistorialOfrendas = function() {
+  if (!currentUser) return;
+  OFRENDAS.where('uid', '==', currentUser.uid).orderBy('fecha', 'desc').limit(20).get().then(snap => {
+    if (snap.empty) { alert('Aún no has dado ofrendas.'); return; }
+    let msg = '💝 Mis Ofrendas:\n\n';
+    snap.forEach(doc => {
+      const o = doc.data();
+      msg += `• ${o.moneda} ${o.monto} → ${o.destino} (${o.estado})\n`;
+    });
+    alert(msg);
+  }).catch(() => alert('No se pudo cargar el historial.'));
+};
+
 window.loginUser = async function(email, password) {
   try {
     const cred = await auth.signInWithEmailAndPassword(email, password);
@@ -2486,13 +2959,13 @@ async function cargarUsuarioActual(user) {
     cargarConfigMenu();
     cargarEstilosConfig();
     cargarConfigCallMeBot();
+    cargarConfigPaypal();
     renderEventos();
     renderNoticias();
     renderReels();
     renderHistorias();
     renderHistoriasMuro();
     renderIglesiasPanel();
-    // NUEVO: iniciar widgets del muro
     renderWidgetPerfilRapido();
     renderWidgetGrupos();
     renderWidgetOracion();
@@ -2500,6 +2973,15 @@ async function cargarUsuarioActual(user) {
     renderWidgetCumple();
     renderWidgetSermones();
     renderVersiculoDia();
+    renderWidgetMiniChat();
+    renderWidgetContactos();
+    renderWidgetGuardados();
+    renderWidgetOfrendas();
+    renderWidgetTestimonios();
+    renderWidgetTendencias();
+    renderWidgetPlanLectura();
+    renderWidgetAnuncios();
+    renderWidgetPlaylist();
     if (isSuperAdmin) renderSolicitudesPassword();
   } catch (error) { console.error('Error cargando perfil:', error); }
 }
@@ -2522,6 +3004,8 @@ window.logoutUser = async function() {
     renderIglesiasPanel();
     renderWidgetPerfilRapido(); renderWidgetGrupos(); renderWidgetOracion();
     renderWidgetEventos(); renderWidgetCumple(); renderWidgetSermones(); renderVersiculoDia();
+    renderWidgetMiniChat(); renderWidgetContactos(); renderWidgetGuardados(); renderWidgetOfrendas();
+    renderWidgetTestimonios(); renderWidgetTendencias(); renderWidgetPlanLectura(); renderWidgetAnuncios(); renderWidgetPlaylist();
     actualizarBotonesPorRol(); actualizarTabs();
     if (mapboxMap) { mapboxMarkers.forEach(m => m.remove()); mapboxMarkers = []; }
     if (miUbicacionWatchId !== null && navigator.geolocation) {
@@ -2611,11 +3095,11 @@ function actualizarUIUsuario() {
   }
 
   const isConfigAllowed = isSuperAdmin;
-  ['cardLogoConfig', 'cardIAConfig', 'cardMapboxConfig', 'cardMenuConfig', 'cardEstilosConfig', 'cardCallMeBotConfig'].forEach(id => {
+  ['cardLogoConfig', 'cardIAConfig', 'cardMapboxConfig', 'cardMenuConfig', 'cardEstilosConfig', 'cardCallMeBotConfig', 'cardPaypalConfig'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = isConfigAllowed ? 'block' : 'none';
   });
-  ['msgLogoConfig', 'msgIAConfig', 'msgMapboxConfig', 'msgMenuConfig', 'msgEstilosConfig', 'msgCallMeBotConfig'].forEach(id => {
+  ['msgLogoConfig', 'msgIAConfig', 'msgMapboxConfig', 'msgMenuConfig', 'msgEstilosConfig', 'msgCallMeBotConfig', 'msgPaypalConfig'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = isConfigAllowed ? 'none' : 'block';
   });
@@ -2624,7 +3108,6 @@ function actualizarUIUsuario() {
   actualizarTabs();
 }
 
-// NAVEGACIÓN
 function switchPanel(name) {
   if (!currentUser && ['mapa', 'reportes', 'chatadmin', 'proyectos', 'admin', 'chatequipo'].includes(name)) {
     alert('Debes iniciar sesión.');
@@ -2641,12 +3124,15 @@ function switchPanel(name) {
   if (tab) tab.classList.add('active');
   const tabs = document.getElementById('mainTabs');
   if (tabs && tabs.classList.contains('open')) tabs.classList.remove('open');
+  if (typeof cerrarMuroCols === 'function') cerrarMuroCols();
 
   switch (name) {
     case 'muro':
       renderFeed(); renderHistoriasMuro();
       renderWidgetPerfilRapido(); renderWidgetGrupos(); renderWidgetOracion();
       renderWidgetEventos(); renderWidgetCumple(); renderWidgetSermones(); renderVersiculoDia();
+      renderWidgetMiniChat(); renderWidgetContactos(); renderWidgetGuardados(); renderWidgetOfrendas();
+      renderWidgetTestimonios(); renderWidgetTendencias(); renderWidgetPlanLectura(); renderWidgetAnuncios(); renderWidgetPlaylist();
       break;
     case 'reels': setTimeout(() => abrirReelsViewer(), 80); break;
     case 'proyectos': renderProyectos(); break;
@@ -2668,7 +3154,6 @@ function switchPanel(name) {
   }
 }
 
-// MENÚ
 document.getElementById('menuToggle').addEventListener('click', function(e) {
   e.stopPropagation();
   document.getElementById('mainTabs').classList.toggle('open');
@@ -2702,7 +3187,6 @@ document.getElementById('tabConvertirHamburguesa').addEventListener('click', fun
   });
 });
 
-// ==================== NUEVO: WIDGETS DEL MURO ====================
 function renderWidgetPerfilRapido() {
   const cont = document.getElementById('widgetPerfilContenido');
   if (!cont) return;
@@ -2885,7 +3369,432 @@ window.compartirVersiculoDia = function() {
   }).then(() => { alert('✅ Compartido en el muro.'); switchPanel('muro'); });
 };
 
-// ==================== CARRUSEL ====================
+function renderWidgetMiniChat() {
+  const cont = document.getElementById('widgetMiniChatLista');
+  if (!cont) return;
+  if (!currentUser) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Inicia sesión para ver tus chats.</p>'; return; }
+  if (listeners.widgetMiniChat) listeners.widgetMiniChat();
+  listeners.widgetMiniChat = CHATS_PRIVADOS.where('participantes', 'array-contains', currentUser.uid).limit(10).onSnapshot(async snap => {
+    const chats = [];
+    snap.forEach(doc => chats.push({ id: doc.id, ...doc.data() }));
+    chats.sort((a,b) => (b.ultimaActividad?.seconds||0) - (a.ultimaActividad?.seconds||0));
+    const top3 = chats.slice(0, 3);
+    if (top3.length === 0) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Sin conversaciones.</p>'; return; }
+    let html = '';
+    for (const chat of top3) {
+      const otroUid = (chat.participantes || []).find(u => u !== currentUser.uid);
+      if (!otroUid) continue;
+      try {
+        const udoc = await USERS.doc(otroUid).get();
+        if (!udoc.exists) continue;
+        const u = udoc.data();
+        const foto = u.fotoPerfil || '';
+        html += `<div class="widget-mini-chat-item" onclick="abrirChatPrivado('${otroUid}')">
+          <div class="widget-mini-chat-avatar" style="background-image:url('${foto}');">
+            ${foto ? '' : (u.displayName||'?').charAt(0).toUpperCase()}
+            <span class="widget-mini-chat-dot"></span>
+          </div>
+          <div class="widget-mini-chat-info">
+            <div class="widget-mini-chat-name">${u.displayName || 'Usuario'}</div>
+            <div class="widget-mini-chat-preview">Toca para abrir</div>
+          </div>
+          <i class="fas fa-chevron-right" style="color:var(--text-secondary);font-size:11px;"></i>
+        </div>`;
+      } catch(e) {}
+    }
+    cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">Sin conversaciones.</p>';
+  });
+}
+function renderWidgetContactos() {
+  const cont = document.getElementById('widgetContactosLista');
+  if (!cont) return;
+  USERS.limit(10).get().then(snap => {
+    let html = '';
+    let count = 0;
+    snap.forEach(doc => {
+      if (count >= 3) return;
+      if (currentUser && doc.id === currentUser.uid) return;
+      const u = doc.data();
+      const foto = u.fotoPerfil || '';
+      html += `<div class="widget-contacto-item" onclick="verPerfil('${doc.id}')">
+        <div class="widget-contacto-avatar" style="background-image:url('${foto}');">
+          ${foto ? '' : (u.displayName||'?').charAt(0).toUpperCase()}
+        </div>
+        <div class="widget-contacto-info">
+          <div class="widget-contacto-name">${u.displayName || 'Usuario'}</div>
+          <div class="widget-contacto-meta">${u.iglesia || 'Comunidad'}</div>
+        </div>
+        <i class="fas fa-user-plus" style="color:var(--teal);font-size:12px;"></i>
+      </div>`;
+      count++;
+    });
+    html += `<button type="button" class="widget-oracion-btn" style="margin-top:8px;" onclick="verDirectorioCompleto()"><i class="fas fa-users"></i> Ver todos</button>`;
+    cont.innerHTML = html;
+  });
+}
+window.verDirectorioCompleto = function() {
+  document.getElementById('userListTitle').textContent = 'Directorio de Hermanos';
+  const cont = document.getElementById('userListContent');
+  cont.innerHTML = '<p style="text-align:center;">Cargando...</p>';
+  abrirModal('userListModal');
+  USERS.limit(50).get().then(async snap => {
+    const uids = []; snap.forEach(d => { if (!currentUser || d.id !== currentUser.uid) uids.push(d.id); });
+    await renderUserList(uids, cont);
+  });
+};
+function renderWidgetGuardados() {
+  const cont = document.getElementById('widgetGuardadosLista');
+  if (!cont) return;
+  if (!currentUser) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Inicia sesión para ver tus guardados.</p>'; return; }
+  GUARDADOS(currentUser.uid).orderBy('fecha', 'desc').limit(3).get().then(snap => {
+    if (snap.empty) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Aún no tienes guardados.</p>'; return; }
+    let html = '';
+    snap.forEach(doc => {
+      const g = doc.data();
+      html += `<div class="widget-guardado-item">
+        <div class="widget-guardado-icon"><i class="fas ${g.icono || 'fa-bookmark'}"></i></div>
+        <div class="widget-guardado-texto">
+          <strong>${g.titulo || 'Guardado'}</strong>
+          <small>${g.tipo || ''}</small>
+        </div>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  }).catch(() => {
+    cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Aún no tienes guardados.</p>';
+  });
+}
+function renderWidgetOfrendas() {
+  const cont = document.getElementById('widgetOfrendasLista');
+  if (!cont) return;
+  if (!currentUser) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Inicia sesión para dar tu ofrenda.</p>'; return; }
+  cont.innerHTML = `
+    <div class="widget-ofrenda-card">
+      <h5><i class="fas fa-hand-holding-heart"></i> Dar ofrenda</h5>
+      <p>Apoya la obra y a las familias misioneras</p>
+      <button type="button" class="widget-ofrenda-btn" onclick="abrirOfrendaModal()"><i class="fab fa-paypal"></i> Ofrendar</button>
+    </div>
+    <button type="button" class="widget-oracion-btn" style="margin-top:8px;" onclick="verHistorialOfrendas()"><i class="fas fa-history"></i> Mis ofrendas</button>
+  `;
+}
+function renderWidgetTestimonios() {
+  const cont = document.getElementById('widgetTestimoniosLista');
+  if (!cont) return;
+  if (listeners.widgetTestimonios) listeners.widgetTestimonios();
+  listeners.widgetTestimonios = POSTS.where('categoria', '==', 'testimonio').limit(15).onSnapshot(snap => {
+    const posts = [];
+    snap.forEach(doc => posts.push({ id: doc.id, ...doc.data() }));
+    posts.sort((a,b) => (b.fecha?.seconds||0) - (a.fecha?.seconds||0));
+    const top3 = posts.slice(0, 3);
+    if (top3.length === 0) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Sin testimonios aún.</p>'; return; }
+    let html = '';
+    top3.forEach(p => {
+      html += `<div class="widget-oracion-item" onclick="switchPanel('muro')" style="cursor:pointer;">
+        <div class="widget-oracion-autor">${p.autorNombre || ''}</div>
+        <div class="widget-oracion-texto">${(p.texto||'').substring(0, 110)}${(p.texto||'').length > 110 ? '...' : ''}</div>
+        <div style="font-size:10px;color:var(--text-secondary);"><i class="fas fa-heart"></i> ${(p.likes||[]).length} · <i class="fas fa-pray"></i> ${(p.orando||[]).length}</div>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  });
+}
+function renderWidgetTendencias() {
+  const cont = document.getElementById('widgetTendenciasLista');
+  if (!cont) return;
+  if (listeners.widgetTendencias) listeners.widgetTendencias();
+  listeners.widgetTendencias = POSTS.orderBy('fecha', 'desc').limit(50).onSnapshot(snap => {
+    const posts = [];
+    snap.forEach(doc => {
+      const p = { id: doc.id, ...doc.data() };
+      const score = (p.likes||[]).length * 2 + (p.orando||[]).length * 2 + (p.comentarios||[]).length * 3 + (p.compartidos||0);
+      p._score = score;
+      posts.push(p);
+    });
+    posts.sort((a,b) => b._score - a._score);
+    const top3 = posts.slice(0, 3).filter(p => p._score > 0);
+    if (top3.length === 0) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Sin tendencias aún.</p>'; return; }
+    let html = '';
+    top3.forEach((p, i) => {
+      html += `<div class="widget-tendencia-item" onclick="switchPanel('muro')">
+        <div class="widget-tendencia-rank">${i+1}</div>
+        <div class="widget-tendencia-body">
+          <div class="widget-tendencia-texto">${(p.texto||'').substring(0, 80)}${(p.texto||'').length > 80 ? '...' : ''}</div>
+          <div class="widget-tendencia-meta">${p.autorNombre || ''} · ${p._score} interacciones</div>
+        </div>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  });
+}
+function renderWidgetPlanLectura() {
+  const cont = document.getElementById('widgetPlanLecturaContenido');
+  if (!cont) return;
+  const inicio = new Date(new Date().getFullYear(), 0, 1);
+  const hoy = new Date();
+  const diasTranscurridos = Math.floor((hoy - inicio) / (1000*60*60*24)) + 1;
+  const dia = Math.min(Math.max(diasTranscurridos, 1), 365);
+  const pct = Math.round((dia/365)*100);
+  const pasajes = ['Génesis 1','Salmos 23','Proverbios 3','Mateo 5','Juan 3','Romanos 8','Filipenses 4','Salmos 91','Isaías 40','Josué 1'];
+  const pasajeHoy = pasajes[dia % pasajes.length];
+  cont.innerHTML = `
+    <div class="barra"><div class="barra-fill" style="width:${pct}%;"></div></div>
+    <div class="dia-info"><span>Día ${dia} de 365</span><span>${pct}%</span></div>
+    <div class="pasaje-hoy"><i class="fas fa-book-open" style="color:var(--teal);"></i> Hoy: ${pasajeHoy}</div>
+    <button type="button" class="widget-oracion-btn" style="margin-top:8px;" onclick="switchPanel('biblia')"><i class="fas fa-book-bible"></i> Leer ahora</button>
+  `;
+}
+function renderWidgetAnuncios() {
+  const cont = document.getElementById('widgetAnunciosLista');
+  if (!cont) return;
+  if (listeners.widgetAnuncios) listeners.widgetAnuncios();
+  listeners.widgetAnuncios = NOTICIAS.orderBy('fecha', 'desc').limit(3).onSnapshot(snap => {
+    if (snap.empty) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Sin anuncios.</p>'; return; }
+    let html = '';
+    snap.forEach(doc => {
+      const n = doc.data();
+      html += `<div class="widget-anuncio-item">
+        <strong><i class="fas fa-bullhorn"></i> ${n.titulo}</strong>
+        ${n.desc ? `<div>${n.desc}</div>` : ''}
+      </div>`;
+    });
+    cont.innerHTML = html;
+  });
+}
+function renderWidgetPlaylist() {
+  const cont = document.getElementById('widgetPlaylistLista');
+  if (!cont) return;
+  const canciones = [
+    { titulo: 'Grande es tu amor', artista: 'Alabanza Sal y Luz' },
+    { titulo: 'Santo, Santo, Santo', artista: 'Himnos Clásicos' },
+    { titulo: 'Tu fidelidad', artista: 'Adoración' }
+  ];
+  let html = '';
+  canciones.forEach(c => {
+    html += `<div class="widget-playlist-item" onclick="alert('🎵 Reproducir: ${c.titulo}')">
+      <div class="widget-playlist-icon"><i class="fas fa-play"></i></div>
+      <div class="widget-playlist-info">
+        <div class="widget-playlist-title">${c.titulo}</div>
+        <div class="widget-playlist-artist">${c.artista}</div>
+      </div>
+    </div>`;
+  });
+  cont.innerHTML = html;
+}
+
+// ==================== PROYECTOS ====================
+function renderProyectos() {
+  if (listeners.proyectos) listeners.proyectos();
+  const container = document.getElementById('proyectosContainer');
+  if (!container) return;
+  listeners.proyectos = PROYECTOS.orderBy('fechaCreacion', 'desc').onSnapshot(snapshot => {
+    if (snapshot.empty) {
+      container.innerHTML = '<div class="card" style="text-align:center;padding:30px;"><i class="fas fa-project-diagram" style="font-size:48px;color:var(--teal);margin-bottom:12px;display:block;"></i><h3 style="justify-content:center;">No hay proyectos aún</h3><p style="color:var(--text-secondary);">Sé el primero en crear uno.</p></div>';
+      return;
+    }
+    let html = '';
+    snapshot.forEach(doc => {
+      const p = { id: doc.id, ...doc.data() };
+      const esMiembro = p.miembros && currentUser && p.miembros.includes(currentUser.uid);
+      const esCreador = currentUser && p.uidCreador === currentUser.uid;
+      const solicitudes = p.solicitudes || [];
+      const yaSolicito = currentUser && solicitudes.some(s => s.uid === currentUser.uid && s.estado === 'pendiente');
+      const miembrosCount = (p.miembros || []).length;
+      const maxMiembros = p.max || 30;
+      const lleno = miembrosCount >= maxMiembros;
+      const solicitudesPendientes = esCreador ? solicitudes.filter(s => s.estado === 'pendiente') : [];
+
+      html += `<div class="proyecto-card">
+        <h4>${p.nombre} ${p.privado ? '<i class="fas fa-lock" style="font-size:12px;color:var(--text-secondary);" title="Privado"></i>' : '<i class="fas fa-globe" style="font-size:12px;color:var(--teal);" title="Público"></i>'}</h4>
+        <div class="desc">${p.desc || ''}</div>
+        ${p.tema ? `<div class="meta"><span><i class="fas fa-tag"></i> ${p.tema}</span></div>` : ''}
+        <div class="meta">
+          <span><i class="fas fa-users"></i> ${miembrosCount}/${maxMiembros} miembros</span>
+          <span><i class="fas fa-user"></i> ${p.autorNombre || ''}</span>
+        </div>`;
+
+      if (solicitudesPendientes.length > 0) {
+        html += `<div style="margin-top:10px; padding:10px; background:var(--gold-light); border-radius:10px; border-left:3px solid var(--gold);">
+          <div style="font-weight:600; font-size:13px; margin-bottom:6px;"><i class="fas fa-user-clock"></i> Solicitudes pendientes (${solicitudesPendientes.length})</div>`;
+        solicitudesPendientes.forEach(s => {
+          const foto = s.fotoPerfil || '';
+          html += `<div class="solicitud-proyecto-item">
+            <div class="avatar" style="${foto ? `background-image:url('${foto}');background-size:cover;background-position:center;` : ''}">${foto ? '' : (s.nombre||'?').charAt(0).toUpperCase()}</div>
+            <div class="info">
+              <div class="nombre">${s.nombre || 'Usuario'}</div>
+              <div class="fecha">${s.fecha ? new Date(s.fecha.seconds ? s.fecha.seconds * 1000 : s.fecha).toLocaleString() : ''}</div>
+            </div>
+            <div class="acciones">
+              <button type="button" class="btn-aprobar" onclick="aprobarSolicitudProyecto('${doc.id}','${s.uid}')"><i class="fas fa-check"></i></button>
+              <button type="button" class="btn-rechazar" onclick="rechazarSolicitudProyecto('${doc.id}','${s.uid}')"><i class="fas fa-times"></i></button>
+            </div>
+          </div>`;
+        });
+        html += `</div>`;
+      }
+
+      html += `<div class="acciones">`;
+      if (!esMiembro && currentUser && !esCreador) {
+        if (lleno) {
+          html += `<span style="font-size:12px;color:var(--text-secondary);">Proyecto lleno</span>`;
+        } else if (p.privado) {
+          if (yaSolicito) {
+            html += `<button type="button" class="btn-outline" disabled style="opacity:0.7;cursor:default;"><i class="fas fa-clock"></i> Solicitud pendiente</button>`;
+          } else {
+            html += `<button type="button" class="btn-gold" onclick="solicitarUnirseProyecto('${doc.id}')"><i class="fas fa-paper-plane"></i> Solicitar unirse</button>`;
+          }
+        } else {
+          html += `<button type="button" class="btn-primary" onclick="unirseProyecto('${doc.id}')"><i class="fas fa-plus"></i> Unirme</button>`;
+        }
+      }
+      if (esMiembro && !esCreador) {
+        html += `<button type="button" class="btn-outline" onclick="salirProyecto('${doc.id}')"><i class="fas fa-sign-out-alt"></i> Salir</button>`;
+      }
+      if (esCreador) {
+        html += `<span style="font-size:12px;color:var(--teal);font-weight:600;padding:6px 10px;"><i class="fas fa-crown"></i> Eres el creador</span>`;
+      }
+      if (esCreador || isAdmin) {
+        html += `<button type="button" class="btn-danger" onclick="eliminarProyecto('${doc.id}')"><i class="fas fa-trash"></i></button>`;
+      }
+      html += `</div></div>`;
+    });
+    container.innerHTML = html;
+  });
+}
+window.abrirModalProyecto = function() {
+  if (!currentUser) { alert('Inicia sesión para crear un proyecto.'); return; }
+  ['proyectoNombre','proyectoDesc','proyectoTema'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const maxEl = document.getElementById('proyectoMax'); if (maxEl) maxEl.value = 30;
+  const privEl = document.getElementById('proyectoPrivado'); if (privEl) privEl.checked = false;
+  abrirModal('proyectoModal');
+};
+window.crearProyecto = function() {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const nombre = document.getElementById('proyectoNombre').value.trim();
+  const desc = document.getElementById('proyectoDesc').value.trim();
+  if (!nombre || !desc) { alert('Nombre y descripción son requeridos.'); return; }
+  const tema = document.getElementById('proyectoTema').value.trim();
+  const max = parseInt(document.getElementById('proyectoMax').value) || 30;
+  const privado = document.getElementById('proyectoPrivado').checked;
+  PROYECTOS.add({
+    uidCreador: currentUser.uid,
+    autorNombre: currentUser.displayName,
+    autorFoto: currentUser.fotoPerfil || '',
+    nombre, desc, tema, max, privado,
+    miembros: [currentUser.uid],
+    solicitudes: [],
+    fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    cerrarModal('proyectoModal');
+    alert('✅ Proyecto creado.');
+  }).catch(err => alert('Error: ' + err.message));
+};
+window.unirseProyecto = function(id) {
+  if (!currentUser) return;
+  PROYECTOS.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const p = doc.data();
+    const m = p.miembros || [];
+    if (m.includes(currentUser.uid)) return;
+    if (m.length >= (p.max || 30)) { alert('Proyecto lleno.'); return; }
+    if (p.privado) { alert('Este proyecto es privado. Envía una solicitud.'); return; }
+    m.push(currentUser.uid);
+    PROYECTOS.doc(id).update({ miembros: m });
+  });
+};
+window.solicitarUnirseProyecto = function(id) {
+  if (!currentUser) { alert('Inicia sesión.'); return; }
+  PROYECTOS.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const p = doc.data();
+    const m = p.miembros || [];
+    if (m.includes(currentUser.uid)) { alert('Ya eres miembro.'); return; }
+    if (m.length >= (p.max || 30)) { alert('Proyecto lleno.'); return; }
+    const solicitudes = p.solicitudes || [];
+    if (solicitudes.some(s => s.uid === currentUser.uid && s.estado === 'pendiente')) {
+      alert('Ya enviaste una solicitud. Espera la aprobación.'); return;
+    }
+    const filtradas = solicitudes.filter(s => s.uid !== currentUser.uid);
+    filtradas.push({
+      uid: currentUser.uid,
+      nombre: currentUser.displayName,
+      fotoPerfil: currentUser.fotoPerfil || '',
+      estado: 'pendiente',
+      fecha: new Date().toISOString()
+    });
+    PROYECTOS.doc(id).update({ solicitudes: filtradas }).then(() => {
+      if (p.uidCreador) {
+        NOTIFICACIONES(p.uidCreador).add({
+          tipo: 'solicitud_proyecto',
+          emisorUid: currentUser.uid,
+          emisorNombre: currentUser.displayName,
+          texto: `quiere unirse a tu proyecto "${p.nombre}"`,
+          proyectoId: id,
+          leido: false,
+          fecha: firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(()=>{});
+      }
+      alert('✅ Solicitud enviada. El creador del proyecto la revisará.');
+    });
+  });
+};
+window.aprobarSolicitudProyecto = function(proyectoId, uidSolicitante) {
+  if (!currentUser) return;
+  PROYECTOS.doc(proyectoId).get().then(doc => {
+    if (!doc.exists) return;
+    const p = doc.data();
+    if (p.uidCreador !== currentUser.uid && !isAdmin) { alert('Sin permiso.'); return; }
+    const m = p.miembros || [];
+    if (m.includes(uidSolicitante)) return;
+    if (m.length >= (p.max || 30)) { alert('Proyecto lleno. No se puede aprobar.'); return; }
+    m.push(uidSolicitante);
+    const solicitudes = (p.solicitudes || []).filter(s => s.uid !== uidSolicitante);
+    PROYECTOS.doc(proyectoId).update({ miembros: m, solicitudes }).then(() => {
+      NOTIFICACIONES(uidSolicitante).add({
+        tipo: 'solicitud_proyecto_aprobada',
+        emisorUid: currentUser.uid,
+        emisorNombre: currentUser.displayName,
+        texto: `aprobó tu solicitud para unirte al proyecto "${p.nombre}"`,
+        proyectoId,
+        leido: false,
+        fecha: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(()=>{});
+      alert('✅ Solicitud aprobada.');
+    });
+  });
+};
+window.rechazarSolicitudProyecto = function(proyectoId, uidSolicitante) {
+  if (!currentUser) return;
+  if (!confirm('¿Rechazar esta solicitud?')) return;
+  PROYECTOS.doc(proyectoId).get().then(doc => {
+    if (!doc.exists) return;
+    const p = doc.data();
+    if (p.uidCreador !== currentUser.uid && !isAdmin) { alert('Sin permiso.'); return; }
+    const solicitudes = (p.solicitudes || []).filter(s => s.uid !== uidSolicitante);
+    PROYECTOS.doc(proyectoId).update({ solicitudes }).then(() => {
+      NOTIFICACIONES(uidSolicitante).add({
+        tipo: 'solicitud_proyecto_rechazada',
+        emisorUid: currentUser.uid,
+        emisorNombre: currentUser.displayName,
+        texto: `rechazó tu solicitud para unirte al proyecto "${p.nombre}"`,
+        leido: false,
+        fecha: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(()=>{});
+    });
+  });
+};
+window.salirProyecto = function(id) {
+  if (!currentUser) return;
+  PROYECTOS.doc(id).get().then(doc => {
+    if (!doc.exists) return;
+    const m = (doc.data().miembros || []).filter(u => u !== currentUser.uid);
+    PROYECTOS.doc(id).update({ miembros: m });
+  });
+};
+window.eliminarProyecto = function(id) {
+  if (!confirm('¿Eliminar proyecto?')) return;
+  PROYECTOS.doc(id).delete();
+};
+
 function renderCarrusel() {
   if (listeners.carrusel) listeners.carrusel();
   listeners.carrusel = CARRUSEL.orderBy('order', 'asc').onSnapshot(snapshot => {
@@ -2943,7 +3852,6 @@ function agregarElementoCarrusel() {
 }
 function eliminarElementoCarrusel(id) { if (!isAdmin) return; if (!confirm('¿Eliminar?')) return; CARRUSEL.doc(id).delete().then(() => renderListaCarrusel()); }
 
-// HISTORIAS
 function puedeVerHistoria(h, misSeguidos) {
   if (!h) return false;
   if (currentUser && h.uid === currentUser.uid) return true;
@@ -3333,7 +4241,6 @@ function eliminarHistoriaActual() {
   });
 }
 
-// BUSCADOR
 const searchInput = document.getElementById('searchGeneralInput');
 const searchResults = document.getElementById('searchGeneralResults');
 const searchClear = document.getElementById('searchGeneralClear');
@@ -3417,7 +4324,6 @@ function cerrarBusquedaGeneral() {
   if (searchClear) searchClear.style.display = 'none';
 }
 
-// MURO
 document.getElementById('muroPublishToggle').addEventListener('click', function() {
   const panel = document.getElementById('muroPublishPanel');
   panel.classList.toggle('show');
@@ -3591,7 +4497,6 @@ function donarCampania(postId) {
   });
 }
 
-// REELS
 function abrirReelModal() {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   document.getElementById('reelFile').value = '';
@@ -4257,13 +5162,38 @@ window.buscarEnMapa = function(containerId) {
 };
 window.verEnMapa = function(lat, lng, nombre, info) {
   if (!currentUser) return;
-  if (mapboxMap && lat && lng) {
-    mapboxMap.flyTo({ center: [lng, lat], zoom: 14 });
-    new mapboxgl.Popup({ closeOnClick: true }).setLngLat([lng, lat])
-      .setHTML(`<strong>${nombre}</strong>${info ? '<br>' + info : ''}<br><button onclick="trazarRutaA(${lat},${lng},'${(nombre||'').replace(/'/g,"")}')" style="margin-top:6px;background:#D4AF37;color:#fff;border:none;padding:4px 10px;border-radius:20px;font-size:11px;cursor:pointer;">🛣 Trazar ruta</button>`)
+  const latN = parseFloat(lat), lngN = parseFloat(lng);
+  if (isNaN(latN) || isNaN(lngN)) return;
+  if (mapboxMap) {
+    mapboxMap.flyTo({ center: [lngN, latN], zoom: 14 });
+    const nombreSafe = (nombre || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const infoSafe = (info || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    new mapboxgl.Popup({ closeOnClick: true }).setLngLat([lngN, latN])
+      .setHTML(`<div style="min-width:180px;">
+        <strong style="font-size:14px;">${nombre || 'Ubicación'}</strong>
+        ${info ? `<br><span style="font-size:12px;">${info}</span>` : ''}
+        <div class="mapa-popup-actions">
+          <button class="popup-btn-ruta" onclick="trazarRutaA(${latN},${lngN},'${nombreSafe}')"><i class="fas fa-route"></i> Ruta</button>
+          <button class="popup-btn-google" onclick="abrirEnGoogleMaps(${latN},${lngN})"><i class="fab fa-google"></i> Google</button>
+          <button class="popup-btn-waze" onclick="abrirEnWaze(${latN},${lngN})"><i class="fas fa-car"></i> Waze</button>
+        </div>
+      </div>`)
       .addTo(mapboxMap);
   }
 };
+
+window.abrirEnGoogleMaps = function(lat, lng) {
+  const latN = parseFloat(lat), lngN = parseFloat(lng);
+  if (isNaN(latN) || isNaN(lngN)) return;
+  window.open(`https://www.google.com/maps/dir/?api=1&destination=${latN},${lngN}&travelmode=driving`, '_blank');
+};
+
+window.abrirEnWaze = function(lat, lng) {
+  const latN = parseFloat(lat), lngN = parseFloat(lng);
+  if (isNaN(latN) || isNaN(lngN)) return;
+  window.open(`https://waze.com/ul?ll=${latN},${lngN}&navigate=yes`, '_blank');
+};
+
 function initMapboxMap() {
   if (!currentUser || !mapboxToken || typeof mapboxgl === 'undefined') return;
   const container = document.getElementById('mapboxMap');
@@ -4276,57 +5206,126 @@ function initMapboxMap() {
   mapboxMap.addControl(new mapboxgl.NavigationControl());
   cargarPuntosMapbox();
 }
-function cargarPuntosMapbox() {
+
+async function cargarPuntosMapbox() {
   if (!mapboxMap) return;
   mapboxMarkers.forEach(m => m.remove());
   mapboxMarkers = [];
-  // Capa de ruta (se inicializa vacía)
-  if (!mapboxMap.getSource('ruta-source')) {
-    mapboxMap.on('load', () => {
-      if (!mapboxMap.getSource('ruta-source')) {
-        mapboxMap.addSource('ruta-source', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } });
-        mapboxMap.addLayer({ id: 'ruta-line', type: 'line', source: 'ruta-source', layout: { 'line-join': 'round', 'line-cap': 'round' }, paint: { 'line-color': '#D4AF37', 'line-width': 5, 'line-opacity': 0.85 } });
-      }
+
+  const config = {
+    misionero: { color: '#e74c3c' },
+    iglesia:   { color: '#2ecc71' },
+    grupo:     { color: '#3498db' },
+    evento:    { color: '#9b59b6' },
+    servicio:  { color: '#f39c12' }
+  };
+
+  const puntos = new Map();
+
+  try {
+    const mapaSnap = await MAPA_COL.get();
+    mapaSnap.forEach(doc => {
+      const m = doc.data();
+      const lat = parseFloat(m.lat);
+      const lng = parseFloat(m.lng);
+      if (isNaN(lat) || isNaN(lng) || !lat || !lng) return;
+      puntos.set(doc.id, {
+        tipo: m.tipo, refId: m.refId,
+        nombre: m.nombre || '',
+        descripcion: m.descripcion || '',
+        direccion: m.direccion || '',
+        lat, lng,
+        uid: m.uid || ''
+      });
     });
-  }
-  function addMarker(lat, lng, nombre, desc, color, icon, tipo) {
-    if (!lat || !lng) return;
+  } catch(e) { console.warn('MAPA_COL:', e); }
+
+  const leerColeccion = async (ref, tipo, campoNombre, campoDesc, campoDir) => {
     try {
-      const popupHtml = `<strong>${icon} ${nombre}</strong><br>${desc || ''}<br><button onclick="trazarRutaA(${lat},${lng},'${(nombre||'').replace(/'/g,"")}')" style="margin-top:6px;background:#D4AF37;color:#fff;border:none;padding:4px 10px;border-radius:20px;font-size:11px;cursor:pointer;">🛣 Trazar ruta hasta aquí</button>`;
-      const marker = new mapboxgl.Marker({ color })
-        .setLngLat([parseFloat(lng), parseFloat(lat)])
-        .setPopup(new mapboxgl.Popup().setHTML(popupHtml))
-        .addTo(mapboxMap);
-      mapboxMarkers.push(marker);
+      const snap = await ref.get();
+      snap.forEach(doc => {
+        const d = doc.data();
+        const lat = parseFloat(d.lat);
+        const lng = parseFloat(d.lng);
+        if (isNaN(lat) || isNaN(lng) || !lat || !lng) return;
+        const key = `${tipo}_${doc.id}`;
+        if (puntos.has(key)) return;
+        puntos.set(key, {
+          tipo, refId: doc.id,
+          nombre: d[campoNombre] || '',
+          descripcion: d[campoDesc] || '',
+          direccion: d[campoDir] || '',
+          lat, lng,
+          uid: d.uid || d.uidCreador || ''
+        });
+      });
+    } catch(e) {}
+  };
+
+  await Promise.all([
+    leerColeccion(MISIONEROS, 'misionero', 'nombre', 'descripcion', 'ciudad'),
+    leerColeccion(IGLESIAS, 'iglesia', 'nombre', 'descripcion', 'direccion'),
+    leerColeccion(GRUPOS, 'grupo', 'nombre', 'facilitador', 'ubicacion'),
+    leerColeccion(EVENTOS, 'evento', 'titulo', 'desc', 'lugar'),
+    leerColeccion(getServiciosRef(), 'servicio', 'nombre', 'comidas', 'direccion')
+  ]);
+
+  puntos.forEach(p => {
+    const cfg = config[p.tipo] || { color: '#1D9E75' };
+    addMarkerMapa(p.lat, p.lng, p.nombre, p.descripcion || p.direccion, cfg.color, p.tipo);
+  });
+
+  const el = document.getElementById('adminMapaCount');
+  if (el) el.textContent = puntos.size;
+
+  if (mapboxMarkers.length > 1) {
+    try {
+      const bounds = new mapboxgl.LngLatBounds();
+      mapboxMarkers.forEach(m => bounds.extend(m.getLngLat()));
+      mapboxMap.fitBounds(bounds, { padding: 60, maxZoom: 14 });
     } catch(e) {}
   }
-  MISIONEROS.get().then(snap => snap.forEach(doc => { const m = doc.data(); addMarker(m.lat, m.lng, m.nombre, m.ciudad || '', '#e74c3c', '✝', 'misionero'); }));
-  IGLESIAS.get().then(snap => snap.forEach(doc => { const i = doc.data(); addMarker(i.lat, i.lng, i.nombre, i.direccion || '', '#2ecc71', '⛪', 'iglesia'); }));
-  GRUPOS.get().then(snap => snap.forEach(doc => { const g = doc.data(); addMarker(g.lat, g.lng, g.nombre, g.ubicacion || '', '#3498db', '👥', 'grupo'); }));
-  EVENTOS.get().then(snap => snap.forEach(doc => { const e = doc.data(); addMarker(e.lat, e.lng, e.titulo, e.lugar || '', '#9b59b6', '📅', 'evento'); }));
-  getServiciosRef().get().then(snap => snap.forEach(doc => { const s = doc.data(); addMarker(s.lat, s.lng, s.nombre, s.direccion || '', '#f39c12', '🍽', 'servicio'); }));
-  MAPA_COL.get().then(snap => {
-    const total = snap.size;
-    const el = document.getElementById('adminMapaCount');
-    if (el) el.textContent = total;
-  });
 }
 
-// ==================== NUEVO: RUTA DESDE MI UBICACIÓN ====================
+function addMarkerMapa(lat, lng, nombre, desc, color, tipo) {
+  if (!lat || !lng) return;
+  const latN = parseFloat(lat), lngN = parseFloat(lng);
+  if (isNaN(latN) || isNaN(lngN)) return;
+  try {
+    const nombreSafe = (nombre || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const descSafe = (desc || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    const popupHtml = `<div style="min-width:190px;">
+      <strong style="font-size:14px;">${nombre || 'Ubicación'}</strong>
+      ${desc ? `<br><span style="font-size:12px;">${desc}</span>` : ''}
+      <div class="mapa-popup-actions">
+        <button class="popup-btn-ruta" onclick="trazarRutaA(${latN},${lngN},'${nombreSafe}')"><i class="fas fa-route"></i> Ruta</button>
+        <button class="popup-btn-google" onclick="abrirEnGoogleMaps(${latN},${lngN})"><i class="fab fa-google"></i> Google</button>
+        <button class="popup-btn-waze" onclick="abrirEnWaze(${latN},${lngN})"><i class="fas fa-car"></i> Waze</button>
+      </div>
+    </div>`;
+    const el = crearMarkerElemento(tipo, '');
+    const marker = new mapboxgl.Marker({ element: el, anchor: 'center' })
+      .setLngLat([lngN, latN])
+      .setPopup(new mapboxgl.Popup().setHTML(popupHtml))
+      .addTo(mapboxMap);
+    mapboxMarkers.push(marker);
+  } catch(e) { console.warn('addMarkerMapa:', e); }
+}
+
 window.trazarRutaA = function(latDestino, lngDestino, nombreDestino) {
   if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
   if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
+  const latD = parseFloat(latDestino), lngD = parseFloat(lngDestino);
+  if (isNaN(latD) || isNaN(lngD)) { alert('Coordenadas inválidas.'); return; }
   const panel = document.getElementById('rutaInfoPanel');
   document.getElementById('rutaDestinoNombre').textContent = nombreDestino || 'Destino';
   document.getElementById('rutaMeta').textContent = 'Obteniendo tu ubicación...';
   if (panel) panel.classList.add('show');
 
-  // Si ya tenemos mi ubicación, usarla; si no, pedirla
   const calcular = (latOrigen, lngOrigen) => {
     miUbicacionActual = { lat: latOrigen, lng: lngOrigen };
-    // Si mapbox tiene Directions API usarla
     if (mapboxToken) {
-      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${lngOrigen},${latOrigen};${lngDestino},${latDestino}?geometries=geojson&overview=full&access_token=${mapboxToken}`;
+      const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${lngOrigen},${latOrigen};${lngD},${latD}?geometries=geojson&overview=full&access_token=${mapboxToken}`;
       fetch(url).then(r => r.json()).then(data => {
         if (data.routes && data.routes.length > 0) {
           const ruta = data.routes[0];
@@ -4334,21 +5333,19 @@ window.trazarRutaA = function(latDestino, lngDestino, nombreDestino) {
           const distanciaKm = (ruta.distance / 1000).toFixed(1);
           const duracionMin = Math.round(ruta.duration / 60);
           document.getElementById('rutaMeta').textContent = `Distancia: ${distanciaKm} km · Tiempo aprox: ${duracionMin} min`;
-          // Dibujar la ruta
-          dibujarRutaEnMapa(geometry, latOrigen, lngOrigen, latDestino, lngDestino, nombreDestino);
-          rutaActiva = { origen: { lat: latOrigen, lng: lngOrigen }, destino: { lat: latDestino, lng: lngDestino }, nombreDestino };
+          dibujarRutaEnMapa(geometry, latOrigen, lngOrigen, latD, lngD, nombreDestino);
+          rutaActiva = { origen: { lat: latOrigen, lng: lngOrigen }, destino: { lat: latD, lng: lngD }, nombreDestino };
         } else {
-          // Fallback: línea recta
-          const coords = [[lngOrigen, latOrigen], [lngDestino, latDestino]];
-          dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latDestino, lngDestino, nombreDestino);
+          const coords = [[lngOrigen, latOrigen], [lngD, latD]];
+          dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latD, lngD, nombreDestino);
         }
       }).catch(() => {
-        const coords = [[lngOrigen, latOrigen], [lngDestino, latDestino]];
-        dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latDestino, lngDestino, nombreDestino);
+        const coords = [[lngOrigen, latOrigen], [lngD, latD]];
+        dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latD, lngD, nombreDestino);
       });
     } else {
-      const coords = [[lngOrigen, latOrigen], [lngDestino, latDestino]];
-      dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latDestino, lngDestino, nombreDestino);
+      const coords = [[lngOrigen, latOrigen], [lngD, latD]];
+      dibujarRutaLineaRecta(coords, latOrigen, lngOrigen, latD, lngD, nombreDestino);
     }
   };
 
@@ -4375,7 +5372,6 @@ function dibujarRutaEnMapa(geometry, latO, lngO, latD, lngD, nombre) {
       properties: {},
       geometry: geometry
     });
-    // Ajustar vista para mostrar la ruta
     const bounds = new mapboxgl.LngLatBounds();
     bounds.extend([lngO, latO]);
     bounds.extend([lngD, latD]);
@@ -4413,8 +5409,14 @@ window.abrirRutaEnGoogleMaps = function() {
   const url = `https://www.google.com/maps/dir/?api=1&origin=${o.lat},${o.lng}&destination=${d.lat},${d.lng}&travelmode=driving`;
   window.open(url, '_blank');
 };
+window.abrirRutaEnWaze = function() {
+  if (!rutaActiva) return;
+  const d = rutaActiva.destino;
+  const url = `https://waze.com/ul?ll=${d.lat},${d.lng}&navigate=yes`;
+  window.open(url, '_blank');
+};
 
-// MI UBICACIÓN EN TIEMPO REAL
+// MI UBICACIÓN (PUNTO DORADO DIFERENTE)
 window.activarMiUbicacion = function() {
   if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
   const btn = document.getElementById('btnMiUbicacion');
@@ -4430,9 +5432,8 @@ window.activarMiUbicacion = function() {
   miUbicacionActiva = true;
   if (btn) btn.classList.add('activo');
   const el = document.createElement('div');
-  el.className = 'mi-ubicacion-marker';
-  el.innerHTML = '<i class="fas fa-lightbulb"></i>';
-  el.title = 'Mi ubicación precisa';
+  el.className = 'mi-ubicacion-marker-dot';
+  el.title = 'Mi ubicación en tiempo real';
   miUbicacionWatchIdGlobal = navigator.geolocation.watchPosition(
     (pos) => {
       const lat = pos.coords.latitude, lng = pos.coords.longitude;
@@ -4440,7 +5441,7 @@ window.activarMiUbicacion = function() {
       if (miUbicacionMarkerGlobal) miUbicacionMarkerGlobal.setLngLat([lng, lat]);
       else {
         try {
-          miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el }).setLngLat([lng, lat]).addTo(mapboxMap);
+          miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el, anchor: 'center' }).setLngLat([lng, lat]).addTo(mapboxMap);
           mapboxMap.flyTo({ center: [lng, lat], zoom: 16 });
         } catch(e) {}
       }
@@ -4603,7 +5604,6 @@ function cargarCapitulos(libro) {
 function actualizarInfoCap() { document.getElementById('capInfo').textContent = libroActual && capituloActual ? libroActual + ' ' + capituloActual : 'Capítulo'; }
 function cargarHistorial() { const h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]'); const c = document.getElementById('historialContainer'); c.innerHTML = h.length ? h.map(t => `<span class="historial-tag">${t}</span>`).join('') : '<span style="color:var(--text-secondary);font-size:12px;">Sin búsquedas.</span>'; }
 
-// AUX
 function actualizarBotonesPorRol() {
   const btnGrupo = document.getElementById('btnCrearGrupo');
   const btnDiscipulado = document.getElementById('btnCrearDiscipulado');
@@ -4645,6 +5645,10 @@ window.mostrarNotificaciones = function() {
       if (n.tipo === 'like') t = `${n.emisorNombre} le dio like`;
       else if (n.tipo === 'seguidor') t = `${n.emisorNombre} te sigue`;
       else if (n.tipo === 'mensaje_privado') t = `${n.emisorNombre}: "${n.texto}"`;
+      else if (n.tipo === 'solicitud_proyecto') t = `${n.emisorNombre} ${n.texto || 'quiere unirse a tu proyecto'}`;
+      else if (n.tipo === 'solicitud_proyecto_aprobada') t = `${n.emisorNombre} aprobó tu solicitud al proyecto "${n.proyectoId || ''}"`;
+      else if (n.tipo === 'solicitud_proyecto_rechazada') t = `${n.emisorNombre} rechazó tu solicitud`;
+      else if (n.texto) t = `${n.emisorNombre}: ${n.texto}`;
       msg += '- ' + t + '\n';
       doc.ref.update({ leido: true });
     });
@@ -4652,11 +5656,11 @@ window.mostrarNotificaciones = function() {
   });
 };
 
-// ADMIN
 function renderAdminPanel() {
   if (!isAdmin) return;
   cargarConfigIA();
   cargarConfigCallMeBot();
+  cargarConfigPaypal();
   if (isSuperAdmin) renderSolicitudesPassword();
   const stats = { users:0, posts:0, iglesias:0 };
   Promise.all([USERS.get().then(s => stats.users = s.size), POSTS.get().then(s => stats.posts = s.size), IGLESIAS.get().then(s => stats.iglesias = s.size)]).then(() => {
@@ -4827,7 +5831,8 @@ function renderAdminProyectos() {
     let html = '';
     snapshot.forEach(doc => {
       const p = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${p.nombre}</strong> — ${(p.miembros||[]).length}/${p.max||30}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))PROYECTOS.doc('${doc.id}').delete().then(()=>renderAdminProyectos())" style="font-size:10px;">Eliminar</button></div></div>`;
+      const solPend = (p.solicitudes || []).filter(s => s.estado === 'pendiente').length;
+      html += `<div class="admin-list-item"><span class="info"><strong>${p.nombre}</strong> — ${(p.miembros||[]).length}/${p.max||30}${solPend > 0 ? ` · ${solPend} sol. pendientes` : ''}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))PROYECTOS.doc('${doc.id}').delete().then(()=>renderAdminProyectos())" style="font-size:10px;">Eliminar</button></div></div>`;
     });
     list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin proyectos.</p>';
   });
@@ -5797,7 +6802,6 @@ window.enviarMensajePrivado = function() {
   } else enviar(null);
 };
 
-// SERVICIOS
 function getServiciosRef() { return db.collection('servicios'); }
 function puedeOfrecerServicio() { return tieneRol('servidor') || tieneRol('ayuda_alimentaria'); }
 function puedeGestionarServicio() { return isAdmin || tieneRol('servidor') || tieneRol('ayuda_alimentaria'); }
@@ -6179,7 +7183,6 @@ window.registrarMisionero = function() {
   });
 };
 
-// INIT
 document.addEventListener('DOMContentLoaded', function() {
   cargarLogoConfig();
   document.querySelectorAll('#adminTabs button').forEach(btn => {
@@ -6321,10 +7324,19 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnGuardarMapboxToken').addEventListener('click', guardarMapboxToken);
   document.getElementById('btnGuardarCallMeBot').addEventListener('click', guardarConfigCallMeBot);
   document.getElementById('btnProbarCallMeBot').addEventListener('click', probarCallMeBot);
+  document.getElementById('btnGuardarPaypal').addEventListener('click', guardarConfigPaypal);
+  document.getElementById('btnProbarPaypal').addEventListener('click', probarPaypal);
   document.getElementById('notifBell').addEventListener('click', mostrarNotificaciones);
   document.getElementById('btnPreguntarIA').addEventListener('click', preguntarIA);
   document.getElementById('iaPregunta').addEventListener('keypress', (e) => { if (e.key === 'Enter') preguntarIA(); });
   document.getElementById('btnBuscarBiblia').addEventListener('click', () => alert('Búsqueda en versión completa.'));
+
+  const btnCrearProyecto = document.getElementById('btnCrearProyecto');
+  if (btnCrearProyecto) btnCrearProyecto.addEventListener('click', abrirModalProyecto);
+  const proyectoCancel = document.getElementById('proyectoCancel');
+  if (proyectoCancel) proyectoCancel.addEventListener('click', () => cerrarModal('proyectoModal'));
+  const proyectoCrear = document.getElementById('proyectoCrear');
+  if (proyectoCrear) proyectoCrear.addEventListener('click', crearProyecto);
 
   renderFeed(); renderGrupos(); renderDiscipulados(); renderOraciones();
   renderNecesidades(); renderServicios(); renderMisServicios(); renderConsejos();
@@ -6333,8 +7345,11 @@ document.addEventListener('DOMContentLoaded', function() {
   renderDevocionales(); renderHistorias(); renderHistoriasMuro(); renderIglesiasPanel();
   renderWidgetPerfilRapido(); renderWidgetGrupos(); renderWidgetOracion();
   renderWidgetEventos(); renderWidgetCumple(); renderWidgetSermones(); renderVersiculoDia();
+  renderWidgetMiniChat(); renderWidgetContactos(); renderWidgetGuardados(); renderWidgetOfrendas();
+  renderWidgetTestimonios(); renderWidgetTendencias(); renderWidgetPlanLectura(); renderWidgetAnuncios(); renderWidgetPlaylist();
+  renderProyectos();
   actualizarBotonesPorRol(); actualizarTabs();
-  cargarHistorial(); cargarMapboxToken(); cargarConfigMenu(); cargarEstilosConfig(); cargarConfigCallMeBot();
+  cargarHistorial(); cargarMapboxToken(); cargarConfigMenu(); cargarEstilosConfig(); cargarConfigCallMeBot(); cargarConfigPaypal();
 
   auth.onAuthStateChanged(async (user) => {
     if (user) { await cargarUsuarioActual(user); cargarLogoConfig(); }
@@ -6342,10 +7357,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v22: widgets laterales muro, leyenda flotante sobre mapa, mi ubicación con bombilla en tiempo real, trazado de ruta.');
+  console.log('✅ SAL Y LUZ v26: marcadores como puntos simples con colores por categoría (sin imágenes).');
 });
 
-// EXPONER
 window.switchPanel = switchPanel;
 window.abrirModal = abrirModal;
 window.cerrarModal = cerrarModal;
@@ -6425,6 +7439,9 @@ window.enviarWhatsAppCallMeBot = enviarWhatsAppCallMeBot;
 window.trazarRutaA = trazarRutaA;
 window.cerrarRuta = cerrarRuta;
 window.abrirRutaEnGoogleMaps = abrirRutaEnGoogleMaps;
+window.abrirRutaEnWaze = abrirRutaEnWaze;
+window.abrirEnGoogleMaps = abrirEnGoogleMaps;
+window.abrirEnWaze = abrirEnWaze;
 window.copiarVersiculoDia = copiarVersiculoDia;
 window.compartirVersiculoDia = compartirVersiculoDia;
 window.enviarSaludoCumple = enviarSaludoCumple;
@@ -6465,6 +7482,23 @@ window.abrirEditarUsuario = abrirEditarUsuario;
 window.guardarEditarUsuario = guardarEditarUsuario;
 window.cerrarEditarPerfilModal = cerrarEditarPerfilModal;
 window.guardarPerfilExtendido = guardarPerfilExtendido;
+window.renderProyectos = renderProyectos;
+window.abrirModalProyecto = abrirModalProyecto;
+window.crearProyecto = crearProyecto;
+window.unirseProyecto = unirseProyecto;
+window.solicitarUnirseProyecto = solicitarUnirseProyecto;
+window.aprobarSolicitudProyecto = aprobarSolicitudProyecto;
+window.rechazarSolicitudProyecto = rechazarSolicitudProyecto;
+window.salirProyecto = salirProyecto;
+window.eliminarProyecto = eliminarProyecto;
+window.guardarConfigPaypal = guardarConfigPaypal;
+window.probarPaypal = probarPaypal;
+window.abrirOfrendaModal = abrirOfrendaModal;
+window.confirmarOfrenda = confirmarOfrenda;
+window.verHistorialOfrendas = verHistorialOfrendas;
+window.verDirectorioCompleto = verDirectorioCompleto;
+window.toggleMuroCol = toggleMuroCol;
+window.cerrarMuroCols = cerrarMuroCols;
 window.USERS = USERS;
 window.POSTS = POSTS;
 window.GRUPOS = GRUPOS;

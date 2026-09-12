@@ -666,6 +666,49 @@
     .admin-tab-panel.active { display: block; }
 
     .mapa-add-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+
+    /* ============ LEYENDA DEL MAPA (NUEVO) ============ */
+    .mapa-leyenda-item { display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:20px; background:var(--bg-body); border:1px solid var(--border-color); font-size:12px; font-weight:500; }
+    .mapa-leyenda-item > span.icono { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px; }
+    .mapa-leyenda-wrap { display:flex; flex-wrap:wrap; gap:8px; }
+
+    /* ============ BOTÓN MI UBICACIÓN (NUEVO) ============ */
+    .mapa-mi-ubicacion-btn {
+      position: absolute; top: 14px; right: 14px; z-index: 25;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #fff; border: 3px solid #fff;
+      font-size: 22px; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(255,165,0,0.55);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .mapa-mi-ubicacion-btn:hover { transform: scale(1.08); box-shadow: 0 6px 18px rgba(255,165,0,0.75); }
+    .mapa-mi-ubicacion-btn.activo { background: linear-gradient(135deg, #00C853, #00E676); box-shadow: 0 4px 14px rgba(0,200,83,0.65); }
+    .mapa-mi-ubicacion-btn i { text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+
+    /* ============ MARCADOR MI UBICACIÓN BOMBILLA (NUEVO) ============ */
+    .mi-ubicacion-marker {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: radial-gradient(circle, #FFEB3B 0%, #FFC107 60%, #FF9800 100%);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-size: 22px; border: 3px solid #fff;
+      box-shadow: 0 0 0 6px rgba(255,215,0,0.35), 0 0 22px rgba(255,200,0,0.85);
+      animation: bulbPulse 1.8s ease-in-out infinite;
+      cursor: pointer;
+    }
+    .mi-ubicacion-marker i { color: #fff; text-shadow: 0 0 6px rgba(255,255,255,0.9); }
+    @keyframes bulbPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255,215,0,0.35), 0 0 22px rgba(255,200,0,0.85); }
+      50% { transform: scale(1.1); box-shadow: 0 0 0 14px rgba(255,215,0,0.05), 0 0 28px rgba(255,200,0,1); }
+    }
+
+    /* ============ MINIATURAS DE ARCHIVO EN CHAT (NUEVO) ============ */
+    .chat-archivo-thumb { margin-top: 6px; }
+    .chat-archivo-thumb img { max-width: 180px; max-height: 180px; border-radius: 10px; cursor: pointer; display: block; border: 1px solid rgba(0,0,0,0.15); }
+    .chat-archivo-thumb a { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 10px; background: rgba(255,255,255,0.15); color: inherit; text-decoration: none; font-size: 12px; word-break: break-all; }
+    .chat-bubble.mio .chat-archivo-thumb a { background: rgba(255,255,255,0.22); color: #fff; }
+    .chat-bubble.otro .chat-archivo-thumb a { background: rgba(0,0,0,0.06); }
   </style>
 </head>
 <body>
@@ -993,10 +1036,24 @@
           <button class="btn-primary" onclick="abrirModalIglesia()"><i class="fas fa-place-of-worship"></i> Registrar Iglesia</button>
         </div>
       </div>
+      <div class="card">
+        <h3><i class="fas fa-palette"></i> Leyenda de categorías del mapa</h3>
+        <div class="mapa-leyenda-wrap">
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#e74c3c;">✝</span> Misioneros</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#2ecc71;">⛪</span> Iglesias</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#3498db;">👥</span> Grupos</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#9b59b6;">📅</span> Eventos</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:#f39c12;">🍽</span> Servicios</span>
+          <span class="mapa-leyenda-item"><span class="icono" style="background:linear-gradient(135deg,#FFD700,#FFA500);"><i class="fas fa-lightbulb" style="color:#fff;font-size:11px;"></i></span> Mi ubicación</span>
+        </div>
+      </div>
       <div class="card"><h3><i class="fas fa-users"></i> Grupos de conexión con ubicación</h3><div id="gruposMapaList"></div></div>
       <div class="card">
         <h3><i class="fas fa-globe-americas"></i> Mapa general (iglesias, misioneros, grupos, eventos y servicios)</h3>
-        <div class="map-wrapper" id="mapa3d"><div id="mapboxMap" class="mapboxgl-map" style="height:100%;width:100%;"></div></div>
+        <div class="map-wrapper" id="mapa3d">
+          <div id="mapboxMap" class="mapboxgl-map" style="height:100%;width:100%;"></div>
+          <button type="button" class="mapa-mi-ubicacion-btn" id="btnMiUbicacion" onclick="activarMiUbicacion()" title="Mi ubicación"><i class="fas fa-lightbulb"></i></button>
+        </div>
         <div id="misionerosMapaList" style="margin-top:10px;"></div>
         <div id="iglesiasMapaList" style="margin-top:6px;"></div>
         <div id="eventosMapaList" style="margin-top:6px;"></div>
@@ -1086,7 +1143,10 @@
       <div class="card">
         <h3><i class="fas fa-user-cog"></i> Chat con el Administrador</h3>
         <div id="chatAdminMensajes" class="chat-mensajes-container"></div>
+        <div id="chatAdminPreview" class="chat-preview-archivo" style="display:none;"></div>
         <div class="chat-input">
+          <input type="file" id="chatAdminFile" style="display:none;">
+          <button type="button" class="adjuntar-btn btn-outline" style="width:42px;height:42px;border-radius:50%;font-size:18px;" onclick="document.getElementById('chatAdminFile').click()" title="Adjuntar"><i class="fas fa-paperclip"></i></button>
           <input type="text" id="chatAdminInput" placeholder="Escribe tu mensaje...">
           <button id="btnEnviarChatAdmin"><i class="fas fa-paper-plane"></i></button>
         </div>
@@ -1098,7 +1158,10 @@
     <div class="card">
       <h3><i class="fas fa-users-cog"></i> Chat de Equipo de Apoyo</h3>
       <div id="chatEquipoMensajes" class="chat-mensajes-container"></div>
+      <div id="chatEquipoPreview" class="chat-preview-archivo" style="display:none;"></div>
       <div class="chat-input">
+        <input type="file" id="chatEquipoFile" style="display:none;">
+        <button type="button" class="adjuntar-btn btn-outline" style="width:42px;height:42px;border-radius:50%;font-size:18px;" onclick="document.getElementById('chatEquipoFile').click()" title="Adjuntar"><i class="fas fa-paperclip"></i></button>
         <input type="text" id="chatEquipoInput" placeholder="Escribe tu mensaje...">
         <button id="btnEnviarChatEquipo"><i class="fas fa-paper-plane"></i></button>
       </div>
@@ -1284,9 +1347,9 @@
       </div>
       <div id="loginForm">
         <label>Correo electrónico *</label>
-        <input type="email" id="loginEmail" placeholder="ejemplo@correo.com">
+        <input type="email" id="loginEmail" placeholder="ejemplo@correo.com" autocomplete="email">
         <label>Contraseña *</label>
-        <input type="password" id="loginPassword" placeholder="••••••••">
+        <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
         <div id="registerFields" style="display:none;">
           <label>Nombre completo *</label>
           <input type="text" id="loginName" placeholder="María Pérez">
@@ -2011,11 +2074,22 @@ let galeriaViewerIndex = 0;
 let searchDebounceTimer = null;
 let lastProfileViewed = null;
 let callmebotConfig = { enabled: false, phone: '', apikey: '' };
+let loginMode = 'login';
+
+// NUEVO: estado para adjuntos en chat admin/equipo
+let chatAdminArchivo = null;
+let chatEquipoArchivo = null;
+
+// NUEVO: seguimiento en tiempo real de mi ubicación
+let miUbicacionWatchIdGlobal = null;
+let miUbicacionMarkerGlobal = null;
+let miUbicacionActiva = false;
 
 const STORAGE_KEYS = {
   historialBiblia: 'iglesia_historial_biblia',
   theme: 'iglesia_theme',
-  bibliaFuente: 'iglesia_biblia_fuente'
+  bibliaFuente: 'iglesia_biblia_fuente',
+  visitanteId: 'iglesia_visitante_id'
 };
 let bibliaFuenteSize = parseInt(localStorage.getItem(STORAGE_KEYS.bibliaFuente)) || 14;
 let capitulosCache = {};
@@ -2065,6 +2139,17 @@ function hexToRgba(hex, alpha) {
   const g = parseInt(hex.slice(3,5), 16);
   const b = parseInt(hex.slice(5,7), 16);
   return `rgba(${r},${g},${b},${alpha})`;
+}
+
+// NUEVO: obtener ID de reactor (usuario o visitante)
+function getReactorId() {
+  if (currentUser && currentUser.uid) return currentUser.uid;
+  let vid = localStorage.getItem(STORAGE_KEYS.visitanteId);
+  if (!vid) {
+    vid = 'visitante_' + Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+    localStorage.setItem(STORAGE_KEYS.visitanteId, vid);
+  }
+  return vid;
 }
 
 // ================================================================
@@ -2182,7 +2267,6 @@ window.registerUser = async function(email, password, nombre, telefono, edad, ap
     });
     await user.updateProfile({ displayName: nombre });
     await cargarUsuarioActual(user);
-    // ✅ Notificación WhatsApp al registrarse
     enviarWhatsAppCallMeBot(`🎉 *Nuevo registro en SAL Y LUZ*\n👤 ${nombre}\n📧 ${email}\n📱 ${telefono}\n🕐 ${new Date().toLocaleString()}`);
     return true;
   } catch (error) {
@@ -2257,7 +2341,6 @@ window.logoutUser = async function() {
   try {
     const nombre = currentUser ? currentUser.displayName : 'Usuario';
     const email = currentUser ? currentUser.email : '';
-    // ✅ Notificación WhatsApp al cerrar sesión (antes de salir)
     enviarWhatsAppCallMeBot(`👋 *Salida en SAL Y LUZ*\n👤 ${nombre}\n📧 ${email}\n🕐 ${new Date().toLocaleString()}`);
     await auth.signOut();
     currentUser = null; isAdmin = false; isSuperAdmin = false; isRegularAdmin = false;
@@ -2406,7 +2489,7 @@ function switchPanel(name) {
     case 'chatadmin': renderChatAdmin(); break;
     case 'chatequipo': renderChatEquipo(); break;
     case 'iglesias': renderIglesiasPanel(); break;
-    case 'mapa': if (currentUser) { renderGruposMapa(); renderMisionerosMapa(); renderIglesiasMapa(); renderEventosMapa(); renderServiciosMapa(); initMapboxMap(); } break;
+    case 'mapa': if (currentUser) { renderGruposMapa(); renderMisionerosMapa(); renderIglesiasMapa(); renderEventosMapa(); renderServiciosMapa(); setTimeout(()=>initMapboxMap(), 100); } break;
     case 'biblia': cargarHistorial(); break;
     case 'devocionales': renderDevocionales(); break;
     case 'inicio': renderCarrusel(); renderEventos(); renderNoticias(); renderHistorias(); break;
@@ -2787,9 +2870,10 @@ function mostrarHistoriaActual() {
   if (h.descripcion) { descBox.textContent = h.descripcion; descBox.style.display = 'block'; }
   else descBox.style.display = 'none';
   const likes = h.likes || [], dislikes = h.dislikes || [], orando = h.orando || [], comentarios = h.comentarios || [];
-  const liked = currentUser && likes.includes(currentUser.uid);
-  const disliked = currentUser && dislikes.includes(currentUser.uid);
-  const prayed = currentUser && orando.includes(currentUser.uid);
+  const reactorId = getReactorId();
+  const liked = likes.includes(reactorId);
+  const disliked = dislikes.includes(reactorId);
+  const prayed = orando.includes(reactorId);
   document.getElementById('storyLikeCount').textContent = likes.length;
   document.getElementById('storyDislikeCount').textContent = dislikes.length;
   document.getElementById('storyPrayCount').textContent = orando.length;
@@ -2844,21 +2928,22 @@ function votarHistoria(historiaId, opcion) {
     });
   });
 }
+// MODIFICADO: reacción de historia permite a visitantes (usa reactorId)
 function reaccionarHistoria(tipo) {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
   const h = storyActual.historias[storyActual.index];
   if (!h) return;
+  const reactorId = getReactorId();
   HISTORIAS.doc(h.id).get().then(doc => {
     if (!doc.exists) return;
     const data = doc.data();
     const upd = {};
     const actual = data[tipo] || [];
-    const i = actual.indexOf(currentUser.uid);
+    const i = actual.indexOf(reactorId);
     const nuevo = actual.slice();
-    if (i > -1) nuevo.splice(i, 1); else nuevo.push(currentUser.uid);
+    if (i > -1) nuevo.splice(i, 1); else nuevo.push(reactorId);
     upd[tipo] = nuevo;
-    if (tipo === 'likes') upd.dislikes = (data.dislikes || []).filter(u => u !== currentUser.uid);
-    if (tipo === 'dislikes') upd.likes = (data.likes || []).filter(u => u !== currentUser.uid);
+    if (tipo === 'likes') upd.dislikes = (data.dislikes || []).filter(u => u !== reactorId);
+    if (tipo === 'dislikes') upd.likes = (data.likes || []).filter(u => u !== reactorId);
     HISTORIAS.doc(h.id).update(upd).then(() => {
       Object.assign(storyActual.historias[storyActual.index], upd);
       mostrarHistoriaActual();
@@ -3011,11 +3096,12 @@ function renderFeed() {
 }
 function renderPosts(snapshot, container) {
   if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay publicaciones aún.</p>'; return; }
+  const reactorId = getReactorId();
   let html = '';
   snapshot.forEach(doc => {
     const post = { id: doc.id, ...doc.data() };
-    const liked = post.likes && post.likes.includes(currentUser ? currentUser.uid : null);
-    const orando = post.orando && post.orando.includes(currentUser ? currentUser.uid : null);
+    const liked = post.likes && post.likes.includes(reactorId);
+    const orando = post.orando && post.orando.includes(reactorId);
     const catLabels = { testimonio: 'Testimonio', obra: 'Obra', oracion: 'Oración', encuesta: 'Encuesta', campania: 'Campaña', otro: 'Otro' };
     const catHtml = post.categoria ? `<span class="post-categoria">${catLabels[post.categoria] || 'Otro'}</span>` : '';
     const avatar = post.autorFoto || '';
@@ -3102,22 +3188,23 @@ function eliminarPublicacionAdmin(id) {
   });
 }
 function likePost(id) {
-  if (!currentUser) { alert('Inicia sesión.'); return; }
+  const reactorId = getReactorId();
   POSTS.doc(id).get().then(doc => {
     if (!doc.exists) return;
     const likes = doc.data().likes || [];
-    const idx = likes.indexOf(currentUser.uid);
-    if (idx > -1) likes.splice(idx, 1); else likes.push(currentUser.uid);
+    const idx = likes.indexOf(reactorId);
+    if (idx > -1) likes.splice(idx, 1); else likes.push(reactorId);
     POSTS.doc(id).update({ likes });
   });
 }
+// MODIFICADO: orando permite a visitantes
 function orandoPost(id) {
-  if (!currentUser) return;
+  const reactorId = getReactorId();
   POSTS.doc(id).get().then(doc => {
     if (!doc.exists) return;
     const orando = doc.data().orando || [];
-    const idx = orando.indexOf(currentUser.uid);
-    if (idx > -1) orando.splice(idx, 1); else orando.push(currentUser.uid);
+    const idx = orando.indexOf(reactorId);
+    if (idx > -1) orando.splice(idx, 1); else orando.push(reactorId);
     POSTS.doc(id).update({ orando });
   });
 }
@@ -3206,12 +3293,13 @@ async function renderReelsSlides(reels) {
     const segSnap = await SEGUIDORES.where('seguidorUid', '==', currentUser.uid).get();
     segSnap.forEach(d => misSeguidos.add(d.data().seguidoUid));
   }
+  const reactorId = getReactorId();
   let html = '';
   reels.forEach(r => {
     const likes = r.likes || [], dislikes = r.dislikes || [], orando = r.orando || [];
-    const liked = currentUser && likes.includes(currentUser.uid);
-    const disliked = currentUser && dislikes.includes(currentUser.uid);
-    const prayed = currentUser && orando.includes(currentUser.uid);
+    const liked = likes.includes(reactorId);
+    const disliked = dislikes.includes(reactorId);
+    const prayed = orando.includes(reactorId);
     const fecha = r.fecha ? new Date(r.fecha.seconds * 1000).toLocaleString() : '';
     const comentariosRender = renderReelsComments(r);
     const numComentarios = (r.comentarios || []).length;
@@ -3305,15 +3393,16 @@ function toggleReelComments(id) { const info = document.getElementById('reel-inf
 function renderReelsComments(r) {
   const comentarios = r.comentarios || [];
   if (comentarios.length === 0) return '<div style="opacity:0.6;font-size:12px;">Sin comentarios aún.</div>';
+  const reactorId = getReactorId();
   let html = '';
   comentarios.forEach((c, idx) => {
     if (c.oculto && !(isAdmin || (currentUser && r.uid === currentUser.uid))) return;
     const cLikes = (c.likes || []).length;
     const cDislikes = (c.dislikes || []).length;
     const cPray = (c.orando || []).length;
-    const cLiked = currentUser && (c.likes || []).includes(currentUser.uid);
-    const cDisliked = currentUser && (c.dislikes || []).includes(currentUser.uid);
-    const cPrayed = currentUser && (c.orando || []).includes(currentUser.uid);
+    const cLiked = (c.likes || []).includes(reactorId);
+    const cDisliked = (c.dislikes || []).includes(reactorId);
+    const cPrayed = (c.orando || []).includes(reactorId);
     const respuestas = c.respuestas || [];
     html += `<div class="reel-comment ${c.oculto ? 'oculto' : ''}">
       <div class="reel-comment-avatar" style="background-image:url('${c.autorFoto || ''}');background-size:cover;" onclick="cerrarReelsViewer(); verPerfil('${c.uid}')">${c.autorFoto ? '' : (c.autor||'?').charAt(0)}</div>
@@ -3355,14 +3444,14 @@ function enviarRespuestaReel(reelId, idx) {
   });
 }
 function reaccionarReelComentario(reelId, idx, tipo) {
-  if (!currentUser) return;
+  const reactorId = getReactorId();
   REELS.doc(reelId).get().then(doc => {
     if (!doc.exists) return;
     const arr = doc.data().comentarios || [];
     if (!arr[idx]) return;
     if (!arr[idx][tipo]) arr[idx][tipo] = [];
-    const i = arr[idx][tipo].indexOf(currentUser.uid);
-    if (i > -1) arr[idx][tipo].splice(i, 1); else arr[idx][tipo].push(currentUser.uid);
+    const i = arr[idx][tipo].indexOf(reactorId);
+    if (i > -1) arr[idx][tipo].splice(i, 1); else arr[idx][tipo].push(reactorId);
     REELS.doc(reelId).update({ comentarios: arr });
   });
 }
@@ -3377,34 +3466,35 @@ function ocultarReelComentario(reelId, idx) {
   });
 }
 function likeReel(id) {
-  if (!currentUser) return;
+  const reactorId = getReactorId();
   REELS.doc(id).get().then(doc => {
     if (!doc.exists) return;
     const likes = doc.data().likes || [], dislikes = doc.data().dislikes || [];
-    const i = likes.indexOf(currentUser.uid);
+    const i = likes.indexOf(reactorId);
     if (i > -1) likes.splice(i, 1);
-    else { likes.push(currentUser.uid); const di = dislikes.indexOf(currentUser.uid); if (di > -1) dislikes.splice(di, 1); }
+    else { likes.push(reactorId); const di = dislikes.indexOf(reactorId); if (di > -1) dislikes.splice(di, 1); }
     REELS.doc(id).update({ likes, dislikes });
   });
 }
 function dislikeReel(id) {
-  if (!currentUser) return;
+  const reactorId = getReactorId();
   REELS.doc(id).get().then(doc => {
     if (!doc.exists) return;
     const likes = doc.data().likes || [], dislikes = doc.data().dislikes || [];
-    const i = dislikes.indexOf(currentUser.uid);
+    const i = dislikes.indexOf(reactorId);
     if (i > -1) dislikes.splice(i, 1);
-    else { dislikes.push(currentUser.uid); const li = likes.indexOf(currentUser.uid); if (li > -1) likes.splice(li, 1); }
+    else { dislikes.push(reactorId); const li = likes.indexOf(reactorId); if (li > -1) likes.splice(li, 1); }
     REELS.doc(id).update({ dislikes, likes });
   });
 }
+// MODIFICADO: orar permite visitantes
 function orarReel(id) {
-  if (!currentUser) return;
+  const reactorId = getReactorId();
   REELS.doc(id).get().then(doc => {
     if (!doc.exists) return;
     const orando = doc.data().orando || [];
-    const i = orando.indexOf(currentUser.uid);
-    if (i > -1) orando.splice(i, 1); else orando.push(currentUser.uid);
+    const i = orando.indexOf(reactorId);
+    if (i > -1) orando.splice(i, 1); else orando.push(reactorId);
     REELS.doc(id).update({ orando });
   });
 }
@@ -3491,13 +3581,14 @@ function renderDevocionales() {
     const docs = []; snapshot.forEach(doc => docs.push({ id: doc.id, ...doc.data() }));
     const filtrados = filtro === 'todas' ? docs : docs.filter(d => (d.categoria || 'Reflexión') === filtro);
     if (filtrados.length === 0) { container.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:20px;">No hay devocionales en esta categoría.</p>'; return; }
+    const reactorId = getReactorId();
     let html = '';
     filtrados.forEach(d => {
       const puedeEliminar = currentUser && (currentUser.uid === d.uid || isAdmin);
       const fecha = d.fecha ? new Date(d.fecha.seconds * 1000).toLocaleDateString() : '';
       const likes = d.likes || [], orando = d.orando || [], comentarios = d.comentarios || [];
-      const liked = currentUser && likes.includes(currentUser.uid);
-      const prayed = currentUser && orando.includes(currentUser.uid);
+      const liked = likes.includes(reactorId);
+      const prayed = orando.includes(reactorId);
       const tags = d.tags || [];
       const coverHtml = d.coverUrl ? `<img src="${d.coverUrl}" class="devocional-cover">` : `<div class="devocional-cover-placeholder"><i class="fas fa-book-bible"></i></div>`;
       html += `<div class="devocional-card">
@@ -3561,22 +3652,23 @@ function verDevocional(id) {
   });
 }
 function likeDevocional(id) {
-  if (!currentUser) return;
+  const reactorId = getReactorId();
   DEVOCIONALES.doc(id).get().then(doc => {
     if (!doc.exists) return;
     const likes = doc.data().likes || [];
-    const i = likes.indexOf(currentUser.uid);
-    if (i > -1) likes.splice(i, 1); else likes.push(currentUser.uid);
+    const i = likes.indexOf(reactorId);
+    if (i > -1) likes.splice(i, 1); else likes.push(reactorId);
     DEVOCIONALES.doc(id).update({ likes });
   });
 }
+// MODIFICADO: orar permite visitantes
 function orarDevocional(id) {
-  if (!currentUser) return;
+  const reactorId = getReactorId();
   DEVOCIONALES.doc(id).get().then(doc => {
     if (!doc.exists) return;
     const orando = doc.data().orando || [];
-    const i = orando.indexOf(currentUser.uid);
-    if (i > -1) orando.splice(i, 1); else orando.push(currentUser.uid);
+    const i = orando.indexOf(reactorId);
+    if (i > -1) orando.splice(i, 1); else orando.push(reactorId);
     DEVOCIONALES.doc(id).update({ orando });
   });
 }
@@ -3748,11 +3840,15 @@ function renderChatAdmin() {
       const showAvatar = msg.uid !== lastUid;
       lastUid = msg.uid;
       const inicial = (msg.remitente || '?').charAt(0).toUpperCase();
+      const archivoHtml = msg.archivoUrl ? (msg.archivoTipo && msg.archivoTipo.startsWith('image/')
+        ? `<div class="chat-archivo-thumb"><img src="${msg.archivoUrl}" onclick="abrirMediaViewer(['${msg.archivoUrl}'], 0, 'image')"></div>`
+        : `<div class="chat-archivo-thumb"><a href="${msg.archivoUrl}" target="_blank"><i class="fas fa-file"></i> ${msg.archivoNombre || 'Archivo'}</a></div>`) : '';
       html += `<div class="chat-msg-colored ${mio ? 'mio' : ''}">
         ${!mio ? `<div class="chat-avatar-small" style="background-image:url('${msg.autorFoto || ''}');background-color:${color};">${msg.autorFoto ? '' : inicial}</div>` : ''}
         <div class="chat-bubble ${mio ? 'mio' : 'otro'}" style="${!mio ? `background:${hexToRgba(color, 0.12)};border-left:3px solid ${color};color:var(--text-primary);` : ''}">
           ${!mio && showAvatar ? `<span class="chat-autor-name" style="color:${color};">${msg.remitente}</span>` : ''}
-          ${msg.texto}
+          ${msg.texto || ''}
+          ${archivoHtml}
           <span class="chat-time">${hora}</span>
         </div>
       </div>`;
@@ -3764,8 +3860,23 @@ function renderChatAdmin() {
 function enviarChatAdmin() {
   if (!currentUser) return;
   const input = document.getElementById('chatAdminInput');
-  const texto = input.value.trim(); if (!texto) return;
-  CHAT_ADMIN.add({ uid: currentUser.uid, remitente: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '', texto, timestamp: firebase.firestore.FieldValue.serverTimestamp() }).then(() => input.value = '');
+  const texto = input.value.trim();
+  if (!texto && !chatAdminArchivo) return;
+  if (chatAdminArchivo) {
+    const file = chatAdminArchivo;
+    const path = `chat_admin/${currentUser.uid}/${Date.now()}_${file.name}`;
+    subirArchivoStorage(file, path).then(url => {
+      return CHAT_ADMIN.add({ uid: currentUser.uid, remitente: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '', texto, archivoUrl: url, archivoNombre: file.name, archivoTipo: file.type, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+    }).then(() => {
+      input.value = '';
+      chatAdminArchivo = null;
+      document.getElementById('chatAdminFile').value = '';
+      document.getElementById('chatAdminPreview').style.display = 'none';
+      document.getElementById('chatAdminPreview').innerHTML = '';
+    });
+  } else {
+    CHAT_ADMIN.add({ uid: currentUser.uid, remitente: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '', texto, timestamp: firebase.firestore.FieldValue.serverTimestamp() }).then(() => input.value = '');
+  }
 }
 function renderChatEquipo() {
   if (listeners.chatEquipo) listeners.chatEquipo();
@@ -3782,11 +3893,15 @@ function renderChatEquipo() {
       const showAvatar = msg.uid !== lastUid;
       lastUid = msg.uid;
       const inicial = (msg.remitente || '?').charAt(0).toUpperCase();
+      const archivoHtml = msg.archivoUrl ? (msg.archivoTipo && msg.archivoTipo.startsWith('image/')
+        ? `<div class="chat-archivo-thumb"><img src="${msg.archivoUrl}" onclick="abrirMediaViewer(['${msg.archivoUrl}'], 0, 'image')"></div>`
+        : `<div class="chat-archivo-thumb"><a href="${msg.archivoUrl}" target="_blank"><i class="fas fa-file"></i> ${msg.archivoNombre || 'Archivo'}</a></div>`) : '';
       html += `<div class="chat-msg-colored ${mio ? 'mio' : ''}">
         ${!mio ? `<div class="chat-avatar-small" style="background-image:url('${msg.autorFoto || ''}');background-color:${color};">${msg.autorFoto ? '' : inicial}</div>` : ''}
         <div class="chat-bubble ${mio ? 'mio' : 'otro'}" style="${!mio ? `background:${hexToRgba(color, 0.12)};border-left:3px solid ${color};color:var(--text-primary);` : ''}">
           ${!mio && showAvatar ? `<span class="chat-autor-name" style="color:${color};">${msg.remitente}</span>` : ''}
-          ${msg.texto}
+          ${msg.texto || ''}
+          ${archivoHtml}
           <span class="chat-time">${hora}</span>
         </div>
       </div>`;
@@ -3798,8 +3913,23 @@ function renderChatEquipo() {
 function enviarChatEquipo() {
   if (!currentUser || (!tieneAlgunRolApoyo() && !isAdmin)) return;
   const input = document.getElementById('chatEquipoInput');
-  const texto = input.value.trim(); if (!texto) return;
-  CHAT_EQUIPO.add({ uid: currentUser.uid, remitente: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '', texto, timestamp: firebase.firestore.FieldValue.serverTimestamp() }).then(() => input.value = '');
+  const texto = input.value.trim();
+  if (!texto && !chatEquipoArchivo) return;
+  if (chatEquipoArchivo) {
+    const file = chatEquipoArchivo;
+    const path = `chat_equipo/${currentUser.uid}/${Date.now()}_${file.name}`;
+    subirArchivoStorage(file, path).then(url => {
+      return CHAT_EQUIPO.add({ uid: currentUser.uid, remitente: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '', texto, archivoUrl: url, archivoNombre: file.name, archivoTipo: file.type, timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+    }).then(() => {
+      input.value = '';
+      chatEquipoArchivo = null;
+      document.getElementById('chatEquipoFile').value = '';
+      document.getElementById('chatEquipoPreview').style.display = 'none';
+      document.getElementById('chatEquipoPreview').innerHTML = '';
+    });
+  } else {
+    CHAT_EQUIPO.add({ uid: currentUser.uid, remitente: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '', texto, timestamp: firebase.firestore.FieldValue.serverTimestamp() }).then(() => input.value = '');
+  }
 }
 function abrirChatGrupo(gid) {
   chatGrupoActual = gid;
@@ -4123,9 +4253,10 @@ function renderGaleriaViewerSlides() {
   let html = '';
   galeriaViewerFotos.forEach((foto, i) => {
     const likes = foto.likes || [], dislikes = foto.dislikes || [], orando = foto.orando || [];
-    const liked = currentUser && likes.includes(currentUser.uid);
-    const disliked = currentUser && dislikes.includes(currentUser.uid);
-    const prayed = currentUser && orando.includes(currentUser.uid);
+    const reactorId = getReactorId();
+    const liked = likes.includes(reactorId);
+    const disliked = dislikes.includes(reactorId);
+    const prayed = orando.includes(reactorId);
     html += `<div class="galeria-slide-full">
       <div class="galeria-slide-media">
         <img src="${foto.url}" alt="">
@@ -4150,17 +4281,17 @@ function cerrarGaleriaViewer() {
   galeriaViewerFotos = []; galeriaViewerUid = null;
 }
 function reaccionarFotoGaleria(uid, fotoId, tipo) {
-  if (!currentUser) return;
+  const reactorId = getReactorId();
   const ref = GALERIA_FOTOS(uid).doc(fotoId);
   ref.get().then(doc => {
     if (!doc.exists) return;
     const data = doc.data();
     const upd = {}; const arr = (data[tipo] || []).slice();
-    const i = arr.indexOf(currentUser.uid);
-    if (i > -1) arr.splice(i, 1); else arr.push(currentUser.uid);
+    const i = arr.indexOf(reactorId);
+    if (i > -1) arr.splice(i, 1); else arr.push(reactorId);
     upd[tipo] = arr;
-    if (tipo === 'likes') upd.dislikes = (data.dislikes || []).filter(u => u !== currentUser.uid);
-    if (tipo === 'dislikes') upd.likes = (data.likes || []).filter(u => u !== currentUser.uid);
+    if (tipo === 'likes') upd.dislikes = (data.dislikes || []).filter(u => u !== reactorId);
+    if (tipo === 'dislikes') upd.likes = (data.likes || []).filter(u => u !== reactorId);
     ref.update(upd);
   });
 }
@@ -4382,6 +4513,21 @@ document.addEventListener('change', function(e) {
     subirArchivoStorage(f, `cover_pictures/${currentUser.uid}/${Date.now()}_${f.name}`).then(url => USERS.doc(currentUser.uid).update({ portada: url }))
       .then(() => USERS.doc(currentUser.uid).get().then(d => { currentUser.portada = d.data().portada; renderEditMiniPreviews(); }));
   }
+  // NUEVO: cambios de archivo para chat admin y equipo
+  if (e.target && e.target.id === 'chatAdminFile') {
+    const f = e.target.files[0]; if (!f) return;
+    chatAdminArchivo = f;
+    const pv = document.getElementById('chatAdminPreview');
+    pv.style.display = 'flex';
+    pv.innerHTML = `<i class="fas fa-file"></i> <span style="flex:1;">${f.name}</span><button type="button" class="remove-x" onclick="chatAdminArchivo=null; document.getElementById('chatAdminFile').value=''; document.getElementById('chatAdminPreview').style.display='none'; document.getElementById('chatAdminPreview').innerHTML='';">×</button>`;
+  }
+  if (e.target && e.target.id === 'chatEquipoFile') {
+    const f = e.target.files[0]; if (!f) return;
+    chatEquipoArchivo = f;
+    const pv = document.getElementById('chatEquipoPreview');
+    pv.style.display = 'flex';
+    pv.innerHTML = `<i class="fas fa-file"></i> <span style="flex:1;">${f.name}</span><button type="button" class="remove-x" onclick="chatEquipoArchivo=null; document.getElementById('chatEquipoFile').value=''; document.getElementById('chatEquipoPreview').style.display='none'; document.getElementById('chatEquipoPreview').innerHTML='';">×</button>`;
+  }
 });
 async function procesarMultiplesFotosGaleria(files) {
   if (!currentUser) return;
@@ -4439,8 +4585,6 @@ window.guardarPerfilExtendido = async function() {
     alert('Perfil actualizado.');
   } catch(err) { alert('Error: ' + err.message); }
 };
-
-// ✅ NUEVA: Cambiar contraseña desde editar perfil
 window.cambiarPassword = async function() {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   const actual = document.getElementById('editPasswordActual').value;
@@ -4467,7 +4611,6 @@ window.cambiarPassword = async function() {
     alert('Error: ' + msg);
   }
 };
-
 window.abrirEditarUsuario = function(uid) {
   if (!isAdmin) return;
   USERS.doc(uid).get().then(doc => {
@@ -4660,10 +4803,11 @@ function renderOraciones() {
   const container = document.getElementById('oracionesContainer');
   listeners.oraciones = ORACIONES.orderBy('fecha', 'desc').onSnapshot(snapshot => {
     if (snapshot.empty) { container.innerHTML = '<p style="color:var(--text-secondary);">No hay peticiones.</p>'; return; }
+    const reactorId = getReactorId();
     let html = '';
     snapshot.forEach(doc => {
       const o = { id: doc.id, ...doc.data() };
-      const yaOro = o.orado && o.orado.includes(currentUser ? currentUser.uid : null);
+      const yaOro = o.orado && o.orado.includes(reactorId);
       const num = o.orado ? o.orado.length : 0;
       html += `<div class="oracion-item"><div class="oracion-header"><div class="oracion-avatar" style="background-image:url(${o.autorFoto || ''});" onclick="verPerfil('${o.uid}')">${o.autorFoto ? '' : (o.autorNombre||'?').charAt(0)}</div><div><span class="oracion-autor" onclick="verPerfil('${o.uid}')">${o.autorNombre}</span> · <small>${new Date(o.fecha.seconds * 1000).toLocaleString()}</small></div></div><div class="oracion-texto">${o.texto}</div><div class="oracion-actions"><button type="button" onclick="orarOracion('${o.id}')" class="${yaOro ? 'orado' : ''}"><i class="fas fa-hands-praying"></i> ${yaOro ? 'Oré' : 'Orar'} (${num})</button></div></div>`;
     });
@@ -4676,13 +4820,14 @@ window.publicarOracion = function() {
   if (!texto) return;
   ORACIONES.add({ uid: currentUser.uid, autorNombre: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '', texto, fecha: firebase.firestore.FieldValue.serverTimestamp(), orado: [] }).then(() => document.getElementById('oracionInput').value = '');
 };
+// MODIFICADO: orar permite visitantes
 window.orarOracion = function(id) {
-  if (!currentUser) return;
+  const reactorId = getReactorId();
   ORACIONES.doc(id).get().then(doc => {
     if (!doc.exists) return;
     const orado = doc.data().orado || [];
-    const i = orado.indexOf(currentUser.uid);
-    if (i > -1) orado.splice(i, 1); else orado.push(currentUser.uid);
+    const i = orado.indexOf(reactorId);
+    if (i > -1) orado.splice(i, 1); else orado.push(reactorId);
     ORACIONES.doc(id).update({ orado });
   });
 };
@@ -5199,6 +5344,55 @@ window.registrarMisionero = function() {
   });
 };
 
+// ================================================================
+// NUEVO: MI UBICACIÓN EN TIEMPO REAL (botón bombilla)
+// ================================================================
+window.activarMiUbicacion = function() {
+  if (!mapboxMap) { alert('Abre el mapa primero.'); return; }
+  const btn = document.getElementById('btnMiUbicacion');
+
+  if (miUbicacionActiva) {
+    if (miUbicacionWatchIdGlobal !== null && navigator.geolocation) {
+      navigator.geolocation.clearWatch(miUbicacionWatchIdGlobal);
+    }
+    miUbicacionWatchIdGlobal = null;
+    if (miUbicacionMarkerGlobal) { miUbicacionMarkerGlobal.remove(); miUbicacionMarkerGlobal = null; }
+    miUbicacionActiva = false;
+    if (btn) btn.classList.remove('activo');
+    return;
+  }
+
+  if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
+
+  miUbicacionActiva = true;
+  if (btn) btn.classList.add('activo');
+
+  const el = document.createElement('div');
+  el.className = 'mi-ubicacion-marker';
+  el.innerHTML = '<i class="fas fa-lightbulb"></i>';
+  el.title = 'Mi ubicación';
+
+  miUbicacionWatchIdGlobal = navigator.geolocation.watchPosition(
+    (pos) => {
+      const lat = pos.coords.latitude, lng = pos.coords.longitude;
+      if (miUbicacionMarkerGlobal) {
+        miUbicacionMarkerGlobal.setLngLat([lng, lat]);
+      } else {
+        try {
+          miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el }).setLngLat([lng, lat]).addTo(mapboxMap);
+          mapboxMap.flyTo({ center: [lng, lat], zoom: 15 });
+        } catch(e) {}
+      }
+    },
+    (err) => {
+      alert('No se pudo obtener tu ubicación: ' + (err.message || err.code));
+      miUbicacionActiva = false;
+      if (btn) btn.classList.remove('activo');
+    },
+    { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 }
+  );
+};
+
 // ESTILOS
 function cargarEstilosConfig() {
   APP_CONFIG.get().then(doc => {
@@ -5688,36 +5882,49 @@ document.addEventListener('DOMContentLoaded', function() {
     const s = document.querySelector('#tabTemaToggle span'); if (s) s.textContent = ' Modo claro';
   }
 
+  // ============ LOGIN: FIX (handler único que respeta el modo actual) ============
   document.getElementById('loginBtn').addEventListener('click', function() {
-    if (currentUser) window.logoutUser();
-    else abrirModal('loginModal');
-  });
-  document.getElementById('loginModeLogin').addEventListener('click', function() {
+    if (currentUser) { window.logoutUser(); return; }
+    // Al abrir desde el botón "Entrar", forzar modo login
+    loginMode = 'login';
     document.getElementById('registerFields').style.display = 'none';
     document.getElementById('loginSubmitBtn').textContent = 'Iniciar sesión';
-    document.getElementById('loginSubmitBtn').onclick = async function() {
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
-      if (!email || !password) return;
-      const ok = await window.loginUser(email, password);
-      if (ok) { cerrarModal('loginModal'); cargarLogoConfig(); }
-    };
+    const errEl = document.getElementById('loginError'); if (errEl) errEl.textContent = '';
+    abrirModal('loginModal');
+  });
+  document.getElementById('loginModeLogin').addEventListener('click', function() {
+    loginMode = 'login';
+    document.getElementById('registerFields').style.display = 'none';
+    document.getElementById('loginSubmitBtn').textContent = 'Iniciar sesión';
   });
   document.getElementById('loginModeRegister').addEventListener('click', function() {
+    loginMode = 'register';
     document.getElementById('registerFields').style.display = 'block';
     document.getElementById('loginSubmitBtn').textContent = 'Registrarse';
-    document.getElementById('loginSubmitBtn').onclick = async function() {
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
+  });
+  // FIX: handler único en el botón Enviar (ya no depende de onclick dinámico)
+  document.getElementById('loginSubmitBtn').addEventListener('click', async function() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    if (!email || !password) { document.getElementById('loginError').textContent = 'Ingresa correo y contraseña.'; return; }
+    if (loginMode === 'login') {
+      const ok = await window.loginUser(email, password);
+      if (ok) { cerrarModal('loginModal'); cargarLogoConfig(); }
+    } else {
       const nombre = document.getElementById('loginName').value.trim();
       const telefono = document.getElementById('loginTelefono').value.trim();
       const edad = parseInt(document.getElementById('loginEdad').value);
       const apoyos = [];
       document.querySelectorAll('#loginModal .checkbox-group input:checked').forEach(cb => apoyos.push(cb.value));
-      if (!email || !password || !nombre || !telefono || isNaN(edad)) { alert('Completa todos los campos.'); return; }
+      if (!nombre || !telefono || isNaN(edad)) { document.getElementById('loginError').textContent = 'Completa todos los campos.'; return; }
       const ok = await window.registerUser(email, password, nombre, telefono, edad, apoyos);
       if (ok) { cerrarModal('loginModal'); cargarLogoConfig(); }
-    };
+    }
+  });
+  // Enter en inputs de login
+  ['loginEmail','loginPassword'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keypress', (e) => { if (e.key === 'Enter') document.getElementById('loginSubmitBtn').click(); });
   });
   document.getElementById('loginCancelBtn').addEventListener('click', () => cerrarModal('loginModal'));
 
@@ -5846,7 +6053,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v18: CallMeBot, cambio de contraseña, mapa Mapbox con botones, todas las colecciones en menú hamburguesa.');
+  console.log('✅ SAL Y LUZ v19: fix login, orar visitantes, archivos en chat admin/equipo, leyenda y mi ubicación con bombilla en mapa.');
 });
 
 window.switchPanel = switchPanel;
@@ -5923,6 +6130,8 @@ window.registrarMisionero = registrarMisionero;
 window.cambiarPassword = cambiarPassword;
 window.guardarConfigCallMeBot = guardarConfigCallMeBot;
 window.probarCallMeBot = probarCallMeBot;
+window.activarMiUbicacion = activarMiUbicacion;
+window.enviarWhatsAppCallMeBot = enviarWhatsAppCallMeBot;
 window.abrirModalProyecto = function() { if (!currentUser) return; abrirModal('proyectoModal'); };
 window.crearProyecto = function() {
   if (!currentUser) return;

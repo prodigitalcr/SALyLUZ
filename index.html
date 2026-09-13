@@ -1188,6 +1188,462 @@
     .versiculo-menu button i { width: 16px; text-align: center; color: var(--teal); }
     .biblia-version-selector { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
     .biblia-version-selector select { padding: 6px 12px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-primary); font-size: 12px; }
+
+    /* ==================== NUEVO DISEÑO BIBLIA (como la imagen) ==================== */
+    .biblia-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (min-width: 992px) {
+      .biblia-layout { grid-template-columns: 260px 1fr; }
+    }
+    .biblia-sidebar {
+      background: white;
+      border-radius: var(--radius);
+      padding: 16px 14px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+      height: fit-content;
+      position: sticky;
+      top: 130px;
+      max-height: calc(100vh - 150px);
+      overflow-y: auto;
+    }
+    body.dark .biblia-sidebar { background: #1a1a2e; }
+    .biblia-sidebar h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .biblia-sidebar h4 i { color: var(--teal); }
+    .biblia-historial-list { display: flex; flex-direction: column; gap: 4px; }
+    .biblia-historial-item {
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+    }
+    .biblia-historial-item:hover { background: var(--teal-light); color: var(--teal-dark); }
+    .biblia-historial-item i { color: var(--teal); font-size: 11px; }
+    .biblia-main {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+      padding: 20px 24px;
+      min-height: 400px;
+    }
+    body.dark .biblia-main { background: #1a1a2e; }
+    .biblia-search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-body);
+      border-radius: 30px;
+      padding: 10px 16px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 16px;
+      position: relative;
+    }
+    body.dark .biblia-search-bar { background: #12121a; }
+    .biblia-search-bar i { color: var(--text-secondary); font-size: 15px; }
+    .biblia-search-bar input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      outline: none;
+      color: var(--text-primary);
+      font-size: 14px;
+      padding: 2px 0;
+    }
+    .biblia-search-bar input::placeholder { color: var(--text-secondary); }
+    .biblia-search-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 12px;
+      margin-top: 6px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 50;
+      border: 1px solid var(--border-color);
+      display: none;
+    }
+    body.dark .biblia-search-suggestions { background: #1a1a2e; }
+    .biblia-search-suggestions.show { display: block; }
+    .biblia-search-suggestion {
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-color);
+      transition: 0.15s;
+    }
+    .biblia-search-suggestion:last-child { border-bottom: none; }
+    .biblia-search-suggestion:hover { background: var(--teal-light); color: var(--teal-dark); }
+    .biblia-titulo {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin: 8px 0 4px;
+      color: var(--text-primary);
+      font-family: Georgia, serif;
+    }
+    .biblia-subtitulo {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 18px;
+      font-style: italic;
+    }
+    .biblia-texto {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 16px;
+      line-height: 1.85;
+      color: var(--text-primary);
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .biblia-texto .versiculo-item {
+      display: block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-bottom: 2px;
+      text-align: justify;
+    }
+    .biblia-texto .versiculo-item .num-verso {
+      color: var(--teal);
+      font-weight: 700;
+      font-size: 11px;
+      vertical-align: super;
+      margin-right: 4px;
+      font-family: system-ui, sans-serif;
+    }
+    .biblia-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .biblia-nav-bar button {
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 8px 18px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .biblia-nav-bar button:disabled { opacity: 0.4; cursor: not-allowed; }
+    .biblia-nav-bar .cap-info { font-weight: 600; font-size: 14px; }
+    .biblia-toolbar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .biblia-toolbar button {
+      background: var(--bg-body);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.15s;
+    }
+    .biblia-toolbar button:hover { background: var(--teal); color: #fff; border-color: var(--teal); }
+    .biblia-info-panel {
+      background: linear-gradient(135deg, #FFF9E6, #FFF4CC);
+      border: 1px solid var(--gold);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    body.dark .biblia-info-panel { background: rgba(212,175,55,0.12); }
+    .biblia-info-panel.show { display: block; }
+    .biblia-info-panel h5 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold-dark);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .biblia-info-panel p { font-size: 13px; line-height: 1.55; color: var(--text-primary); }
+    .biblia-info-panel .paralelo-item {
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--border-color);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .biblia-info-panel .paralelo-item:last-child { border-bottom: none; }
+    .biblia-info-panel .paralelo-item .ref { font-weight: 700; color: var(--gold-dark); }
+
+    /* ==================== AGENTE IA FLOTANTE ==================== */
+    .agente-flotante-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      color: #fff;
+      border: 3px solid #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 10px 30px rgba(29,158,117,0.5);
+      z-index: 9997;
+      transition: transform 0.25s, box-shadow 0.25s;
+      overflow: hidden;
+    }
+    .agente-flotante-btn:hover { transform: scale(1.1); box-shadow: 0 14px 40px rgba(29,158,117,0.75); }
+    .agente-flotante-btn img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .agente-flotante-btn .pulse-ring {
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border: 3px solid var(--teal);
+      animation: agentePulse 2.2s ease-out infinite;
+      pointer-events: none;
+    }
+    @keyframes agentePulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(1.5); opacity: 0; }
+    }
+    .agente-chat-panel {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 380px;
+      max-width: calc(100vw - 32px);
+      height: 540px;
+      max-height: calc(100vh - 130px);
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+      z-index: 9998;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+    body.dark .agente-chat-panel { background: #1a1a2e; }
+    .agente-chat-panel.show { display: flex; }
+    .agente-chat-header {
+      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      color: #fff;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .agente-chat-header .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.4);
+    }
+    .agente-chat-header .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .agente-chat-header .info { flex: 1; min-width: 0; }
+    .agente-chat-header .name { font-weight: 700; font-size: 14px; }
+    .agente-chat-header .status { font-size: 11px; opacity: 0.9; display: flex; align-items: center; gap: 4px; }
+    .agente-chat-header .status .dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #2ecc71;
+      box-shadow: 0 0 0 2px rgba(46,204,113,0.35);
+    }
+    .agente-chat-header .close-btn {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .agente-chat-mensajes {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      background: var(--bg-body);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    body.dark .agente-chat-mensajes { background: #12121a; }
+    .agente-msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+    .agente-msg.agente {
+      background: white;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    body.dark .agente-msg.agente { background: #2a2a3e; color: var(--text-primary); }
+    .agente-msg.usuario {
+      background: var(--teal);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .agente-msg.loading { font-style: italic; opacity: 0.7; }
+    .agente-msg.loading::after {
+      content: '...';
+      display: inline-block;
+      animation: dots 1.2s infinite;
+    }
+    @keyframes dots { 0%,20% { content: '.'; } 40% { content: '..'; } 60%,100% { content: '...'; } }
+    .agente-chat-input {
+      display: flex;
+      gap: 6px;
+      padding: 10px;
+      background: white;
+      border-top: 1px solid var(--border-color);
+      align-items: center;
+    }
+    body.dark .agente-chat-input { background: #1a1a2e; }
+    .agente-chat-input textarea {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-body);
+      color: var(--text-primary);
+      font-size: 13px;
+      font-family: inherit;
+      resize: none;
+      max-height: 90px;
+      min-height: 40px;
+    }
+    .agente-chat-input button {
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+    .agente-chat-input button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    @media (max-width: 640px) {
+      .agente-chat-panel {
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+      }
+      .agente-flotante-btn { bottom: 18px; right: 18px; width: 56px; height: 56px; font-size: 22px; }
+    }
+
+    /* ==================== MODELOS OPENROUTER ==================== */
+    .modelo-openrouter-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 6px;
+      background: var(--bg-body);
+      cursor: pointer;
+      transition: 0.15s;
+    }
+    .modelo-openrouter-item:hover { border-color: var(--teal); background: var(--teal-light); }
+    .modelo-openrouter-item.selected { border-color: var(--teal); background: var(--teal-light); box-shadow: 0 0 0 2px rgba(29,158,117,0.2); }
+    .modelo-openrouter-item .info { flex: 1; min-width: 0; }
+    .modelo-openrouter-item .nombre { font-weight: 600; font-size: 13px; }
+    .modelo-openrouter-item .id { font-size: 11px; color: var(--text-secondary); word-break: break-all; }
+    .modelo-openrouter-item .badge-free {
+      background: #2ecc71; color: #fff; font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px; flex-shrink: 0;
+    }
+
+    /* ==================== BOTÓN FLOTANTE INFO/TAMAÑO ==================== */
+    .biblia-info-btn {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #D4AF37, #A67C00);
+      color: #fff;
+      border: 3px solid #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 8px 24px rgba(212,175,55,0.5);
+      z-index: 9996;
+      transition: transform 0.2s;
+    }
+    .biblia-info-btn:hover { transform: scale(1.1); }
+    @media (max-width: 640px) { .biblia-info-btn { bottom: 18px; left: 18px; width: 50px; height: 50px; font-size: 20px; } }
   </style>
 </head>
 <body>
@@ -1235,6 +1691,9 @@
     </nav>
   </div>
 
+  <!-- ============================================================ -->
+  <!-- PANEL INICIO (sin cambios) -->
+  <!-- ============================================================ -->
   <div class="panel active" id="panel-inicio">
     <div class="historias-bar" id="historiasBar"></div>
 
@@ -1290,51 +1749,77 @@
     </div>
   </div>
 
+  <!-- ============================================================ -->
+  <!-- PANEL BIBLIA - REDISEÑADO -->
+  <!-- ============================================================ -->
   <div class="panel" id="panel-biblia">
-    <div class="card">
-      <h3><i class="fas fa-bible"></i> Lectura Bíblica <span id="bibliaFuenteBadge" class="biblia-fuente-badge"><i class="fas fa-sync"></i> Cargando...</span></h3>
-      <div class="biblia-version-selector">
-        <label for="bibliaVersionSelect" style="font-size:13px; font-weight:600; color:var(--text-secondary);"><i class="fas fa-bookmark"></i> Versión:</label>
-        <select id="bibliaVersionSelect" onchange="cambiarVersionBiblia()">
+    <div class="biblia-layout">
+      <!-- Sidebar -->
+      <aside class="biblia-sidebar">
+        <h4><i class="fas fa-history"></i> Leídos recientemente</h4>
+        <div class="biblia-historial-list" id="bibliaHistorialLista">
+          <p style="font-size:12px;color:var(--text-secondary);">Aún no has leído nada.</p>
+        </div>
+        <hr style="border-color:var(--border-color); margin:14px 0;">
+        <h4><i class="fas fa-bookmark"></i> Versión</h4>
+        <select id="bibliaVersionSelect" onchange="cambiarVersionBiblia()" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:12px;">
           <option value="">Cargando versiones...</option>
         </select>
-        <button class="btn-outline" id="btnRecargarVersiones" onclick="recargarVersionesBiblia()" title="Recargar versiones" style="padding:4px 10px; font-size:12px;"><i class="fas fa-sync"></i></button>
-      </div>
-      <div class="biblia-selectores">
-        <div class="grupo"><label for="libro"><i class="fas fa-book"></i> Libro</label><select id="libro"><option value="">Selecciona</option></select></div>
-        <div class="grupo"><label for="capitulo"><i class="fas fa-chapter"></i> Capítulo</label><select id="capitulo"><option value="">Selecciona</option></select></div>
-      </div>
-      <div class="biblia-nav">
-        <button id="btnCapAnterior"><i class="fas fa-chevron-left"></i> Anterior</button>
-        <span class="cap-info" id="capInfo">Capítulo 1</span>
-        <button id="btnCapSiguiente">Siguiente <i class="fas fa-chevron-right"></i></button>
-        <div class="fuente-control" style="margin-left: auto;">
-          <button id="btnDisminuirFuente">A-</button>
-          <span id="fuenteInfo">Tamaño: 14px</span>
-          <button id="btnAumentarFuente">A+</button>
+        <button class="btn-outline" onclick="recargarVersionesBiblia()" style="width:100%; margin-top:8px; font-size:11px;"><i class="fas fa-sync"></i> Recargar</button>
+        <p style="font-size:11px; color:var(--text-secondary); margin-top:8px; text-align:center;">
+          <span id="bibliaFuenteBadge" class="biblia-fuente-badge"><i class="fas fa-sync"></i> Cargando...</span>
+        </p>
+      </aside>
+
+      <!-- Main -->
+      <div class="biblia-main">
+        <!-- Barra de búsqueda -->
+        <div class="biblia-search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" id="bibliaBuscarInput" placeholder="Buscar libro o capítulo (ej: Juan 3, Salmos 23)..." autocomplete="off">
+          <button class="btn-icon" id="bibliaBuscarClear" style="display:none;"><i class="fas fa-times"></i></button>
+          <div class="biblia-search-suggestions" id="bibliaBuscarSugerencias"></div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="biblia-toolbar">
+          <button type="button" onclick="toggleBibliaInfoPanel()" title="Contenido relacionado / paralelo"><i class="fas fa-info-circle"></i></button>
+          <button type="button" onclick="abrirAjusteFuente()" title="Tamaño de letra"><i class="fas fa-text-height"></i></button>
+          <button type="button" onclick="copiarCapituloCompleto()" title="Copiar capítulo"><i class="fas fa-copy"></i></button>
+          <button type="button" onclick="compartirCapituloCompleto()" title="Compartir capítulo"><i class="fas fa-share"></i></button>
+        </div>
+
+        <!-- Panel info relacionado -->
+        <div class="biblia-info-panel" id="bibliaInfoPanel">
+          <h5><i class="fas fa-lightbulb"></i> Contenido relacionado y paralelo</h5>
+          <div id="bibliaInfoContenido"></div>
+        </div>
+
+        <!-- Título -->
+        <div class="biblia-titulo" id="bibliaTitulo">Selecciona un libro</div>
+        <div class="biblia-subtitulo" id="bibliaSubtitulo">Elige un libro y capítulo para comenzar a leer</div>
+
+        <!-- Texto -->
+        <div class="biblia-texto" id="versiculoContainer">
+          <p style="text-align:center; color:var(--text-secondary); padding:40px 0; font-family: system-ui;">
+            <i class="fas fa-book-open" style="font-size:40px; display:block; margin-bottom:10px; opacity:0.4;"></i>
+            Selecciona un libro y capítulo para ver los versículos.
+          </p>
+        </div>
+
+        <!-- Nav bar -->
+        <div class="biblia-nav-bar">
+          <button id="btnCapAnterior"><i class="fas fa-chevron-left"></i> Anterior</button>
+          <span class="cap-info" id="capInfo">—</span>
+          <button id="btnCapSiguiente">Siguiente <i class="fas fa-chevron-right"></i></button>
         </div>
       </div>
-      <div class="versiculos" id="versiculoContainer" style="font-size:14px;"><p style="text-align:center; color:var(--text-secondary); padding:16px 0;">Selecciona un libro y capítulo para ver los versículos.</p></div>
-    </div>
-    <div class="card">
-      <h3><i class="fas fa-history"></i> Buscados recientemente</h3>
-      <div class="historial-tags" id="historialContainer"></div>
-      <div style="display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;">
-        <input type="text" id="bibliaSearchInput" placeholder="Concordancia..." style="flex:1; min-width:150px; padding:8px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
-        <button class="btn-primary" id="btnBuscarBiblia"><i class="fas fa-search"></i></button>
-      </div>
-      <div id="resultadoBiblia" style="margin-top:6px; line-height:1.6; font-size:14px;"></div>
-    </div>
-    <div class="card">
-      <h3><i class="fas fa-robot"></i> Asistente IA</h3>
-      <div style="display:flex; gap:6px;">
-        <input type="text" id="iaPregunta" placeholder="Pregunta sobre el pasaje..." style="flex:1; padding:8px 12px; border-radius:30px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:13px;">
-        <button class="btn-primary" id="btnPreguntarIA"><i class="fas fa-paper-plane"></i></button>
-      </div>
-      <div class="ia-chat" id="iaChat"></div>
     </div>
   </div>
 
+  <!-- ============================================================ -->
+  <!-- RESTO DE PANELES (sin cambios) -->
+  <!-- ============================================================ -->
   <div class="panel" id="panel-devocionales">
     <div class="card" id="devocionalSubirCard" style="display:none;">
       <h3><i class="fas fa-book-bible"></i> Nuevo Devocional</h3>
@@ -1898,7 +2383,40 @@
       </div>
     </div>
 
-    <!-- NUEVO: Configuración de Biblia con subida de carpeta completa y versiones -->
+    <!-- NUEVO: Configuración del AGENTE IA (reemplaza al antiguo Asistente IA) -->
+    <div class="card config-solo-admin" id="cardAgenteIAConfig">
+      <h3><i class="fas fa-robot"></i> Agente IA Bíblico</h3>
+      <div class="admin-ia-config">
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">
+          Configura el agente IA que aparece como botón flotante en la colección Biblia.
+          Se conecta a <strong>OpenRouter</strong> y responde en contexto histórico y teológico sobre pasajes bíblicos.
+        </p>
+        <label>Nombre del agente</label>
+        <input type="text" id="agenteNombreInput" placeholder="Ej: Luz">
+        <label>API Key de OpenRouter</label>
+        <input type="text" id="agenteApiKeyInput" placeholder="sk-or-v1-...">
+        <button type="button" class="btn-outline" onclick="cargarModelosGratisOpenRouter()" style="margin-top:8px;width:100%;">
+          <i class="fas fa-sync"></i> Cargar modelos GRATIS disponibles
+        </button>
+        <div id="agenteModelosLista" style="margin-top:10px;max-height:280px;overflow-y:auto;">
+          <p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px;">Pulsa el botón para cargar modelos gratis de OpenRouter.</p>
+        </div>
+        <label>Modelo seleccionado</label>
+        <input type="text" id="agenteModeloSeleccionado" readonly placeholder="Selecciona un modelo de la lista">
+        <label>Prompt del sistema (entrenamiento del agente)</label>
+        <textarea id="agentePromptSistema" rows="5" placeholder="Eres un experto en historia bíblica y teología..."></textarea>
+        <label>Mensaje de bienvenida</label>
+        <input type="text" id="agenteMensajeBienvenida" placeholder="¡Shalom! Soy tu asistente bíblico. ¿Qué pasaje quieres explorar?">
+        <button type="button" class="btn-primary" onclick="guardarConfigAgenteIA()" style="margin-top:10px;width:100%;">
+          <i class="fas fa-save"></i> Guardar configuración del agente
+        </button>
+        <button type="button" class="btn-outline" onclick="probarAgenteIA()" style="margin-top:6px;width:100%;">
+          <i class="fas fa-flask"></i> Probar conexión
+        </button>
+      </div>
+    </div>
+    <div class="config-msg" id="msgAgenteIAConfig"><p>⚠️ Solo SuperAdmin.</p></div>
+
     <div class="card config-solo-admin" id="cardBibliaConfig">
       <h3><i class="fas fa-bible"></i> Configuración Bíblica (GitHub / Multimedia)</h3>
       <div class="admin-ia-config">
@@ -2010,9 +2528,9 @@
     <div class="config-msg" id="msgMenuConfig"><p>⚠️ Solo SuperAdmin.</p></div>
 
     <div class="card config-solo-admin" id="cardIAConfig">
-      <h3><i class="fas fa-robot"></i> Configuración IA</h3>
+      <h3><i class="fas fa-robot"></i> Configuración IA (Muro)</h3>
       <div class="admin-ia-config">
-        <label>API Key</label>
+        <label>API Key (OpenRouter)</label>
         <input type="text" id="openrouterKey" placeholder="sk-or-...">
         <label>Modelo</label>
         <select id="openrouterModelSelect">
@@ -2081,7 +2599,7 @@
     <div class="config-msg" id="msgPaypalConfig"><p>⚠️ Solo SuperAdmin.</p></div>
   </div>
 
-  <!-- MODALES -->
+  <!-- MODALES (sin cambios) -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
       <h3><i class="fas fa-user"></i> Iniciar sesión / Registrarse</h3>
@@ -2758,6 +3276,37 @@
 
 </div>
 
+<!-- ============================================================ -->
+<!-- AGENTE IA FLOTANTE -->
+<!-- ============================================================ -->
+<button type="button" class="agente-flotante-btn" id="agenteFlotanteBtn" onclick="toggleAgenteChat()" title="Agente Bíblico IA" style="display:none;">
+  <span class="pulse-ring"></span>
+  <i class="fas fa-robot" id="agenteFlotanteIcono"></i>
+</button>
+
+<div class="agente-chat-panel" id="agenteChatPanel">
+  <div class="agente-chat-header">
+    <div class="avatar" id="agenteAvatar">
+      <i class="fas fa-robot"></i>
+    </div>
+    <div class="info">
+      <div class="name" id="agenteNombre">Luz · Agente Bíblico</div>
+      <div class="status"><span class="dot"></span> En línea · Contexto histórico</div>
+    </div>
+    <button type="button" class="close-btn" onclick="toggleAgenteChat()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="agente-chat-mensajes" id="agenteChatMensajes"></div>
+  <div class="agente-chat-input">
+    <textarea id="agenteChatInput" placeholder="Pregunta sobre historia, contexto o un pasaje..." rows="1" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();enviarMensajeAgente();}"></textarea>
+    <button type="button" id="agenteChatEnviarBtn" onclick="enviarMensajeAgente()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<!-- Botón flotante info/tamaño -->
+<button type="button" class="biblia-info-btn" id="bibliaInfoBtn" onclick="toggleBibliaInfoPanel()" title="Contenido relacionado / Tamaño de letra" style="display:none;">
+  <i class="fas fa-info"></i>
+</button>
+
 <footer class="footer">
   <span>Norlan Cárcamo López - prodigital</span> &copy; 2026 · Todos los derechos reservados.
 </footer>
@@ -2802,6 +3351,7 @@ const CONFIG_MAPBOX = db.collection('config_mapbox').doc('config');
 const CONFIG_CALLMEBOT = db.collection('config_callmebot').doc('config');
 const CONFIG_PAYPAL = db.collection('config_paypal').doc('config');
 const CONFIG_BIBLIA = db.collection('config_biblia').doc('config');
+const CONFIG_AGENTE_IA = db.collection('config_agente_ia').doc('config');
 const BIBLIAS_PERSONALIZADAS = db.collection('biblias_personalizadas');
 const BIBLIAS_VERSIONES = db.collection('biblias_versiones');
 const EVENTOS = db.collection('eventos');
@@ -2828,7 +3378,7 @@ let mapboxMap = null;
 let mapboxMarkers = [];
 let mapboxToken = '';
 let mapboxPickers = {};
-let miUbicacionMarker = null; // legado
+let miUbicacionMarker = null;
 let fotoViewerUnsub = null;
 let reelsViewerUnsub = null;
 let reelsAll = [];
@@ -2852,7 +3402,6 @@ let loginMode = 'login';
 let chatAdminArchivo = null;
 let chatEquipoArchivo = null;
 
-// ==== UBICACIÓN EN TIEMPO REAL (nuevo) ====
 let miUbicacionWatchIdGlobal = null;
 let miUbicacionMarkerGlobal = null;
 let miUbicacionActiva = false;
@@ -2861,7 +3410,6 @@ let miUbicacionAnimId = null;
 let miUbicacionTargetLat = null;
 let miUbicacionTargetLng = null;
 
-// ==== RUTA ====
 let rutaActiva = null;
 let rutaWatchId = null;
 let rutaDestino = null;
@@ -2869,23 +3417,34 @@ let rutaSiguiendoUsuario = true;
 
 // ==== BIBLIA ====
 let bibliaConfig = {
-  fuente: 'auto', // 'github' | 'custom' | 'local' | 'auto'
+  fuente: 'auto',
   githubOwner: '',
   githubRepo: '',
   githubBranch: 'main',
   githubPath: 'Biblia'
 };
-let librosBiblia = { antiguoTestamento: {}, nuevoTestamento: {} }; // { libro: url }
-let textosCapitulosCache = {}; // { libro: { capitulo: [versos] } }
+let librosBiblia = { antiguoTestamento: {}, nuevoTestamento: {} };
+let textosCapitulosCache = {};
 let libroActual = '';
 let capituloActual = '';
 let capitulosCache = {};
 let capituloKeys = [];
-let versionBibliaActualId = ''; // NUEVO: id de versión seleccionada
+let versionBibliaActualId = '';
+let bibliaTextoActual = ''; // Para el agente IA y copiar/compartir
 
-// ORDEN CANÓNICO DE LOS 66 LIBROS DE LA BIBLIA
+// ==== AGENTE IA ====
+let agenteIAConfig = {
+  nombre: 'Luz',
+  apiKey: '',
+  modelo: '',
+  promptSistema: '',
+  mensajeBienvenida: '¡Shalom! Soy Luz, tu asistente bíblico. Pregúntame sobre el contexto histórico, teológico o cultural de cualquier pasaje. ¿Qué quieres explorar hoy?'
+};
+let agenteChatHistorial = []; // { rol: 'user'|'assistant', contenido: '' }
+let agenteModelosCargados = [];
+let agenteCargando = false;
+
 const ORDEN_BIBLICO = [
-  // Antiguo Testamento
   'Génesis','Éxodo','Levítico','Números','Deuteronomio',
   'Josué','Jueces','Rut','1 Samuel','2 Samuel',
   '1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras',
@@ -2894,7 +3453,6 @@ const ORDEN_BIBLICO = [
   'Ezequiel','Daniel','Oseas','Joel','Amós',
   'Obadías','Jonás','Miqueas','Nahúm','Habacuc',
   'Sofonías','Hageo','Zacarías','Malaquías',
-  // Nuevo Testamento
   'Mateo','Marcos','Lucas','Juan','Hechos',
   'Romanos','1 Corintios','2 Corintios','Gálatas','Efesios',
   'Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo',
@@ -2907,9 +3465,10 @@ const STORAGE_KEYS = {
   historialBiblia: 'iglesia_historial_biblia',
   theme: 'iglesia_theme',
   bibliaFuente: 'iglesia_biblia_fuente',
-  visitanteId: 'iglesia_visitante_id'
+  visitanteId: 'iglesia_visitante_id',
+  versiculosLeidos: 'iglesia_versiculos_leidos'
 };
-let bibliaFuenteSize = parseInt(localStorage.getItem(STORAGE_KEYS.bibliaFuente)) || 14;
+let bibliaFuenteSize = parseInt(localStorage.getItem(STORAGE_KEYS.bibliaFuente)) || 16;
 const MAX_GALERIA = 100;
 
 function tieneRol(rol) { return currentUser && currentUser.apoyos && currentUser.apoyos.includes(rol); }
@@ -3030,14 +3589,12 @@ window.cerrarMuroCols = function() {
   if (overlay) overlay.classList.remove('show');
 };
 
-// ==================== MARCADOR PUNTO SIMPLE ====================
 function crearMarkerElemento(tipo, iconFallback) {
   const el = document.createElement('div');
   el.className = 'mapa-marker-dot mapa-marker-' + (tipo || 'iglesia');
   return el;
 }
 
-// ==================== MI UBICACIÓN (punto azul clásico con animación) ====================
 function crearMarkerUbicacion() {
   const wrapper = document.createElement('div');
   wrapper.className = 'mi-ubicacion-wrapper';
@@ -3045,12 +3602,11 @@ function crearMarkerUbicacion() {
   return wrapper;
 }
 
-// Animación suave del marcador hacia el objetivo (interpolación lineal)
 function animarMarcadorUbicacion(lat, lng) {
   miUbicacionTargetLat = lat;
   miUbicacionTargetLng = lng;
   if (!miUbicacionMarkerGlobal) return;
-  if (miUbicacionAnimId) return; // ya animando hacia el objetivo
+  if (miUbicacionAnimId) return;
   const step = () => {
     if (!miUbicacionMarkerGlobal) { miUbicacionAnimId = null; return; }
     const cur = miUbicacionMarkerGlobal.getLngLat();
@@ -3088,7 +3644,7 @@ function asegurarMarcadorUbicacion(lat, lng) {
 
 function iniciarWatchUbicacion(opciones = {}) {
   if (!navigator.geolocation) return;
-  if (miUbicacionWatchIdGlobal !== null) return; // ya activo
+  if (miUbicacionWatchIdGlobal !== null) return;
   miUbicacionWatchIdGlobal = navigator.geolocation.watchPosition(
     (pos) => {
       const lat = pos.coords.latitude, lng = pos.coords.longitude;
@@ -3356,6 +3912,7 @@ async function cargarUsuarioActual(user) {
     cargarConfigCallMeBot();
     cargarConfigPaypal();
     cargarConfigBiblia();
+    cargarConfigAgenteIA();
     renderEventos();
     renderNoticias();
     renderReels();
@@ -3426,6 +3983,8 @@ function actualizarUIUsuario() {
   const tabConvertir = document.getElementById('tabConvertirHamburguesa');
   const btnRegistrarIglesiaPanel = document.getElementById('btnRegistrarIglesiaPanel');
   const btnMostrarFormDev = document.getElementById('btnMostrarFormDevocional');
+  const agenteFlotanteBtn = document.getElementById('agenteFlotanteBtn');
+  const bibliaInfoBtn = document.getElementById('bibliaInfoBtn');
 
   if (currentUser) {
     if (loginBtn) loginBtn.style.display = 'none';
@@ -3492,11 +4051,11 @@ function actualizarUIUsuario() {
   }
 
   const isConfigAllowed = isSuperAdmin;
-  ['cardLogoConfig', 'cardIAConfig', 'cardMapboxConfig', 'cardMenuConfig', 'cardEstilosConfig', 'cardCallMeBotConfig', 'cardPaypalConfig', 'cardBibliaConfig'].forEach(id => {
+  ['cardLogoConfig', 'cardIAConfig', 'cardMapboxConfig', 'cardMenuConfig', 'cardEstilosConfig', 'cardCallMeBotConfig', 'cardPaypalConfig', 'cardBibliaConfig', 'cardAgenteIAConfig'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = isConfigAllowed ? 'block' : 'none';
   });
-  ['msgLogoConfig', 'msgIAConfig', 'msgMapboxConfig', 'msgMenuConfig', 'msgEstilosConfig', 'msgCallMeBotConfig', 'msgPaypalConfig', 'msgBibliaConfig'].forEach(id => {
+  ['msgLogoConfig', 'msgIAConfig', 'msgMapboxConfig', 'msgMenuConfig', 'msgEstilosConfig', 'msgCallMeBotConfig', 'msgPaypalConfig', 'msgBibliaConfig', 'msgAgenteIAConfig'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = isConfigAllowed ? 'none' : 'block';
   });
@@ -3523,6 +4082,20 @@ function switchPanel(name) {
   if (tabs && tabs.classList.contains('open')) tabs.classList.remove('open');
   if (typeof cerrarMuroCols === 'function') cerrarMuroCols();
 
+  // Mostrar/ocultar botón flotante del agente IA (solo en Biblia)
+  const agenteBtn = document.getElementById('agenteFlotanteBtn');
+  const infoBtn = document.getElementById('bibliaInfoBtn');
+  if (name === 'biblia') {
+    if (agenteBtn) agenteBtn.style.display = 'flex';
+    if (infoBtn) infoBtn.style.display = 'flex';
+  } else {
+    if (agenteBtn) agenteBtn.style.display = 'none';
+    if (infoBtn) infoBtn.style.display = 'none';
+    // Cerrar chat si se cambia de panel
+    const agentePanel = document.getElementById('agenteChatPanel');
+    if (agentePanel) agentePanel.classList.remove('show');
+  }
+
   switch (name) {
     case 'muro':
       renderFeed(); renderHistoriasMuro();
@@ -3544,7 +4117,7 @@ function switchPanel(name) {
     case 'chatequipo': renderChatEquipo(); break;
     case 'iglesias': renderIglesiasPanel(); break;
     case 'mapa': if (currentUser) { renderMapaAcordeon(); setTimeout(()=>{ initMapboxMap(); }, 100); } break;
-    case 'biblia': cargarHistorial(); llenarSelectorLibros(); cargarVersionesBiblia(); break;
+    case 'biblia': inicializarBibliaUI(); break;
     case 'devocionales': renderDevocionales(); break;
     case 'inicio': renderCarrusel(); renderEventos(); renderNoticias(); renderHistorias(); break;
     case 'admin': if (isAdmin) renderAdminPanel(); break;
@@ -3716,7 +4289,6 @@ window.renderMapaAcordeon = function() {
   });
 };
 
-// ==================== COMPARTIR UBICACIÓN ====================
 window.compartirUbicacion = async function(lat, lng, nombre, tipo) {
   const latN = parseFloat(lat), lngN = parseFloat(lng);
   if (isNaN(latN) || isNaN(lngN)) { alert('Coordenadas inválidas.'); return; }
@@ -6059,12 +6631,16 @@ function cargarLogoConfig() {
   APP_CONFIG.get().then(doc => {
     const logoEl = document.getElementById('logoIcon');
     const previewEl = document.getElementById('logoPreview');
+    const agenteAvatar = document.getElementById('agenteAvatar');
     if (doc.exists && doc.data().logoUrl) {
-      if (logoEl) logoEl.innerHTML = `<img src="${doc.data().logoUrl}">`;
-      if (previewEl) previewEl.innerHTML = `<img src="${doc.data().logoUrl}" style="width:100%;height:100%;object-fit:contain;">`;
+      const url = doc.data().logoUrl;
+      if (logoEl) logoEl.innerHTML = `<img src="${url}">`;
+      if (previewEl) previewEl.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:contain;">`;
+      if (agenteAvatar) agenteAvatar.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
     } else {
       if (logoEl) logoEl.innerHTML = '<i class="fas fa-church"></i>';
       if (previewEl) previewEl.innerHTML = '<i class="fas fa-image" style="font-size:24px;color:var(--text-secondary);"></i>';
+      if (agenteAvatar) agenteAvatar.innerHTML = '<i class="fas fa-robot"></i>';
     }
   }).catch(() => {});
 }
@@ -6124,10 +6700,124 @@ window.preguntarIA = function() {
 };
 
 // ============================================================
-// BIBLIA MEJORADA: orden canónico, versiones, selección de versículo
+// AGENTE IA (nuevo)
 // ============================================================
+async function cargarConfigAgenteIA() {
+  try {
+    const doc = await CONFIG_AGENTE_IA.get();
+    if (doc.exists) {
+      const d = doc.data();
+      agenteIAConfig = {
+        nombre: d.nombre || 'Luz',
+        apiKey: d.apiKey || '',
+        modelo: d.modelo || '',
+        promptSistema: d.promptSistema || '',
+        mensajeBienvenida: d.mensajeBienvenida || agenteIAConfig.mensajeBienvenida
+      };
+      const nomEl = document.getElementById('agenteNombreInput'); if (nomEl) nomEl.value = agenteIAConfig.nombre;
+      const apiEl = document.getElementById('agenteApiKeyInput'); if (apiEl) apiEl.value = agenteIAConfig.apiKey;
+      const modEl = document.getElementById('agenteModeloSeleccionado'); if (modEl) modEl.value = agenteIAConfig.modelo;
+      const proEl = document.getElementById('agentePromptSistema'); if (proEl) proEl.value = agenteIAConfig.promptSistema;
+      const bienEl = document.getElementById('agenteMensajeBienvenida'); if (bienEl) bienEl.value = agenteIAConfig.mensajeBienvenida;
+      const headerName = document.getElementById('agenteNombre');
+      if (headerName) headerName.textContent = agenteIAConfig.nombre + ' · Agente Bíblico';
+    }
+  } catch(e) { console.warn('cargarConfigAgenteIA', e); }
+}
 
-// --- Cargar config de Biblia ---
+window.guardarConfigAgenteIA = function() {
+  if (!isSuperAdmin) return;
+  const nombre = document.getElementById('agenteNombreInput').value.trim() || 'Luz';
+  const apiKey = document.getElementById('agenteApiKeyInput').value.trim();
+  const modelo = document.getElementById('agenteModeloSeleccionado').value.trim();
+  const promptSistema = document.getElementById('agentePromptSistema').value.trim();
+  const mensajeBienvenida = document.getElementById('agenteMensajeBienvenida').value.trim() || agenteIAConfig.mensajeBienvenida;
+  if (!apiKey) { alert('Falta la API Key de OpenRouter.'); return; }
+  if (!modelo) { alert('Selecciona un modelo.'); return; }
+  CONFIG_AGENTE_IA.set({
+    nombre, apiKey, modelo, promptSistema, mensajeBienvenida,
+    actualizado: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true }).then(() => {
+    agenteIAConfig = { nombre, apiKey, modelo, promptSistema, mensajeBienvenida };
+    const headerName = document.getElementById('agenteNombre');
+    if (headerName) headerName.textContent = nombre + ' · Agente Bíblico';
+    alert('✅ Configuración del agente guardada.');
+  }).catch(err => alert('Error: ' + err.message));
+};
+
+window.cargarModelosGratisOpenRouter = async function() {
+  const cont = document.getElementById('agenteModelosLista');
+  if (!cont) return;
+  cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px;"><i class="fas fa-spinner fa-spin"></i> Consultando OpenRouter...</p>';
+  try {
+    const resp = await fetch('https://openrouter.ai/api/v1/models');
+    if (!resp.ok) throw new Error('No se pudo consultar OpenRouter');
+    const data = await resp.json();
+    const modelos = (data.data || []).filter(m => {
+      const pricing = m.pricing || {};
+      const prompt = parseFloat(pricing.prompt || '0');
+      const completion = parseFloat(pricing.completion || '0');
+      return prompt === 0 && completion === 0;
+    });
+    if (modelos.length === 0) {
+      cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px;">No se encontraron modelos gratuitos.</p>';
+      return;
+    }
+    agenteModelosCargados = modelos;
+    let html = '';
+    modelos.forEach(m => {
+      const id = m.id;
+      const nombre = m.name || id;
+      const selected = (agenteIAConfig.modelo === id) ? 'selected' : '';
+      html += `<div class="modelo-openrouter-item ${selected}" onclick="seleccionarModeloAgente('${id}')">
+        <div class="info">
+          <div class="nombre">${nombre}</div>
+          <div class="id">${id}</div>
+        </div>
+        <span class="badge-free">GRATIS</span>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  } catch(e) {
+    cont.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:10px;">Error: ' + e.message + '</p>';
+  }
+};
+
+window.seleccionarModeloAgente = function(id) {
+  document.querySelectorAll('.modelo-openrouter-item').forEach(el => el.classList.remove('selected'));
+  const items = document.querySelectorAll('.modelo-openrouter-item');
+  items.forEach(el => { if (el.querySelector('.id').textContent === id) el.classList.add('selected'); });
+  const input = document.getElementById('agenteModeloSeleccionado');
+  if (input) input.value = id;
+};
+
+window.probarAgenteIA = async function() {
+  const apiKey = document.getElementById('agenteApiKeyInput').value.trim();
+  const modelo = document.getElementById('agenteModeloSeleccionado').value.trim();
+  if (!apiKey || !modelo) { alert('Completa API Key y modelo primero.'); return; }
+  try {
+    const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + apiKey
+      },
+      body: JSON.stringify({
+        model: modelo,
+        messages: [{ role: 'user', content: 'Responde solo "OK" para confirmar la conexión.' }],
+        max_tokens: 20
+      })
+    });
+    const data = await resp.json();
+    if (data.error) { alert('❌ Error: ' + (data.error.message || JSON.stringify(data.error))); return; }
+    const reply = data.choices?.[0]?.message?.content || '';
+    alert('✅ Conexión exitosa. Respuesta del modelo: ' + reply);
+  } catch(e) { alert('❌ Error de conexión: ' + e.message); }
+};
+
+// ============================================================
+// BIBLIA: funciones mejoradas
+// ============================================================
 async function cargarConfigBiblia() {
   try {
     const doc = await CONFIG_BIBLIA.get();
@@ -6152,7 +6842,6 @@ async function cargarConfigBiblia() {
   await renderVersionesBiblia();
 }
 
-// --- Cargar libros desde las fuentes configuradas ---
 async function cargarLibrosBiblia() {
   librosBiblia = { antiguoTestamento: {}, nuevoTestamento: {} };
   const badge = document.getElementById('bibliaFuenteBadge');
@@ -6234,21 +6923,17 @@ async function cargarLibrosBiblia() {
   llenarSelectorLibros();
 }
 
-// --- Llenar selector de libros en ORDEN CANÓNICO ---
 function llenarSelectorLibros() {
   const libroSelect = document.getElementById('libro');
   if (!libroSelect) return;
   const valorPrevio = libroSelect.value;
   libroSelect.innerHTML = '<option value="">Selecciona</option>';
   const todos = { ...librosBiblia.antiguoTestamento, ...librosBiblia.nuevoTestamento };
-  // Usar ORDEN_BIBLICO para ordenar; los que no estén en la lista se agregan al final
   const nombresOrdenados = [];
   ORDEN_BIBLICO.forEach(nombre => {
-    // Buscar coincidencia exacta o insensible a mayúsculas/acentos
     const encontrado = Object.keys(todos).find(k => k.toLowerCase() === nombre.toLowerCase());
     if (encontrado) nombresOrdenados.push(encontrado);
   });
-  // Agregar los que no están en el orden canónico (por si acaso)
   Object.keys(todos).forEach(k => {
     if (!nombresOrdenados.includes(k)) nombresOrdenados.push(k);
   });
@@ -6261,7 +6946,6 @@ function llenarSelectorLibros() {
   if (valorPrevio && todos[valorPrevio]) libroSelect.value = valorPrevio;
 }
 
-// --- Normalizar capítulos (acepta varios formatos) ---
 function normalizarCapitulos(data) {
   if (Array.isArray(data)) {
     const obj = {};
@@ -6291,18 +6975,22 @@ function normalizarCapitulos(data) {
   return {};
 }
 
-// --- Cargar capítulos de un libro ---
 function cargarCapitulos(libro) {
   const url = librosBiblia.antiguoTestamento[libro] || librosBiblia.nuevoTestamento[libro];
-  if (!url) { document.getElementById('capitulo').innerHTML = '<option>No disponible</option>'; return; }
+  if (!url) {
+    const capSelect = document.getElementById('capitulo');
+    if (capSelect) capSelect.innerHTML = '<option>No disponible</option>';
+    return;
+  }
   const capituloSelect = document.getElementById('capitulo');
+  if (!capituloSelect) return;
   capituloSelect.innerHTML = '<option value="">Cargando...</option>';
   fetch(url).then(r => r.json()).then(data => {
     const chaptersObj = normalizarCapitulos(data);
     textosCapitulosCache[libro] = chaptersObj;
     capituloKeys = Object.keys(chaptersObj).sort((a,b) => parseInt(a) - parseInt(b));
-    capituloSelect.innerHTML = '<option value="">Selecciona capítulo</option>';
-    capituloKeys.forEach(cap => { const o = document.createElement('option'); o.value = cap; o.textContent = 'Capítulo ' + cap; capituloSelect.appendChild(o); });
+    capituloSelect.innerHTML = '<option value="">Capítulo</option>';
+    capituloKeys.forEach(cap => { const o = document.createElement('option'); o.value = cap; o.textContent = cap; capituloSelect.appendChild(o); });
     if (capituloKeys.length > 0) {
       capituloSelect.value = capituloKeys[0];
       capituloActual = capituloKeys[0];
@@ -6311,11 +6999,10 @@ function cargarCapitulos(libro) {
     }
   }).catch(err => {
     console.warn('Error cargando capítulos:', err);
-    capituloSelect.innerHTML = '<option>Error al cargar</option>';
+    capituloSelect.innerHTML = '<option>Error</option>';
   });
 }
 
-// --- Cargar versículos y hacerlos seleccionables ---
 function cargarVersiculos(libro, capitulo) {
   const container = document.getElementById('versiculoContainer');
   if (!container) return;
@@ -6324,22 +7011,195 @@ function cargarVersiculos(libro, capitulo) {
   const verses = data[capitulo];
   if (!verses || verses.length === 0) { container.innerHTML = '<p style="text-align:center;color:var(--text-secondary);">Sin datos para este capítulo.</p>'; return; }
   let html = '';
+  let textoCompleto = '';
   verses.forEach((v, i) => {
     const text = typeof v === 'string' ? v : (v.text || v.texto || v.t || '');
-    html += `<p class="versiculo-item" data-num="${i+1}" data-texto="${(text+'').replace(/"/g,'&quot;')}" onclick="seleccionarVersiculo(this, ${i+1})"><strong style="color:var(--teal);margin-right:6px;">${i+1}</strong> ${text}</p>`;
+    textoCompleto += `[${i+1}] ${text}\n`;
+    html += `<p class="versiculo-item" data-num="${i+1}" data-texto="${(text+'').replace(/"/g,'&quot;')}" onclick="seleccionarVersiculo(this, ${i+1})"><span class="num-verso">${i+1}</span>${text}</p>`;
   });
   container.innerHTML = html;
   container.style.fontSize = bibliaFuenteSize + 'px';
+  bibliaTextoActual = textoCompleto;
+  // Guardar en historial de versículos leídos
+  guardarVersiculoLeido(`${libro} ${capitulo}`);
+  // Actualizar título
+  const tituloEl = document.getElementById('bibliaTitulo');
+  if (tituloEl) tituloEl.textContent = libro.toUpperCase() + ' ' + capitulo;
+  const subEl = document.getElementById('bibliaSubtitulo');
+  if (subEl) subEl.textContent = 'Versión: ' + (versionBibliaActualId ? 'Personalizada' : 'Predeterminada');
+  // Cerrar menú flotante por si estaba abierto
+  const menu = document.getElementById('versiculoMenuFlotante');
+  if (menu) menu.classList.remove('show');
 }
 
-// --- NUEVO: Selección de versículo con menú flotante ---
+// Historial de versículos leídos
+function guardarVersiculoLeido(ref) {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.versiculosLeidos);
+    let arr = raw ? JSON.parse(raw) : [];
+    arr = arr.filter(x => x.ref !== ref);
+    arr.unshift({ ref, fecha: Date.now() });
+    arr = arr.slice(0, 30);
+    localStorage.setItem(STORAGE_KEYS.versiculosLeidos, JSON.stringify(arr));
+    renderBibliaHistorial();
+  } catch(e) {}
+}
+
+function renderBibliaHistorial() {
+  const cont = document.getElementById('bibliaHistorialLista');
+  if (!cont) return;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.versiculosLeidos);
+    const arr = raw ? JSON.parse(raw) : [];
+    if (arr.length === 0) {
+      cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Aún no has leído nada.</p>';
+      return;
+    }
+    let html = '';
+    arr.forEach(item => {
+      html += `<div class="biblia-historial-item" onclick="irAReferenciaBiblica('${item.ref}')">
+        <i class="fas fa-book-open"></i> <span>${item.ref}</span>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  } catch(e) {
+    cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Error al cargar historial.</p>';
+  }
+}
+
+window.irAReferenciaBiblica = function(ref) {
+  const partes = ref.split(' ');
+  if (partes.length < 2) return;
+  const cap = partes[partes.length - 1];
+  const libro = partes.slice(0, -1).join(' ');
+  const libroSelect = document.getElementById('libro');
+  if (libroSelect) {
+    libroSelect.value = libro;
+    libroActual = libro;
+    cargarCapitulos(libro);
+    setTimeout(() => {
+      if (capituloKeys.includes(cap)) {
+        const capSelect = document.getElementById('capitulo');
+        if (capSelect) capSelect.value = cap;
+        capituloActual = cap;
+        actualizarInfoCap();
+        cargarVersiculos(libro, cap);
+      }
+    }, 400);
+  }
+};
+
+// ============================================================
+// BÚSQUEDA BIBLIA
+// ============================================================
+function inicializarBibliaUI() {
+  cargarHistorial();
+  llenarSelectorLibros();
+  cargarVersionesBiblia();
+  renderBibliaHistorial();
+  // Si ya hay un libro y capítulo cargados, mostrarlos
+  if (libroActual && capituloActual) {
+    const libroSelect = document.getElementById('libro');
+    const capSelect = document.getElementById('capitulo');
+    if (libroSelect) libroSelect.value = libroActual;
+    if (capSelect) capSelect.value = capituloActual;
+    actualizarInfoCap();
+    if (textosCapitulosCache[libroActual]) {
+      cargarVersiculos(libroActual, capituloActual);
+    } else {
+      cargarCapitulos(libroActual);
+    }
+  }
+  inicializarBusquedaBiblia();
+}
+
+function inicializarBusquedaBiblia() {
+  const input = document.getElementById('bibliaBuscarInput');
+  const clearBtn = document.getElementById('bibliaBuscarClear');
+  const sugg = document.getElementById('bibliaBuscarSugerencias');
+  if (!input || !sugg) return;
+  input.addEventListener('input', function() {
+    const q = this.value.trim();
+    if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+    if (!q) { sugg.classList.remove('show'); return; }
+    const qLower = q.toLowerCase();
+    const todos = { ...librosBiblia.antiguoTestamento, ...librosBiblia.nuevoTestamento };
+    const resultados = [];
+    // Detectar si el usuario escribió "Juan 3" o "Juan"
+    const match = q.match(/^([1-3]?\s*[A-Za-zÁÉÍÓÚáéíóúÑñ]+)\s*(\d+)?/);
+    if (match) {
+      const nombreLibro = match[1].trim();
+      const numCap = match[2];
+      // Buscar coincidencias de libros
+      Object.keys(todos).forEach(libro => {
+        if (libro.toLowerCase().includes(nombreLibro.toLowerCase())) {
+          if (numCap) {
+            resultados.push({ tipo: 'cap', libro, capitulo: numCap, label: `${libro} ${numCap}` });
+          } else {
+            resultados.push({ tipo: 'libro', libro, label: libro });
+          }
+        }
+      });
+    }
+    if (resultados.length === 0) {
+      sugg.classList.remove('show');
+      return;
+    }
+    let html = '';
+    resultados.slice(0, 12).forEach(r => {
+      const icon = r.tipo === 'cap' ? 'fa-book-open' : 'fa-book';
+      html += `<div class="biblia-search-suggestion" onclick="seleccionarSugerenciaBiblia('${r.libro.replace(/'/g,"\\'")}', '${r.capitulo || ''}')">
+        <i class="fas ${icon}" style="color:var(--teal);margin-right:6px;"></i> ${r.label}
+      </div>`;
+    });
+    sugg.innerHTML = html;
+    sugg.classList.add('show');
+  });
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function() {
+      input.value = '';
+      sugg.classList.remove('show');
+      clearBtn.style.display = 'none';
+    });
+  }
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.biblia-search-bar')) {
+      if (sugg) sugg.classList.remove('show');
+    }
+  });
+}
+
+window.seleccionarSugerenciaBiblia = function(libro, capitulo) {
+  const libroSelect = document.getElementById('libro');
+  if (libroSelect) {
+    libroSelect.value = libro;
+    libroActual = libro;
+    cargarCapitulos(libro);
+    setTimeout(() => {
+      if (capitulo && capituloKeys.includes(capitulo)) {
+        const capSelect = document.getElementById('capitulo');
+        if (capSelect) capSelect.value = capitulo;
+        capituloActual = capitulo;
+        actualizarInfoCap();
+        cargarVersiculos(libro, capitulo);
+      }
+    }, 400);
+  }
+  const sugg = document.getElementById('bibliaBuscarSugerencias');
+  if (sugg) sugg.classList.remove('show');
+  const input = document.getElementById('bibliaBuscarInput');
+  if (input) input.value = libro + (capitulo ? ' ' + capitulo : '');
+};
+
+// ============================================================
+// SELECCIÓN DE VERSÍCULO Y MENÚ FLOTANTE
+// ============================================================
 window.seleccionarVersiculo = function(el, num) {
-  // Quitar selección previa
   document.querySelectorAll('.versiculo-item.seleccionado').forEach(e => e.classList.remove('seleccionado'));
   el.classList.add('seleccionado');
   const texto = el.dataset.texto || el.textContent;
-  const libro = libroActual || document.getElementById('libro').value;
-  const cap = capituloActual || document.getElementById('capitulo').value;
+  const libro = libroActual || (document.getElementById('libro') ? document.getElementById('libro').value : '');
+  const cap = capituloActual || (document.getElementById('capitulo') ? document.getElementById('capitulo').value : '');
   mostrarMenuVersiculo(el, texto, `${libro} ${cap}:${num}`);
 };
 
@@ -6352,20 +7212,18 @@ window.mostrarMenuVersiculo = function(el, texto, referencia) {
     menu.innerHTML = `
       <button type="button" onclick="copiarVersiculoSeleccionado()"><i class="fas fa-copy"></i> Copiar versículo</button>
       <button type="button" onclick="compartirVersiculoSeleccionado()"><i class="fas fa-share"></i> Compartir en el muro</button>
+      <button type="button" onclick="preguntarAlAgenteSobreVersiculo()"><i class="fas fa-robot"></i> Preguntar al agente IA</button>
     `;
     document.body.appendChild(menu);
   }
-  // Guardar datos en el menú
   menu.dataset.texto = texto;
   menu.dataset.referencia = referencia;
-  // Posicionar cerca del elemento
   const rect = el.getBoundingClientRect();
   let top = rect.bottom + 8;
   let left = rect.left;
-  // Ajustar si se sale de pantalla
-  const menuWidth = 180;
+  const menuWidth = 200;
   if (left + menuWidth > window.innerWidth) left = window.innerWidth - menuWidth - 10;
-  if (top + 120 > window.innerHeight) top = rect.top - 120;
+  if (top + 140 > window.innerHeight) top = rect.top - 140;
   menu.style.top = top + 'px';
   menu.style.left = left + 'px';
   menu.classList.add('show');
@@ -6407,7 +7265,25 @@ window.compartirVersiculoSeleccionado = function() {
   }).catch(err => alert('Error: ' + err.message));
 };
 
-// Cerrar menú flotante al hacer clic fuera
+window.preguntarAlAgenteSobreVersiculo = function() {
+  const menu = document.getElementById('versiculoMenuFlotante');
+  if (!menu) return;
+  const texto = menu.dataset.texto || '';
+  const ref = menu.dataset.referencia || '';
+  menu.classList.remove('show');
+  // Abrir el chat del agente
+  const panel = document.getElementById('agenteChatPanel');
+  if (panel && !panel.classList.contains('show')) toggleAgenteChat();
+  // Enviar pregunta predefinida
+  setTimeout(() => {
+    const input = document.getElementById('agenteChatInput');
+    if (input) {
+      input.value = `Explícame el contexto histórico y teológico de ${ref}: "${texto}"`;
+      enviarMensajeAgente();
+    }
+  }, 300);
+};
+
 document.addEventListener('click', function(e) {
   const menu = document.getElementById('versiculoMenuFlotante');
   if (menu && menu.classList.contains('show')) {
@@ -6418,9 +7294,15 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// --- Otras funciones de Biblia ---
-function actualizarInfoCap() { document.getElementById('capInfo').textContent = libroActual && capituloActual ? libroActual + ' ' + capituloActual : 'Capítulo'; }
-function cargarHistorial() { const h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]'); const c = document.getElementById('historialContainer'); c.innerHTML = h.length ? h.map(t => `<span class="historial-tag" onclick="irAHistorial('${t}')" style="cursor:pointer;">${t}</span>`).join('') : '<span style="color:var(--text-secondary);font-size:12px;">Sin búsquedas.</span>'; }
+function actualizarInfoCap() {
+  const el = document.getElementById('capInfo');
+  if (el) el.textContent = libroActual && capituloActual ? libroActual + ' ' + capituloActual : '—';
+}
+function cargarHistorial() {
+  const h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]');
+  const c = document.getElementById('historialContainer');
+  if (c) c.innerHTML = h.length ? h.map(t => `<span class="historial-tag" onclick="irAHistorial('${t}')" style="cursor:pointer;">${t}</span>`).join('') : '<span style="color:var(--text-secondary);font-size:12px;">Sin búsquedas.</span>';
+}
 function guardarHistorial(ref) {
   const h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]');
   const filtrado = h.filter(x => x !== ref);
@@ -6433,12 +7315,14 @@ function irAHistorial(t) {
   if (partes.length < 2) return;
   const cap = partes[partes.length-1];
   const libro = partes.slice(0, -1).join(' ');
-  document.getElementById('libro').value = libro;
+  const libroSelect = document.getElementById('libro');
+  if (libroSelect) libroSelect.value = libro;
   libroActual = libro;
   cargarCapitulos(libro);
   setTimeout(() => {
     if (capituloKeys.includes(cap)) {
-      document.getElementById('capitulo').value = cap;
+      const capSelect = document.getElementById('capitulo');
+      if (capSelect) capSelect.value = cap;
       capituloActual = cap;
       actualizarInfoCap();
       cargarVersiculos(libro, cap);
@@ -6477,7 +7361,6 @@ window.cambiarVersionBiblia = async function() {
   const id = select ? select.value : '';
   versionBibliaActualId = id;
   if (!id) {
-    // Volver a la fuente configurada
     await cargarLibrosBiblia();
     return;
   }
@@ -6485,7 +7368,6 @@ window.cambiarVersionBiblia = async function() {
     const doc = await BIBLIAS_VERSIONES.doc(id).get();
     if (!doc.exists) return;
     const v = doc.data();
-    // Reemplazar librosBiblia con los de esta versión
     librosBiblia = { antiguoTestamento: {}, nuevoTestamento: {} };
     if (v.libros) {
       Object.keys(v.libros).forEach(nombreLibro => {
@@ -6502,7 +7384,6 @@ window.cambiarVersionBiblia = async function() {
   } catch(e) { alert('Error: ' + e.message); }
 };
 
-// --- Config Biblia (SuperAdmin) ---
 window.guardarConfigBiblia = function() {
   if (!isSuperAdmin) return;
   const fuente = document.getElementById('bibliaFuenteSelect').value;
@@ -6525,7 +7406,6 @@ window.recargarBiblias = async function() {
   alert('✅ Libros recargados: ' + (Object.keys(librosBiblia.antiguoTestamento).length + Object.keys(librosBiblia.nuevoTestamento).length) + ' disponibles.');
 };
 
-// --- Subir libro individual ---
 window.subirLibroBiblia = async function() {
   if (!isSuperAdmin) return;
   const testamento = document.getElementById('subirBibliaTestamento').value;
@@ -6579,7 +7459,6 @@ window.eliminarLibroBiblia = async function(id) {
   } catch(e) { alert('Error: ' + e.message); }
 };
 
-// --- Subir carpeta completa de Biblia ---
 window.subirCarpetaBiblia = async function() {
   if (!isSuperAdmin) return;
   const input = document.getElementById('carpetaBibliaInput');
@@ -6590,7 +7469,6 @@ window.subirCarpetaBiblia = async function() {
   const progreso = document.getElementById('progresoSubidaCarpeta');
   progreso.innerHTML = '📂 Preparando subida...';
 
-  // Separar por testamento detectando la ruta
   const archivosAT = [];
   const archivosNT = [];
   archivos.forEach(file => {
@@ -6601,7 +7479,6 @@ window.subirCarpetaBiblia = async function() {
     } else if (rutaLower.includes('nuevo') || rutaLower.includes('nt/') || rutaLower.includes('/nt/')) {
       archivosNT.push(file);
     } else {
-      // Si no está en subcarpeta, intentar por nombre del libro
       const nombre = file.name.replace(/\.json$/i, '');
       if (ORDEN_BIBLICO.indexOf(nombre) >= 0) {
         const idx = ORDEN_BIBLICO.indexOf(nombre);
@@ -6624,10 +7501,8 @@ window.subirCarpetaBiblia = async function() {
   for (const file of todos) {
     const ruta = file.webkitRelativePath || file.name;
     const nombre = file.name.replace(/\.json$/i, '');
-    // Determinar testamento
     let testamento = 'nuevoTestamento';
     if (archivosAT.includes(file)) testamento = 'antiguoTestamento';
-    // Validar JSON
     try {
       const texto = await file.text();
       JSON.parse(texto);
@@ -6705,7 +7580,240 @@ window.eliminarVersionBiblia = async function(id) {
   } catch(e) { alert('Error: ' + e.message); }
 };
 
-// ==================== RESTO DE FUNCIONES (sin cambios) ====================
+// ============================================================
+// UTILIDADES BIBLIA: copiar/compartir capítulo, info panel, fuente
+// ============================================================
+window.copiarCapituloCompleto = function() {
+  if (!bibliaTextoActual) { alert('No hay capítulo cargado.'); return; }
+  const ref = `${libroActual} ${capituloActual}`;
+  const texto = `${ref}\n\n${bibliaTextoActual}`;
+  navigator.clipboard.writeText(texto).then(() => alert('✅ Capítulo copiado.'))
+    .catch(() => prompt('Copia el capítulo:', texto));
+};
+
+window.compartirCapituloCompleto = function() {
+  if (!currentUser) { alert('Inicia sesión para compartir.'); return; }
+  if (!bibliaTextoActual) { alert('No hay capítulo cargado.'); return; }
+  const ref = `${libroActual} ${capituloActual}`;
+  POSTS.add({
+    uid: currentUser.uid,
+    autorNombre: currentUser.displayName,
+    autorFoto: currentUser.fotoPerfil || '',
+    texto: `📖 ${ref}\n\n${bibliaTextoActual.substring(0, 1500)}${bibliaTextoActual.length > 1500 ? '...' : ''}`,
+    categoria: 'otro',
+    fecha: firebase.firestore.FieldValue.serverTimestamp(),
+    likes: [], orando: [], comentarios: [], compartidos: 0
+  }).then(() => { alert('✅ Capítulo compartido en el muro.'); switchPanel('muro'); });
+};
+
+window.toggleBibliaInfoPanel = function() {
+  const panel = document.getElementById('bibliaInfoPanel');
+  if (!panel) return;
+  if (panel.classList.contains('show')) {
+    panel.classList.remove('show');
+    return;
+  }
+  // Generar contenido relacionado / paralelo
+  const contenido = document.getElementById('bibliaInfoContenido');
+  if (!contenido) return;
+  const ref = libroActual && capituloActual ? `${libroActual} ${capituloActual}` : '';
+  let html = '';
+  if (ref) {
+    html += `<p style="margin-bottom:8px;"><strong>📖 Referencia actual:</strong> ${ref}</p>`;
+    // Buscar pasajes paralelos simples según el libro
+    const paralelos = obtenerPasajesParalelos(libroActual, capituloActual);
+    if (paralelos.length > 0) {
+      paralelos.forEach(p => {
+        html += `<div class="paralelo-item">
+          <span class="ref">${p.ref}</span> — ${p.desc}
+        </div>`;
+      });
+    } else {
+      html += `<p style="font-size:12px; color:var(--text-secondary);">No hay referencias paralelas registradas para este pasaje. Pregúntale al agente IA para más contexto.</p>`;
+    }
+    // Tamaño de fuente
+    html += `<hr style="border-color:var(--border-color); margin:10px 0;">
+      <p style="font-size:12px; font-weight:600; margin-bottom:6px;">🔠 Tamaño de letra</p>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <button type="button" class="btn-outline" onclick="cambiarFuenteBiblia(-2)" style="padding:4px 12px;">A-</button>
+        <span id="bibliaFuenteActualInfo" style="font-weight:600;">${bibliaFuenteSize}px</span>
+        <button type="button" class="btn-outline" onclick="cambiarFuenteBiblia(2)" style="padding:4px 12px;">A+</button>
+      </div>`;
+  } else {
+    html = '<p style="font-size:13px; color:var(--text-secondary);">Selecciona un capítulo para ver contenido relacionado.</p>';
+  }
+  contenido.innerHTML = html;
+  panel.classList.add('show');
+};
+
+window.abrirAjusteFuente = function() {
+  toggleBibliaInfoPanel();
+};
+
+window.cambiarFuenteBiblia = function(delta) {
+  bibliaFuenteSize = Math.min(Math.max(bibliaFuenteSize + delta, 10), 32);
+  const cont = document.getElementById('versiculoContainer');
+  if (cont) cont.style.fontSize = bibliaFuenteSize + 'px';
+  const info = document.getElementById('bibliaFuenteActualInfo');
+  if (info) info.textContent = bibliaFuenteSize + 'px';
+  localStorage.setItem(STORAGE_KEYS.bibliaFuente, bibliaFuenteSize);
+};
+
+function obtenerPasajesParalelos(libro, capitulo) {
+  // Diccionario simple de pasajes paralelos (evangelios sinópticos, salmos, etc.)
+  const mapa = {
+    'Mateo 1': [{ref:'Lucas 3:23-38', desc:'Genealogía de Jesús según Lucas'}, {ref:'Isaías 7:14', desc:'Profecía del nacimiento virginal'}],
+    'Mateo 2': [{ref:'Lucas 2:1-20', desc:'Nacimiento de Jesús'}, {ref:'Miqueas 5:2', desc:'Profecía de Belén'}],
+    'Mateo 3': [{ref:'Marcos 1:1-11', desc:'Bautismo de Jesús'}, {ref:'Lucas 3:1-22', desc:'Bautismo según Lucas'}],
+    'Mateo 4': [{ref:'Marcos 1:12-20', desc:'Tentación y llamamiento'}, {ref:'Lucas 4:1-13', desc:'Tentación en el desierto'}],
+    'Mateo 5': [{ref:'Lucas 6:20-49', desc:'Sermón del Monte / Sermón del Llano'}],
+    'Mateo 6': [{ref:'Lucas 11:1-13', desc:'Padre Nuestro y enseñanza sobre la oración'}],
+    'Mateo 7': [{ref:'Lucas 6:37-42', desc:'No juzgar y la viga en el ojo'}],
+    'Marcos 1': [{ref:'Mateo 3:1-17', desc:'Bautismo de Jesús'}, {ref:'Juan 1:1-34', desc:'El Verbo hecho carne'}],
+    'Marcos 2': [{ref:'Mateo 9:1-17', desc:'Paralítico y llamado de Leví'}],
+    'Marcos 3': [{ref:'Mateo 12:1-21', desc:'Señor del sábado'}],
+    'Lucas 1': [{ref:'Mateo 1:18-25', desc:'Anuncio a José'}],
+    'Lucas 2': [{ref:'Mateo 2:1-12', desc:'Los magos del oriente'}],
+    'Lucas 3': [{ref:'Mateo 3:1-17', desc:'Bautismo de Jesús'}, {ref:'Marcos 1:1-11', desc:'Bautismo según Marcos'}],
+    'Juan 1': [{ref:'Génesis 1:1-5', desc:'En el principio'}, {ref:'Colosenses 1:15-20', desc:'Cristo, imagen del Dios invisible'}],
+    'Juan 2': [{ref:'Mateo 21:12-13', desc:'Purificación del templo'}],
+    'Juan 3': [{ref:'Números 21:4-9', desc:'La serpiente de bronce'}, {ref:'Romanos 5:12-21', desc:'Adán y Cristo'}],
+    'Juan 4': [{ref:'2 Reyes 17:24-41', desc:'Los samaritanos'}],
+    'Salmos 1': [{ref:'Proverbios 3:13-18', desc:'La sabiduría'}, {ref:'Jeremías 17:5-8', desc:'Confianza en Dios'}],
+    'Salmos 23': [{ref:'Ezequiel 34:11-16', desc:'El Buen Pastor'}, {ref:'Juan 10:1-18', desc:'Yo soy el Buen Pastor'}],
+    'Salmos 91': [{ref:'Mateo 4:6', desc:'Cita del Salmo 91'}, {ref:'Lucas 4:10-11', desc:'Cita del Salmo 91'}],
+    'Génesis 1': [{ref:'Juan 1:1-3', desc:'El Verbo creador'}, {ref:'Colosenses 1:16', desc:'Todo fue creado por Él'}],
+    'Génesis 3': [{ref:'Romanos 5:12-21', desc:'Entrada del pecado'}, {ref:'Apocalipsis 12', desc:'La serpiente antigua'}],
+    'Génesis 12': [{ref:'Hechos 7:2-8', desc:'Llamamiento de Abraham'}, {ref:'Gálatas 3:6-9', desc:'Fe de Abraham'}],
+    'Éxodo 3': [{ref:'Hechos 7:30-34', desc:'La zarza ardiente'}],
+    'Éxodo 20': [{ref:'Deuteronomio 5:1-21', desc:'Los Diez Mandamientos'}],
+    'Isaías 53': [{ref:'Hechos 8:26-35', desc:'El eunuco etíope'}, {ref:'1 Pedro 2:21-25', desc:'Cristo sufriente'}],
+    'Jeremías 31': [{ref:'Hebreos 8:8-12', desc:'El nuevo pacto'}],
+    'Ezequiel 36': [{ref:'Juan 3:1-8', desc:'Nacer del agua y del Espíritu'}],
+    'Romanos 8': [{ref:'Gálatas 4:1-7', desc:'Hijos de Dios'}],
+    'Apocalipsis 21': [{ref:'Isaías 65:17-25', desc:'Nuevos cielos y nueva tierra'}]
+  };
+  return mapa[`${libro} ${capitulo}`] || [];
+}
+
+// ============================================================
+// AGENTE IA: chat flotante
+// ============================================================
+window.toggleAgenteChat = function() {
+  const panel = document.getElementById('agenteChatPanel');
+  if (!panel) return;
+  if (panel.classList.contains('show')) {
+    panel.classList.remove('show');
+  } else {
+    panel.classList.add('show');
+    // Cargar bienvenida si está vacío
+    const cont = document.getElementById('agenteChatMensajes');
+    if (cont && cont.children.length === 0) {
+      agregarMensajeAgenteUI('assistant', agenteIAConfig.mensajeBienvenida);
+    }
+    const input = document.getElementById('agenteChatInput');
+    if (input) setTimeout(() => input.focus(), 150);
+  }
+};
+
+function agregarMensajeAgenteUI(rol, contenido, cargando) {
+  const cont = document.getElementById('agenteChatMensajes');
+  if (!cont) return;
+  const div = document.createElement('div');
+  div.className = 'agente-msg ' + (rol === 'user' ? 'usuario' : 'agente');
+  if (cargando) div.classList.add('loading');
+  div.textContent = contenido;
+  cont.appendChild(div);
+  cont.scrollTop = cont.scrollHeight;
+  return div;
+}
+
+window.enviarMensajeAgente = async function() {
+  if (agenteCargando) return;
+  const input = document.getElementById('agenteChatInput');
+  if (!input) return;
+  const texto = input.value.trim();
+  if (!texto) return;
+  if (!agenteIAConfig.apiKey || !agenteIAConfig.modelo) {
+    alert('El agente IA aún no está configurado. Pide al SuperAdmin que lo configure.');
+    return;
+  }
+  agenteCargando = true;
+  const btn = document.getElementById('agenteChatEnviarBtn');
+  if (btn) btn.disabled = true;
+
+  // Mostrar mensaje del usuario
+  agregarMensajeAgenteUI('user', texto);
+  agenteChatHistorial.push({ role: 'user', content: texto });
+  input.value = '';
+  input.style.height = 'auto';
+
+  // Mensaje de carga
+  const loadDiv = agregarMensajeAgenteUI('assistant', 'Pensando', true);
+
+  try {
+    const refActual = libroActual && capituloActual ? `${libroActual} ${capituloActual}` : '';
+    let systemPrompt = agenteIAConfig.promptSistema || 
+      'Eres un experto en historia bíblica, teología, contexto cultural y arqueología del mundo bíblico. Respondes con profundidad y claridad, citando pasajes y fuentes históricas cuando es relevante. Mantienes un tono respetuoso, pastoral y académico. Cuando te pregunten sobre un pasaje, proporcionas contexto histórico, geográfico, cultural y teológico. Eres conciso pero completo.';
+
+    if (refActual) {
+      systemPrompt += `\n\nEl usuario está leyendo actualmente: ${refActual}. Cuando sea relevante, contextualiza tu respuesta en ese pasaje.`;
+    }
+
+    const mensajes = [
+      { role: 'system', content: systemPrompt },
+      ...agenteChatHistorial.slice(-10)
+    ];
+
+    const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + agenteIAConfig.apiKey,
+        'HTTP-Referer': window.location.origin || 'https://salyluz.app',
+        'X-Title': 'SAL Y LUZ · Agente Bíblico'
+      },
+      body: JSON.stringify({
+        model: agenteIAConfig.modelo,
+        messages: mensajes,
+        max_tokens: 1200,
+        temperature: 0.7
+      })
+    });
+
+    const data = await resp.json();
+    if (loadDiv && loadDiv.parentNode) loadDiv.parentNode.removeChild(loadDiv);
+
+    if (data.error) {
+      agregarMensajeAgenteUI('assistant', '⚠️ Error: ' + (data.error.message || JSON.stringify(data.error)));
+      agenteCargando = false;
+      if (btn) btn.disabled = false;
+      return;
+    }
+
+    const reply = data.choices?.[0]?.message?.content || 'Sin respuesta.';
+    agregarMensajeAgenteUI('assistant', reply);
+    agenteChatHistorial.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    if (loadDiv && loadDiv.parentNode) loadDiv.parentNode.removeChild(loadDiv);
+    agregarMensajeAgenteUI('assistant', '⚠️ Error de conexión: ' + e.message);
+  } finally {
+    agenteCargando = false;
+    if (btn) btn.disabled = false;
+  }
+};
+
+// Auto-resize del textarea
+document.addEventListener('input', function(e) {
+  if (e.target && e.target.id === 'agenteChatInput') {
+    e.target.style.height = 'auto';
+    e.target.style.height = Math.min(e.target.scrollHeight, 90) + 'px';
+  }
+});
+
+// ============================================================
+// RESTO DE FUNCIONES
+// ============================================================
 function actualizarBotonesPorRol() {
   const btnGrupo = document.getElementById('btnCrearGrupo');
   const btnDiscipulado = document.getElementById('btnCrearDiscipulado');
@@ -6763,6 +7871,7 @@ function renderAdminPanel() {
   cargarConfigIA();
   cargarConfigCallMeBot();
   cargarConfigPaypal();
+  cargarConfigAgenteIA();
   if (isSuperAdmin) { cargarConfigBiblia(); renderBibliasPersonalizadas(); renderVersionesBiblia(); }
   const stats = { users:0, posts:0, iglesias:0 };
   Promise.all([USERS.get().then(s => stats.users = s.size), POSTS.get().then(s => stats.posts = s.size), IGLESIAS.get().then(s => stats.iglesias = s.size)]).then(() => {
@@ -7023,7 +8132,7 @@ window.cerrarMediaViewer = function() { document.getElementById('mediaViewer').c
 window.navegarMediaViewer = function(d) { mediaViewerIndex = (mediaViewerIndex + d + mediaViewerItems.length) % mediaViewerItems.length; document.getElementById('mediaViewerImage').src = mediaViewerItems[mediaViewerIndex].url; };
 
 // ================================================================
-// CHATS ADMIN/EQUIPO con archivos
+// CHATS ADMIN/EQUIPO
 // ================================================================
 function renderChatAdmin() {
   if (!currentUser) return;
@@ -8435,7 +9544,9 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnRecargarBiblia')?.addEventListener('click', recargarBiblias);
   document.getElementById('btnSubirLibroBiblia')?.addEventListener('click', subirLibroBiblia);
   document.getElementById('btnSubirCarpetaBiblia')?.addEventListener('click', subirCarpetaBiblia);
-  document.getElementById('btnBuscarBiblia').addEventListener('click', () => alert('Búsqueda en versión completa.'));
+  document.getElementById('btnBuscarBiblia')?.addEventListener('click', () => alert('Búsqueda en versión completa.'));
+  // Agente IA
+  document.getElementById('btnGuardarConfigAgente')?.addEventListener('click', guardarConfigAgenteIA);
 
   const btnCrearProyecto = document.getElementById('btnCrearProyecto');
   if (btnCrearProyecto) btnCrearProyecto.addEventListener('click', abrirModalProyecto);
@@ -8455,23 +9566,11 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   document.getElementById('btnCapAnterior')?.addEventListener('click', function() {
     const idx = capituloKeys.indexOf(capituloActual);
-    if (idx > 0) { capituloActual = capituloKeys[idx-1]; capituloSelect.value = capituloActual; actualizarInfoCap(); cargarVersiculos(libroActual, capituloActual); }
+    if (idx > 0) { capituloActual = capituloKeys[idx-1]; if (capituloSelect) capituloSelect.value = capituloActual; actualizarInfoCap(); cargarVersiculos(libroActual, capituloActual); }
   });
   document.getElementById('btnCapSiguiente')?.addEventListener('click', function() {
     const idx = capituloKeys.indexOf(capituloActual);
-    if (idx >= 0 && idx < capituloKeys.length - 1) { capituloActual = capituloKeys[idx+1]; capituloSelect.value = capituloActual; actualizarInfoCap(); cargarVersiculos(libroActual, capituloActual); }
-  });
-  document.getElementById('btnAumentarFuente')?.addEventListener('click', function() {
-    bibliaFuenteSize = Math.min(bibliaFuenteSize + 2, 28);
-    document.getElementById('versiculoContainer').style.fontSize = bibliaFuenteSize + 'px';
-    document.getElementById('fuenteInfo').textContent = 'Tamaño: ' + bibliaFuenteSize + 'px';
-    localStorage.setItem(STORAGE_KEYS.bibliaFuente, bibliaFuenteSize);
-  });
-  document.getElementById('btnDisminuirFuente')?.addEventListener('click', function() {
-    bibliaFuenteSize = Math.max(bibliaFuenteSize - 2, 10);
-    document.getElementById('versiculoContainer').style.fontSize = bibliaFuenteSize + 'px';
-    document.getElementById('fuenteInfo').textContent = 'Tamaño: ' + bibliaFuenteSize + 'px';
-    localStorage.setItem(STORAGE_KEYS.bibliaFuente, bibliaFuenteSize);
+    if (idx >= 0 && idx < capituloKeys.length - 1) { capituloActual = capituloKeys[idx+1]; if (capituloSelect) capituloSelect.value = capituloActual; actualizarInfoCap(); cargarVersiculos(libroActual, capituloActual); }
   });
   const vc = document.getElementById('versiculoContainer'); if (vc) vc.style.fontSize = bibliaFuenteSize + 'px';
   const fi = document.getElementById('fuenteInfo'); if (fi) fi.textContent = 'Tamaño: ' + bibliaFuenteSize + 'px';
@@ -8491,6 +9590,7 @@ document.addEventListener('DOMContentLoaded', function() {
   cargarHistorial(); cargarMapboxToken(); cargarConfigMenu(); cargarEstilosConfig(); cargarConfigCallMeBot(); cargarConfigPaypal();
   cargarConfigBiblia();
   cargarVersionesBiblia();
+  cargarConfigAgenteIA();
 
   auth.onAuthStateChanged(async (user) => {
     if (user) { await cargarUsuarioActual(user); cargarLogoConfig(); }
@@ -8498,7 +9598,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v30: Biblia con orden canónico, versiones por carpeta, selección de versículo.');
+  console.log('✅ SAL Y LUZ v31: Biblia rediseñada + Agente IA flotante + modelos gratis OpenRouter.');
 });
 
 // ==================== EXPORTS ====================
@@ -8656,6 +9756,20 @@ window.eliminarVersionBiblia = eliminarVersionBiblia;
 window.seleccionarVersiculo = seleccionarVersiculo;
 window.copiarVersiculoSeleccionado = copiarVersiculoSeleccionado;
 window.compartirVersiculoSeleccionado = compartirVersiculoSeleccionado;
+window.preguntarAlAgenteSobreVersiculo = preguntarAlAgenteSobreVersiculo;
+window.toggleAgenteChat = toggleAgenteChat;
+window.enviarMensajeAgente = enviarMensajeAgente;
+window.cargarModelosGratisOpenRouter = cargarModelosGratisOpenRouter;
+window.seleccionarModeloAgente = seleccionarModeloAgente;
+window.guardarConfigAgenteIA = guardarConfigAgenteIA;
+window.probarAgenteIA = probarAgenteIA;
+window.toggleBibliaInfoPanel = toggleBibliaInfoPanel;
+window.abrirAjusteFuente = abrirAjusteFuente;
+window.cambiarFuenteBiblia = cambiarFuenteBiblia;
+window.copiarCapituloCompleto = copiarCapituloCompleto;
+window.compartirCapituloCompleto = compartirCapituloCompleto;
+window.seleccionarSugerenciaBiblia = seleccionarSugerenciaBiblia;
+window.irAReferenciaBiblica = irAReferenciaBiblica;
 window.USERS = USERS;
 window.POSTS = POSTS;
 window.GRUPOS = GRUPOS;

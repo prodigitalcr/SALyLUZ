@@ -857,7 +857,6 @@
     .mapa-leyenda-item > span.icono { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; color:#fff; font-size:13px; }
     .mapa-leyenda-wrap { display:flex; flex-wrap:wrap; gap:8px; }
 
-    /* ============ BOTÓN MI UBICACIÓN (ARRIBA IZQUIERDA) ============ */
     .mapa-mi-ubicacion-btn {
       position: absolute; top: 14px; left: 14px; z-index: 25;
       width: 48px; height: 48px; border-radius: 50%;
@@ -872,7 +871,6 @@
     .mapa-mi-ubicacion-btn.activo { background: linear-gradient(135deg, #00C853, #00E676); box-shadow: 0 4px 14px rgba(0,200,83,0.65); }
     .mapa-mi-ubicacion-btn i { text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
 
-    /* ============ PANEL DE RUTA ============ */
     .ruta-info-panel {
       position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
       z-index: 20; width: calc(100% - 28px); max-width: 720px;
@@ -933,7 +931,6 @@
       #mapa3d { height: 76vh; max-height: 900px; }
     }
 
-    /* ==================== MARCADORES PUNTO SIMPLE ==================== */
     .mapa-marker-dot {
       width: 18px; height: 18px;
       border-radius: 50%;
@@ -949,13 +946,12 @@
     .mapa-marker-evento    { background: #9b59b6; }
     .mapa-marker-servicio  { background: #f39c12; }
 
-    /* ==================== MI UBICACIÓN (PUNTO AZUL CLÁSICO + ANIMACIÓN) ==================== */
     .mi-ubicacion-wrapper {
       position: relative;
       width: 32px;
       height: 32px;
       pointer-events: none;
-      transition: transform 0.9s linear; /* suaviza el desplazamiento */
+      transition: transform 0.9s linear;
     }
     .mi-ubicacion-punto {
       position: absolute;
@@ -987,7 +983,6 @@
       80%  { width: 68px; height: 68px; opacity: 0; }
       100% { width: 68px; height: 68px; opacity: 0; }
     }
-    /* Punto histórico "no animación wrapper" por si acaso */
     .mi-ubicacion-marker-dot {
       width: 22px;
       height: 22px;
@@ -998,7 +993,6 @@
       cursor: pointer;
     }
 
-    /* ==================== ACORDEÓN DE CATEGORÍAS DEL MAPA ==================== */
     .mapa-acordeon { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
     .mapa-acordeon-item {
       background: var(--bg-body);
@@ -1052,7 +1046,6 @@
     .mapa-categoria-item .acciones { display: flex; gap: 4px; flex-wrap: wrap; }
     .mapa-vacio { font-size: 12px; color: var(--text-secondary); padding: 6px 4px; }
 
-    /* ==================== REELS BOTONES MEJORADOS ==================== */
     .reels-main-actions { display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 28px; padding: 32px 0; flex-wrap: wrap; }
     .reels-action-big { display: flex; flex-direction: column; align-items: center; gap: 12px; background: transparent; border: none; cursor: pointer; padding: 0; transition: transform 0.25s ease; }
     .reels-action-big:hover { transform: translateY(-5px); }
@@ -1063,7 +1056,6 @@
     .reels-action-add:hover .icon-circle { box-shadow: 0 16px 36px rgba(212,175,55,0.85), inset 0 -5px 14px rgba(0,0,0,0.3), inset 0 5px 14px rgba(255,255,255,0.5); animation: none; }
     @keyframes add3DPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
 
-    /* ==================== WIDGETS DEL MURO ==================== */
     .widget-mini-chat-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; cursor: pointer; border-radius: 10px; transition: 0.15s; }
     .widget-mini-chat-item:hover { background: var(--bg-body); }
     body.dark .widget-mini-chat-item:hover { background: #2a2a3e; }
@@ -1115,14 +1107,12 @@
     .widget-footer-links a { color: var(--text-secondary); text-decoration: none; }
     .widget-footer-links a:hover { color: var(--teal); text-decoration: underline; }
 
-    /* ==================== PAYPAL ==================== */
     .paypal-donar-box { background: linear-gradient(135deg, #003087, #0070ba); color: #fff; padding: 20px; border-radius: 14px; text-align: center; margin: 10px 0; }
     .paypal-donar-box h4 { font-size: 16px; margin-bottom: 6px; }
     .paypal-donar-box p { font-size: 12px; opacity: 0.9; margin-bottom: 12px; }
     .paypal-donar-btn { background: #ffc439; color: #003087; border: none; padding: 10px 24px; border-radius: 30px; font-weight: 700; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
     .paypal-donar-btn:hover { background: #f5b800; }
 
-    /* ==================== BOTONES WAZE Y GOOGLE MAPS EN POPUP ==================== */
     .mapa-popup-actions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
     .mapa-popup-actions button {
       border: none; padding: 5px 10px; border-radius: 20px;
@@ -1137,7 +1127,6 @@
     .mapa-popup-actions .popup-btn-ver { background: #6a1b9a; }
     .mapa-popup-actions .popup-btn-share { background: #1a73e8; }
 
-    /* ==================== SOLICITUDES PROYECTO ==================== */
     .solicitud-proyecto-item {
       display: flex; align-items: center; gap: 10px;
       padding: 8px 10px; margin: 6px 0;
@@ -1159,14 +1148,12 @@
     .btn-aprobar { background: #2ecc71; color: #fff; border: none; padding: 4px 10px; border-radius: 20px; font-size: 11px; cursor: pointer; font-weight: 600; }
     .btn-rechazar { background: #e74c3c; color: #fff; border: none; padding: 4px 10px; border-radius: 20px; font-size: 11px; cursor: pointer; font-weight: 600; }
 
-    /* ==================== BIBLIA FUENTE ==================== */
     .biblia-fuente-badge {
       display: inline-flex; align-items: center; gap: 4px;
       font-size: 10px; padding: 2px 8px; border-radius: 20px;
       background: var(--teal-light); color: var(--teal-dark);
       font-weight: 600; margin-left: 6px;
     }
-    /* ==================== NUEVO: VERSÍCULO SELECCIONADO Y MENÚ FLOTANTE ==================== */
     .versiculo-item { cursor: pointer; transition: background 0.15s; position: relative; }
     .versiculo-item:hover { background: var(--teal-light); }
     .versiculo-item.seleccionado { background: var(--gold-light); border-radius: 6px; }
@@ -1189,7 +1176,6 @@
     .biblia-version-selector { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
     .biblia-version-selector select { padding: 6px 12px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-primary); font-size: 12px; }
 
-    /* ==================== NUEVO DISEÑO BIBLIA (como la imagen) ==================== */
     .biblia-layout {
       display: grid;
       grid-template-columns: 1fr;
@@ -1198,7 +1184,7 @@
       margin: 0 auto;
     }
     @media (min-width: 992px) {
-      .biblia-layout { grid-template-columns: 260px 1fr; }
+      .biblia-layout { grid-template-columns: 300px 1fr; }
     }
     .biblia-sidebar {
       background: white;
@@ -1225,6 +1211,18 @@
       gap: 6px;
     }
     .biblia-sidebar h4 i { color: var(--teal); }
+    .biblia-sidebar select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-body);
+      color: var(--text-primary);
+      font-size: 13px;
+      margin-bottom: 8px;
+      font-family: inherit;
+    }
+    .biblia-sidebar select:focus { outline: 2px solid var(--teal); border-color: transparent; }
     .biblia-historial-list { display: flex; flex-direction: column; gap: 4px; }
     .biblia-historial-item {
       padding: 8px 10px;
@@ -1414,7 +1412,6 @@
     .biblia-info-panel .paralelo-item:last-child { border-bottom: none; }
     .biblia-info-panel .paralelo-item .ref { font-weight: 700; color: var(--gold-dark); }
 
-    /* ==================== AGENTE IA FLOTANTE ==================== */
     .agente-flotante-btn {
       position: fixed;
       bottom: 24px;
@@ -1599,7 +1596,6 @@
       .agente-flotante-btn { bottom: 18px; right: 18px; width: 56px; height: 56px; font-size: 22px; }
     }
 
-    /* ==================== MODELOS OPENROUTER ==================== */
     .modelo-openrouter-item {
       display: flex;
       align-items: center;
@@ -1622,7 +1618,6 @@
       padding: 2px 8px; border-radius: 20px; flex-shrink: 0;
     }
 
-    /* ==================== BOTÓN FLOTANTE INFO/TAMAÑO ==================== */
     .biblia-info-btn {
       position: fixed;
       bottom: 24px;
@@ -1691,9 +1686,7 @@
     </nav>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- PANEL INICIO (sin cambios) -->
-  <!-- ============================================================ -->
+  <!-- ==================== PANEL INICIO ==================== -->
   <div class="panel active" id="panel-inicio">
     <div class="historias-bar" id="historiasBar"></div>
 
@@ -1749,26 +1742,39 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- PANEL BIBLIA - REDISEÑADO -->
-  <!-- ============================================================ -->
+  <!-- ==================== PANEL BIBLIA (MEJORADO) ==================== -->
   <div class="panel" id="panel-biblia">
     <div class="biblia-layout">
       <!-- Sidebar -->
       <aside class="biblia-sidebar">
+        <h4><i class="fas fa-book-bible"></i> Libros de la Biblia</h4>
+        <select id="libro" onchange="cambiarLibroBiblia(this.value)">
+          <option value="">Cargando libros...</option>
+        </select>
+        <select id="capitulo" onchange="cambiarCapituloBiblia(this.value)">
+          <option value="">Capítulo</option>
+        </select>
+        <button class="btn-outline" onclick="recargarBiblias()" style="width:100%; margin-top:8px; font-size:11px;">
+          <i class="fas fa-sync"></i> Recargar libros
+        </button>
+        <p style="font-size:11px; color:var(--text-secondary); margin-top:8px; text-align:center;">
+          <span id="bibliaFuenteBadge" class="biblia-fuente-badge"><i class="fas fa-sync"></i> Cargando...</span>
+        </p>
+
+        <hr style="border-color:var(--border-color); margin:14px 0;">
         <h4><i class="fas fa-history"></i> Leídos recientemente</h4>
         <div class="biblia-historial-list" id="bibliaHistorialLista">
           <p style="font-size:12px;color:var(--text-secondary);">Aún no has leído nada.</p>
         </div>
+
         <hr style="border-color:var(--border-color); margin:14px 0;">
-        <h4><i class="fas fa-bookmark"></i> Versión</h4>
-        <select id="bibliaVersionSelect" onchange="cambiarVersionBiblia()" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-body); color:var(--text-primary); font-size:12px;">
-          <option value="">Cargando versiones...</option>
+        <h4><i class="fas fa-bookmark"></i> Versión / Traducción</h4>
+        <select id="bibliaVersionSelect" onchange="cambiarVersionBiblia()">
+          <option value="">Predeterminada (config actual)</option>
         </select>
-        <button class="btn-outline" onclick="recargarVersionesBiblia()" style="width:100%; margin-top:8px; font-size:11px;"><i class="fas fa-sync"></i> Recargar</button>
-        <p style="font-size:11px; color:var(--text-secondary); margin-top:8px; text-align:center;">
-          <span id="bibliaFuenteBadge" class="biblia-fuente-badge"><i class="fas fa-sync"></i> Cargando...</span>
-        </p>
+        <button class="btn-outline" onclick="recargarVersionesBiblia()" style="width:100%; margin-top:8px; font-size:11px;">
+          <i class="fas fa-sync"></i> Recargar versiones
+        </button>
       </aside>
 
       <!-- Main -->
@@ -1817,9 +1823,7 @@
     </div>
   </div>
 
-  <!-- ============================================================ -->
-  <!-- RESTO DE PANELES (sin cambios) -->
-  <!-- ============================================================ -->
+  <!-- ==================== PANEL DEVOCIONALES ==================== -->
   <div class="panel" id="panel-devocionales">
     <div class="card" id="devocionalSubirCard" style="display:none;">
       <h3><i class="fas fa-book-bible"></i> Nuevo Devocional</h3>
@@ -1893,6 +1897,7 @@
     <div id="devocionalesContainer"><p style="color:var(--text-secondary); text-align:center; padding:20px;">Cargando devocionales...</p></div>
   </div>
 
+  <!-- ==================== PANEL MURO ==================== -->
   <div class="panel" id="panel-muro">
     <div class="muro-mobile-toolbar">
       <button class="muro-mobile-btn" onclick="toggleMuroCol('left')"><i class="fas fa-bars"></i> Mi Panel</button>
@@ -2034,6 +2039,7 @@
     </div>
   </div>
 
+  <!-- ==================== PANEL REELS ==================== -->
   <div class="panel" id="panel-reels">
     <div class="reels-placeholder">
       <i class="fas fa-video"></i>
@@ -2052,6 +2058,7 @@
     </div>
   </div>
 
+  <!-- ==================== PANEL IGLESIAS ==================== -->
   <div class="panel" id="panel-iglesias">
     <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; padding:10px 14px;">
       <h3 style="margin:0; font-size:15px;"><i class="fas fa-place-of-worship"></i> Iglesias locales</h3>
@@ -2063,6 +2070,7 @@
     <div id="iglesiasPanelContainer"><p style="color:var(--text-secondary); text-align:center; padding:20px;">Cargando iglesias...</p></div>
   </div>
 
+  <!-- ==================== PANEL PROYECTOS ==================== -->
   <div class="panel" id="panel-proyectos">
     <div class="card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
       <h3 style="margin:0;"><i class="fas fa-project-diagram"></i> Proyectos</h3>
@@ -2071,16 +2079,19 @@
     <div id="proyectosContainer"><p style="color:var(--text-secondary); text-align:center; padding:20px;">Cargando proyectos...</p></div>
   </div>
 
+  <!-- ==================== PANEL GRUPOS ==================== -->
   <div class="panel" id="panel-grupos">
     <div class="card"><h3><i class="fas fa-users"></i> Grupos de Conexión (máx 15)</h3><button class="btn-primary" id="btnCrearGrupo" style="display:none;"><i class="fas fa-plus"></i> Crear Grupo</button></div>
     <div id="gruposContainer"></div>
   </div>
 
+  <!-- ==================== PANEL DISCIPULADO ==================== -->
   <div class="panel" id="panel-discipulado">
     <div class="card"><h3><i class="fas fa-chalkboard-teacher"></i> Discipulados</h3><button class="btn-primary" id="btnCrearDiscipulado" style="display:none;"><i class="fas fa-plus"></i> Nuevo Discipulado</button></div>
     <div id="discipuladoContainer"></div>
   </div>
 
+  <!-- ==================== PANEL ORACIÓN ==================== -->
   <div class="panel" id="panel-oracion">
     <div class="card">
       <h3><i class="fas fa-pray"></i> Publicar petición de oración</h3>
@@ -2090,6 +2101,7 @@
     <div id="oracionesContainer"></div>
   </div>
 
+  <!-- ==================== PANEL MAPA ==================== -->
   <div class="panel" id="panel-mapa">
     <div id="mapaMsgNoAuth" style="display:block; padding:20px; text-align:center; color:var(--text-secondary);">
       <i class="fas fa-lock" style="font-size:40px; display:block; margin-bottom:10px;"></i>
@@ -2203,6 +2215,7 @@
     </div>
   </div>
 
+  <!-- ==================== PANEL NECESIDADES ==================== -->
   <div class="panel" id="panel-necesidades">
     <div class="card">
       <h3><i class="fas fa-hand-holding-heart"></i> Publicar necesidad</h3>
@@ -2223,6 +2236,7 @@
     <div id="necesidadesContainer"></div>
   </div>
 
+  <!-- ==================== PANEL SERVICIO ==================== -->
   <div class="panel" id="panel-servicio">
     <div class="card">
       <h3><i class="fas fa-utensils"></i> Ofrecer ayuda alimentaria</h3>
@@ -2254,6 +2268,7 @@
     <div class="card"><h3><i class="fas fa-list"></i> Servicios disponibles</h3><div id="serviciosContainer"></div></div>
   </div>
 
+  <!-- ==================== PANEL CONSEJERÍA ==================== -->
   <div class="panel" id="panel-consejeria">
     <div class="card">
       <h3><i class="fas fa-comment-dots"></i> Consejería Bíblica</h3>
@@ -2264,6 +2279,7 @@
     <div id="consejosContainer"></div>
   </div>
 
+  <!-- ==================== PANEL REPORTES ==================== -->
   <div class="panel" id="panel-reportes">
     <div id="reportesMsgNoAuth" style="display:block; padding:20px; text-align:center; color:var(--text-secondary);">
       <i class="fas fa-lock" style="font-size:40px; display:block; margin-bottom:10px;"></i>
@@ -2275,6 +2291,7 @@
     </div>
   </div>
 
+  <!-- ==================== PANEL CHAT ADMIN ==================== -->
   <div class="panel" id="panel-chatadmin">
     <div id="chatAdminMsgNoAuth" style="display:block; padding:20px; text-align:center; color:var(--text-secondary);">
       <i class="fas fa-lock" style="font-size:40px; display:block; margin-bottom:10px;"></i>
@@ -2295,6 +2312,7 @@
     </div>
   </div>
 
+  <!-- ==================== PANEL CHAT EQUIPO ==================== -->
   <div class="panel" id="panel-chatequipo">
     <div class="card">
       <h3><i class="fas fa-users-cog"></i> Chat de Equipo de Apoyo</h3>
@@ -2309,6 +2327,7 @@
     </div>
   </div>
 
+  <!-- ==================== PANEL ADMIN ==================== -->
   <div class="panel" id="panel-admin">
     <div class="card">
       <h3><i class="fas fa-tachometer-alt"></i> Panel de Administración</h3>
@@ -2383,7 +2402,7 @@
       </div>
     </div>
 
-    <!-- NUEVO: Configuración del AGENTE IA (reemplaza al antiguo Asistente IA) -->
+    <!-- Configuración del AGENTE IA -->
     <div class="card config-solo-admin" id="cardAgenteIAConfig">
       <h3><i class="fas fa-robot"></i> Agente IA Bíblico</h3>
       <div class="admin-ia-config">
@@ -2417,15 +2436,19 @@
     </div>
     <div class="config-msg" id="msgAgenteIAConfig"><p>⚠️ Solo SuperAdmin.</p></div>
 
+    <!-- CONFIGURACIÓN BÍBLICA COMPLETA -->
     <div class="card config-solo-admin" id="cardBibliaConfig">
-      <h3><i class="fas fa-bible"></i> Configuración Bíblica (GitHub / Multimedia)</h3>
+      <h3><i class="fas fa-bible"></i> Configuración Bíblica (GitHub / Personalizadas / Local)</h3>
       <div class="admin-ia-config">
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">
+          Selecciona la fuente desde donde se cargarán los libros de la Biblia. Todos los libros disponibles se mostrarán automáticamente en la sección Biblia.
+        </p>
         <label>Fuente principal</label>
         <select id="bibliaFuenteSelect">
+          <option value="auto">🔄 Auto (GitHub → Personalizadas → Local)</option>
           <option value="github">📁 GitHub (carpeta remota "Biblia")</option>
           <option value="custom">☁️ Biblias personalizadas (subidas por ti)</option>
           <option value="local">💾 Local (textos-biblicos.json)</option>
-          <option value="auto">🔄 Auto (GitHub → personalizadas → local)</option>
         </select>
 
         <label>GitHub Usuario / Organización</label>
@@ -2599,7 +2622,7 @@
     <div class="config-msg" id="msgPaypalConfig"><p>⚠️ Solo SuperAdmin.</p></div>
   </div>
 
-  <!-- MODALES (sin cambios) -->
+  <!-- ==================== MODALES ==================== -->
   <div class="modal-overlay" id="loginModal">
     <div class="modal-box">
       <h3><i class="fas fa-user"></i> Iniciar sesión / Registrarse</h3>
@@ -3430,7 +3453,7 @@ let capituloActual = '';
 let capitulosCache = {};
 let capituloKeys = [];
 let versionBibliaActualId = '';
-let bibliaTextoActual = ''; // Para el agente IA y copiar/compartir
+let bibliaTextoActual = '';
 
 // ==== AGENTE IA ====
 let agenteIAConfig = {
@@ -3440,7 +3463,7 @@ let agenteIAConfig = {
   promptSistema: '',
   mensajeBienvenida: '¡Shalom! Soy Luz, tu asistente bíblico. Pregúntame sobre el contexto histórico, teológico o cultural de cualquier pasaje. ¿Qué quieres explorar hoy?'
 };
-let agenteChatHistorial = []; // { rol: 'user'|'assistant', contenido: '' }
+let agenteChatHistorial = [];
 let agenteModelosCargados = [];
 let agenteCargando = false;
 
@@ -3911,7 +3934,7 @@ async function cargarUsuarioActual(user) {
     cargarEstilosConfig();
     cargarConfigCallMeBot();
     cargarConfigPaypal();
-    cargarConfigBiblia();
+    await cargarConfigBiblia();
     cargarConfigAgenteIA();
     renderEventos();
     renderNoticias();
@@ -4082,7 +4105,6 @@ function switchPanel(name) {
   if (tabs && tabs.classList.contains('open')) tabs.classList.remove('open');
   if (typeof cerrarMuroCols === 'function') cerrarMuroCols();
 
-  // Mostrar/ocultar botón flotante del agente IA (solo en Biblia)
   const agenteBtn = document.getElementById('agenteFlotanteBtn');
   const infoBtn = document.getElementById('bibliaInfoBtn');
   if (name === 'biblia') {
@@ -4091,7 +4113,6 @@ function switchPanel(name) {
   } else {
     if (agenteBtn) agenteBtn.style.display = 'none';
     if (infoBtn) infoBtn.style.display = 'none';
-    // Cerrar chat si se cambia de panel
     const agentePanel = document.getElementById('agenteChatPanel');
     if (agentePanel) agentePanel.classList.remove('show');
   }
@@ -4166,7 +4187,6 @@ window.toggleMapaCategoria = function(cat) {
 
 window.renderMapaAcordeon = function() {
   if (!currentUser) return;
-  // Misioneros
   if (listeners.mapaMisioneros) listeners.mapaMisioneros();
   listeners.mapaMisioneros = MISIONEROS.orderBy('nombre', 'asc').onSnapshot(snap => {
     const c = document.getElementById('listaMisioneros');
@@ -4190,7 +4210,6 @@ window.renderMapaAcordeon = function() {
     c.innerHTML = html;
   });
 
-  // Iglesias
   if (listeners.mapaIglesias) listeners.mapaIglesias();
   listeners.mapaIglesias = IGLESIAS.orderBy('nombre', 'asc').onSnapshot(snap => {
     const c = document.getElementById('listaIglesias');
@@ -4214,7 +4233,6 @@ window.renderMapaAcordeon = function() {
     c.innerHTML = html;
   });
 
-  // Grupos
   if (listeners.mapaGrupos) listeners.mapaGrupos();
   listeners.mapaGrupos = GRUPOS.orderBy('nombre', 'asc').onSnapshot(snap => {
     const c = document.getElementById('listaGrupos');
@@ -4238,7 +4256,6 @@ window.renderMapaAcordeon = function() {
     c.innerHTML = html;
   });
 
-  // Eventos
   if (listeners.mapaEventos) listeners.mapaEventos();
   listeners.mapaEventos = EVENTOS.orderBy('fecha', 'asc').onSnapshot(snap => {
     const c = document.getElementById('listaEventos');
@@ -4263,7 +4280,6 @@ window.renderMapaAcordeon = function() {
     c.innerHTML = html;
   });
 
-  // Servicios
   if (listeners.mapaServicios) listeners.mapaServicios();
   listeners.mapaServicios = getServiciosRef().orderBy('fechaRegistro', 'desc').onSnapshot(snap => {
     const c = document.getElementById('listaServicios');
@@ -5930,7 +5946,7 @@ function setupReelsFullObserver() {
 </script>
 <script>
 // ================================================================
-// DEVOCIONALES / IGLESIAS / MAPA / WIDGETS / RUTA / BIBLIA MEJORADA
+// DEVOCIONALES / IGLESIAS / MAPA / WIDGETS / RUTA / BIBLIA
 // ================================================================
 function puedeSubirDevocional() { return isAdmin || tieneRol('facilitador') || tieneRol('consejero'); }
 document.getElementById('btnMostrarFormDevocional')?.addEventListener('click', function() {
@@ -6700,7 +6716,7 @@ window.preguntarIA = function() {
 };
 
 // ============================================================
-// AGENTE IA (nuevo)
+// AGENTE IA
 // ============================================================
 async function cargarConfigAgenteIA() {
   try {
@@ -6816,7 +6832,7 @@ window.probarAgenteIA = async function() {
 };
 
 // ============================================================
-// BIBLIA: funciones mejoradas
+// BIBLIA: funciones MEJORADAS
 // ============================================================
 async function cargarConfigBiblia() {
   try {
@@ -6918,7 +6934,7 @@ async function cargarLibrosBiblia() {
 
   if (badge) {
     if (total > 0) badge.innerHTML = `<i class="fas fa-check-circle"></i> ${total} libros · ${fuenteUsada}`;
-    else badge.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Sin fuente configurada`;
+    else badge.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Sin libros cargados`;
   }
   llenarSelectorLibros();
 }
@@ -6927,7 +6943,7 @@ function llenarSelectorLibros() {
   const libroSelect = document.getElementById('libro');
   if (!libroSelect) return;
   const valorPrevio = libroSelect.value;
-  libroSelect.innerHTML = '<option value="">Selecciona</option>';
+  libroSelect.innerHTML = '<option value="">Selecciona libro</option>';
   const todos = { ...librosBiblia.antiguoTestamento, ...librosBiblia.nuevoTestamento };
   const nombresOrdenados = [];
   ORDEN_BIBLICO.forEach(nombre => {
@@ -6937,6 +6953,11 @@ function llenarSelectorLibros() {
   Object.keys(todos).forEach(k => {
     if (!nombresOrdenados.includes(k)) nombresOrdenados.push(k);
   });
+  if (nombresOrdenados.length === 0) {
+    const vc = document.getElementById('versiculoContainer');
+    if (vc) vc.innerHTML = '<div style="text-align:center;padding:40px 20px;"><i class="fas fa-book" style="font-size:50px;color:var(--text-secondary);opacity:0.4;display:block;margin-bottom:16px;"></i><h3 style="color:var(--text-secondary);font-size:16px;font-family:system-ui;">No hay libros cargados</h3><p style="color:var(--text-secondary);font-size:13px;font-family:system-ui;margin-top:8px;">El SuperAdministrador debe configurar una fuente de Biblia en el panel de administración (GitHub, Personalizadas o Local).</p></div>';
+    return;
+  }
   nombresOrdenados.forEach(libro => {
     const o = document.createElement('option');
     o.value = libro;
@@ -6945,6 +6966,20 @@ function llenarSelectorLibros() {
   });
   if (valorPrevio && todos[valorPrevio]) libroSelect.value = valorPrevio;
 }
+
+window.cambiarLibroBiblia = function(libro) {
+  if (!libro) return;
+  libroActual = libro;
+  cargarCapitulos(libro);
+  guardarHistorial(libro);
+};
+window.cambiarCapituloBiblia = function(cap) {
+  if (!cap) return;
+  capituloActual = cap;
+  actualizarInfoCap();
+  cargarVersiculos(libroActual, cap);
+  guardarHistorial(libroActual + ' ' + cap);
+};
 
 function normalizarCapitulos(data) {
   if (Array.isArray(data)) {
@@ -7020,19 +7055,15 @@ function cargarVersiculos(libro, capitulo) {
   container.innerHTML = html;
   container.style.fontSize = bibliaFuenteSize + 'px';
   bibliaTextoActual = textoCompleto;
-  // Guardar en historial de versículos leídos
   guardarVersiculoLeido(`${libro} ${capitulo}`);
-  // Actualizar título
   const tituloEl = document.getElementById('bibliaTitulo');
   if (tituloEl) tituloEl.textContent = libro.toUpperCase() + ' ' + capitulo;
   const subEl = document.getElementById('bibliaSubtitulo');
   if (subEl) subEl.textContent = 'Versión: ' + (versionBibliaActualId ? 'Personalizada' : 'Predeterminada');
-  // Cerrar menú flotante por si estaba abierto
   const menu = document.getElementById('versiculoMenuFlotante');
   if (menu) menu.classList.remove('show');
 }
 
-// Historial de versículos leídos
 function guardarVersiculoLeido(ref) {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.versiculosLeidos);
@@ -7089,15 +7120,11 @@ window.irAReferenciaBiblica = function(ref) {
   }
 };
 
-// ============================================================
-// BÚSQUEDA BIBLIA
-// ============================================================
 function inicializarBibliaUI() {
   cargarHistorial();
   llenarSelectorLibros();
   cargarVersionesBiblia();
   renderBibliaHistorial();
-  // Si ya hay un libro y capítulo cargados, mostrarlos
   if (libroActual && capituloActual) {
     const libroSelect = document.getElementById('libro');
     const capSelect = document.getElementById('capitulo');
@@ -7125,12 +7152,10 @@ function inicializarBusquedaBiblia() {
     const qLower = q.toLowerCase();
     const todos = { ...librosBiblia.antiguoTestamento, ...librosBiblia.nuevoTestamento };
     const resultados = [];
-    // Detectar si el usuario escribió "Juan 3" o "Juan"
     const match = q.match(/^([1-3]?\s*[A-Za-zÁÉÍÓÚáéíóúÑñ]+)\s*(\d+)?/);
     if (match) {
       const nombreLibro = match[1].trim();
       const numCap = match[2];
-      // Buscar coincidencias de libros
       Object.keys(todos).forEach(libro => {
         if (libro.toLowerCase().includes(nombreLibro.toLowerCase())) {
           if (numCap) {
@@ -7191,9 +7216,6 @@ window.seleccionarSugerenciaBiblia = function(libro, capitulo) {
   if (input) input.value = libro + (capitulo ? ' ' + capitulo : '');
 };
 
-// ============================================================
-// SELECCIÓN DE VERSÍCULO Y MENÚ FLOTANTE
-// ============================================================
 window.seleccionarVersiculo = function(el, num) {
   document.querySelectorAll('.versiculo-item.seleccionado').forEach(e => e.classList.remove('seleccionado'));
   el.classList.add('seleccionado');
@@ -7271,10 +7293,8 @@ window.preguntarAlAgenteSobreVersiculo = function() {
   const texto = menu.dataset.texto || '';
   const ref = menu.dataset.referencia || '';
   menu.classList.remove('show');
-  // Abrir el chat del agente
   const panel = document.getElementById('agenteChatPanel');
   if (panel && !panel.classList.contains('show')) toggleAgenteChat();
-  // Enviar pregunta predefinida
   setTimeout(() => {
     const input = document.getElementById('agenteChatInput');
     if (input) {
@@ -7330,7 +7350,6 @@ function irAHistorial(t) {
   }, 500);
 }
 
-// --- Versiones de Biblia ---
 async function cargarVersionesBiblia() {
   const select = document.getElementById('bibliaVersionSelect');
   if (!select) return;
@@ -7403,7 +7422,8 @@ window.guardarConfigBiblia = function() {
 window.recargarBiblias = async function() {
   await cargarLibrosBiblia();
   await cargarVersionesBiblia();
-  alert('✅ Libros recargados: ' + (Object.keys(librosBiblia.antiguoTestamento).length + Object.keys(librosBiblia.nuevoTestamento).length) + ' disponibles.');
+  const total = (Object.keys(librosBiblia.antiguoTestamento).length + Object.keys(librosBiblia.nuevoTestamento).length);
+  alert('✅ Libros recargados: ' + total + ' disponibles.');
 };
 
 window.subirLibroBiblia = async function() {
@@ -7581,7 +7601,7 @@ window.eliminarVersionBiblia = async function(id) {
 };
 
 // ============================================================
-// UTILIDADES BIBLIA: copiar/compartir capítulo, info panel, fuente
+// UTILIDADES BIBLIA
 // ============================================================
 window.copiarCapituloCompleto = function() {
   if (!bibliaTextoActual) { alert('No hay capítulo cargado.'); return; }
@@ -7613,14 +7633,12 @@ window.toggleBibliaInfoPanel = function() {
     panel.classList.remove('show');
     return;
   }
-  // Generar contenido relacionado / paralelo
   const contenido = document.getElementById('bibliaInfoContenido');
   if (!contenido) return;
   const ref = libroActual && capituloActual ? `${libroActual} ${capituloActual}` : '';
   let html = '';
   if (ref) {
     html += `<p style="margin-bottom:8px;"><strong>📖 Referencia actual:</strong> ${ref}</p>`;
-    // Buscar pasajes paralelos simples según el libro
     const paralelos = obtenerPasajesParalelos(libroActual, capituloActual);
     if (paralelos.length > 0) {
       paralelos.forEach(p => {
@@ -7631,7 +7649,6 @@ window.toggleBibliaInfoPanel = function() {
     } else {
       html += `<p style="font-size:12px; color:var(--text-secondary);">No hay referencias paralelas registradas para este pasaje. Pregúntale al agente IA para más contexto.</p>`;
     }
-    // Tamaño de fuente
     html += `<hr style="border-color:var(--border-color); margin:10px 0;">
       <p style="font-size:12px; font-weight:600; margin-bottom:6px;">🔠 Tamaño de letra</p>
       <div style="display:flex; gap:8px; align-items:center;">
@@ -7660,7 +7677,6 @@ window.cambiarFuenteBiblia = function(delta) {
 };
 
 function obtenerPasajesParalelos(libro, capitulo) {
-  // Diccionario simple de pasajes paralelos (evangelios sinópticos, salmos, etc.)
   const mapa = {
     'Mateo 1': [{ref:'Lucas 3:23-38', desc:'Genealogía de Jesús según Lucas'}, {ref:'Isaías 7:14', desc:'Profecía del nacimiento virginal'}],
     'Mateo 2': [{ref:'Lucas 2:1-20', desc:'Nacimiento de Jesús'}, {ref:'Miqueas 5:2', desc:'Profecía de Belén'}],
@@ -7696,9 +7712,6 @@ function obtenerPasajesParalelos(libro, capitulo) {
   return mapa[`${libro} ${capitulo}`] || [];
 }
 
-// ============================================================
-// AGENTE IA: chat flotante
-// ============================================================
 window.toggleAgenteChat = function() {
   const panel = document.getElementById('agenteChatPanel');
   if (!panel) return;
@@ -7706,7 +7719,6 @@ window.toggleAgenteChat = function() {
     panel.classList.remove('show');
   } else {
     panel.classList.add('show');
-    // Cargar bienvenida si está vacío
     const cont = document.getElementById('agenteChatMensajes');
     if (cont && cont.children.length === 0) {
       agregarMensajeAgenteUI('assistant', agenteIAConfig.mensajeBienvenida);
@@ -7742,13 +7754,11 @@ window.enviarMensajeAgente = async function() {
   const btn = document.getElementById('agenteChatEnviarBtn');
   if (btn) btn.disabled = true;
 
-  // Mostrar mensaje del usuario
   agregarMensajeAgenteUI('user', texto);
   agenteChatHistorial.push({ role: 'user', content: texto });
   input.value = '';
   input.style.height = 'auto';
 
-  // Mensaje de carga
   const loadDiv = agregarMensajeAgenteUI('assistant', 'Pensando', true);
 
   try {
@@ -7803,7 +7813,6 @@ window.enviarMensajeAgente = async function() {
   }
 };
 
-// Auto-resize del textarea
 document.addEventListener('input', function(e) {
   if (e.target && e.target.id === 'agenteChatInput') {
     e.target.style.height = 'auto';
@@ -7811,9 +7820,6 @@ document.addEventListener('input', function(e) {
   }
 });
 
-// ============================================================
-// RESTO DE FUNCIONES
-// ============================================================
 function actualizarBotonesPorRol() {
   const btnGrupo = document.getElementById('btnCrearGrupo');
   const btnDiscipulado = document.getElementById('btnCrearDiscipulado');
@@ -8131,9 +8137,6 @@ window.abrirMediaViewer = function(items, index, type) {
 window.cerrarMediaViewer = function() { document.getElementById('mediaViewer').classList.remove('show'); };
 window.navegarMediaViewer = function(d) { mediaViewerIndex = (mediaViewerIndex + d + mediaViewerItems.length) % mediaViewerItems.length; document.getElementById('mediaViewerImage').src = mediaViewerItems[mediaViewerIndex].url; };
 
-// ================================================================
-// CHATS ADMIN/EQUIPO
-// ================================================================
 function renderChatAdmin() {
   if (!currentUser) return;
   if (listeners.chatAdmin) listeners.chatAdmin();
@@ -9539,13 +9542,10 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('notifBell').addEventListener('click', mostrarNotificaciones);
   document.getElementById('btnPreguntarIA').addEventListener('click', preguntarIA);
   document.getElementById('iaPregunta').addEventListener('keypress', (e) => { if (e.key === 'Enter') preguntarIA(); });
-  // Biblia
   document.getElementById('btnGuardarBibliaConfig')?.addEventListener('click', guardarConfigBiblia);
   document.getElementById('btnRecargarBiblia')?.addEventListener('click', recargarBiblias);
   document.getElementById('btnSubirLibroBiblia')?.addEventListener('click', subirLibroBiblia);
   document.getElementById('btnSubirCarpetaBiblia')?.addEventListener('click', subirCarpetaBiblia);
-  document.getElementById('btnBuscarBiblia')?.addEventListener('click', () => alert('Búsqueda en versión completa.'));
-  // Agente IA
   document.getElementById('btnGuardarConfigAgente')?.addEventListener('click', guardarConfigAgenteIA);
 
   const btnCrearProyecto = document.getElementById('btnCrearProyecto');
@@ -9555,25 +9555,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const proyectoCrear = document.getElementById('proyectoCrear');
   if (proyectoCrear) proyectoCrear.addEventListener('click', crearProyecto);
 
-  // Biblia: eventos de selects
-  const libroSelect = document.getElementById('libro');
-  const capituloSelect = document.getElementById('capitulo');
-  if (libroSelect) libroSelect.addEventListener('change', function() {
-    if (this.value) { libroActual = this.value; cargarCapitulos(libroActual); guardarHistorial(libroActual); }
-  });
-  if (capituloSelect) capituloSelect.addEventListener('change', function() {
-    if (this.value) { capituloActual = this.value; guardarHistorial(libroActual + ' ' + capituloActual); actualizarInfoCap(); cargarVersiculos(libroActual, capituloActual); }
-  });
-  document.getElementById('btnCapAnterior')?.addEventListener('click', function() {
-    const idx = capituloKeys.indexOf(capituloActual);
-    if (idx > 0) { capituloActual = capituloKeys[idx-1]; if (capituloSelect) capituloSelect.value = capituloActual; actualizarInfoCap(); cargarVersiculos(libroActual, capituloActual); }
-  });
-  document.getElementById('btnCapSiguiente')?.addEventListener('click', function() {
-    const idx = capituloKeys.indexOf(capituloActual);
-    if (idx >= 0 && idx < capituloKeys.length - 1) { capituloActual = capituloKeys[idx+1]; if (capituloSelect) capituloSelect.value = capituloActual; actualizarInfoCap(); cargarVersiculos(libroActual, capituloActual); }
-  });
   const vc = document.getElementById('versiculoContainer'); if (vc) vc.style.fontSize = bibliaFuenteSize + 'px';
-  const fi = document.getElementById('fuenteInfo'); if (fi) fi.textContent = 'Tamaño: ' + bibliaFuenteSize + 'px';
 
   renderFeed(); renderGrupos(); renderDiscipulados(); renderOraciones();
   renderNecesidades(); renderServicios(); renderMisServicios(); renderConsejos();
@@ -9598,7 +9580,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v31: Biblia rediseñada + Agente IA flotante + modelos gratis OpenRouter.');
+  console.log('✅ SAL Y LUZ v32: Biblia con selector de libros visible + SuperAdmin puede guardar libros.');
 });
 
 // ==================== EXPORTS ====================
@@ -9770,6 +9752,8 @@ window.copiarCapituloCompleto = copiarCapituloCompleto;
 window.compartirCapituloCompleto = compartirCapituloCompleto;
 window.seleccionarSugerenciaBiblia = seleccionarSugerenciaBiblia;
 window.irAReferenciaBiblica = irAReferenciaBiblica;
+window.cambiarLibroBiblia = cambiarLibroBiblia;
+window.cambiarCapituloBiblia = cambiarCapituloBiblia;
 window.USERS = USERS;
 window.POSTS = POSTS;
 window.GRUPOS = GRUPOS;

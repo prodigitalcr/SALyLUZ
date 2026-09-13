@@ -1166,6 +1166,28 @@
       background: var(--teal-light); color: var(--teal-dark);
       font-weight: 600; margin-left: 6px;
     }
+    /* ==================== NUEVO: VERSÍCULO SELECCIONADO Y MENÚ FLOTANTE ==================== */
+    .versiculo-item { cursor: pointer; transition: background 0.15s; position: relative; }
+    .versiculo-item:hover { background: var(--teal-light); }
+    .versiculo-item.seleccionado { background: var(--gold-light); border-radius: 6px; }
+    body.dark .versiculo-item.seleccionado { background: rgba(212,175,55,0.25); }
+    .versiculo-menu {
+      position: fixed; z-index: 10000;
+      background: white; border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 6px 4px; box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      display: none; flex-direction: column; min-width: 150px;
+    }
+    body.dark .versiculo-menu { background: #1a1a2e; }
+    .versiculo-menu.show { display: flex; }
+    .versiculo-menu button {
+      background: transparent; border: none; text-align: left;
+      padding: 10px 14px; font-size: 13px; cursor: pointer;
+      color: var(--text-primary); border-radius: 8px; display: flex; align-items: center; gap: 8px;
+    }
+    .versiculo-menu button:hover { background: var(--teal-light); color: var(--teal-dark); }
+    .versiculo-menu button i { width: 16px; text-align: center; color: var(--teal); }
+    .biblia-version-selector { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+    .biblia-version-selector select { padding: 6px 12px; border-radius: 30px; border: 1px solid var(--border-color); background: var(--bg-body); color: var(--text-primary); font-size: 12px; }
   </style>
 </head>
 <body>
@@ -1271,6 +1293,13 @@
   <div class="panel" id="panel-biblia">
     <div class="card">
       <h3><i class="fas fa-bible"></i> Lectura Bíblica <span id="bibliaFuenteBadge" class="biblia-fuente-badge"><i class="fas fa-sync"></i> Cargando...</span></h3>
+      <div class="biblia-version-selector">
+        <label for="bibliaVersionSelect" style="font-size:13px; font-weight:600; color:var(--text-secondary);"><i class="fas fa-bookmark"></i> Versión:</label>
+        <select id="bibliaVersionSelect" onchange="cambiarVersionBiblia()">
+          <option value="">Cargando versiones...</option>
+        </select>
+        <button class="btn-outline" id="btnRecargarVersiones" onclick="recargarVersionesBiblia()" title="Recargar versiones" style="padding:4px 10px; font-size:12px;"><i class="fas fa-sync"></i></button>
+      </div>
       <div class="biblia-selectores">
         <div class="grupo"><label for="libro"><i class="fas fa-book"></i> Libro</label><select id="libro"><option value="">Selecciona</option></select></div>
         <div class="grupo"><label for="capitulo"><i class="fas fa-chapter"></i> Capítulo</label><select id="capitulo"><option value="">Selecciona</option></select></div>
@@ -1869,7 +1898,7 @@
       </div>
     </div>
 
-    <!-- NUEVO: Configuración de Biblia -->
+    <!-- NUEVO: Configuración de Biblia con subida de carpeta completa y versiones -->
     <div class="card config-solo-admin" id="cardBibliaConfig">
       <h3><i class="fas fa-bible"></i> Configuración Bíblica (GitHub / Multimedia)</h3>
       <div class="admin-ia-config">
@@ -1896,7 +1925,7 @@
         <button type="button" class="btn-outline" id="btnRecargarBiblia" style="margin-top:10px;">🔄 Recargar libros</button>
       </div>
       <hr style="border-color:var(--border-color);margin:14px 0;">
-      <h5><i class="fas fa-upload"></i> Subir libro de la Biblia (JSON) — Multimedia</h5>
+      <h5><i class="fas fa-upload"></i> Subir libro individual (JSON)</h5>
       <div class="admin-ia-config">
         <label>Testamento</label>
         <select id="subirBibliaTestamento">
@@ -1911,6 +1940,22 @@
         <input type="file" id="subirBibliaFile" accept=".json,application/json">
         <button type="button" class="btn-primary" id="btnSubirLibroBiblia" style="margin-top:10px;"><i class="fas fa-upload"></i> Subir libro</button>
         <div id="listaBibliasPersonalizadas" style="margin-top:12px;"></div>
+      </div>
+      <hr style="border-color:var(--border-color);margin:14px 0;">
+      <h5><i class="fas fa-folder-open"></i> Subir carpeta completa de Biblia</h5>
+      <div class="admin-ia-config">
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">
+          Selecciona una carpeta que contenga <strong>dos subcarpetas</strong>: <code>Antiguo Testamento</code> y <code>Nuevo Testamento</code>.
+          Dentro de cada una deben estar los <strong>archivos JSON</strong> de cada libro (ej: <code>Génesis.json</code>, <code>Éxodo.json</code>, ...).
+          Se subirán todos los archivos a Storage y se registrarán como una versión de Biblia seleccionable.
+        </p>
+        <label>Nombre de la versión (ej: Reina Valera 1960)</label>
+        <input type="text" id="nombreVersionBiblia" placeholder="Reina Valera 1960">
+        <label>Seleccionar carpeta</label>
+        <input type="file" id="carpetaBibliaInput" webkitdirectory directory multiple>
+        <div id="progresoSubidaCarpeta" style="margin-top:10px;font-size:12px;color:var(--text-secondary);"></div>
+        <button type="button" class="btn-primary" id="btnSubirCarpetaBiblia" style="margin-top:10px;"><i class="fas fa-upload"></i> Subir carpeta completa</button>
+        <div id="listaVersionesBiblia" style="margin-top:12px;"></div>
       </div>
     </div>
     <div class="config-msg" id="msgBibliaConfig"><p>⚠️ Solo SuperAdmin.</p></div>
@@ -2758,6 +2803,7 @@ const CONFIG_CALLMEBOT = db.collection('config_callmebot').doc('config');
 const CONFIG_PAYPAL = db.collection('config_paypal').doc('config');
 const CONFIG_BIBLIA = db.collection('config_biblia').doc('config');
 const BIBLIAS_PERSONALIZADAS = db.collection('biblias_personalizadas');
+const BIBLIAS_VERSIONES = db.collection('biblias_versiones');
 const EVENTOS = db.collection('eventos');
 const NOTICIAS = db.collection('noticias');
 const REELS = db.collection('reels');
@@ -2835,6 +2881,27 @@ let libroActual = '';
 let capituloActual = '';
 let capitulosCache = {};
 let capituloKeys = [];
+let versionBibliaActualId = ''; // NUEVO: id de versión seleccionada
+
+// ORDEN CANÓNICO DE LOS 66 LIBROS DE LA BIBLIA
+const ORDEN_BIBLICO = [
+  // Antiguo Testamento
+  'Génesis','Éxodo','Levítico','Números','Deuteronomio',
+  'Josué','Jueces','Rut','1 Samuel','2 Samuel',
+  '1 Reyes','2 Reyes','1 Crónicas','2 Crónicas','Esdras',
+  'Nehemías','Ester','Job','Salmos','Proverbios',
+  'Eclesiastés','Cantares','Isaías','Jeremías','Lamentaciones',
+  'Ezequiel','Daniel','Oseas','Joel','Amós',
+  'Obadías','Jonás','Miqueas','Nahúm','Habacuc',
+  'Sofonías','Hageo','Zacarías','Malaquías',
+  // Nuevo Testamento
+  'Mateo','Marcos','Lucas','Juan','Hechos',
+  'Romanos','1 Corintios','2 Corintios','Gálatas','Efesios',
+  'Filipenses','Colosenses','1 Tesalonicenses','2 Tesalonicenses','1 Timoteo',
+  '2 Timoteo','Tito','Filemón','Hebreos','Santiago',
+  '1 Pedro','2 Pedro','1 Juan','2 Juan','3 Juan',
+  'Judas','Apocalipsis'
+];
 
 const STORAGE_KEYS = {
   historialBiblia: 'iglesia_historial_biblia',
@@ -3014,7 +3081,6 @@ function asegurarMarcadorUbicacion(lat, lng) {
     miUbicacionMarkerGlobal = new mapboxgl.Marker({ element: el, anchor: 'center' })
       .setLngLat([lng, lat])
       .addTo(mapboxMap);
-    // Iniciar animación con un pequeño pulso visual
     miUbicacionAnimId = null;
     animarMarcadorUbicacion(lat, lng);
   } catch(e) { console.warn('No se pudo crear marcador de ubicación:', e); }
@@ -3031,17 +3097,14 @@ function iniciarWatchUbicacion(opciones = {}) {
       const btn = document.getElementById('btnMiUbicacion');
       if (btn) btn.classList.add('activo');
       asegurarMarcadorUbicacion(lat, lng);
-
-      // Si hay una ruta activa, recalcular suavemente (con throttle)
       if (rutaActiva && mapboxToken) {
         const o = rutaActiva.origen;
         const dist = Math.abs(o.lat - lat) + Math.abs(o.lng - lng);
-        if (dist > 0.00012) { // ~15m
+        if (dist > 0.00012) {
           rutaActiva.origen = { lat, lng };
           recalcularRuta(lat, lng);
         }
       }
-      // Seguir cámara suavemente si hay ruta activa
       if (rutaActiva && rutaSiguiendoUsuario && mapboxMap) {
         try {
           mapboxMap.easeTo({ center: [lng, lat], duration: 900, essential: true });
@@ -3080,7 +3143,6 @@ window.activarMiUbicacion = function() {
     return;
   }
   if (!navigator.geolocation) { alert('La geolocalización no está soportada.'); return; }
-  // Primer fix rápido + flyTo + watch continuo
   navigator.geolocation.getCurrentPosition(
     (pos) => {
       const lat = pos.coords.latitude, lng = pos.coords.longitude;
@@ -3482,7 +3544,7 @@ function switchPanel(name) {
     case 'chatequipo': renderChatEquipo(); break;
     case 'iglesias': renderIglesiasPanel(); break;
     case 'mapa': if (currentUser) { renderMapaAcordeon(); setTimeout(()=>{ initMapboxMap(); }, 100); } break;
-    case 'biblia': cargarHistorial(); llenarSelectorLibros(); break;
+    case 'biblia': cargarHistorial(); llenarSelectorLibros(); cargarVersionesBiblia(); break;
     case 'devocionales': renderDevocionales(); break;
     case 'inicio': renderCarrusel(); renderEventos(); renderNoticias(); renderHistorias(); break;
     case 'admin': if (isAdmin) renderAdminPanel(); break;
@@ -5296,7 +5358,7 @@ function setupReelsFullObserver() {
 </script>
 <script>
 // ================================================================
-// DEVOCIONALES / IGLESIAS / MAPA / WIDGETS / RUTA
+// DEVOCIONALES / IGLESIAS / MAPA / WIDGETS / RUTA / BIBLIA MEJORADA
 // ================================================================
 function puedeSubirDevocional() { return isAdmin || tieneRol('facilitador') || tieneRol('consejero'); }
 document.getElementById('btnMostrarFormDevocional')?.addEventListener('click', function() {
@@ -5834,7 +5896,6 @@ window.trazarRutaA = function(latDestino, lngDestino, nombreDestino) {
   document.getElementById('rutaMeta').textContent = 'Obteniendo tu ubicación...';
   if (panel) panel.classList.add('show');
 
-  // Asegurar marcador de ubicación y watcher
   iniciarWatchUbicacion();
 
   if (rutaWatchId !== null && navigator.geolocation) {
@@ -6063,8 +6124,10 @@ window.preguntarIA = function() {
 };
 
 // ============================================================
-// BIBLIA: GitHub / Personalizadas / Local
+// BIBLIA MEJORADA: orden canónico, versiones, selección de versículo
 // ============================================================
+
+// --- Cargar config de Biblia ---
 async function cargarConfigBiblia() {
   try {
     const doc = await CONFIG_BIBLIA.get();
@@ -6086,8 +6149,10 @@ async function cargarConfigBiblia() {
   const gp = document.getElementById('bibliaGithubPath'); if (gp) gp.value = bibliaConfig.githubPath;
   await cargarLibrosBiblia();
   await renderBibliasPersonalizadas();
+  await renderVersionesBiblia();
 }
 
+// --- Cargar libros desde las fuentes configuradas ---
 async function cargarLibrosBiblia() {
   librosBiblia = { antiguoTestamento: {}, nuevoTestamento: {} };
   const badge = document.getElementById('bibliaFuenteBadge');
@@ -6103,15 +6168,11 @@ async function cargarLibrosBiblia() {
       let count = 0;
       data.tree.filter(item => item.type === 'blob' && item.path.startsWith(prefix) && item.path.toLowerCase().endsWith('.json')).forEach(item => {
         const rel = item.path.substring(prefix.length);
-        // Determinar testamento
         let testamento = 'antiguoTestamento';
         const lower = rel.toLowerCase();
         if (lower.includes('nuevo') || lower.includes('nt/') || lower.startsWith('nt ') || /^nt[\/\\]/.test(lower)) testamento = 'nuevoTestamento';
-        // Nombre libro = último segmento sin .json (o el nombre del archivo si hay carpeta)
         const partes = rel.split('/').filter(s => s);
         let nombreLibro = partes[partes.length - 1].replace(/\.json$/i, '');
-        // Si está en subcarpeta, usar el nombre del archivo
-        if (partes.length > 1) nombreLibro = partes[partes.length - 1].replace(/\.json$/i, '');
         const rawUrl = `https://raw.githubusercontent.com/${bibliaConfig.githubOwner}/${bibliaConfig.githubRepo}/${bibliaConfig.githubBranch}/${item.path}`;
         librosBiblia[testamento][nombreLibro] = rawUrl;
         count++;
@@ -6160,7 +6221,6 @@ async function cargarLibrosBiblia() {
     total = await cargarDesdeLocal();
     fuenteUsada = 'Local';
   } else {
-    // auto
     total = await cargarDesdeGitHub();
     if (total > 0) fuenteUsada = 'GitHub';
     else { total = await cargarDesdeCustom(); if (total > 0) fuenteUsada = 'Personalizadas'; }
@@ -6174,14 +6234,25 @@ async function cargarLibrosBiblia() {
   llenarSelectorLibros();
 }
 
+// --- Llenar selector de libros en ORDEN CANÓNICO ---
 function llenarSelectorLibros() {
   const libroSelect = document.getElementById('libro');
   if (!libroSelect) return;
   const valorPrevio = libroSelect.value;
   libroSelect.innerHTML = '<option value="">Selecciona</option>';
   const todos = { ...librosBiblia.antiguoTestamento, ...librosBiblia.nuevoTestamento };
-  const nombres = Object.keys(todos).sort((a,b) => a.localeCompare(b, 'es'));
-  nombres.forEach(libro => {
+  // Usar ORDEN_BIBLICO para ordenar; los que no estén en la lista se agregan al final
+  const nombresOrdenados = [];
+  ORDEN_BIBLICO.forEach(nombre => {
+    // Buscar coincidencia exacta o insensible a mayúsculas/acentos
+    const encontrado = Object.keys(todos).find(k => k.toLowerCase() === nombre.toLowerCase());
+    if (encontrado) nombresOrdenados.push(encontrado);
+  });
+  // Agregar los que no están en el orden canónico (por si acaso)
+  Object.keys(todos).forEach(k => {
+    if (!nombresOrdenados.includes(k)) nombresOrdenados.push(k);
+  });
+  nombresOrdenados.forEach(libro => {
     const o = document.createElement('option');
     o.value = libro;
     o.textContent = libro;
@@ -6190,6 +6261,7 @@ function llenarSelectorLibros() {
   if (valorPrevio && todos[valorPrevio]) libroSelect.value = valorPrevio;
 }
 
+// --- Normalizar capítulos (acepta varios formatos) ---
 function normalizarCapitulos(data) {
   if (Array.isArray(data)) {
     const obj = {};
@@ -6201,7 +6273,6 @@ function normalizarCapitulos(data) {
     return obj;
   }
   if (data && typeof data === 'object') {
-    // { "1": [...], "2": [...] } o { "1": { "1": "...", "2": "..." } }
     if (data.chapters && Array.isArray(data.chapters)) return normalizarCapitulos(data.chapters);
     if (data.capitulos && Array.isArray(data.capitulos)) return normalizarCapitulos(data.capitulos);
     const obj = {};
@@ -6220,6 +6291,7 @@ function normalizarCapitulos(data) {
   return {};
 }
 
+// --- Cargar capítulos de un libro ---
 function cargarCapitulos(libro) {
   const url = librosBiblia.antiguoTestamento[libro] || librosBiblia.nuevoTestamento[libro];
   if (!url) { document.getElementById('capitulo').innerHTML = '<option>No disponible</option>'; return; }
@@ -6243,6 +6315,7 @@ function cargarCapitulos(libro) {
   });
 }
 
+// --- Cargar versículos y hacerlos seleccionables ---
 function cargarVersiculos(libro, capitulo) {
   const container = document.getElementById('versiculoContainer');
   if (!container) return;
@@ -6253,14 +6326,108 @@ function cargarVersiculos(libro, capitulo) {
   let html = '';
   verses.forEach((v, i) => {
     const text = typeof v === 'string' ? v : (v.text || v.texto || v.t || '');
-    html += `<p><strong style="color:var(--teal);margin-right:6px;">${i+1}</strong> ${text}</p>`;
+    html += `<p class="versiculo-item" data-num="${i+1}" data-texto="${(text+'').replace(/"/g,'&quot;')}" onclick="seleccionarVersiculo(this, ${i+1})"><strong style="color:var(--teal);margin-right:6px;">${i+1}</strong> ${text}</p>`;
   });
   container.innerHTML = html;
   container.style.fontSize = bibliaFuenteSize + 'px';
 }
 
+// --- NUEVO: Selección de versículo con menú flotante ---
+window.seleccionarVersiculo = function(el, num) {
+  // Quitar selección previa
+  document.querySelectorAll('.versiculo-item.seleccionado').forEach(e => e.classList.remove('seleccionado'));
+  el.classList.add('seleccionado');
+  const texto = el.dataset.texto || el.textContent;
+  const libro = libroActual || document.getElementById('libro').value;
+  const cap = capituloActual || document.getElementById('capitulo').value;
+  mostrarMenuVersiculo(el, texto, `${libro} ${cap}:${num}`);
+};
+
+window.mostrarMenuVersiculo = function(el, texto, referencia) {
+  let menu = document.getElementById('versiculoMenuFlotante');
+  if (!menu) {
+    menu = document.createElement('div');
+    menu.id = 'versiculoMenuFlotante';
+    menu.className = 'versiculo-menu';
+    menu.innerHTML = `
+      <button type="button" onclick="copiarVersiculoSeleccionado()"><i class="fas fa-copy"></i> Copiar versículo</button>
+      <button type="button" onclick="compartirVersiculoSeleccionado()"><i class="fas fa-share"></i> Compartir en el muro</button>
+    `;
+    document.body.appendChild(menu);
+  }
+  // Guardar datos en el menú
+  menu.dataset.texto = texto;
+  menu.dataset.referencia = referencia;
+  // Posicionar cerca del elemento
+  const rect = el.getBoundingClientRect();
+  let top = rect.bottom + 8;
+  let left = rect.left;
+  // Ajustar si se sale de pantalla
+  const menuWidth = 180;
+  if (left + menuWidth > window.innerWidth) left = window.innerWidth - menuWidth - 10;
+  if (top + 120 > window.innerHeight) top = rect.top - 120;
+  menu.style.top = top + 'px';
+  menu.style.left = left + 'px';
+  menu.classList.add('show');
+};
+
+window.copiarVersiculoSeleccionado = function() {
+  const menu = document.getElementById('versiculoMenuFlotante');
+  if (!menu) return;
+  const texto = menu.dataset.texto || '';
+  const ref = menu.dataset.referencia || '';
+  const contenido = `"${texto}" — ${ref}`;
+  navigator.clipboard.writeText(contenido).then(() => {
+    alert('✅ Versículo copiado:\n' + contenido);
+    menu.classList.remove('show');
+  }).catch(() => {
+    prompt('Copia el versículo:', contenido);
+    menu.classList.remove('show');
+  });
+};
+
+window.compartirVersiculoSeleccionado = function() {
+  const menu = document.getElementById('versiculoMenuFlotante');
+  if (!menu) return;
+  const texto = menu.dataset.texto || '';
+  const ref = menu.dataset.referencia || '';
+  if (!currentUser) { alert('Inicia sesión para compartir.'); return; }
+  POSTS.add({
+    uid: currentUser.uid,
+    autorNombre: currentUser.displayName,
+    autorFoto: currentUser.fotoPerfil || '',
+    texto: `"${texto}"\n— ${ref}`,
+    categoria: 'otro',
+    fecha: firebase.firestore.FieldValue.serverTimestamp(),
+    likes: [], orando: [], comentarios: [], compartidos: 0
+  }).then(() => {
+    alert('✅ Versículo compartido en el muro.');
+    menu.classList.remove('show');
+    switchPanel('muro');
+  }).catch(err => alert('Error: ' + err.message));
+};
+
+// Cerrar menú flotante al hacer clic fuera
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('versiculoMenuFlotante');
+  if (menu && menu.classList.contains('show')) {
+    if (!menu.contains(e.target) && !e.target.classList.contains('versiculo-item')) {
+      menu.classList.remove('show');
+      document.querySelectorAll('.versiculo-item.seleccionado').forEach(el => el.classList.remove('seleccionado'));
+    }
+  }
+});
+
+// --- Otras funciones de Biblia ---
 function actualizarInfoCap() { document.getElementById('capInfo').textContent = libroActual && capituloActual ? libroActual + ' ' + capituloActual : 'Capítulo'; }
 function cargarHistorial() { const h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]'); const c = document.getElementById('historialContainer'); c.innerHTML = h.length ? h.map(t => `<span class="historial-tag" onclick="irAHistorial('${t}')" style="cursor:pointer;">${t}</span>`).join('') : '<span style="color:var(--text-secondary);font-size:12px;">Sin búsquedas.</span>'; }
+function guardarHistorial(ref) {
+  const h = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialBiblia) || '[]');
+  const filtrado = h.filter(x => x !== ref);
+  filtrado.unshift(ref);
+  localStorage.setItem(STORAGE_KEYS.historialBiblia, JSON.stringify(filtrado.slice(0, 10)));
+  cargarHistorial();
+}
 function irAHistorial(t) {
   const partes = t.split(' ');
   if (partes.length < 2) return;
@@ -6279,7 +6446,63 @@ function irAHistorial(t) {
   }, 500);
 }
 
-// Config Biblia (SuperAdmin)
+// --- Versiones de Biblia ---
+async function cargarVersionesBiblia() {
+  const select = document.getElementById('bibliaVersionSelect');
+  if (!select) return;
+  select.innerHTML = '<option value="">Cargando versiones...</option>';
+  try {
+    const snap = await BIBLIAS_VERSIONES.orderBy('fechaSubida', 'desc').get();
+    select.innerHTML = '<option value="">Predeterminada (config actual)</option>';
+    snap.forEach(doc => {
+      const v = doc.data();
+      const o = document.createElement('option');
+      o.value = doc.id;
+      o.textContent = v.nombre || 'Versión sin nombre';
+      select.appendChild(o);
+    });
+    if (versionBibliaActualId) select.value = versionBibliaActualId;
+  } catch(e) {
+    select.innerHTML = '<option value="">Predeterminada (config actual)</option>';
+  }
+}
+
+window.recargarVersionesBiblia = async function() {
+  await cargarVersionesBiblia();
+  alert('✅ Versiones recargadas.');
+};
+
+window.cambiarVersionBiblia = async function() {
+  const select = document.getElementById('bibliaVersionSelect');
+  const id = select ? select.value : '';
+  versionBibliaActualId = id;
+  if (!id) {
+    // Volver a la fuente configurada
+    await cargarLibrosBiblia();
+    return;
+  }
+  try {
+    const doc = await BIBLIAS_VERSIONES.doc(id).get();
+    if (!doc.exists) return;
+    const v = doc.data();
+    // Reemplazar librosBiblia con los de esta versión
+    librosBiblia = { antiguoTestamento: {}, nuevoTestamento: {} };
+    if (v.libros) {
+      Object.keys(v.libros).forEach(nombreLibro => {
+        const info = v.libros[nombreLibro];
+        const testamento = info.testamento || 'nuevoTestamento';
+        if (!librosBiblia[testamento]) librosBiblia[testamento] = {};
+        librosBiblia[testamento][nombreLibro] = info.url;
+      });
+    }
+    llenarSelectorLibros();
+    const badge = document.getElementById('bibliaFuenteBadge');
+    if (badge) badge.innerHTML = `<i class="fas fa-bookmark"></i> ${v.nombre || 'Versión personalizada'}`;
+    alert('✅ Versión cambiada a: ' + (v.nombre || 'personalizada'));
+  } catch(e) { alert('Error: ' + e.message); }
+};
+
+// --- Config Biblia (SuperAdmin) ---
 window.guardarConfigBiblia = function() {
   if (!isSuperAdmin) return;
   const fuente = document.getElementById('bibliaFuenteSelect').value;
@@ -6290,6 +6513,7 @@ window.guardarConfigBiblia = function() {
   CONFIG_BIBLIA.set({ fuente, githubOwner, githubRepo, githubBranch, githubPath, actualizado: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true })
     .then(async () => {
       bibliaConfig = { fuente, githubOwner, githubRepo, githubBranch, githubPath };
+      versionBibliaActualId = '';
       await cargarLibrosBiblia();
       alert('✅ Configuración de Biblia guardada.');
     }).catch(err => alert('Error: ' + err.message));
@@ -6297,9 +6521,11 @@ window.guardarConfigBiblia = function() {
 
 window.recargarBiblias = async function() {
   await cargarLibrosBiblia();
+  await cargarVersionesBiblia();
   alert('✅ Libros recargados: ' + (Object.keys(librosBiblia.antiguoTestamento).length + Object.keys(librosBiblia.nuevoTestamento).length) + ' disponibles.');
 };
 
+// --- Subir libro individual ---
 window.subirLibroBiblia = async function() {
   if (!isSuperAdmin) return;
   const testamento = document.getElementById('subirBibliaTestamento').value;
@@ -6309,9 +6535,8 @@ window.subirLibroBiblia = async function() {
   if (!nombre || !file) { alert('Nombre y archivo JSON requeridos.'); return; }
   if (!file.name.toLowerCase().endsWith('.json')) { alert('Debe ser un archivo .json'); return; }
   try {
-    // Validar JSON
     const texto = await file.text();
-    JSON.parse(texto); // lanzará si no es válido
+    JSON.parse(texto);
     const path = `biblias/${testamento}/${Date.now()}_${file.name}`;
     const url = await subirArchivoStorage(file, path);
     await BIBLIAS_PERSONALIZADAS.add({ testamento, nombre, version, url, fileName: file.name, uid: currentUser.uid, fecha: firebase.firestore.FieldValue.serverTimestamp() });
@@ -6332,7 +6557,7 @@ async function renderBibliasPersonalizadas() {
   try {
     const snap = await BIBLIAS_PERSONALIZADAS.orderBy('fecha', 'desc').get();
     if (snap.empty) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">No hay libros subidos.</p>'; return; }
-    let html = '<div style="font-weight:600;font-size:13px;margin-bottom:6px;">Libros subidos:</div>';
+    let html = '<div style="font-weight:600;font-size:13px;margin-bottom:6px;">Libros individuales subidos:</div>';
     snap.forEach(doc => {
       const d = doc.data();
       html += `<div class="admin-list-item" style="font-size:12px;">
@@ -6354,6 +6579,133 @@ window.eliminarLibroBiblia = async function(id) {
   } catch(e) { alert('Error: ' + e.message); }
 };
 
+// --- Subir carpeta completa de Biblia ---
+window.subirCarpetaBiblia = async function() {
+  if (!isSuperAdmin) return;
+  const input = document.getElementById('carpetaBibliaInput');
+  const nombreVersion = document.getElementById('nombreVersionBiblia').value.trim();
+  if (!nombreVersion) { alert('Ingresa el nombre de la versión.'); return; }
+  if (!input || !input.files || input.files.length === 0) { alert('Selecciona una carpeta con los archivos JSON.'); return; }
+  const archivos = Array.from(input.files);
+  const progreso = document.getElementById('progresoSubidaCarpeta');
+  progreso.innerHTML = '📂 Preparando subida...';
+
+  // Separar por testamento detectando la ruta
+  const archivosAT = [];
+  const archivosNT = [];
+  archivos.forEach(file => {
+    const ruta = file.webkitRelativePath || file.name;
+    const rutaLower = ruta.toLowerCase();
+    if (rutaLower.includes('antiguo') || rutaLower.includes('at/') || rutaLower.includes('/at/')) {
+      archivosAT.push(file);
+    } else if (rutaLower.includes('nuevo') || rutaLower.includes('nt/') || rutaLower.includes('/nt/')) {
+      archivosNT.push(file);
+    } else {
+      // Si no está en subcarpeta, intentar por nombre del libro
+      const nombre = file.name.replace(/\.json$/i, '');
+      if (ORDEN_BIBLICO.indexOf(nombre) >= 0) {
+        const idx = ORDEN_BIBLICO.indexOf(nombre);
+        if (idx < 39) archivosAT.push(file);
+        else archivosNT.push(file);
+      }
+    }
+  });
+
+  if (archivosAT.length === 0 && archivosNT.length === 0) {
+    alert('No se encontraron archivos JSON válidos. Asegúrate de que la carpeta contenga subcarpetas "Antiguo Testamento" y "Nuevo Testamento", o que los archivos tengan nombres de libros bíblicos.');
+    return;
+  }
+
+  const todos = [...archivosAT, ...archivosNT];
+  const librosMap = {};
+  let subidos = 0;
+  let errores = 0;
+
+  for (const file of todos) {
+    const ruta = file.webkitRelativePath || file.name;
+    const nombre = file.name.replace(/\.json$/i, '');
+    // Determinar testamento
+    let testamento = 'nuevoTestamento';
+    if (archivosAT.includes(file)) testamento = 'antiguoTestamento';
+    // Validar JSON
+    try {
+      const texto = await file.text();
+      JSON.parse(texto);
+    } catch(e) {
+      progreso.innerHTML = `⚠️ ${nombre}: JSON inválido, se omite.`;
+      errores++;
+      continue;
+    }
+    const path = `biblias/versiones/${Date.now()}_${testamento}_${file.name}`;
+    try {
+      const url = await subirArchivoStorage(file, path);
+      librosMap[nombre] = { url, testamento };
+      subidos++;
+      progreso.innerHTML = `📤 Subiendo... ${subidos}/${todos.length} — ${nombre}`;
+    } catch(e) {
+      errores++;
+    }
+  }
+
+  if (Object.keys(librosMap).length === 0) {
+    progreso.innerHTML = '❌ No se pudo subir ningún archivo.';
+    return;
+  }
+
+  try {
+    await BIBLIAS_VERSIONES.add({
+      nombre: nombreVersion,
+      libros: librosMap,
+      totalLibros: Object.keys(librosMap).length,
+      uid: currentUser.uid,
+      fechaSubida: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    progreso.innerHTML = `✅ Versión "${nombreVersion}" creada con ${Object.keys(librosMap).length} libros.`;
+    document.getElementById('nombreVersionBiblia').value = '';
+    document.getElementById('carpetaBibliaInput').value = '';
+    await cargarVersionesBiblia();
+    await renderVersionesBiblia();
+  } catch(e) {
+    progreso.innerHTML = '❌ Error guardando versión: ' + e.message;
+  }
+};
+
+async function renderVersionesBiblia() {
+  const cont = document.getElementById('listaVersionesBiblia');
+  if (!cont) return;
+  try {
+    const snap = await BIBLIAS_VERSIONES.orderBy('fechaSubida', 'desc').get();
+    if (snap.empty) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">No hay versiones completas subidas.</p>'; return; }
+    let html = '<div style="font-weight:600;font-size:13px;margin-bottom:6px;">Versiones completas disponibles:</div>';
+    snap.forEach(doc => {
+      const v = doc.data();
+      html += `<div class="admin-list-item" style="font-size:12px;">
+        <span class="info"><strong>${v.nombre}</strong> <small style="color:var(--text-secondary);">(${v.totalLibros || 0} libros)</small></span>
+        <div class="actions">
+          <button type="button" class="btn-outline" onclick="document.getElementById('bibliaVersionSelect').value='${doc.id}'; cambiarVersionBiblia();" style="font-size:10px; padding:2px 8px;">Usar</button>
+          <button type="button" class="btn-danger" onclick="eliminarVersionBiblia('${doc.id}')" style="font-size:10px;">X</button>
+        </div>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  } catch(e) { cont.innerHTML = ''; }
+}
+
+window.eliminarVersionBiblia = async function(id) {
+  if (!isSuperAdmin) return;
+  if (!confirm('¿Eliminar esta versión de la Biblia?')) return;
+  try {
+    await BIBLIAS_VERSIONES.doc(id).delete();
+    if (versionBibliaActualId === id) {
+      versionBibliaActualId = '';
+      await cargarLibrosBiblia();
+    }
+    await cargarVersionesBiblia();
+    await renderVersionesBiblia();
+  } catch(e) { alert('Error: ' + e.message); }
+};
+
+// ==================== RESTO DE FUNCIONES (sin cambios) ====================
 function actualizarBotonesPorRol() {
   const btnGrupo = document.getElementById('btnCrearGrupo');
   const btnDiscipulado = document.getElementById('btnCrearDiscipulado');
@@ -6411,7 +6763,7 @@ function renderAdminPanel() {
   cargarConfigIA();
   cargarConfigCallMeBot();
   cargarConfigPaypal();
-  if (isSuperAdmin) { cargarConfigBiblia(); renderBibliasPersonalizadas(); }
+  if (isSuperAdmin) { cargarConfigBiblia(); renderBibliasPersonalizadas(); renderVersionesBiblia(); }
   const stats = { users:0, posts:0, iglesias:0 };
   Promise.all([USERS.get().then(s => stats.users = s.size), POSTS.get().then(s => stats.posts = s.size), IGLESIAS.get().then(s => stats.iglesias = s.size)]).then(() => {
     document.getElementById('statUsers').textContent = stats.users;
@@ -6669,8 +7021,7 @@ window.abrirMediaViewer = function(items, index, type) {
 };
 window.cerrarMediaViewer = function() { document.getElementById('mediaViewer').classList.remove('show'); };
 window.navegarMediaViewer = function(d) { mediaViewerIndex = (mediaViewerIndex + d + mediaViewerItems.length) % mediaViewerItems.length; document.getElementById('mediaViewerImage').src = mediaViewerItems[mediaViewerIndex].url; };
-</script>
-<script>
+
 // ================================================================
 // CHATS ADMIN/EQUIPO con archivos
 // ================================================================
@@ -8083,6 +8434,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnGuardarBibliaConfig')?.addEventListener('click', guardarConfigBiblia);
   document.getElementById('btnRecargarBiblia')?.addEventListener('click', recargarBiblias);
   document.getElementById('btnSubirLibroBiblia')?.addEventListener('click', subirLibroBiblia);
+  document.getElementById('btnSubirCarpetaBiblia')?.addEventListener('click', subirCarpetaBiblia);
   document.getElementById('btnBuscarBiblia').addEventListener('click', () => alert('Búsqueda en versión completa.'));
 
   const btnCrearProyecto = document.getElementById('btnCrearProyecto');
@@ -8138,6 +8490,7 @@ document.addEventListener('DOMContentLoaded', function() {
   actualizarBotonesPorRol(); actualizarTabs();
   cargarHistorial(); cargarMapboxToken(); cargarConfigMenu(); cargarEstilosConfig(); cargarConfigCallMeBot(); cargarConfigPaypal();
   cargarConfigBiblia();
+  cargarVersionesBiblia();
 
   auth.onAuthStateChanged(async (user) => {
     if (user) { await cargarUsuarioActual(user); cargarLogoConfig(); }
@@ -8145,7 +8498,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v29: punto azul animado, cámara sigue la ruta, Biblia GitHub + multimedia.');
+  console.log('✅ SAL Y LUZ v30: Biblia con orden canónico, versiones por carpeta, selección de versículo.');
 });
 
 // ==================== EXPORTS ====================
@@ -8296,6 +8649,13 @@ window.recargarBiblias = recargarBiblias;
 window.subirLibroBiblia = subirLibroBiblia;
 window.eliminarLibroBiblia = eliminarLibroBiblia;
 window.irAHistorial = irAHistorial;
+window.cambiarVersionBiblia = cambiarVersionBiblia;
+window.recargarVersionesBiblia = recargarVersionesBiblia;
+window.subirCarpetaBiblia = subirCarpetaBiblia;
+window.eliminarVersionBiblia = eliminarVersionBiblia;
+window.seleccionarVersiculo = seleccionarVersiculo;
+window.copiarVersiculoSeleccionado = copiarVersiculoSeleccionado;
+window.compartirVersiculoSeleccionado = compartirVersiculoSeleccionado;
 window.USERS = USERS;
 window.POSTS = POSTS;
 window.GRUPOS = GRUPOS;

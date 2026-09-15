@@ -10264,7 +10264,9 @@ window.MAPA_COL = MAPA_COL;
     if (loginForm && !document.querySelector('.g-recaptcha')) {
       var wrap = document.createElement('div');
       wrap.style.cssText = 'display:flex; justify-content:center; margin:10px 0; transform:scale(0.9);';
-      wrap.innerHTML = '<div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="onRecaptchaOk" data-expired-callback="onRecaptchaExpired"></div>';
+      wrap.innerHTML = '<div class="g-recaptcha" data-sitekey="
+6LeuI7wtAAAAAPDZK6oKQaYLXleP8y01oaYVZX0V
+" data-callback="onRecaptchaOk" data-expired-callback="onRecaptchaExpired"></div>';
       var errDiv = document.getElementById('loginError');
       if (errDiv && errDiv.parentNode) errDiv.parentNode.insertBefore(wrap, errDiv);
       else loginForm.appendChild(wrap);

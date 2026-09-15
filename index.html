@@ -10259,7 +10259,8 @@ window.MAPA_COL = MAPA_COL;
   // ─── 7) INYECTAR UI al cargar el DOM ─────────────────────────
   document.addEventListener('DOMContentLoaded', function() {
 
-       // A) reCAPTCHA dentro del modal de login (renderizado explícito)
+         // A) reCAPTCHA dentro del modal de login (DESACTIVADO)
+    /*
     var loginForm = document.getElementById('loginForm');
     if (loginForm && !document.querySelector('.g-recaptcha')) {
       var wrap = document.createElement('div');
@@ -10270,45 +10271,23 @@ window.MAPA_COL = MAPA_COL;
       if (errDiv && errDiv.parentNode) errDiv.parentNode.insertBefore(wrap, errDiv);
       else loginForm.appendChild(wrap);
 
-      // Render explícito cuando Google esté listo
       var renderRecaptcha = function() {
-        try {
-          if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
-            grecaptcha.render(rcDiv, {
-              sitekey: '
-6LeuI7wtAAAAAPDZK6oKQaYLXleP8y01oaYVZX0V
-',
-              callback: 'onRecaptchaOk',
-              'expired-callback': 'onRecaptchaExpired'
-            });
-            console.log('✅ reCAPTCHA renderizado correctamente');
-          } else {
-            setTimeout(renderRecaptcha, 300);
-          }
-        } catch(e) {
-          console.warn('Error renderizando reCAPTCHA:', e);
-        }
+        // ... todo el código ...
       };
 
       if (typeof grecaptcha !== 'undefined' && grecaptcha.ready) {
         grecaptcha.ready(renderRecaptcha);
       } else {
-        // Esperar a que el script de Google esté listo
         var tries = 0;
         var waitRecaptcha = setInterval(function() {
-          tries++;
-          if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
-            clearInterval(waitRecaptcha);
-            grecaptcha.ready(renderRecaptcha);
-          } else if (tries > 50) {
-            clearInterval(waitRecaptcha);
-            console.warn('reCAPTCHA no cargó en 15 segundos. Revisa que el <script> esté en el <head>.');
-          }
+          // ... todo el código ...
         }, 300);
       }
     }
+    */
 
     // B) Hook login para verificar captcha
+    /*
     var loginBtn = document.getElementById('loginSubmitBtn');
     if (loginBtn && !loginBtn._recapHooked) {
       loginBtn._recapHooked = true;
@@ -10321,6 +10300,7 @@ window.MAPA_COL = MAPA_COL;
       loginCancel._recapHooked = true;
       loginCancel.addEventListener('click', function() { setTimeout(resetRecaptcha, 300); });
     }
+      */
 
     // C) Botón Papelera en adminTabs
     var tabs = document.getElementById('adminTabs');

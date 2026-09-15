@@ -10259,17 +10259,53 @@ window.MAPA_COL = MAPA_COL;
   // ─── 7) INYECTAR UI al cargar el DOM ─────────────────────────
   document.addEventListener('DOMContentLoaded', function() {
 
-    // A) reCAPTCHA dentro del modal de login
+       // A) reCAPTCHA dentro del modal de login (renderizado explícito)
     var loginForm = document.getElementById('loginForm');
     if (loginForm && !document.querySelector('.g-recaptcha')) {
       var wrap = document.createElement('div');
       wrap.style.cssText = 'display:flex; justify-content:center; margin:10px 0; transform:scale(0.9);';
-      wrap.innerHTML = '<div class="g-recaptcha" data-sitekey="
-6LeuI7wtAAAAAPDZK6oKQaYLXleP8y01oaYVZX0V
-" data-callback="onRecaptchaOk" data-expired-callback="onRecaptchaExpired"></div>';
+      var rcDiv = document.createElement('div');
+      wrap.appendChild(rcDiv);
       var errDiv = document.getElementById('loginError');
       if (errDiv && errDiv.parentNode) errDiv.parentNode.insertBefore(wrap, errDiv);
       else loginForm.appendChild(wrap);
+
+      // Render explícito cuando Google esté listo
+      var renderRecaptcha = function() {
+        try {
+          if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+            grecaptcha.render(rcDiv, {
+              sitekey: '
+6LeuI7wtAAAAAPDZK6oKQaYLXleP8y01oaYVZX0V
+',
+              callback: 'onRecaptchaOk',
+              'expired-callback': 'onRecaptchaExpired'
+            });
+            console.log('✅ reCAPTCHA renderizado correctamente');
+          } else {
+            setTimeout(renderRecaptcha, 300);
+          }
+        } catch(e) {
+          console.warn('Error renderizando reCAPTCHA:', e);
+        }
+      };
+
+      if (typeof grecaptcha !== 'undefined' && grecaptcha.ready) {
+        grecaptcha.ready(renderRecaptcha);
+      } else {
+        // Esperar a que el script de Google esté listo
+        var tries = 0;
+        var waitRecaptcha = setInterval(function() {
+          tries++;
+          if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+            clearInterval(waitRecaptcha);
+            grecaptcha.ready(renderRecaptcha);
+          } else if (tries > 50) {
+            clearInterval(waitRecaptcha);
+            console.warn('reCAPTCHA no cargó en 15 segundos. Revisa que el <script> esté en el <head>.');
+          }
+        }, 300);
+      }
     }
 
     // B) Hook login para verificar captcha

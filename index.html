@@ -3887,6 +3887,8 @@ window.guardarConfigPaypal = function() {
     })
     .catch(err => alert('Error: ' + err.message));
 };
+
+window.confirmarOfrenda = function() {
   if (!currentUser) return;
   const monto = parseFloat(document.getElementById('ofrendaMonto').value);
   const metodo = document.getElementById('ofrendaMetodo').value;

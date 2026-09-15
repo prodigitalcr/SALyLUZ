@@ -3928,8 +3928,39 @@ window.guardarConfigPaypal = function() {
 };
 
 window.confirmarOfrenda = function() {
+   const pmEl = document.getElementById('paypalMe');
+  const paypalMe = pmEl ? pmEl.value.trim().replace(/^https?:\/\/(www\.)?paypal\.me\//i, '').replace(/\/$/, '') : '';
+  const email = (window.paypalConfig && paypalConfig.email) || '';
+  const moneda = (window.paypalConfig && paypalConfig.moneda) || 'USD';
+  if (!paypalMe && !email) {
+    alert('⚠️ Ingresa tu usuario PayPal.me o tu email primero, y guarda.');
+    return;
+  }
+  const monto = '10.00';
+  const url = paypalMe
+    ? `https://www.paypal.me/${paypalMe}/${monto}${moneda}`
+    : `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(email)}&amount=${monto}&currency_code=${moneda}&item_name=Ofrenda%20de%20prueba`;
+  const w = window.open(url, '_blank');
+  if (!w) alert('⚠️ Ventana bloqueada. Enlace:\n' + url);
+  else alert('✅ Vista previa de PayPal abierta en otra pestaña.');
+};
+
+window.abrirOfrendaModal = function() {
+  if (!currentUser) {
+    alert('Debes iniciar sesión para dar tu ofrenda.');
+    const lb = document.getElementById('loginBtn');
+    if (lb) lb.click();
+    return;
+  }
+  const mEl = document.getElementById('ofrendaMonto');
+  if (mEl) mEl.value = '';
+  const nEl = document.getElementById('ofrendaNota');
+  if (nEl) nEl.value = '';
+  abrirModal('ofrendaModal');
+};
+
+window.confirmarOfrenda = function() {
   if (!currentUser) return;
-  const monto = parseFloat(document.getElementById('ofrendaMonto').value);
   const metodo = document.getElementById('ofrendaMetodo').value;
   const destino = document.getElementById('ofrendaDestino').value;
   const nota = document.getElementById('ofrendaNota').value.trim();

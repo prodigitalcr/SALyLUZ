@@ -2451,7 +2451,7 @@
       </div>
     </div>
 
-    <!-- Configuración del AGENTE IA -->
+    <!-- Configuración del AGENTE IA Bíblico -->
     <div class="card config-solo-admin" id="cardAgenteIAConfig">
       <h3><i class="fas fa-robot"></i> Agente IA Bíblico</h3>
       <div class="admin-ia-config">
@@ -2484,6 +2484,61 @@
       </div>
     </div>
     <div class="config-msg" id="msgAgenteIAConfig"><p>⚠️ Solo SuperAdmin.</p></div>
+
+    <!-- NUEVO: Agente IA Moderador de la comunidad -->
+    <div class="card config-solo-admin" id="cardAgenteModeradorConfig">
+      <h3><i class="fas fa-shield-alt"></i> Agente IA Moderador de Comunidad</h3>
+      <div class="admin-ia-config">
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">
+          El <strong>Agente Moderador</strong> revisa automáticamente cada publicación contra las políticas de la comunidad
+          SAL Y LUZ, notifica al SuperAdmin por WhatsApp sobre infracciones, responde al usuario infractor,
+          y permite al SuperAdmin enviar anuncios oficiales redactados/pulidos por la IA.
+        </p>
+        <label>Nombre del agente moderador</label>
+        <input type="text" id="modNombreInput" placeholder="Ej: Guardián">
+        <label>API Key de OpenRouter (puede ser la misma que la del agente bíblico)</label>
+        <input type="text" id="modApiKeyInput" placeholder="sk-or-v1-...">
+        <button type="button" class="btn-outline" onclick="cargarModelosGratisOpenRouterMod()" style="margin-top:8px;width:100%;">
+          <i class="fas fa-sync"></i> Cargar modelos GRATIS disponibles
+        </button>
+        <div id="modModelosLista" style="margin-top:10px;max-height:280px;overflow-y:auto;">
+          <p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px;">Pulsa el botón para cargar modelos.</p>
+        </div>
+        <label>Modelo seleccionado</label>
+        <input type="text" id="modModeloSeleccionado" readonly placeholder="Selecciona un modelo de la lista">
+        <label>Políticas de la comunidad (editable)</label>
+        <textarea id="modPoliticasInput" rows="8" placeholder="Ej: 1) Respeto a todos los miembros. 2) No lenguaje ofensivo. 3) No contenido sexual. 4) No promoción de otras religiones. 5) No spam. 6) No política partidista..."></textarea>
+        <label>Prompt del sistema para moderación</label>
+        <textarea id="modPromptSistema" rows="5" placeholder="Eres un moderador cristiano y respetuoso. Analiza el contenido y determina si infringe las políticas..."></textarea>
+        <label>Mensaje de bienvenida (chat moderador)</label>
+        <input type="text" id="modMensajeBienvenida" placeholder="Soy Guardián, tu asistente de moderación.">
+        <button type="button" class="btn-primary" onclick="guardarConfigAgenteModerador()" style="margin-top:10px;width:100%;">
+          <i class="fas fa-save"></i> Guardar configuración del moderador
+        </button>
+        <button type="button" class="btn-outline" onclick="probarAgenteModerador()" style="margin-top:6px;width:100%;">
+          <i class="fas fa-flask"></i> Probar conexión
+        </button>
+      </div>
+    </div>
+
+    <!-- NUEVO: Envío de Anuncios con IA -->
+    <div class="card config-solo-admin" id="cardAnuncioIA">
+      <h3><i class="fas fa-bullhorn"></i> Enviar Anuncio Oficial con IA</h3>
+      <div class="admin-ia-config">
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">
+          Escribe un borrador del anuncio y el Agente Moderador lo pulirá con tono pastoral y lo publicará como anuncio oficial en el muro.
+          Además se te notificará por WhatsApp como registro.
+        </p>
+        <label>Borrador del anuncio</label>
+        <textarea id="anuncioBorrador" rows="5" placeholder="Ej: este domingo habrá culto especial de 9am a 11am..."></textarea>
+        <label style="display:flex;align-items:center;gap:8px;">
+          <input type="checkbox" id="anuncioEnviarWhatsApp" checked> Notificarme por WhatsApp al publicar
+        </label>
+        <button type="button" class="btn-primary" onclick="publicarAnuncioConIA()" style="margin-top:10px;width:100%;">
+          <i class="fas fa-magic"></i> Pulir y publicar anuncio
+        </button>
+      </div>
+    </div>
 
     <!-- CONFIGURACIÓN BÍBLICA COMPLETA -->
     <div class="card config-solo-admin" id="cardBibliaConfig">
@@ -2615,7 +2670,7 @@
       <h3><i class="fab fa-whatsapp"></i> Configuración CallMeBot (WhatsApp)</h3>
       <div class="admin-ia-config">
         <p style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">
-          Recibe un WhatsApp cuando alguien se registre o cierre sesión.<br>
+          Recibe un WhatsApp en eventos clave: <strong>registro nuevo, mensajes a Chat Admin/Equipo, notificaciones al superadmin, eliminación de cuenta, y donativos</strong>.<br>
           Activa CallMeBot: envía <strong>"I allow callmebot to send me messages"</strong> al <strong>+34 644 51 95 23</strong> en WhatsApp y obtén tu apikey.
         </p>
         <label style="display:flex; align-items:center; gap:8px;">
@@ -3248,12 +3303,12 @@
     </div>
   </div>
 
-  <!-- ===== MODAL DE OFRENDA (con contenedor de botones PayPal) ===== -->
+  <!-- ===== MODAL DE DONATIVO (con contenedor de botones PayPal) ===== -->
   <div class="modal-overlay" id="ofrendaModal">
     <div class="modal-box" style="max-width:500px;">
-      <h3><i class="fas fa-hand-holding-usd"></i> Ofrendar</h3>
+      <h3><i class="fas fa-hand-holding-usd"></i> Dar Donativo</h3>
       <div class="paypal-donar-box">
-        <h4><i class="fab fa-paypal"></i> Tu ofrenda bendice vidas</h4>
+        <h4><i class="fab fa-paypal"></i> Tu donativo bendice vidas</h4>
         <p>Apoya la obra y a las familias misioneras</p>
       </div>
       <label>Monto *</label>
@@ -3277,7 +3332,7 @@
 
       <div class="modal-actions">
         <button type="button" class="btn-cancel" onclick="cerrarModal('ofrendaModal')">Cancelar</button>
-        <button type="button" class="btn-confirm" id="btnConfirmarOfrenda" onclick="confirmarOfrenda()"><i class="fas fa-hand-holding-usd"></i> Registrar ofrenda</button>
+        <button type="button" class="btn-confirm" id="btnConfirmarOfrenda" onclick="confirmarOfrenda()"><i class="fas fa-hand-holding-usd"></i> Registrar donativo</button>
       </div>
     </div>
   </div>
@@ -3337,6 +3392,17 @@
     <button type="button" class="nav-btn next" onclick="event.stopPropagation(); navegarMediaViewer(1)">❯</button>
     <div class="media-info" id="mediaViewerInfo"></div>
     <div class="media-reacciones" id="mediaViewerReacciones"></div>
+  </div>
+
+  <!-- MODAL DE MODERACIÓN: Mensaje del Agente Moderador al usuario -->
+  <div class="modal-overlay" id="moderacionAvisoModal">
+    <div class="modal-box" style="max-width:560px;">
+      <h3 style="color:#e74c3c;"><i class="fas fa-shield-alt"></i> Aviso del Moderador IA</h3>
+      <div id="moderacionAvisoContenido" style="font-size:14px;line-height:1.6;background:var(--bg-body);padding:14px;border-radius:12px;border-left:4px solid #e74c3c;margin:10px 0;"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn-confirm" onclick="cerrarModal('moderacionAvisoModal')">Entendido</button>
+      </div>
+    </div>
   </div>
 
 </div>
@@ -3404,7 +3470,25 @@ const REPORTES = db.collection('reportes');
 const CHAT_ADMIN = db.collection('chat_admin');
 const CHAT_EQUIPO = db.collection('chat_equipo');
 const SEGUIDORES = db.collection('seguidores');
-const NOTIFICACIONES = (uid) => db.collection('notificaciones').doc(uid).collection('items');
+// Wrapper de NOTIFICACIONES: al añadir, si el destinatario es el superadmin, envía WhatsApp
+const _NOTIF_COL = (uid) => db.collection('notificaciones').doc(uid).collection('items');
+const NOTIFICACIONES = (uid) => {
+  const col = _NOTIF_COL(uid);
+  const origAdd = col.add.bind(col);
+  col.add = async function(data) {
+    const result = await origAdd(data);
+    // Notificar por WhatsApp si el destinatario es el superadmin
+    try {
+      const uDoc = await USERS.doc(uid).get();
+      if (uDoc.exists && uDoc.data().email === 'salyluz@comunidad.com') {
+        const msg = `🔔 *Notificación SuperAdmin*\nDe: ${data.emisorNombre || 'Sistema'}\n${data.texto || data.tipo || 'Nueva notificación'}`;
+        window.enviarWhatsAppCallMeBot(msg);
+      }
+    } catch(e) {}
+    return result;
+  };
+  return col;
+};
 const CONFIG_IA = db.collection('config_ia').doc('config');
 const APP_CONFIG = db.collection('appConfig').doc('config');
 const CONFIG_MAPBOX = db.collection('config_mapbox').doc('config');
@@ -3412,6 +3496,7 @@ const CONFIG_CALLMEBOT = db.collection('config_callmebot').doc('config');
 const CONFIG_PAYPAL = db.collection('config_paypal').doc('config');
 const CONFIG_BIBLIA = db.collection('config_biblia').doc('config');
 const CONFIG_AGENTE_IA = db.collection('config_agente_ia').doc('config');
+const CONFIG_AGENTE_MOD = db.collection('config_agente_moderador').doc('config');
 const BIBLIAS_PERSONALIZADAS = db.collection('biblias_personalizadas');
 const BIBLIAS_VERSIONES = db.collection('biblias_versiones');
 const EVENTOS = db.collection('eventos');
@@ -3492,7 +3577,7 @@ let capituloKeys = [];
 let versionBibliaActualId = '';
 let bibliaTextoActual = '';
 
-// ==== AGENTE IA ====
+// ==== AGENTE IA BÍBLICO ====
 let agenteIAConfig = {
   nombre: 'Luz',
   apiKey: '',
@@ -3504,7 +3589,19 @@ let agenteChatHistorial = [];
 let agenteModelosCargados = [];
 let agenteCargando = false;
 
-// ==== PAYPAL SDK (checkout empresarial) ====
+// ==== AGENTE IA MODERADOR ====
+let agenteModConfig = {
+  nombre: 'Guardián',
+  apiKey: '',
+  modelo: '',
+  politicas: '',
+  promptSistema: '',
+  mensajeBienvenida: 'Soy Guardián, tu asistente de moderación de la comunidad SAL Y LUZ.'
+};
+let agenteModModelosCargados = [];
+let agenteModCargando = false;
+
+// ==== PAYPAL SDK ====
 let paypalSDKClientId = '';
 let paypalSDKCurrency = '';
 let paypalSDKReady = false;
@@ -3588,7 +3685,7 @@ function getReactorId() {
 }
 
 // ============================================================
-// HELPERS DE BIBLIA (nombres canónicos)
+// HELPERS DE BIBLIA
 // ============================================================
 function normalizarNombreLibro(s) {
   return (s || '').toString()
@@ -3674,7 +3771,7 @@ window.cerrarMuroCols = function() {
 };
 
 // ============================================================
-// SIDEBAR BÍBLICA TIPO ACORDEÓN (móvil)
+// SIDEBAR BÍBLICA
 // ============================================================
 window.toggleBibliaSidebar = function() {
   const sb = document.getElementById('bibliaSidebar');
@@ -3856,7 +3953,7 @@ window.enviarWhatsAppCallMeBot = function(mensaje) {
   fetch(url, { method: 'GET', mode: 'no-cors' }).catch(() => {});
 };
 
-// ✅ Carga la config de PayPal (incluye clientId que es lo importante para el checkout)
+// ✅ Carga la config de PayPal
 async function cargarConfigPaypal() {
   try {
     const doc = await CONFIG_PAYPAL.get();
@@ -3879,14 +3976,8 @@ async function cargarConfigPaypal() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// ✅ NUEVO FLUJO PAYPAL: Checkout empresarial con SDK oficial
+// ✅ PAYPAL: Checkout empresarial con SDK oficial
 // ═══════════════════════════════════════════════════════════
-
-/**
- * Carga dinámicamente el SDK de PayPal con el Client ID configurado.
- * El SDK se carga una sola vez por (client-id + moneda). Si ya está cargado
- * con la misma configuración, se reutiliza.
- */
 function cargarPayPalSDK() {
   return new Promise((resolve, reject) => {
     const clientId = (paypalConfig.clientId || '').trim();
@@ -3899,8 +3990,7 @@ function cargarPayPalSDK() {
       return;
     }
     if (window.paypal && (paypalSDKClientId !== clientId || paypalSDKCurrency !== moneda)) {
-      // El SDK ya fue cargado con otra configuración; PayPal no permite recargarlo fácilmente.
-      reject(new Error('El SDK de PayPal ya fue cargado con otra configuración. Recarga la página (F5) para aplicar los cambios de Client ID o moneda.'));
+      reject(new Error('El SDK de PayPal ya fue cargado con otra configuración. Recarga la página (F5) para aplicar los cambios.'));
       return;
     }
 
@@ -3910,17 +4000,11 @@ function cargarPayPalSDK() {
     script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=${encodeURIComponent(moneda)}&intent=capture&components=buttons&disable-funding=credit`;
     script.async = true;
     script.onload = () => { paypalSDKReady = true; resolve(window.paypal); };
-    script.onerror = () => reject(new Error('No se pudo cargar el SDK de PayPal. Verifica tu Client ID y tu conexión a Internet.'));
+    script.onerror = () => reject(new Error('No se pudo cargar el SDK de PayPal.'));
     document.head.appendChild(script);
   });
 }
 
-/**
- * Renderiza los botones oficiales de PayPal dentro del modal de ofrenda.
- * Usa `actions.order.create()` en el cliente, por lo que NO se necesita backend.
- * El dinero va directo a la cuenta Business asociada al Client ID.
- * NO se expone el nombre del receptor en el checkout (solo aparece "PayPal").
- */
 async function renderPayPalButtons() {
   const container = document.getElementById('paypalButtonsContainer');
   if (!container) return;
@@ -3946,7 +4030,7 @@ async function renderPayPalButtons() {
         }
         const destino = (document.getElementById('ofrendaDestino') || {}).value || 'general';
         const nota = ((document.getElementById('ofrendaNota') || {}).value || '').trim();
-        const descripcion = ('Ofrenda - ' + destino + (nota ? ' - ' + nota : '')).substring(0, 127);
+        const descripcion = ('Donativo - ' + destino + (nota ? ' - ' + nota : '')).substring(0, 127);
         return actions.order.create({
           intent: 'CAPTURE',
           purchase_units: [{
@@ -3959,7 +4043,7 @@ async function renderPayPalButtons() {
         try {
           const details = await actions.order.capture();
           await guardarOfrendaPaypal(details);
-          alert('✅ Ofrenda completada correctamente. ¡Dios te bendiga!');
+          alert('✅ Donativo completado correctamente. ¡Dios te bendiga!');
           cerrarModal('ofrendaModal');
           renderWidgetOfrendas();
         } catch (e) {
@@ -3967,7 +4051,7 @@ async function renderPayPalButtons() {
           alert('El pago fue aprobado pero hubo un problema al registrarlo. Contacta al administrador.');
         }
       },
-      onCancel: () => { /* El usuario canceló, no hacemos nada */ },
+      onCancel: () => {},
       onError: (err) => {
         console.error('PayPal Error:', err);
         alert('⚠️ Error de PayPal: ' + (err && err.message ? err.message : 'Desconocido'));
@@ -3979,10 +4063,7 @@ async function renderPayPalButtons() {
   }
 }
 
-/**
- * Guarda la ofrenda de PayPal en Firestore después de capturar la orden.
- * Incluye el ID de orden y datos del pagador (sin exponer datos sensibles del receptor).
- */
+// ✅ Guarda el donativo de PayPal + notifica al superadmin por WhatsApp
 async function guardarOfrendaPaypal(details) {
   if (!currentUser) return;
   const monto = parseFloat(
@@ -4005,11 +4086,21 @@ async function guardarOfrendaPaypal(details) {
     paypalPayerEmail: (details.payer && details.payer.email_address) || '',
     fecha: firebase.firestore.FieldValue.serverTimestamp()
   });
+  // ✅ Notificación WhatsApp al superadmin
+  try {
+    enviarWhatsAppCallMeBot(
+      `💝 *Nuevo Donativo recibido*\n` +
+      `👤 ${currentUser.displayName}\n` +
+      `📧 ${currentUser.email || 'N/A'}\n` +
+      `💰 ${paypalConfig.moneda || 'USD'} ${monto.toFixed(2)}\n` +
+      `🎯 Destino: ${destino}\n` +
+      `💳 Método: PayPal\n` +
+      (nota ? `📝 Nota: ${nota}\n` : '') +
+      `🕐 ${new Date().toLocaleString()}`
+    );
+  } catch(e) {}
 }
 
-/**
- * Actualiza visibilidad de elementos según el método elegido.
- */
 function actualizarMetodoOfrenda() {
   const metodo = ((document.getElementById('ofrendaMetodo') || {}).value) || 'paypal';
   const btnConfirmar = document.getElementById('btnConfirmarOfrenda');
@@ -4044,7 +4135,7 @@ window.probarPaypal = function() {
 
 window.abrirOfrendaModal = function() {
   if (!currentUser) {
-    alert('Debes iniciar sesión para dar tu ofrenda.');
+    alert('Debes iniciar sesión para dar tu donativo.');
     const lb = document.getElementById('loginBtn');
     if (lb) lb.click();
     return;
@@ -4056,7 +4147,6 @@ window.abrirOfrendaModal = function() {
   const metodoEl = document.getElementById('ofrendaMetodo');
   if (metodoEl) metodoEl.value = 'paypal';
   abrirModal('ofrendaModal');
-  // Renderizar los botones cuando el modal ya esté visible
   setTimeout(() => actualizarMetodoOfrenda(), 100);
 };
 
@@ -4075,7 +4165,7 @@ window.guardarConfigPaypal = function() {
   const moneda = moEl ? moEl.value : 'USD';
 
   if (!clientId) {
-    alert('⚠️ El Client ID de PayPal Business es obligatorio para el checkout empresarial.');
+    alert('⚠️ El Client ID de PayPal Business es obligatorio.');
     return;
   }
   CONFIG_PAYPAL.set({
@@ -4084,18 +4174,15 @@ window.guardarConfigPaypal = function() {
   }, { merge: true })
     .then(() => {
       paypalConfig = { paypalMe, clientId, secretKey, email, moneda };
-      alert('✅ Configuración PayPal guardada.\n\nClient ID: ' + clientId.substring(0, 24) + '...\n\nRecarga la página (F5) si cambiaste el Client ID o la moneda para aplicar los cambios en el checkout.');
+      alert('✅ Configuración PayPal guardada.\n\nRecarga la página (F5) si cambiaste el Client ID o la moneda.');
     })
     .catch(err => alert('Error: ' + err.message));
 };
 
-/**
- * El botón "Registrar ofrenda" solo aplica para el método "efectivo".
- * Para PayPal, la orden y el cobro los maneja el SDK de PayPal con los botones oficiales.
- */
+// ✅ Registrar donativo en efectivo + notificación WhatsApp
 window.confirmarOfrenda = function() {
   if (!currentUser) {
-    alert('Debes iniciar sesión para dar tu ofrenda.');
+    alert('Debes iniciar sesión para dar tu donativo.');
     const lb = document.getElementById('loginBtn');
     if (lb) lb.click();
     return;
@@ -4103,7 +4190,7 @@ window.confirmarOfrenda = function() {
 
   const metodo = ((document.getElementById('ofrendaMetodo') || {}).value) || 'efectivo';
   if (metodo === 'paypal') {
-    alert('Para ofrendar con PayPal, usa el botón oficial de PayPal que aparece arriba.');
+    alert('Para donar con PayPal, usa el botón oficial de PayPal que aparece arriba.');
     return;
   }
 
@@ -4127,16 +4214,28 @@ window.confirmarOfrenda = function() {
     fecha: firebase.firestore.FieldValue.serverTimestamp()
   }).then(() => {
     cerrarModal('ofrendaModal');
-    alert('✅ Ofrenda registrada. ¡Dios te bendiga!');
+    alert('✅ Donativo registrado. ¡Dios te bendiga!');
     renderWidgetOfrendas();
+    // ✅ Notificación WhatsApp al superadmin
+    try {
+      enviarWhatsAppCallMeBot(
+        `💝 *Nuevo Donativo (efectivo) registrado*\n` +
+        `👤 ${currentUser.displayName}\n` +
+        `📧 ${currentUser.email || 'N/A'}\n` +
+        `💰 ${(paypalConfig && paypalConfig.moneda) || 'USD'} ${monto.toFixed(2)}\n` +
+        `🎯 Destino: ${destino}\n` +
+        (nota ? `📝 Nota: ${nota}\n` : '') +
+        `🕐 ${new Date().toLocaleString()}`
+      );
+    } catch(e) {}
   }).catch(err => alert('Error: ' + err.message));
 };
 
 window.verHistorialOfrendas = function() {
   if (!currentUser) return;
   OFRENDAS.where('uid', '==', currentUser.uid).orderBy('fecha', 'desc').limit(20).get().then(snap => {
-    if (snap.empty) { alert('Aún no has dado ofrendas.'); return; }
-    let msg = '💝 Mis Ofrendas:\n\n';
+    if (snap.empty) { alert('Aún no has dado donativos.'); return; }
+    let msg = '💝 Mis Donativos:\n\n';
     snap.forEach(doc => {
       const o = doc.data();
       msg += `• ${o.moneda} ${o.monto} → ${o.destino} (${o.estado})\n`;
@@ -4156,6 +4255,8 @@ window.loginUser = async function(email, password) {
     return false;
   }
 };
+
+// ✅ Registro con notificación WhatsApp (única que se mantiene de registro)
 window.registerUser = async function(email, password, nombre, telefono, edad, apoyos) {
   try {
     const cred = await auth.createUserWithEmailAndPassword(email, password);
@@ -4176,6 +4277,7 @@ window.registerUser = async function(email, password, nombre, telefono, edad, ap
     });
     await user.updateProfile({ displayName: nombre });
     await cargarUsuarioActual(user);
+    // ✅ Notificación WhatsApp al superadmin
     enviarWhatsAppCallMeBot(`🎉 *Nuevo registro en SAL Y LUZ*\n👤 ${nombre}\n📧 ${email}\n📱 ${telefono}\n🕐 ${new Date().toLocaleString()}`);
     return true;
   } catch (error) {
@@ -4239,6 +4341,7 @@ async function cargarUsuarioActual(user) {
     cargarConfigPaypal();
     await cargarConfigBiblia();
     cargarConfigAgenteIA();
+    cargarConfigAgenteModerador();
     renderEventos();
     renderNoticias();
     renderReels();
@@ -4266,11 +4369,9 @@ async function cargarUsuarioActual(user) {
   } catch (error) { console.error('Error cargando perfil:', error); }
 }
 
+// ✅ Logout SIN notificación WhatsApp (según pedido del usuario)
 window.logoutUser = async function() {
   try {
-    const nombre = currentUser ? currentUser.displayName : 'Usuario';
-    const email = currentUser ? currentUser.email : '';
-    enviarWhatsAppCallMeBot(`👋 *Salida en SAL Y LUZ*\n👤 ${nombre}\n📧 ${email}\n🕐 ${new Date().toLocaleString()}`);
     await auth.signOut();
     currentUser = null; isAdmin = false; isSuperAdmin = false; isRegularAdmin = false;
     actualizarUIUsuario();
@@ -4298,6 +4399,30 @@ window.logoutUser = async function() {
     cerrarGaleriaViewer();
     cargarLogoConfig();
   } catch (error) { console.error('Error al cerrar sesión:', error); }
+};
+
+// ============================================================
+// ✅ Notifica al superadmin cuando alguien elimina su cuenta
+// ============================================================
+window.eliminarCuenta = function() {
+  if (!currentUser || !confirm('¿Eliminar cuenta permanentemente?')) return;
+  const uid = currentUser.uid;
+  const nombre = currentUser.displayName || 'Usuario';
+  const email = currentUser.email || '';
+  // ✅ Notificar por WhatsApp al superadmin
+  try {
+    enviarWhatsAppCallMeBot(
+      `⚠️ *Cuenta eliminada*\n` +
+      `👤 ${nombre}\n` +
+      `📧 ${email}\n` +
+      `🆔 ${uid}\n` +
+      `🕐 ${new Date().toLocaleString()}`
+    );
+  } catch(e) {}
+  Promise.all([USERS.doc(uid).delete(), auth.currentUser.delete()]).then(() => {
+    alert('Cuenta eliminada.');
+    window.location.reload();
+  });
 };
 
 function actualizarUIUsuario() {
@@ -4375,7 +4500,7 @@ function actualizarUIUsuario() {
   }
 
   const isConfigAllowed = isSuperAdmin;
-  ['cardLogoConfig', 'cardMapboxConfig', 'cardMenuConfig', 'cardEstilosConfig', 'cardCallMeBotConfig', 'cardPaypalConfig', 'cardBibliaConfig', 'cardAgenteIAConfig'].forEach(id => {
+  ['cardLogoConfig', 'cardMapboxConfig', 'cardMenuConfig', 'cardEstilosConfig', 'cardCallMeBotConfig', 'cardPaypalConfig', 'cardBibliaConfig', 'cardAgenteIAConfig', 'cardAgenteModeradorConfig', 'cardAnuncioIA'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = isConfigAllowed ? 'block' : 'none';
   });
@@ -4903,14 +5028,14 @@ function renderWidgetGuardados() {
 function renderWidgetOfrendas() {
   const cont = document.getElementById('widgetOfrendasLista');
   if (!cont) return;
-  if (!currentUser) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Inicia sesión para dar tu ofrenda.</p>'; return; }
+  if (!currentUser) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Inicia sesión para dar tu donativo.</p>'; return; }
   cont.innerHTML = `
     <div class="widget-ofrenda-card">
-      <h5><i class="fas fa-hand-holding-heart"></i> Dar ofrenda</h5>
+      <h5><i class="fas fa-hand-holding-heart"></i> Dar donativo</h5>
       <p>Apoya la obra y a las familias misioneras</p>
-      <button type="button" class="widget-ofrenda-btn" onclick="abrirOfrendaModal()"><i class="fab fa-paypal"></i> Ofrendar</button>
+      <button type="button" class="widget-ofrenda-btn" onclick="abrirOfrendaModal()"><i class="fab fa-paypal"></i> Donar</button>
     </div>
-    <button type="button" class="widget-oracion-btn" style="margin-top:8px;" onclick="verHistorialOfrendas()"><i class="fas fa-history"></i> Mis ofrendas</button>
+    <button type="button" class="widget-oracion-btn" style="margin-top:8px;" onclick="verHistorialOfrendas()"><i class="fas fa-history"></i> Mis donativos</button>
   `;
 }
 function renderWidgetTestimonios() {
@@ -5785,15 +5910,17 @@ function renderPosts(snapshot, container) {
   let html = '';
   snapshot.forEach(doc => {
     const post = { id: doc.id, ...doc.data() };
+    if (post.oculto && !isAdmin && !(currentUser && post.uid === currentUser.uid)) return; // Moderado
     const liked = post.likes && post.likes.includes(reactorId);
     const orando = post.orando && post.orando.includes(reactorId);
-    const catLabels = { testimonio: 'Testimonio', obra: 'Obra', oracion: 'Oración', encuesta: 'Encuesta', campania: 'Campaña', otro: 'Otro' };
+    const catLabels = { testimonio: 'Testimonio', obra: 'Obra', oracion: 'Oración', encuesta: 'Encuesta', campania: 'Campaña', anuncio: 'Anuncio Oficial', otro: 'Otro' };
     const catHtml = post.categoria ? `<span class="post-categoria">${catLabels[post.categoria] || 'Otro'}</span>` : '';
     const avatar = post.autorFoto || '';
+    const moderatedTag = (post.moderado && (isAdmin || (currentUser && post.uid === currentUser.uid))) ? `<span style="font-size:10px;background:#e74c3c;color:#fff;padding:2px 8px;border-radius:20px;margin-left:6px;">Moderado</span>` : '';
     html += '<div class="post">';
     html += `<div class="post-header" onclick="verPerfil('${post.uid}')" style="cursor:pointer;">`;
     html += `<div class="post-avatar" style="background-image:url(${avatar});background-size:cover;background-position:center;">${avatar ? '' : (post.autorNombre || '?').charAt(0).toUpperCase()}</div>`;
-    html += `<div><div class="post-author">${post.autorNombre}</div><div class="post-time">${post.fecha ? new Date(post.fecha.seconds * 1000).toLocaleString() : ''}</div></div></div>`;
+    html += `<div><div class="post-author">${post.autorNombre}${moderatedTag}</div><div class="post-time">${post.fecha ? new Date(post.fecha.seconds * 1000).toLocaleString() : ''}</div></div></div>`;
     html += catHtml;
     html += `<div class="post-content">${post.texto || ''}</div>`;
     if (post.categoria === 'encuesta' && post.opciones) {
@@ -5826,6 +5953,8 @@ function renderPosts(snapshot, container) {
   });
   container.innerHTML = html;
 }
+
+// ✅ crearPublicacion ahora dispara el Agente Moderador IA
 function crearPublicacion() {
   if (!currentUser) { alert('Inicia sesión.'); return; }
   const texto = document.getElementById('postInput').value.trim();
@@ -5848,13 +5977,21 @@ function crearPublicacion() {
   }
   const guardarPost = async (texto, link, categoria, media, opciones, monto, beneficiario) => {
     try {
-      await POSTS.add({ uid: currentUser.uid, autorNombre: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '', texto, link, media, categoria, fecha: firebase.firestore.FieldValue.serverTimestamp(), likes: [], orando: [], comentarios: [], compartidos: 0, opciones: opciones || [], votos: {}, monto: monto || 0, recaudado: 0, beneficiario: beneficiario || '' });
+      const ref = await POSTS.add({
+        uid: currentUser.uid, autorNombre: currentUser.displayName, autorFoto: currentUser.fotoPerfil || '',
+        texto, link, media, categoria,
+        fecha: firebase.firestore.FieldValue.serverTimestamp(),
+        likes: [], orando: [], comentarios: [], compartidos: 0,
+        opciones: opciones || [], votos: {}, monto: monto || 0, recaudado: 0, beneficiario: beneficiario || ''
+      });
       document.getElementById('postInput').value = ''; document.getElementById('postLink').value = '';
       document.getElementById('postImage').value = ''; document.getElementById('postVideo').value = '';
       document.getElementById('encuestaOpcionesInput').value = '';
       document.getElementById('campaniaMontoInput').value = ''; document.getElementById('campaniaBeneficiario').value = '';
       document.getElementById('postPreviewContainer').innerHTML = '';
       document.getElementById('muroPublishPanel').classList.remove('show');
+      // ✅ Ejecutar moderación IA asíncrona
+      if (texto) moderarPublicacion(ref.id, texto, currentUser.uid, currentUser.displayName);
     } catch (error) { alert('Error: ' + error.message); }
   };
   if (imgFile || vidFile) {
@@ -6242,6 +6379,297 @@ function setupReelsFullObserver() {
   }, { threshold: [0, 0.7, 0.9], root: document.getElementById('reelsScroll') });
   videos.forEach(v => reelsObserverFull.observe(v));
 }
+
+// ============================================================
+// AGENTE IA MODERADOR DE COMUNIDAD
+// ============================================================
+async function cargarConfigAgenteModerador() {
+  try {
+    const doc = await CONFIG_AGENTE_MOD.get();
+    if (doc.exists) {
+      const d = doc.data();
+      agenteModConfig = {
+        nombre: d.nombre || 'Guardián',
+        apiKey: d.apiKey || '',
+        modelo: d.modelo || '',
+        politicas: d.politicas || '',
+        promptSistema: d.promptSistema || '',
+        mensajeBienvenida: d.mensajeBienvenida || agenteModConfig.mensajeBienvenida
+      };
+      const nomEl = document.getElementById('modNombreInput'); if (nomEl) nomEl.value = agenteModConfig.nombre;
+      const apiEl = document.getElementById('modApiKeyInput'); if (apiEl) apiEl.value = agenteModConfig.apiKey;
+      const modEl = document.getElementById('modModeloSeleccionado'); if (modEl) modEl.value = agenteModConfig.modelo;
+      const polEl = document.getElementById('modPoliticasInput'); if (polEl) polEl.value = agenteModConfig.politicas;
+      const proEl = document.getElementById('modPromptSistema'); if (proEl) proEl.value = agenteModConfig.promptSistema;
+      const bienEl = document.getElementById('modMensajeBienvenida'); if (bienEl) bienEl.value = agenteModConfig.mensajeBienvenida;
+    }
+  } catch(e) { console.warn('cargarConfigAgenteModerador', e); }
+}
+
+window.guardarConfigAgenteModerador = function() {
+  if (!isSuperAdmin) return;
+  const nombre = document.getElementById('modNombreInput').value.trim() || 'Guardián';
+  const apiKey = document.getElementById('modApiKeyInput').value.trim();
+  const modelo = document.getElementById('modModeloSeleccionado').value.trim();
+  const politicas = document.getElementById('modPoliticasInput').value.trim();
+  const promptSistema = document.getElementById('modPromptSistema').value.trim();
+  const mensajeBienvenida = document.getElementById('modMensajeBienvenida').value.trim() || agenteModConfig.mensajeBienvenida;
+  if (!apiKey) { alert('Falta la API Key de OpenRouter.'); return; }
+  if (!modelo) { alert('Selecciona un modelo.'); return; }
+  if (!politicas) { alert('Define las políticas de la comunidad.'); return; }
+  CONFIG_AGENTE_MOD.set({
+    nombre, apiKey, modelo, politicas, promptSistema, mensajeBienvenida,
+    actualizado: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true }).then(() => {
+    agenteModConfig = { nombre, apiKey, modelo, politicas, promptSistema, mensajeBienvenida };
+    alert('✅ Configuración del agente moderador guardada.');
+  }).catch(err => alert('Error: ' + err.message));
+};
+
+window.cargarModelosGratisOpenRouterMod = async function() {
+  const cont = document.getElementById('modModelosLista');
+  if (!cont) return;
+  cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px;"><i class="fas fa-spinner fa-spin"></i> Consultando OpenRouter...</p>';
+  try {
+    const resp = await fetch('https://openrouter.ai/api/v1/models');
+    if (!resp.ok) throw new Error('No se pudo consultar OpenRouter');
+    const data = await resp.json();
+    const modelos = (data.data || []).filter(m => {
+      const pricing = m.pricing || {};
+      const prompt = parseFloat(pricing.prompt || '0');
+      const completion = parseFloat(pricing.completion || '0');
+      return prompt === 0 && completion === 0;
+    });
+    if (modelos.length === 0) {
+      cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px;">No se encontraron modelos gratuitos.</p>';
+      return;
+    }
+    agenteModModelosCargados = modelos;
+    let html = '';
+    modelos.forEach(m => {
+      const id = m.id;
+      const nombre = m.name || id;
+      const selected = (agenteModConfig.modelo === id) ? 'selected' : '';
+      html += `<div class="modelo-openrouter-item ${selected}" onclick="seleccionarModeloMod('${id}')">
+        <div class="info">
+          <div class="nombre">${nombre}</div>
+          <div class="id">${id}</div>
+        </div>
+        <span class="badge-free">GRATIS</span>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  } catch(e) {
+    cont.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:10px;">Error: ' + e.message + '</p>';
+  }
+};
+
+window.seleccionarModeloMod = function(id) {
+  document.querySelectorAll('#modModelosLista .modelo-openrouter-item').forEach(el => el.classList.remove('selected'));
+  const items = document.querySelectorAll('#modModelosLista .modelo-openrouter-item');
+  items.forEach(el => { if (el.querySelector('.id').textContent === id) el.classList.add('selected'); });
+  const input = document.getElementById('modModeloSeleccionado');
+  if (input) input.value = id;
+};
+
+window.probarAgenteModerador = async function() {
+  const apiKey = document.getElementById('modApiKeyInput').value.trim();
+  const modelo = document.getElementById('modModeloSeleccionado').value.trim();
+  if (!apiKey || !modelo) { alert('Completa API Key y modelo primero.'); return; }
+  try {
+    const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+      body: JSON.stringify({
+        model: modelo,
+        messages: [{ role: 'user', content: 'Responde solo "OK" para confirmar la conexión.' }],
+        max_tokens: 20
+      })
+    });
+    const data = await resp.json();
+    if (data.error) { alert('❌ Error: ' + (data.error.message || JSON.stringify(data.error))); return; }
+    const reply = data.choices?.[0]?.message?.content || '';
+    alert('✅ Conexión exitosa. Respuesta: ' + reply);
+  } catch(e) { alert('❌ Error de conexión: ' + e.message); }
+};
+
+// ✅ Moderación automática de publicaciones con el Agente IA
+async function moderarPublicacion(postId, texto, uidAutor, nombreAutor) {
+  if (!agenteModConfig.apiKey || !agenteModConfig.modelo || !agenteModConfig.politicas) {
+    return; // agente no configurado
+  }
+  try {
+    const systemPrompt = (agenteModConfig.promptSistema || 
+      'Eres un moderador cristiano, respetuoso y pastoral de la comunidad SAL Y LUZ. Analizas contenido y determinas si infringe las políticas.') +
+      '\n\nPOLÍTICAS DE LA COMUNIDAD:\n' + agenteModConfig.politicas +
+      '\n\nResponde ESTRICTAMENTE en JSON con este formato:\n' +
+      '{"infringe": true|false, "razon": "explicación breve", "avisoUsuario": "mensaje pastoral para el usuario si infringe"}\n' +
+      'Si NO infringe, devuelve {"infringe": false, "razon": "", "avisoUsuario": ""}';
+
+    const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + agenteModConfig.apiKey,
+        'HTTP-Referer': window.location.origin || 'https://salyluz.app',
+        'X-Title': 'SAL Y LUZ · Moderador'
+      },
+      body: JSON.stringify({
+        model: agenteModConfig.modelo,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: `Contenido a moderar (publicación de ${nombreAutor}):\n\n"${texto}"` }
+        ],
+        max_tokens: 600,
+        temperature: 0.2,
+        response_format: { type: 'json_object' }
+      })
+    });
+
+    const data = await resp.json();
+    if (data.error) {
+      console.warn('Moderación error:', data.error);
+      return;
+    }
+    let raw = data.choices?.[0]?.message?.content || '';
+    // limpiar posibles bloques ```json
+    raw = raw.replace(/```json\s*/gi, '').replace(/```/g, '').trim();
+    let parsed;
+    try { parsed = JSON.parse(raw); }
+    catch(e) { console.warn('Moderación: respuesta no JSON', raw); return; }
+
+    if (parsed.infringe) {
+      // Marcar post como moderado (oculto)
+      await POSTS.doc(postId).update({
+        oculto: true,
+        moderado: true,
+        moderacion: {
+          razon: parsed.razon || 'Infracción de políticas',
+          fecha: firebase.firestore.FieldValue.serverTimestamp(),
+          agente: agenteModConfig.nombre || 'Guardián'
+        }
+      });
+      // Notificar al superadmin por WhatsApp
+      try {
+        enviarWhatsAppCallMeBot(
+          `🛡️ *Moderador IA detectó infracción*\n` +
+          `👤 Autor: ${nombreAutor}\n` +
+          `📝 Contenido: "${texto.substring(0, 180)}${texto.length > 180 ? '...' : ''}"\n` +
+          `⚠️ Razón: ${parsed.razon || 'N/A'}\n` +
+          `🕐 ${new Date().toLocaleString()}`
+        );
+      } catch(e) {}
+      // Notificar al autor (aviso en su bandeja de notificaciones + modal)
+      try {
+        await NOTIFICACIONES(uidAutor).add({
+          tipo: 'moderacion',
+          emisorUid: 'agente_moderador',
+          emisorNombre: agenteModConfig.nombre || 'Guardián (Moderador IA)',
+          texto: parsed.avisoUsuario || 'Tu publicación infringió las políticas de la comunidad.',
+          postId,
+          leido: false,
+          fecha: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch(e) {}
+      // Si el autor es el usuario actual, mostrar modal
+      if (currentUser && currentUser.uid === uidAutor) {
+        const cont = document.getElementById('moderacionAvisoContenido');
+        if (cont) {
+          cont.innerHTML = `<strong>${parsed.razon || 'Infracción de políticas'}</strong><br><br>${parsed.avisoUsuario || 'Tu publicación fue ocultada por infringir las políticas de la comunidad.'}<br><br><em>Puedes revisar las políticas de la comunidad o contactar al administrador.</em>`;
+        }
+        abrirModal('moderacionAvisoModal');
+      }
+    }
+  } catch(e) {
+    console.warn('Error en moderación IA:', e);
+  }
+}
+
+// ✅ Publicar anuncio oficial con IA (pulido por el agente moderador)
+window.publicarAnuncioConIA = async function() {
+  if (!isSuperAdmin) { alert('Solo SuperAdmin.'); return; }
+  const borrador = document.getElementById('anuncioBorrador').value.trim();
+  if (!borrador) { alert('Escribe un borrador del anuncio.'); return; }
+  if (!agenteModConfig.apiKey || !agenteModConfig.modelo) {
+    alert('Primero configura el Agente Moderador (API Key y modelo).');
+    return;
+  }
+  let textoFinal = borrador;
+  try {
+    const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + agenteModConfig.apiKey,
+        'HTTP-Referer': window.location.origin || 'https://salyluz.app',
+        'X-Title': 'SAL Y LUZ · Anuncio Oficial'
+      },
+      body: JSON.stringify({
+        model: agenteModConfig.modelo,
+        messages: [
+          { role: 'system', content: 'Eres el asistente del SuperAdmin de SAL Y LUZ. Pules y mejoras anuncios oficiales para la comunidad cristiana, manteniendo un tono pastoral, claro, cálido y respetuoso. Devuelves SOLO el texto del anuncio pulido, sin comentarios adicionales ni comillas.' },
+          { role: 'user', content: 'Pule este anuncio oficial:\n\n' + borrador }
+        ],
+        max_tokens: 600,
+        temperature: 0.6
+      })
+    });
+    const data = await resp.json();
+    if (data.error) { alert('⚠️ Error IA: ' + (data.error.message || '')); return; }
+    textoFinal = (data.choices?.[0]?.message?.content || borrador).trim();
+  } catch(e) {
+    alert('No se pudo conectar con la IA. Se publicará el texto original.');
+  }
+
+  // Publicar como anuncio oficial (post con categoria 'anuncio')
+  try {
+    await POSTS.add({
+      uid: currentUser.uid,
+      autorNombre: '📢 Anuncio Oficial · ' + (agenteModConfig.nombre || 'SAL Y LUZ'),
+      autorFoto: currentUser.fotoPerfil || '',
+      texto: textoFinal,
+      categoria: 'anuncio',
+      oficial: true,
+      fecha: firebase.firestore.FieldValue.serverTimestamp(),
+      likes: [], orando: [], comentarios: [], compartidos: 0
+    });
+    // Publicar también como noticia (widget de anuncios)
+    await NOTICIAS.add({
+      titulo: 'Anuncio Oficial',
+      link: '#',
+      desc: textoFinal.substring(0, 180),
+      fecha: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    // Notificar al superadmin por WhatsApp si está activado
+    if (document.getElementById('anuncioEnviarWhatsApp')?.checked) {
+      try {
+        enviarWhatsAppCallMeBot(`📢 *Anuncio publicado*\n${textoFinal}\n\n🕐 ${new Date().toLocaleString()}`);
+      } catch(e) {}
+    }
+    document.getElementById('anuncioBorrador').value = '';
+    alert('✅ Anuncio publicado correctamente.');
+    renderFeed();
+    renderWidgetAnuncios();
+  } catch(e) { alert('Error al publicar: ' + e.message); }
+};
+
+// ✅ Manejador global de errores → notifica al superadmin
+window.addEventListener('error', function(e) {
+  try {
+    const msg = `🚨 *Error en plataforma*\n` +
+      `📝 ${e.message || 'Error desconocido'}\n` +
+      `📂 ${e.filename || ''}:${e.lineno || ''}\n` +
+      `🕐 ${new Date().toLocaleString()}`;
+    enviarWhatsAppCallMeBot(msg);
+  } catch(err) {}
+});
+window.addEventListener('unhandledrejection', function(e) {
+  try {
+    const reason = e.reason && (e.reason.message || e.reason.toString()) || 'Promesa rechazada';
+    const msg = `🚨 *Error (promesa no capturada)*\n📝 ${reason}\n🕐 ${new Date().toLocaleString()}`;
+    enviarWhatsAppCallMeBot(msg);
+  } catch(err) {}
+});
 </script>
 <script>
 // ================================================================
@@ -6754,7 +7182,7 @@ function addMarkerMapa(lat, lng, nombre, desc, color, tipo) {
 }
 
 // ============================================================
-// RUTA: recalcula + cámara sigue al usuario
+// RUTA
 // ============================================================
 function recalcularRuta(latO, lngO) {
   if (!rutaActiva || !mapboxToken) return;
@@ -7000,29 +7428,9 @@ function cargarConfigIA() {
     }
   });
 }
-window.preguntarIA = function() {
-  const pregunta = document.getElementById('iaPregunta').value.trim(); if (!pregunta) return;
-  const chat = document.getElementById('iaChat');
-  chat.innerHTML += `<div class="msg"><strong>Tú:</strong> ${pregunta}</div>`;
-  document.getElementById('iaPregunta').value = '';
-  CONFIG_IA.get().then(doc => {
-    const config = doc.exists ? doc.data() : null;
-    const key = config ? config.apiKey : '';
-    if (!key) { chat.innerHTML += '<div class="msg">⚠️ API no configurada.</div>'; return; }
-    fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-      body: JSON.stringify({ model: config.selectedModel || 'openai/gpt-3.5-turbo', messages: [{ role: 'user', content: pregunta }], max_tokens: 700 })
-    }).then(r => r.json()).then(data => {
-      const reply = data.choices?.[0]?.message?.content || 'Sin respuesta.';
-      chat.innerHTML += `<div class="msg"><strong>Asistente:</strong> ${reply}</div>`;
-      chat.scrollTop = chat.scrollHeight;
-    });
-  });
-};
 
 // ============================================================
-// AGENTE IA
+// AGENTE IA BÍBLICO
 // ============================================================
 async function cargarConfigAgenteIA() {
   try {
@@ -7138,7 +7546,7 @@ window.probarAgenteIA = async function() {
 };
 
 // ============================================================
-// BIBLIA: 3 OPCIONES DE GUARDADO (Firestore + Storage)
+// BIBLIA
 // ============================================================
 async function cargarConfigBiblia() {
   try {
@@ -7164,9 +7572,6 @@ async function cargarConfigBiblia() {
   await renderVersionesBiblia();
 }
 
-// ============================================================
-// OPCIÓN 1: CONFIGURACIÓN BÍBLICA (Firestore: config_biblia/config)
-// ============================================================
 window.guardarConfigBiblia = function() {
   if (!isSuperAdmin) return;
   const fuente = document.getElementById('bibliaFuenteSelect').value;
@@ -7473,9 +7878,6 @@ function inicializarBibliaUI() {
   inicializarBusquedaBiblia();
 }
 
-// ============================================================
-// BÚSQUEDA BÍBLICA: soporta "Juan 3", "Juan 3:16", "1 Juan 2:3"
-// ============================================================
 function inicializarBusquedaBiblia() {
   const input = document.getElementById('bibliaBuscarInput');
   const clearBtn = document.getElementById('bibliaBuscarClear');
@@ -7778,10 +8180,6 @@ window.recargarBiblias = async function() {
   alert('✅ Libros recargados: ' + total + ' disponibles.');
 };
 
-// ============================================================
-// OPCIÓN 2: SUBIR LIBRO INDIVIDUAL (Storage: biblias/{version}/{testamento}/...)
-// Firestore: biblias_personalizadas (o biblias_versiones si hay destino)
-// ============================================================
 window.subirLibroBiblia = async function() {
   if (!isSuperAdmin) return;
 
@@ -7877,9 +8275,6 @@ window.eliminarLibroBiblia = async function(id) {
   } catch(e) { alert('Error: ' + e.message); }
 };
 
-// ============================================================
-// OPCIÓN 3: SUBIR CARPETA COMPLETA (Storage + 1 documento Firestore)
-// ============================================================
 window.subirCarpetaBiblia = async function() {
   if (!isSuperAdmin) return;
 
@@ -8005,9 +8400,6 @@ window.eliminarVersionBiblia = async function(id) {
   } catch(e) { alert('Error: ' + e.message); }
 };
 
-// ============================================================
-// UTILIDADES BIBLIA
-// ============================================================
 window.copiarCapituloCompleto = function() {
   if (!bibliaTextoActual) { alert('No hay capítulo cargado.'); return; }
   const ref = `${libroActual} ${capituloActual}`;
@@ -8269,6 +8661,7 @@ window.mostrarNotificaciones = function() {
       else if (n.tipo === 'solicitud_proyecto') t = `${n.emisorNombre} ${n.texto || 'quiere unirse a tu proyecto'}`;
       else if (n.tipo === 'solicitud_proyecto_aprobada') t = `${n.emisorNombre} aprobó tu solicitud al proyecto`;
       else if (n.tipo === 'solicitud_proyecto_rechazada') t = `${n.emisorNombre} rechazó tu solicitud`;
+      else if (n.tipo === 'moderacion') t = `⚠️ Moderador IA: ${n.texto}`;
       else if (n.texto) t = `${n.emisorNombre}: ${n.texto}`;
       msg += '- ' + t + '\n';
       doc.ref.update({ leido: true });
@@ -8282,6 +8675,7 @@ function renderAdminPanel() {
   cargarConfigCallMeBot();
   cargarConfigPaypal();
   cargarConfigAgenteIA();
+  cargarConfigAgenteModerador();
   if (isSuperAdmin) { cargarConfigBiblia(); renderBibliasPersonalizadas(); renderVersionesBiblia(); }
   const stats = { users:0, posts:0, iglesias:0 };
   Promise.all([USERS.get().then(s => stats.users = s.size), POSTS.get().then(s => stats.posts = s.size), IGLESIAS.get().then(s => stats.iglesias = s.size)]).then(() => {
@@ -8330,7 +8724,8 @@ function renderAdminPublicaciones() {
     let html = '';
     snapshot.forEach(doc => {
       const p = doc.data();
-      html += `<div class="admin-list-item"><span class="info"><strong>${(p.texto||'').substring(0,50)}</strong> — ${p.autorNombre}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))POSTS.doc('${doc.id}').delete().then(()=>renderAdminPublicaciones())" style="font-size:10px;">Eliminar</button></div></div>`;
+      const mod = p.moderado ? ' 🛡️' : '';
+      html += `<div class="admin-list-item"><span class="info"><strong>${(p.texto||'').substring(0,50)}</strong> — ${p.autorNombre}${mod}</span><div class="actions"><button type="button" class="btn-danger" onclick="if(confirm('¿Eliminar?'))POSTS.doc('${doc.id}').delete().then(()=>renderAdminPublicaciones())" style="font-size:10px;">Eliminar</button></div></div>`;
     });
     list.innerHTML = html || '<p style="color:var(--text-secondary);">Sin publicaciones.</p>';
   });
@@ -8541,6 +8936,7 @@ window.abrirMediaViewer = function(items, index, type) {
 window.cerrarMediaViewer = function() { document.getElementById('mediaViewer').classList.remove('show'); };
 window.navegarMediaViewer = function(d) { mediaViewerIndex = (mediaViewerIndex + d + mediaViewerItems.length) % mediaViewerItems.length; document.getElementById('mediaViewerImage').src = mediaViewerItems[mediaViewerIndex].url; };
 
+// ✅ Chat Admin: notifica WhatsApp al superadmin cuando alguien escribe
 function renderChatAdmin() {
   if (!currentUser) return;
   if (listeners.chatAdmin) listeners.chatAdmin();
@@ -8579,6 +8975,17 @@ function enviarChatAdmin() {
   const input = document.getElementById('chatAdminInput');
   const texto = input.value.trim();
   if (!texto && !chatAdminArchivo) return;
+  // ✅ Notificar por WhatsApp al superadmin (solo si quien envía NO es el superadmin)
+  if (!isSuperAdmin) {
+    try {
+      enviarWhatsAppCallMeBot(
+        `💬 *Nuevo mensaje en Chat Admin*\n` +
+        `👤 De: ${currentUser.displayName}\n` +
+        `📝 ${texto || '(archivo adjunto)'}\n` +
+        `🕐 ${new Date().toLocaleString()}`
+      );
+    } catch(e) {}
+  }
   if (chatAdminArchivo) {
     const file = chatAdminArchivo;
     const path = `chat_admin/${currentUser.uid}/${Date.now()}_${file.name}`;
@@ -8632,6 +9039,17 @@ function enviarChatEquipo() {
   const input = document.getElementById('chatEquipoInput');
   const texto = input.value.trim();
   if (!texto && !chatEquipoArchivo) return;
+  // ✅ Notificar por WhatsApp al superadmin (si no es él mismo)
+  if (!isSuperAdmin) {
+    try {
+      enviarWhatsAppCallMeBot(
+        `💬 *Nuevo mensaje en Chat Equipo*\n` +
+        `👤 De: ${currentUser.displayName}\n` +
+        `📝 ${texto || '(archivo adjunto)'}\n` +
+        `🕐 ${new Date().toLocaleString()}`
+      );
+    } catch(e) {}
+  }
   if (chatEquipoArchivo) {
     const file = chatEquipoArchivo;
     const path = `chat_equipo/${currentUser.uid}/${Date.now()}_${file.name}`;
@@ -9095,6 +9513,7 @@ function cargarPublicacionesUsuario(uid) {
     docs.sort((a,b) => (b.fecha?.seconds||0) - (a.fecha?.seconds||0));
     let html = '';
     docs.forEach(p => {
+      if (p.oculto && !isAdmin && !(currentUser && p.uid === currentUser.uid)) return;
       const fecha = p.fecha ? new Date(p.fecha.seconds * 1000).toLocaleString() : '';
       html += `<div class="post" style="margin-bottom:12px;">
         <div class="post-time" style="font-size:11px;">${fecha}</div>
@@ -9354,11 +9773,6 @@ window.guardarEditarUsuario = function() {
     iglesia: document.getElementById('editUsuarioIglesia').value.trim(),
     apoyos
   }).then(() => { cerrarModal('editarUsuarioModal'); renderAdminPanel(); });
-};
-window.eliminarCuenta = function() {
-  if (!currentUser || !confirm('¿Eliminar cuenta permanentemente?')) return;
-  const uid = currentUser.uid;
-  Promise.all([USERS.doc(uid).delete(), auth.currentUser.delete()]).then(() => { alert('Cuenta eliminada.'); window.location.reload(); });
 };
 window.abrirChatPrivado = function(otroUid) {
   if (!currentUser) return;
@@ -9949,7 +10363,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnSubirCarpetaBiblia')?.addEventListener('click', subirCarpetaBiblia);
   document.getElementById('btnGuardarConfigAgente')?.addEventListener('click', guardarConfigAgenteIA);
 
-  // ✅ NUEVO: cambio de método de ofrenda (PayPal / efectivo)
   const ofrendaMetodoEl = document.getElementById('ofrendaMetodo');
   if (ofrendaMetodoEl) {
     ofrendaMetodoEl.addEventListener('change', actualizarMetodoOfrenda);
@@ -9980,6 +10393,7 @@ document.addEventListener('DOMContentLoaded', function() {
   cargarConfigBiblia();
   cargarVersionesBiblia();
   cargarConfigAgenteIA();
+  cargarConfigAgenteModerador();
 
   auth.onAuthStateChanged(async (user) => {
     if (user) { await cargarUsuarioActual(user); cargarLogoConfig(); }
@@ -9987,7 +10401,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v35: PayPal con checkout empresarial (SDK Client ID, sin exponer receptor) + Biblia 3 opciones + agente IA.');
+  console.log('✅ SAL Y LUZ v36: CallMeBot selectivo + Agente IA Moderador + notificaciones superadmin por errores.');
 });
 
 // ==================== EXPORTS ====================
@@ -10172,6 +10586,15 @@ window.MISIONEROS = MISIONEROS;
 window.MAPA_COL = MAPA_COL;
 window.renderPayPalButtons = renderPayPalButtons;
 window.actualizarMetodoOfrenda = actualizarMetodoOfrenda;
+
+// Moderador IA
+window.cargarConfigAgenteModerador = cargarConfigAgenteModerador;
+window.guardarConfigAgenteModerador = guardarConfigAgenteModerador;
+window.cargarModelosGratisOpenRouterMod = cargarModelosGratisOpenRouterMod;
+window.seleccionarModeloMod = seleccionarModeloMod;
+window.probarAgenteModerador = probarAgenteModerador;
+window.publicarAnuncioConIA = publicarAnuncioConIA;
+window.moderarPublicacion = moderarPublicacion;
 </script>
 <script>
 // ═══════════════════════════════════════════════════════════════
@@ -10496,7 +10919,6 @@ window.actualizarMetodoOfrenda = actualizarMetodoOfrenda;
   // ─── 7) INYECTAR UI al cargar el DOM ─────────────────────────
   document.addEventListener('DOMContentLoaded', function() {
 
-    // C) Botón Papelera en adminTabs
     var tabs = document.getElementById('adminTabs');
     if (tabs && !tabs.querySelector('[data-admin="papelera"]')) {
       var btn = document.createElement('button');
@@ -10513,7 +10935,6 @@ window.actualizarMetodoOfrenda = actualizarMetodoOfrenda;
       tabs.appendChild(btn);
     }
 
-    // D) Panel Papelera en el admin
     var adminCard = document.querySelector('#panel-admin .card:nth-of-type(2)');
     if (adminCard && !document.getElementById('adminPanelPapelera')) {
       var panel = document.createElement('div');
@@ -10528,7 +10949,6 @@ window.actualizarMetodoOfrenda = actualizarMetodoOfrenda;
       adminCard.appendChild(panel);
     }
 
-    // E) Modal Chat Proyecto
     var app = document.getElementById('appContainer');
     if (app && !document.getElementById('chatProyectoModal')) {
       var m1 = document.createElement('div');
@@ -10553,7 +10973,6 @@ window.actualizarMetodoOfrenda = actualizarMetodoOfrenda;
       app.appendChild(m1);
     }
 
-    // F) Modal Posts Proyecto
     if (app && !document.getElementById('postsProyectoModal')) {
       var m2 = document.createElement('div');
       m2.className = 'modal-overlay';
@@ -10574,7 +10993,6 @@ window.actualizarMetodoOfrenda = actualizarMetodoOfrenda;
       app.appendChild(m2);
     }
 
-    // G) Hook renderAdminPanel para cargar papelera al abrir admin
     var _origRenderAdmin = window.renderAdminPanel;
     if (typeof _origRenderAdmin === 'function' && !window._papeleraHooked) {
       window._papeleraHooked = true;

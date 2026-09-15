@@ -3858,7 +3858,46 @@ async function cargarConfigPaypal() {
       const mo = document.getElementById('paypalMoneda'); if (mo) mo.value = paypalConfig.moneda;
     }
   } catch(e) { console.warn('cargarConfigPaypal', e); }
-}
+}// ═══════════════════════════════════════════════════════════
+// FUNCIONES FALTANTES (arreglan el bug de admin)
+// ═══════════════════════════════════════════════════════════
+
+window.probarPaypal = function() {
+  const pmEl = document.getElementById('paypalMe');
+  const paypalMe = pmEl ? pmEl.value.trim() : '';
+  if (!paypalMe && !paypalConfig.email) {
+    alert('⚠️ Ingresa tu usuario PayPal.me o tu email primero.');
+    return;
+  }
+  const montoEjemplo = '10.00';
+  const moneda = paypalConfig.moneda || 'USD';
+  let url;
+  if (paypalMe) {
+    url = `https://www.paypal.me/${paypalMe}/${montoEjemplo}${moneda}`;
+  } else {
+    url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(paypalConfig.email)}&amount=${montoEjemplo}&currency_code=${moneda}&item_name=Ofrenda%20de%20prueba`;
+  }
+  const ventana = window.open(url, '_blank');
+  if (!ventana) {
+    alert('⚠️ El navegador bloqueó la ventana emergente.\n\nVista previa del enlace:\n' + url);
+  } else {
+    alert('✅ Vista previa abierta en una nueva pestaña.\n\nEnlace:\n' + url);
+  }
+};
+
+window.abrirOfrendaModal = function() {
+  if (!currentUser) {
+    alert('Debes iniciar sesión para dar tu ofrenda.');
+    const lb = document.getElementById('loginBtn');
+    if (lb) lb.click();
+    return;
+  }
+  const mEl = document.getElementById('ofrendaMonto');
+  if (mEl) mEl.value = '';
+  const nEl = document.getElementById('ofrendaNota');
+  if (nEl) nEl.value = '';
+  abrirModal('ofrendaModal');
+};
 window.guardarConfigPaypal = function() {
   if (!isSuperAdmin) return;
   const pmEl = document.getElementById('paypalMe');

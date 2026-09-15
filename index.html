@@ -2635,15 +2635,13 @@
       <h3><i class="fab fa-paypal"></i> Configuración PayPal (Ofrendas)</h3>
       <div class="admin-ia-config">
         <p style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">
-          Configura PayPal para recibir ofrendas y apoyar a las familias misioneras.
+          Configura PayPal para recibir ofrendas con <strong>checkout empresarial</strong>. El dinero llega directo a tu cuenta Business sin exponer el nombre del receptor en el pago.
         </p>
-        <label>Usuario PayPal.me (recomendado) — solo el nombre, ej: salyluz</label>
-        <input type="text" id="paypalMe" placeholder="salyluz">
-        <label>Client ID (opcional)</label>
+        <label>Client ID de PayPal Business (obligatorio) *</label>
         <input type="text" id="paypalClientId" placeholder="AX...">
-        <label>Secret Key (opcional)</label>
+        <label>Secret Key (solo referencia, no se usa en el navegador)</label>
         <input type="text" id="paypalSecretKey" placeholder="EL...">
-        <label>Email PayPal (respaldo)</label>
+        <label>Email PayPal Business (respaldo)</label>
         <input type="email" id="paypalEmail" placeholder="ofrendas@salyluz.com">
         <label>Moneda</label>
         <select id="paypalMoneda">
@@ -2652,8 +2650,10 @@
           <option value="MXN">MXN - Peso Mexicano</option>
           <option value="CRC">CRC - Colón Costarricense</option>
         </select>
+        <label style="margin-top:8px;">Usuario PayPal.me (opcional, ya no se usa para el checkout)</label>
+        <input type="text" id="paypalMe" placeholder="salyluz">
         <button type="button" class="btn-primary" id="btnGuardarPaypal" style="margin-top:8px;">Guardar</button>
-        <button type="button" class="btn-outline" id="btnProbarPaypal" style="margin-top:8px;">Vista previa</button>
+        <button type="button" class="btn-outline" id="btnProbarPaypal" style="margin-top:8px;">Vista previa del checkout</button>
       </div>
     </div>
     <div class="config-msg" id="msgPaypalConfig"><p>⚠️ Solo SuperAdmin.</p></div>
@@ -3248,6 +3248,7 @@
     </div>
   </div>
 
+  <!-- ===== MODAL DE OFRENDA (con contenedor de botones PayPal) ===== -->
   <div class="modal-overlay" id="ofrendaModal">
     <div class="modal-box" style="max-width:500px;">
       <h3><i class="fas fa-hand-holding-usd"></i> Ofrendar</h3>
@@ -3259,7 +3260,7 @@
       <input type="number" id="ofrendaMonto" placeholder="0.00" step="0.01" min="1">
       <label>Método de pago</label>
       <select id="ofrendaMetodo">
-        <option value="paypal">PayPal</option>
+        <option value="paypal">PayPal (checkout seguro)</option>
         <option value="efectivo">Efectivo (registro interno)</option>
       </select>
       <label>Destino</label>
@@ -3270,9 +3271,13 @@
       </select>
       <label>Nota (opcional)</label>
       <input type="text" id="ofrendaNota" placeholder="Motivo o dedicatoria">
+
+      <!-- Contenedor donde se renderiza el botón oficial de PayPal (checkout empresarial) -->
+      <div id="paypalButtonsContainer" style="margin-top:14px;"></div>
+
       <div class="modal-actions">
         <button type="button" class="btn-cancel" onclick="cerrarModal('ofrendaModal')">Cancelar</button>
-        <button type="button" class="btn-confirm" id="btnConfirmarOfrenda" onclick="confirmarOfrenda()"><i class="fab fa-paypal"></i> Ofrendar</button>
+        <button type="button" class="btn-confirm" id="btnConfirmarOfrenda" onclick="confirmarOfrenda()"><i class="fas fa-hand-holding-usd"></i> Registrar ofrenda</button>
       </div>
     </div>
   </div>
@@ -3498,6 +3503,11 @@ let agenteIAConfig = {
 let agenteChatHistorial = [];
 let agenteModelosCargados = [];
 let agenteCargando = false;
+
+// ==== PAYPAL SDK (checkout empresarial) ====
+let paypalSDKClientId = '';
+let paypalSDKCurrency = '';
+let paypalSDKReady = false;
 
 const ORDEN_BIBLICO = [
   'Génesis','Éxodo','Levítico','Números','Deuteronomio',
@@ -3846,7 +3856,7 @@ window.enviarWhatsAppCallMeBot = function(mensaje) {
   fetch(url, { method: 'GET', mode: 'no-cors' }).catch(() => {});
 };
 
-// ✅ FIX #1: cargarConfigPaypal ahora también carga paypalMe
+// ✅ Carga la config de PayPal (incluye clientId que es lo importante para el checkout)
 async function cargarConfigPaypal() {
   try {
     const doc = await CONFIG_PAYPAL.get();
@@ -3869,30 +3879,167 @@ async function cargarConfigPaypal() {
 }
 
 // ═══════════════════════════════════════════════════════════
-// FUNCIONES PAYPAL (reparadas)
+// ✅ NUEVO FLUJO PAYPAL: Checkout empresarial con SDK oficial
 // ═══════════════════════════════════════════════════════════
 
-window.probarPaypal = function() {
-  const pmEl = document.getElementById('paypalMe');
-  const paypalMe = pmEl ? pmEl.value.trim().replace(/^https?:\/\/(www\.)?paypal\.me\//i, '').replace(/\/$/, '') : '';
-  if (!paypalMe && !paypalConfig.email) {
-    alert('⚠️ Ingresa tu usuario PayPal.me o tu email primero.');
+/**
+ * Carga dinámicamente el SDK de PayPal con el Client ID configurado.
+ * El SDK se carga una sola vez por (client-id + moneda). Si ya está cargado
+ * con la misma configuración, se reutiliza.
+ */
+function cargarPayPalSDK() {
+  return new Promise((resolve, reject) => {
+    const clientId = (paypalConfig.clientId || '').trim();
+    const moneda = (paypalConfig.moneda || 'USD').trim();
+    if (!clientId) { reject(new Error('Falta configurar el Client ID de PayPal.')); return; }
+
+    if (window.paypal && paypalSDKClientId === clientId && paypalSDKCurrency === moneda) {
+      paypalSDKReady = true;
+      resolve(window.paypal);
+      return;
+    }
+    if (window.paypal && (paypalSDKClientId !== clientId || paypalSDKCurrency !== moneda)) {
+      // El SDK ya fue cargado con otra configuración; PayPal no permite recargarlo fácilmente.
+      reject(new Error('El SDK de PayPal ya fue cargado con otra configuración. Recarga la página (F5) para aplicar los cambios de Client ID o moneda.'));
+      return;
+    }
+
+    paypalSDKClientId = clientId;
+    paypalSDKCurrency = moneda;
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}&currency=${encodeURIComponent(moneda)}&intent=capture&components=buttons&disable-funding=credit`;
+    script.async = true;
+    script.onload = () => { paypalSDKReady = true; resolve(window.paypal); };
+    script.onerror = () => reject(new Error('No se pudo cargar el SDK de PayPal. Verifica tu Client ID y tu conexión a Internet.'));
+    document.head.appendChild(script);
+  });
+}
+
+/**
+ * Renderiza los botones oficiales de PayPal dentro del modal de ofrenda.
+ * Usa `actions.order.create()` en el cliente, por lo que NO se necesita backend.
+ * El dinero va directo a la cuenta Business asociada al Client ID.
+ * NO se expone el nombre del receptor en el checkout (solo aparece "PayPal").
+ */
+async function renderPayPalButtons() {
+  const container = document.getElementById('paypalButtonsContainer');
+  if (!container) return;
+  container.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:8px;"><i class="fas fa-spinner fa-spin"></i> Cargando PayPal...</p>';
+
+  if (!paypalConfig.clientId) {
+    container.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:8px;">⚠️ PayPal no está configurado. Contacta al administrador.</p>';
     return;
   }
-  const montoEjemplo = '10.00';
-  const moneda = paypalConfig.moneda || 'USD';
-  let url;
-  if (paypalMe) {
-    url = `https://www.paypal.me/${paypalMe}/${montoEjemplo}${moneda}`;
-  } else {
-    url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(paypalConfig.email)}&amount=${montoEjemplo}&currency_code=${moneda}&item_name=Ofrenda%20de%20prueba`;
+
+  try {
+    const paypal = await cargarPayPalSDK();
+    container.innerHTML = '';
+
+    paypal.Buttons({
+      style: { layout: 'vertical', color: 'gold', shape: 'pill', label: 'donate', height: 45 },
+      createOrder: (data, actions) => {
+        const montoEl = document.getElementById('ofrendaMonto');
+        const monto = parseFloat((montoEl && montoEl.value) || '0');
+        if (!monto || monto <= 0 || isNaN(monto)) {
+          alert('Ingresa un monto válido antes de pagar.');
+          return Promise.reject(new Error('Monto inválido'));
+        }
+        const destino = (document.getElementById('ofrendaDestino') || {}).value || 'general';
+        const nota = ((document.getElementById('ofrendaNota') || {}).value || '').trim();
+        const descripcion = ('Ofrenda - ' + destino + (nota ? ' - ' + nota : '')).substring(0, 127);
+        return actions.order.create({
+          intent: 'CAPTURE',
+          purchase_units: [{
+            amount: { value: monto.toFixed(2), currency_code: paypalConfig.moneda || 'USD' },
+            description: descripcion
+          }]
+        });
+      },
+      onApprove: async (data, actions) => {
+        try {
+          const details = await actions.order.capture();
+          await guardarOfrendaPaypal(details);
+          alert('✅ Ofrenda completada correctamente. ¡Dios te bendiga!');
+          cerrarModal('ofrendaModal');
+          renderWidgetOfrendas();
+        } catch (e) {
+          console.error('Error capturando orden PayPal:', e);
+          alert('El pago fue aprobado pero hubo un problema al registrarlo. Contacta al administrador.');
+        }
+      },
+      onCancel: () => { /* El usuario canceló, no hacemos nada */ },
+      onError: (err) => {
+        console.error('PayPal Error:', err);
+        alert('⚠️ Error de PayPal: ' + (err && err.message ? err.message : 'Desconocido'));
+      }
+    }).render('#paypalButtonsContainer');
+
+  } catch (e) {
+    container.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:8px;">⚠️ ' + e.message + '</p>';
   }
-  const ventana = window.open(url, '_blank');
-  if (!ventana) {
-    alert('⚠️ El navegador bloqueó la ventana emergente.\n\nVista previa del enlace:\n' + url);
+}
+
+/**
+ * Guarda la ofrenda de PayPal en Firestore después de capturar la orden.
+ * Incluye el ID de orden y datos del pagador (sin exponer datos sensibles del receptor).
+ */
+async function guardarOfrendaPaypal(details) {
+  if (!currentUser) return;
+  const monto = parseFloat(
+    (details && details.purchase_units && details.purchase_units[0] && details.purchase_units[0].amount && details.purchase_units[0].amount.value) ||
+    document.getElementById('ofrendaMonto').value || '0'
+  );
+  const destino = (document.getElementById('ofrendaDestino') || {}).value || 'general';
+  const nota = ((document.getElementById('ofrendaNota') || {}).value || '').trim();
+  await OFRENDAS.add({
+    uid: currentUser.uid,
+    nombre: currentUser.displayName,
+    email: currentUser.email || '',
+    monto,
+    metodo: 'paypal',
+    destino, nota,
+    moneda: paypalConfig.moneda || 'USD',
+    estado: 'completada',
+    paypalOrderId: details.id || '',
+    paypalPayerId: (details.payer && details.payer.payer_id) || '',
+    paypalPayerEmail: (details.payer && details.payer.email_address) || '',
+    fecha: firebase.firestore.FieldValue.serverTimestamp()
+  });
+}
+
+/**
+ * Actualiza visibilidad de elementos según el método elegido.
+ */
+function actualizarMetodoOfrenda() {
+  const metodo = ((document.getElementById('ofrendaMetodo') || {}).value) || 'paypal';
+  const btnConfirmar = document.getElementById('btnConfirmarOfrenda');
+  const paypalContainer = document.getElementById('paypalButtonsContainer');
+  if (metodo === 'paypal') {
+    if (btnConfirmar) btnConfirmar.style.display = 'none';
+    if (paypalContainer) paypalContainer.style.display = 'block';
+    renderPayPalButtons();
   } else {
-    alert('✅ Vista previa abierta en una nueva pestaña.\n\nEnlace:\n' + url);
+    if (btnConfirmar) btnConfirmar.style.display = 'inline-block';
+    if (paypalContainer) paypalContainer.style.display = 'none';
   }
+}
+
+window.probarPaypal = function() {
+  if (!paypalConfig.clientId) {
+    alert('⚠️ Primero configura y guarda el Client ID de PayPal.');
+    return;
+  }
+  if (!currentUser) {
+    alert('Inicia sesión para previsualizar el checkout de PayPal.');
+    const lb = document.getElementById('loginBtn');
+    if (lb) lb.click();
+    return;
+  }
+  abrirOfrendaModal();
+  setTimeout(() => {
+    const montoEl = document.getElementById('ofrendaMonto');
+    if (montoEl && !montoEl.value) montoEl.value = '1.00';
+  }, 200);
 };
 
 window.abrirOfrendaModal = function() {
@@ -3906,7 +4053,11 @@ window.abrirOfrendaModal = function() {
   if (mEl) mEl.value = '';
   const nEl = document.getElementById('ofrendaNota');
   if (nEl) nEl.value = '';
+  const metodoEl = document.getElementById('ofrendaMetodo');
+  if (metodoEl) metodoEl.value = 'paypal';
   abrirModal('ofrendaModal');
+  // Renderizar los botones cuando el modal ya esté visible
+  setTimeout(() => actualizarMetodoOfrenda(), 100);
 };
 
 window.guardarConfigPaypal = function() {
@@ -3923,8 +4074,8 @@ window.guardarConfigPaypal = function() {
   const email = emEl ? emEl.value.trim() : '';
   const moneda = moEl ? moEl.value : 'USD';
 
-  if (!paypalMe && !email) {
-    alert('Ingresa al menos tu usuario PayPal.me o tu email.');
+  if (!clientId) {
+    alert('⚠️ El Client ID de PayPal Business es obligatorio para el checkout empresarial.');
     return;
   }
   CONFIG_PAYPAL.set({
@@ -3933,18 +4084,26 @@ window.guardarConfigPaypal = function() {
   }, { merge: true })
     .then(() => {
       paypalConfig = { paypalMe, clientId, secretKey, email, moneda };
-      alert('✅ Configuración PayPal guardada.\nUsuario PayPal.me: ' + (paypalMe || '(no configurado)'));
+      alert('✅ Configuración PayPal guardada.\n\nClient ID: ' + clientId.substring(0, 24) + '...\n\nRecarga la página (F5) si cambiaste el Client ID o la moneda para aplicar los cambios en el checkout.');
     })
     .catch(err => alert('Error: ' + err.message));
 };
 
-// ✅ FIX #2: confirmarOfrenda limpio, sin duplicados, con validación de monto
-// y construcción correcta de la URL de PayPal (paypal.me o email)
+/**
+ * El botón "Registrar ofrenda" solo aplica para el método "efectivo".
+ * Para PayPal, la orden y el cobro los maneja el SDK de PayPal con los botones oficiales.
+ */
 window.confirmarOfrenda = function() {
   if (!currentUser) {
     alert('Debes iniciar sesión para dar tu ofrenda.');
     const lb = document.getElementById('loginBtn');
     if (lb) lb.click();
+    return;
+  }
+
+  const metodo = ((document.getElementById('ofrendaMetodo') || {}).value) || 'efectivo';
+  if (metodo === 'paypal') {
+    alert('Para ofrendar con PayPal, usa el botón oficial de PayPal que aparece arriba.');
     return;
   }
 
@@ -3955,7 +4114,6 @@ window.confirmarOfrenda = function() {
     return;
   }
 
-  const metodo = (document.getElementById('ofrendaMetodo') || {}).value || 'paypal';
   const destino = (document.getElementById('ofrendaDestino') || {}).value || 'general';
   const nota = ((document.getElementById('ofrendaNota') || {}).value || '').trim();
 
@@ -3963,35 +4121,11 @@ window.confirmarOfrenda = function() {
     uid: currentUser.uid,
     nombre: currentUser.displayName,
     email: currentUser.email || '',
-    monto, metodo, destino, nota,
+    monto, metodo: 'efectivo', destino, nota,
     moneda: (paypalConfig && paypalConfig.moneda) || 'USD',
-    estado: metodo === 'paypal' ? 'pendiente' : 'registrada',
+    estado: 'registrada',
     fecha: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(ref => {
-    if (metodo === 'paypal') {
-      const paypalMeRaw = (paypalConfig && paypalConfig.paypalMe) ? String(paypalConfig.paypalMe) : '';
-      const paypalMe = paypalMeRaw.replace(/^https?:\/\/(www\.)?paypal\.me\//i, '').replace(/\/$/, '');
-      const emailPaypal = (paypalConfig && paypalConfig.email) || '';
-      const moneda = (paypalConfig && paypalConfig.moneda) || 'USD';
-
-      let url = '';
-      if (paypalMe) {
-        url = `https://www.paypal.me/${encodeURIComponent(paypalMe)}/${monto}${moneda}`;
-      } else if (emailPaypal) {
-        url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(emailPaypal)}&amount=${monto}&currency_code=${moneda}&item_name=${encodeURIComponent('Ofrenda - ' + destino)}&custom=${ref.id}`;
-      } else {
-        alert('⚠️ PayPal no está configurado todavía. La ofrenda quedó registrada en el sistema.');
-        cerrarModal('ofrendaModal');
-        renderWidgetOfrendas();
-        return;
-      }
-
-      const ventana = window.open(url, '_blank');
-      if (!ventana) {
-        try { if (navigator.clipboard) navigator.clipboard.writeText(url); } catch(e) {}
-        alert('⚠️ El navegador bloqueó la ventana emergente.\n\nEnlace de pago (copiado al portapapeles):\n' + url);
-      }
-    }
+  }).then(() => {
     cerrarModal('ofrendaModal');
     alert('✅ Ofrenda registrada. ¡Dios te bendiga!');
     renderWidgetOfrendas();
@@ -9815,6 +9949,12 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnSubirCarpetaBiblia')?.addEventListener('click', subirCarpetaBiblia);
   document.getElementById('btnGuardarConfigAgente')?.addEventListener('click', guardarConfigAgenteIA);
 
+  // ✅ NUEVO: cambio de método de ofrenda (PayPal / efectivo)
+  const ofrendaMetodoEl = document.getElementById('ofrendaMetodo');
+  if (ofrendaMetodoEl) {
+    ofrendaMetodoEl.addEventListener('change', actualizarMetodoOfrenda);
+  }
+
   const btnCrearProyecto = document.getElementById('btnCrearProyecto');
   if (btnCrearProyecto) btnCrearProyecto.addEventListener('click', abrirModalProyecto);
   const proyectoCancel = document.getElementById('proyectoCancel');
@@ -9847,7 +9987,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v34: PayPal fix + Biblia 3 opciones + sidebar acordeón móvil + agente IA con logo.');
+  console.log('✅ SAL Y LUZ v35: PayPal con checkout empresarial (SDK Client ID, sin exponer receptor) + Biblia 3 opciones + agente IA.');
 });
 
 // ==================== EXPORTS ====================
@@ -10030,6 +10170,8 @@ window.EVENTOS = EVENTOS;
 window.ORACIONES = ORACIONES;
 window.MISIONEROS = MISIONEROS;
 window.MAPA_COL = MAPA_COL;
+window.renderPayPalButtons = renderPayPalButtons;
+window.actualizarMetodoOfrenda = actualizarMetodoOfrenda;
 </script>
 <script>
 // ═══════════════════════════════════════════════════════════════
@@ -10353,20 +10495,6 @@ window.MAPA_COL = MAPA_COL;
 
   // ─── 7) INYECTAR UI al cargar el DOM ─────────────────────────
   document.addEventListener('DOMContentLoaded', function() {
-
-    // A) reCAPTCHA dentro del modal de login (DESACTIVADO)
-    /*
-    var loginForm = document.getElementById('loginForm');
-    if (loginForm && !document.querySelector('.g-recaptcha')) {
-      ...
-    }
-    */
-
-    // B) Hook login para verificar captcha (DESACTIVADO)
-    /*
-    var loginBtn = document.getElementById('loginSubmitBtn');
-    ...
-    */
 
     // C) Botón Papelera en adminTabs
     var tabs = document.getElementById('adminTabs');

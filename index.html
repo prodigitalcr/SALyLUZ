@@ -3861,25 +3861,32 @@ async function cargarConfigPaypal() {
 }
 window.guardarConfigPaypal = function() {
   if (!isSuperAdmin) return;
-  const clientId = document.getElementById('paypalClientId').value.trim();
-  const secretKey = document.getElementById('paypalSecretKey').value.trim();
-  const email = document.getElementById('paypalEmail').value.trim();
-  const moneda = document.getElementById('paypalMoneda').value;
-  CONFIG_PAYPAL.set({ clientId, secretKey, email, moneda, actualizado: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true })
-    .then(() => { paypalConfig = { clientId, secretKey, email, moneda }; alert('✅ Configuración PayPal guardada.'); })
+  const pmEl = document.getElementById('paypalMe');
+  const ciEl = document.getElementById('paypalClientId');
+  const skEl = document.getElementById('paypalSecretKey');
+  const emEl = document.getElementById('paypalEmail');
+  const moEl = document.getElementById('paypalMoneda');
+
+  const paypalMe = pmEl ? pmEl.value.trim().replace(/^https?:\/\/(www\.)?paypal\.me\//i, '').replace(/\/$/, '') : '';
+  const clientId = ciEl ? ciEl.value.trim() : '';
+  const secretKey = skEl ? skEl.value.trim() : '';
+  const email = emEl ? emEl.value.trim() : '';
+  const moneda = moEl ? moEl.value : 'USD';
+
+  if (!paypalMe && !email) {
+    alert('Ingresa al menos tu usuario PayPal.me o tu email.');
+    return;
+  }
+  CONFIG_PAYPAL.set({
+    paypalMe, clientId, secretKey, email, moneda,
+    actualizado: firebase.firestore.FieldValue.serverTimestamp()
+  }, { merge: true })
+    .then(() => {
+      paypalConfig = { paypalMe, clientId, secretKey, email, moneda };
+      alert('✅ Configuración PayPal guardada.\nUsuario PayPal.me: ' + (paypalMe || '(no configurado)'));
+    })
     .catch(err => alert('Error: ' + err.message));
 };
-window.probarPaypal = function() { alert('💳 PayPal configurado para: ' + (paypalConfig.email || 'No configurado') + '\nMoneda: ' + paypalConfig.moneda); };
-window.abrirOfrendaModal = function() {
-  if (!currentUser) { alert('Inicia sesión para ofrendar.'); return; }
-  if (!paypalConfig.clientId && !paypalConfig.email) {
-    alert('El administrador aún no ha configurado PayPal. Puedes registrar tu ofrenda en efectivo.');
-  }
-  const montoEl = document.getElementById('ofrendaMonto'); if (montoEl) montoEl.value = '';
-  const notaEl = document.getElementById('ofrendaNota'); if (notaEl) notaEl.value = '';
-  abrirModal('ofrendaModal');
-};
-window.confirmarOfrenda = function() {
   if (!currentUser) return;
   const monto = parseFloat(document.getElementById('ofrendaMonto').value);
   const metodo = document.getElementById('ofrendaMetodo').value;

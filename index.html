@@ -2637,7 +2637,7 @@
         <p style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">
           Configura PayPal para recibir ofrendas y apoyar a las familias misioneras.
         </p>
-               <label>Usuario PayPal.me (recomendado) — solo el nombre, ej: salyluz</label>
+        <label>Usuario PayPal.me (recomendado) — solo el nombre, ej: salyluz</label>
         <input type="text" id="paypalMe" placeholder="salyluz">
         <label>Client ID (opcional)</label>
         <input type="text" id="paypalClientId" placeholder="AX...">
@@ -3452,7 +3452,7 @@ let galeriaViewerIndex = 0;
 let searchDebounceTimer = null;
 let lastProfileViewed = null;
 let callmebotConfig = { enabled: false, phone: '', apikey: '' };
-let paypalConfig = { clientId: '', secretKey: '', email: '', moneda: 'USD' };
+let paypalConfig = { paypalMe: '', clientId: '', secretKey: '', email: '', moneda: 'USD' };
 let loginMode = 'login';
 let chatAdminArchivo = null;
 let chatEquipoArchivo = null;
@@ -3846,25 +3846,35 @@ window.enviarWhatsAppCallMeBot = function(mensaje) {
   fetch(url, { method: 'GET', mode: 'no-cors' }).catch(() => {});
 };
 
+// ✅ FIX #1: cargarConfigPaypal ahora también carga paypalMe
 async function cargarConfigPaypal() {
   try {
     const doc = await CONFIG_PAYPAL.get();
     if (doc.exists) {
       const d = doc.data();
-      paypalConfig = { clientId: d.clientId||'', secretKey: d.secretKey||'', email: d.email||'', moneda: d.moneda||'USD' };
+      paypalConfig = {
+        paypalMe: d.paypalMe || '',
+        clientId: d.clientId || '',
+        secretKey: d.secretKey || '',
+        email: d.email || '',
+        moneda: d.moneda || 'USD'
+      };
+      const pm = document.getElementById('paypalMe'); if (pm) pm.value = paypalConfig.paypalMe;
       const ci = document.getElementById('paypalClientId'); if (ci) ci.value = paypalConfig.clientId;
       const sk = document.getElementById('paypalSecretKey'); if (sk) sk.value = paypalConfig.secretKey;
       const em = document.getElementById('paypalEmail'); if (em) em.value = paypalConfig.email;
       const mo = document.getElementById('paypalMoneda'); if (mo) mo.value = paypalConfig.moneda;
     }
   } catch(e) { console.warn('cargarConfigPaypal', e); }
-}// ═══════════════════════════════════════════════════════════
-// FUNCIONES FALTANTES (arreglan el bug de admin)
+}
+
+// ═══════════════════════════════════════════════════════════
+// FUNCIONES PAYPAL (reparadas)
 // ═══════════════════════════════════════════════════════════
 
 window.probarPaypal = function() {
   const pmEl = document.getElementById('paypalMe');
-  const paypalMe = pmEl ? pmEl.value.trim() : '';
+  const paypalMe = pmEl ? pmEl.value.trim().replace(/^https?:\/\/(www\.)?paypal\.me\//i, '').replace(/\/$/, '') : '';
   if (!paypalMe && !paypalConfig.email) {
     alert('⚠️ Ingresa tu usuario PayPal.me o tu email primero.');
     return;
@@ -3898,6 +3908,7 @@ window.abrirOfrendaModal = function() {
   if (nEl) nEl.value = '';
   abrirModal('ofrendaModal');
 };
+
 window.guardarConfigPaypal = function() {
   if (!isSuperAdmin) return;
   const pmEl = document.getElementById('paypalMe');
@@ -3927,63 +3938,66 @@ window.guardarConfigPaypal = function() {
     .catch(err => alert('Error: ' + err.message));
 };
 
+// ✅ FIX #2: confirmarOfrenda limpio, sin duplicados, con validación de monto
+// y construcción correcta de la URL de PayPal (paypal.me o email)
 window.confirmarOfrenda = function() {
-   const pmEl = document.getElementById('paypalMe');
-  const paypalMe = pmEl ? pmEl.value.trim().replace(/^https?:\/\/(www\.)?paypal\.me\//i, '').replace(/\/$/, '') : '';
-  const email = (window.paypalConfig && paypalConfig.email) || '';
-  const moneda = (window.paypalConfig && paypalConfig.moneda) || 'USD';
-  if (!paypalMe && !email) {
-    alert('⚠️ Ingresa tu usuario PayPal.me o tu email primero, y guarda.');
-    return;
-  }
-  const monto = '10.00';
-  const url = paypalMe
-    ? `https://www.paypal.me/${paypalMe}/${monto}${moneda}`
-    : `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(email)}&amount=${monto}&currency_code=${moneda}&item_name=Ofrenda%20de%20prueba`;
-  const w = window.open(url, '_blank');
-  if (!w) alert('⚠️ Ventana bloqueada. Enlace:\n' + url);
-  else alert('✅ Vista previa de PayPal abierta en otra pestaña.');
-};
-
-window.abrirOfrendaModal = function() {
   if (!currentUser) {
     alert('Debes iniciar sesión para dar tu ofrenda.');
     const lb = document.getElementById('loginBtn');
     if (lb) lb.click();
     return;
   }
-  const mEl = document.getElementById('ofrendaMonto');
-  if (mEl) mEl.value = '';
-  const nEl = document.getElementById('ofrendaNota');
-  if (nEl) nEl.value = '';
-  abrirModal('ofrendaModal');
-};
 
-window.confirmarOfrenda = function() {
-  if (!currentUser) return;
-  const metodo = document.getElementById('ofrendaMetodo').value;
-  const destino = document.getElementById('ofrendaDestino').value;
-  const nota = document.getElementById('ofrendaNota').value.trim();
-  if (!monto || monto <= 0) { alert('Ingresa un monto válido.'); return; }
+  const montoInput = document.getElementById('ofrendaMonto');
+  const monto = parseFloat(montoInput ? montoInput.value : '0');
+  if (!monto || monto <= 0 || isNaN(monto)) {
+    alert('Ingresa un monto válido.');
+    return;
+  }
+
+  const metodo = (document.getElementById('ofrendaMetodo') || {}).value || 'paypal';
+  const destino = (document.getElementById('ofrendaDestino') || {}).value || 'general';
+  const nota = ((document.getElementById('ofrendaNota') || {}).value || '').trim();
+
   OFRENDAS.add({
     uid: currentUser.uid,
     nombre: currentUser.displayName,
     email: currentUser.email || '',
     monto, metodo, destino, nota,
-    moneda: paypalConfig.moneda || 'USD',
+    moneda: (paypalConfig && paypalConfig.moneda) || 'USD',
     estado: metodo === 'paypal' ? 'pendiente' : 'registrada',
     fecha: firebase.firestore.FieldValue.serverTimestamp()
   }).then(ref => {
-    if (metodo === 'paypal' && (paypalConfig.email || paypalConfig.clientId)) {
-      const emailPaypal = paypalConfig.email || '';
-      const url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(emailPaypal)}&amount=${monto}&currency_code=${paypalConfig.moneda||'USD'}&item_name=${encodeURIComponent('Ofrenda - ' + destino)}&custom=${ref.id}`;
-      window.open(url, '_blank');
+    if (metodo === 'paypal') {
+      const paypalMeRaw = (paypalConfig && paypalConfig.paypalMe) ? String(paypalConfig.paypalMe) : '';
+      const paypalMe = paypalMeRaw.replace(/^https?:\/\/(www\.)?paypal\.me\//i, '').replace(/\/$/, '');
+      const emailPaypal = (paypalConfig && paypalConfig.email) || '';
+      const moneda = (paypalConfig && paypalConfig.moneda) || 'USD';
+
+      let url = '';
+      if (paypalMe) {
+        url = `https://www.paypal.me/${encodeURIComponent(paypalMe)}/${monto}${moneda}`;
+      } else if (emailPaypal) {
+        url = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(emailPaypal)}&amount=${monto}&currency_code=${moneda}&item_name=${encodeURIComponent('Ofrenda - ' + destino)}&custom=${ref.id}`;
+      } else {
+        alert('⚠️ PayPal no está configurado todavía. La ofrenda quedó registrada en el sistema.');
+        cerrarModal('ofrendaModal');
+        renderWidgetOfrendas();
+        return;
+      }
+
+      const ventana = window.open(url, '_blank');
+      if (!ventana) {
+        try { if (navigator.clipboard) navigator.clipboard.writeText(url); } catch(e) {}
+        alert('⚠️ El navegador bloqueó la ventana emergente.\n\nEnlace de pago (copiado al portapapeles):\n' + url);
+      }
     }
     cerrarModal('ofrendaModal');
     alert('✅ Ofrenda registrada. ¡Dios te bendiga!');
     renderWidgetOfrendas();
   }).catch(err => alert('Error: ' + err.message));
 };
+
 window.verHistorialOfrendas = function() {
   if (!currentUser) return;
   OFRENDAS.where('uid', '==', currentUser.uid).orderBy('fecha', 'desc').limit(20).get().then(snap => {
@@ -9833,7 +9847,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   setInterval(() => { renderHistorias(); renderHistoriasMuro(); }, 5 * 60 * 1000);
-  console.log('✅ SAL Y LUZ v33: Biblia con 3 opciones de guardado, sidebar acordeón móvil, búsqueda con versículos, IA con logo.');
+  console.log('✅ SAL Y LUZ v34: PayPal fix + Biblia 3 opciones + sidebar acordeón móvil + agente IA con logo.');
 });
 
 // ==================== EXPORTS ====================
@@ -10340,48 +10354,19 @@ window.MAPA_COL = MAPA_COL;
   // ─── 7) INYECTAR UI al cargar el DOM ─────────────────────────
   document.addEventListener('DOMContentLoaded', function() {
 
-         // A) reCAPTCHA dentro del modal de login (DESACTIVADO)
+    // A) reCAPTCHA dentro del modal de login (DESACTIVADO)
     /*
     var loginForm = document.getElementById('loginForm');
     if (loginForm && !document.querySelector('.g-recaptcha')) {
-      var wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex; justify-content:center; margin:10px 0; transform:scale(0.9);';
-      var rcDiv = document.createElement('div');
-      wrap.appendChild(rcDiv);
-      var errDiv = document.getElementById('loginError');
-      if (errDiv && errDiv.parentNode) errDiv.parentNode.insertBefore(wrap, errDiv);
-      else loginForm.appendChild(wrap);
-
-      var renderRecaptcha = function() {
-        // ... todo el código ...
-      };
-
-      if (typeof grecaptcha !== 'undefined' && grecaptcha.ready) {
-        grecaptcha.ready(renderRecaptcha);
-      } else {
-        var tries = 0;
-        var waitRecaptcha = setInterval(function() {
-          // ... todo el código ...
-        }, 300);
-      }
+      ...
     }
     */
 
-    // B) Hook login para verificar captcha
+    // B) Hook login para verificar captcha (DESACTIVADO)
     /*
     var loginBtn = document.getElementById('loginSubmitBtn');
-    if (loginBtn && !loginBtn._recapHooked) {
-      loginBtn._recapHooked = true;
-      loginBtn.addEventListener('click', function(e) {
-        if (!verificarRecaptcha()) { e.stopImmediatePropagation(); e.preventDefault(); return false; }
-      }, true);
-    }
-    var loginCancel = document.getElementById('loginCancelBtn');
-    if (loginCancel && !loginCancel._recapHooked) {
-      loginCancel._recapHooked = true;
-      loginCancel.addEventListener('click', function() { setTimeout(resetRecaptcha, 300); });
-    }
-      */
+    ...
+    */
 
     // C) Botón Papelera en adminTabs
     var tabs = document.getElementById('adminTabs');

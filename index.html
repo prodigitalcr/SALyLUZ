@@ -9936,5 +9936,446 @@ window.ORACIONES = ORACIONES;
 window.MISIONEROS = MISIONEROS;
 window.MAPA_COL = MAPA_COL;
 </script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// PARCHE FINAL v1.0 — reCAPTCHA + Papelera + Chat/Posts Proyectos
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  'use strict';
+
+  // ─── 1) VARIABLES GLOBALES reCAPTCHA ──────────────────────────
+  window._recaptchaOk = false;
+  window.onRecaptchaOk = function(token) { window._recaptchaOk = !!token; };
+  window.onRecaptchaExpired = function() { window._recaptchaOk = false; };
+  window.verificarRecaptcha = function() {
+    try {
+      if (typeof grecaptcha === 'undefined') return true;
+      var r = grecaptcha.getResponse();
+      if (!r) { alert('⚠️ Completa el reCAPTCHA antes de continuar.'); return false; }
+      return true;
+    } catch(e) { return true; }
+  };
+  window.resetRecaptcha = function() {
+    try { if (typeof grecaptcha !== 'undefined') grecaptcha.reset(); } catch(e) {}
+    window._recaptchaOk = false;
+  };
+
+  // ─── 2) PAPELERA (backups anti-borrado) ──────────────────────
+  const PAPELERA = db.collection('papelera');
+
+  window.borrarConRespaldo = async function(col, id, motivo) {
+    try {
+      const ref = db.collection(col).doc(id);
+      const snap = await ref.get();
+      if (!snap.exists) { await ref.delete(); return; }
+      const datos = snap.data();
+      await PAPELERA.add({
+        coleccionOriginal: col,
+        docIdOriginal: id,
+        datos: datos,
+        motivo: motivo || '',
+        eliminadoPor: currentUser ? currentUser.uid : 'anonimo',
+        eliminadoPorNombre: currentUser ? currentUser.displayName : '',
+        fechaEliminacion: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      await ref.delete();
+    } catch (e) {
+      console.error('borrarConRespaldo:', e);
+      throw e;
+    }
+  };
+
+  window.restaurarDesdePapelera = async function(pid) {
+    if (!isAdmin) { alert('Solo admin.'); return; }
+    if (!confirm('¿Restaurar este documento a su colección original?')) return;
+    try {
+      const snap = await PAPELERA.doc(pid).get();
+      if (!snap.exists) return;
+      const p = snap.data();
+      await db.collection(p.coleccionOriginal).doc(p.docIdOriginal).set(p.datos);
+      await PAPELERA.doc(pid).delete();
+      alert('✅ Documento restaurado.');
+      renderAdminPapelera();
+    } catch(e) { alert('Error al restaurar: ' + e.message); }
+  };
+
+  window.eliminarDefinitivoPapelera = async function(pid) {
+    if (!isAdmin) return;
+    if (!confirm('⚠️ Esto eliminará PERMANENTEMENTE el respaldo. ¿Continuar?')) return;
+    await PAPELERA.doc(pid).delete();
+    renderAdminPapelera();
+  };
+
+  window.vaciarPapelera = async function() {
+    if (!isSuperAdmin) { alert('Solo SuperAdmin.'); return; }
+    if (!confirm('⚠️ ¿Vaciar TODA la papelera? No se puede deshacer.')) return;
+    const snap = await PAPELERA.get();
+    const b = db.batch();
+    snap.forEach(d => b.delete(d.ref));
+    await b.commit();
+    alert('✅ Papelera vaciada.');
+    renderAdminPapelera();
+  };
+
+  window.renderAdminPapelera = function() {
+    const list = document.getElementById('adminPapeleraList');
+    if (!list) return;
+    PAPELERA.orderBy('fechaEliminacion', 'desc').limit(100).get().then(snap => {
+      if (snap.empty) { list.innerHTML = '<p style="color:var(--text-secondary);">Papelera vacía.</p>'; return; }
+      let html = '';
+      snap.forEach(doc => {
+        const p = doc.data();
+        const f = p.fechaEliminacion ? new Date(p.fechaEliminacion.seconds * 1000).toLocaleString() : '';
+        const d = (p.datos && (p.datos.titulo || p.datos.nombre || p.datos.texto || p.datos.displayName || '')).toString().substring(0, 50);
+        html += `<div class="admin-list-item" style="gap:8px; flex-wrap:wrap;">
+          <span class="info"><strong>${p.coleccionOriginal}</strong> · ${p.docIdOriginal}<br><small style="color:var(--text-secondary);">${d} · ${f} · por ${p.eliminadoPorNombre || 'N/A'}</small></span>
+          <div class="actions" style="display:flex; gap:4px;">
+            <button class="btn-primary" onclick="restaurarDesdePapelera('${doc.id}')" style="font-size:10px;">Restaurar</button>
+            <button class="btn-danger" onclick="eliminarDefinitivoPapelera('${doc.id}')" style="font-size:10px;">Borrar</button>
+          </div>
+        </div>`;
+      });
+      list.innerHTML = html;
+    }).catch(e => { list.innerHTML = '<p style="color:#e74c3c;">Error: ' + e.message + '</p>'; });
+  };
+
+  // ─── 3) CHAT Y POSTS INTERNOS DE PROYECTOS ────────────────────
+  window.esMiembroProyecto = function(p) { return currentUser && p && p.miembros && p.miembros.includes(currentUser.uid); };
+  window.esCreadorProyecto = function(p) { return currentUser && p && p.uidCreador === currentUser.uid; };
+
+  let chatProyectoActual = null, chatProyectoUnsub = null;
+  let postsProyectoActual = null, postsProyectoUnsub = null;
+
+  window.abrirChatProyecto = function(pid, nombre) {
+    if (!currentUser) { alert('Inicia sesión.'); return; }
+    chatProyectoActual = pid;
+    document.getElementById('chatProyectoTitulo').textContent = nombre || 'Proyecto';
+    abrirModal('chatProyectoModal');
+    if (chatProyectoUnsub) chatProyectoUnsub();
+    chatProyectoUnsub = PROYECTOS.doc(pid).collection('chat').orderBy('timestamp', 'asc').onSnapshot(snap => {
+      const c = document.getElementById('chatProyectoMsgs');
+      if (snap.empty) { c.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:20px;">Sin mensajes.</p>'; return; }
+      let h = '';
+      snap.forEach(doc => {
+        const m = doc.data();
+        const mio = m.uid === currentUser.uid;
+        const color = colorFromUid(m.uid);
+        const hora = m.timestamp ? new Date(m.timestamp.seconds * 1000).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : '';
+        h += `<div class="chat-msg-colored ${mio?'mio':''}">
+          ${!mio?`<div class="chat-avatar-small" style="background-color:${color};">${(m.autor||'?').charAt(0)}</div>`:''}
+          <div class="chat-bubble ${mio?'mio':'otro'}">
+            ${!mio?`<span class="chat-autor-name" style="color:${color};">${m.autor}</span>`:''}
+            ${m.texto||''}<span class="chat-time">${hora}</span>
+          </div></div>`;
+      });
+      c.innerHTML = h;
+      c.scrollTop = c.scrollHeight;
+    });
+  };
+
+  window.cerrarChatProyecto = function() {
+    if (chatProyectoUnsub) { chatProyectoUnsub(); chatProyectoUnsub = null; }
+    chatProyectoActual = null;
+    cerrarModal('chatProyectoModal');
+  };
+
+  window.enviarMensajeChatProyecto = function() {
+    if (!currentUser || !chatProyectoActual) return;
+    const i = document.getElementById('chatProyectoInput');
+    const t = i.value.trim(); if (!t) return;
+    PROYECTOS.doc(chatProyectoActual).get().then(doc => {
+      if (!doc.exists) return;
+      if (!esMiembroProyecto(doc.data()) && !esCreadorProyecto(doc.data()) && !isAdmin) { alert('Solo miembros pueden escribir.'); return; }
+      PROYECTOS.doc(chatProyectoActual).collection('chat').add({
+        uid: currentUser.uid, autor: currentUser.displayName,
+        autorFoto: currentUser.fotoPerfil || '', texto: t,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => i.value = '');
+    });
+  };
+
+  window.abrirPostsProyecto = function(pid, nombre) {
+    if (!currentUser) { alert('Inicia sesión.'); return; }
+    postsProyectoActual = pid;
+    document.getElementById('postsProyectoTitulo').textContent = 'Publicaciones · ' + (nombre || 'Proyecto');
+    abrirModal('postsProyectoModal');
+    if (postsProyectoUnsub) postsProyectoUnsub();
+    postsProyectoUnsub = PROYECTOS.doc(pid).collection('posts').orderBy('fecha', 'desc').onSnapshot(snap => {
+      const c = document.getElementById('postsProyectoContainer');
+      if (snap.empty) { c.innerHTML = '<p style="color:var(--text-secondary);text-align:center;padding:20px;">Sin publicaciones.</p>'; return; }
+      let h = '';
+      snap.forEach(doc => {
+        const p = doc.data();
+        const f = p.fecha ? new Date(p.fecha.seconds * 1000).toLocaleString() : '';
+        h += `<div style="background:var(--bg-body);padding:10px 12px;border-radius:10px;margin-bottom:8px;border:1px solid var(--border-color);font-size:13px;">
+          <div style="font-size:11px;color:var(--text-secondary);margin-bottom:4px;"><strong>${p.autor||''}</strong> · ${f}</div>
+          <div>${p.texto||''}</div>
+        </div>`;
+      });
+      c.innerHTML = h;
+    });
+  };
+
+  window.publicarEnProyecto = function() {
+    if (!currentUser || !postsProyectoActual) return;
+    const i = document.getElementById('postProyectoInput');
+    const t = i.value.trim(); if (!t) return;
+    PROYECTOS.doc(postsProyectoActual).get().then(doc => {
+      if (!doc.exists) return;
+      if (!esMiembroProyecto(doc.data()) && !esCreadorProyecto(doc.data()) && !isAdmin) { alert('Solo miembros pueden publicar.'); return; }
+      PROYECTOS.doc(postsProyectoActual).collection('posts').add({
+        uid: currentUser.uid, autor: currentUser.displayName,
+        autorFoto: currentUser.fotoPerfil || '', texto: t,
+        fecha: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => i.value = '');
+    });
+  };
+
+  // ─── 4) OVERRIDE renderProyectos ────────────────────────────────
+  var _origRenderProyectos = window.renderProyectos;
+  window.renderProyectos = function() {
+    if (listeners.proyectos) listeners.proyectos();
+    const container = document.getElementById('proyectosContainer');
+    if (!container) return;
+    listeners.proyectos = PROYECTOS.orderBy('fechaCreacion', 'desc').onSnapshot(snapshot => {
+      if (snapshot.empty) {
+        container.innerHTML = '<div class="card" style="text-align:center;padding:30px;"><i class="fas fa-project-diagram" style="font-size:48px;color:var(--teal);margin-bottom:12px;display:block;"></i><h3 style="justify-content:center;">No hay proyectos aún</h3><p style="color:var(--text-secondary);">Sé el primero en crear uno.</p></div>';
+        return;
+      }
+      let html = '';
+      snapshot.forEach(doc => {
+        const p = { id: doc.id, ...doc.data() };
+        const esMiembro = p.miembros && currentUser && p.miembros.includes(currentUser.uid);
+        const esCreador = currentUser && p.uidCreador === currentUser.uid;
+        const solicitudes = p.solicitudes || [];
+        const yaSolicito = currentUser && solicitudes.some(s => s.uid === currentUser.uid && s.estado === 'pendiente');
+        const mc = (p.miembros || []).length;
+        const max = p.max || 30;
+        const lleno = mc >= max;
+        const solPend = esCreador ? solicitudes.filter(s => s.estado === 'pendiente') : [];
+
+        html += `<div class="proyecto-card">
+          <h4>${p.nombre} ${p.privado ? '<i class="fas fa-lock" style="font-size:12px;color:var(--text-secondary);"></i>' : '<i class="fas fa-globe" style="font-size:12px;color:var(--teal);"></i>'}</h4>
+          <div class="desc">${p.desc || ''}</div>
+          ${p.tema ? `<div class="meta"><span><i class="fas fa-tag"></i> ${p.tema}</span></div>` : ''}
+          <div class="meta"><span><i class="fas fa-users"></i> ${mc}/${max} miembros</span><span><i class="fas fa-user"></i> ${p.autorNombre || ''}</span></div>`;
+
+        if (solPend.length > 0) {
+          html += `<div style="margin-top:10px;padding:10px;background:var(--gold-light);border-radius:10px;border-left:3px solid var(--gold);">
+            <div style="font-weight:600;font-size:13px;margin-bottom:6px;"><i class="fas fa-user-clock"></i> Solicitudes pendientes (${solPend.length})</div>`;
+          solPend.forEach(s => {
+            const foto = s.fotoPerfil || '';
+            html += `<div class="solicitud-proyecto-item">
+              <div class="avatar" style="${foto ? `background-image:url('${foto}');background-size:cover;` : ''}">${foto ? '' : (s.nombre || '?').charAt(0).toUpperCase()}</div>
+              <div class="info"><div class="nombre">${s.nombre || 'Usuario'}</div></div>
+              <div class="acciones">
+                <button class="btn-aprobar" onclick="aprobarSolicitudProyecto('${doc.id}','${s.uid}')"><i class="fas fa-check"></i></button>
+                <button class="btn-rechazar" onclick="rechazarSolicitudProyecto('${doc.id}','${s.uid}')"><i class="fas fa-times"></i></button>
+              </div>
+            </div>`;
+          });
+          html += `</div>`;
+        }
+
+        html += `<div class="acciones">`;
+        if (!esMiembro && currentUser && !esCreador) {
+          if (lleno) html += `<span style="font-size:12px;color:var(--text-secondary);">Proyecto lleno</span>`;
+          else if (p.privado) {
+            if (yaSolicito) html += `<button class="btn-outline" disabled style="opacity:0.7;"><i class="fas fa-clock"></i> Pendiente</button>`;
+            else html += `<button class="btn-gold" onclick="solicitarUnirseProyecto('${doc.id}')"><i class="fas fa-paper-plane"></i> Solicitar unirse</button>`;
+          } else html += `<button class="btn-primary" onclick="unirseProyecto('${doc.id}')"><i class="fas fa-plus"></i> Unirme</button>`;
+        }
+        if (esMiembro && !esCreador) html += `<button class="btn-outline" onclick="salirProyecto('${doc.id}')"><i class="fas fa-sign-out-alt"></i> Salir</button>`;
+        if (esCreador) html += `<span style="font-size:12px;color:var(--teal);font-weight:600;padding:6px 10px;"><i class="fas fa-crown"></i> Eres el creador</span>`;
+        if (esCreador || isAdmin) html += `<button class="btn-danger" onclick="eliminarProyecto('${doc.id}')"><i class="fas fa-trash"></i></button>`;
+
+        if (esMiembro || esCreador || isAdmin) {
+          html += `<button class="btn-primary" onclick="abrirChatProyecto('${doc.id}','${(p.nombre||'').replace(/'/g,"\\'")}')" style="font-size:11px;"><i class="fas fa-comments"></i> Chat interno</button>`;
+          html += `<button class="btn-outline" onclick="abrirPostsProyecto('${doc.id}','${(p.nombre||'').replace(/'/g,"\\'")}')" style="font-size:11px;"><i class="fas fa-newspaper"></i> Publicaciones</button>`;
+        }
+        html += `</div></div>`;
+      });
+      container.innerHTML = html;
+    });
+  };
+
+  // ─── 5) OVERRIDE eliminarProyecto con respaldo ────────────────
+  window.eliminarProyecto = function(id) {
+    if (!confirm('¿Eliminar proyecto?')) return;
+    borrarConRespaldo('proyectos', id, 'user');
+  };
+
+  // ─── 6) INTERCEPTOR GLOBAL de .delete() en botones ─────────────
+  document.addEventListener('click', function(e) {
+    var btn = e.target.closest('.btn-danger');
+    if (!btn) return;
+    var onclick = btn.getAttribute('onclick') || '';
+    if (!onclick.includes('.delete()')) return;
+    var m = onclick.match(/([A-Z_]+|get\w+Ref\(\))\.doc\(['"]([^'"]+)['"]\)\.delete\(\)/);
+    if (!m) return;
+    var mapa = {
+      POSTS:'posts', GRUPOS:'grupos', DISCIPULADOS:'discipulados',
+      ORACIONES:'oraciones', NECESIDADES:'necesidades', MISIONEROS:'misioneros',
+      CONSEJOS:'consejos', REELS:'reels', HISTORIAS:'historias',
+      PROYECTOS:'proyectos', CARRUSEL:'carrusel', MAPA_COL:'mapa',
+      IGLESIAS:'iglesias', EVENTOS:'eventos', NOTICIAS:'noticias',
+      DEVOCIONALES:'devocionales'
+    };
+    var col = mapa[m[1]];
+    if (!col) {
+      if (m[1].indexOf('getServiciosRef') > -1) col = 'servicios';
+      else if (m[1].indexOf('getReportesRef') > -1) col = 'reportes';
+    }
+    if (!col) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    var docId = m[2];
+    var confirmado = true;
+    var conf = onclick.match(/confirm\(['"]([^'"]+)['"]\)/);
+    if (conf) { confirmado = window.confirm(conf[1]); }
+    if (!confirmado) return;
+    borrarConRespaldo(col, docId, 'admin').then(function() {
+      var rerenders = {
+        posts:'renderAdminPublicaciones', grupos:'renderAdminGrupos',
+        discipulados:'renderAdminDiscipulados', oraciones:'renderAdminOraciones',
+        necesidades:'renderAdminNecesidades', servicios:'renderAdminServicios',
+        misioneros:'renderAdminMisioneros', consejos:'renderAdminConsejos',
+        reels:'renderAdminReels', historias:'renderAdminHistorias',
+        proyectos:'renderAdminProyectos', carrusel:'renderAdminCarrusel',
+        mapa:'renderAdminMapa', iglesias:'renderAdminIglesias',
+        eventos:'renderAdminEventos', noticias:'renderAdminNoticias',
+        devocionales:'renderAdminDevocionales', reportes:'renderAdminReportes'
+      };
+      var rn = rerenders[col];
+      if (rn && typeof window[rn] === 'function') window[rn]();
+      if (['grupos','servicios','misioneros','iglesias'].indexOf(col) > -1) {
+        try { eliminarDelMapa(col.replace(/s$/, ''), docId); } catch(err) {}
+      }
+    }).catch(function(err) {
+      alert('Error al borrar con respaldo: ' + err.message);
+    });
+  }, true);
+
+  // ─── 7) INYECTAR UI al cargar el DOM ─────────────────────────
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // A) reCAPTCHA dentro del modal de login
+    var loginForm = document.getElementById('loginForm');
+    if (loginForm && !document.querySelector('.g-recaptcha')) {
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex; justify-content:center; margin:10px 0; transform:scale(0.9);';
+      wrap.innerHTML = '<div class="g-recaptcha" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-callback="onRecaptchaOk" data-expired-callback="onRecaptchaExpired"></div>';
+      var errDiv = document.getElementById('loginError');
+      if (errDiv && errDiv.parentNode) errDiv.parentNode.insertBefore(wrap, errDiv);
+      else loginForm.appendChild(wrap);
+    }
+
+    // B) Hook login para verificar captcha
+    var loginBtn = document.getElementById('loginSubmitBtn');
+    if (loginBtn && !loginBtn._recapHooked) {
+      loginBtn._recapHooked = true;
+      loginBtn.addEventListener('click', function(e) {
+        if (!verificarRecaptcha()) { e.stopImmediatePropagation(); e.preventDefault(); return false; }
+      }, true);
+    }
+    var loginCancel = document.getElementById('loginCancelBtn');
+    if (loginCancel && !loginCancel._recapHooked) {
+      loginCancel._recapHooked = true;
+      loginCancel.addEventListener('click', function() { setTimeout(resetRecaptcha, 300); });
+    }
+
+    // C) Botón Papelera en adminTabs
+    var tabs = document.getElementById('adminTabs');
+    if (tabs && !tabs.querySelector('[data-admin="papelera"]')) {
+      var btn = document.createElement('button');
+      btn.setAttribute('data-admin', 'papelera');
+      btn.innerHTML = '<i class="fas fa-trash-restore"></i> Papelera';
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('#adminTabs button').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
+        var pp = document.getElementById('adminPanelPapelera');
+        if (pp) pp.classList.add('active');
+        window.renderAdminPapelera();
+      });
+      tabs.appendChild(btn);
+    }
+
+    // D) Panel Papelera en el admin
+    var adminCard = document.querySelector('#panel-admin .card:nth-of-type(2)');
+    if (adminCard && !document.getElementById('adminPanelPapelera')) {
+      var panel = document.createElement('div');
+      panel.className = 'admin-tab-panel';
+      panel.id = 'adminPanelPapelera';
+      panel.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+          <p style="font-size:13px; color:var(--text-secondary); margin:0;">Documentos eliminados (respaldos). Restaura o borra definitivamente.</p>
+          <button class="btn-danger" onclick="vaciarPapelera()" style="font-size:11px;"><i class="fas fa-fire"></i> Vaciar papelera (SuperAdmin)</button>
+        </div>
+        <div id="adminPapeleraList"></div>`;
+      adminCard.appendChild(panel);
+    }
+
+    // E) Modal Chat Proyecto
+    var app = document.getElementById('appContainer');
+    if (app && !document.getElementById('chatProyectoModal')) {
+      var m1 = document.createElement('div');
+      m1.className = 'modal-overlay';
+      m1.id = 'chatProyectoModal';
+      m1.innerHTML = `
+        <div class="modal-box" style="max-width:600px; width:96%; padding:0; overflow:hidden;">
+          <div class="chat-privado-header">
+            <i class="fas fa-users-cog" style="font-size:24px;"></i>
+            <div class="info">
+              <div class="name" id="chatProyectoTitulo">Proyecto</div>
+              <div class="status">Chat interno · solo miembros</div>
+            </div>
+            <button type="button" class="close-btn" onclick="cerrarChatProyecto()"><i class="fas fa-times"></i></button>
+          </div>
+          <div id="chatProyectoMsgs" class="chat-mensajes-container" style="max-height:400px; border-radius:0; margin:0;"></div>
+          <div class="chat-input" style="padding:10px; background:white;">
+            <input type="text" id="chatProyectoInput" placeholder="Escribe un mensaje..." onkeypress="if(event.key==='Enter'){event.preventDefault();enviarMensajeChatProyecto();}">
+            <button type="button" class="btn-primary" onclick="enviarMensajeChatProyecto()"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>`;
+      app.appendChild(m1);
+    }
+
+    // F) Modal Posts Proyecto
+    if (app && !document.getElementById('postsProyectoModal')) {
+      var m2 = document.createElement('div');
+      m2.className = 'modal-overlay';
+      m2.id = 'postsProyectoModal';
+      m2.innerHTML = `
+        <div class="modal-box" style="max-width:700px;">
+          <h3><i class="fas fa-newspaper"></i> <span id="postsProyectoTitulo">Publicaciones del proyecto</span></h3>
+          <p style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;">Solo los miembros pueden publicar y leer.</p>
+          <div id="postsProyectoContainer" style="max-height:50vh; overflow-y:auto; padding:4px;"></div>
+          <div id="postsProyectoForm" style="margin-top:10px;">
+            <textarea id="postProyectoInput" placeholder="Comparte algo con el equipo del proyecto..." rows="3" style="width:100%; border-radius:10px; border:1px solid var(--border-color); padding:8px; background:var(--bg-body); color:var(--text-primary); resize:vertical; font-size:13px;"></textarea>
+            <button class="btn-primary" onclick="publicarEnProyecto()" style="margin-top:6px;"><i class="fas fa-upload"></i> Publicar</button>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="cerrarModal('postsProyectoModal')">Cerrar</button>
+          </div>
+        </div>`;
+      app.appendChild(m2);
+    }
+
+    // G) Hook renderAdminPanel para cargar papelera al abrir admin
+    var _origRenderAdmin = window.renderAdminPanel;
+    if (typeof _origRenderAdmin === 'function' && !window._papeleraHooked) {
+      window._papeleraHooked = true;
+      window.renderAdminPanel = function() {
+        _origRenderAdmin.apply(this, arguments);
+        setTimeout(function() { window.renderAdminPapelera(); }, 200);
+      };
+    }
+
+    console.log('✅ Parche v1.0 aplicado: reCAPTCHA, Papelera y Chat/Posts de Proyectos');
+  });
+
+})();
+</script>
 </body>
 </html>

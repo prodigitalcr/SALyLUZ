@@ -2884,7 +2884,8 @@ try {
 try {
   firebase.firestore().settings({
     cacheSizeBytes: 1048576,
-    experimentalAutoDetectLongPolling: true,
+    experimentalAutoDetectLongPolling: false,
+    experimentalForceLongPolling: true,
     merge: true
   });
 } catch(e) { console.warn('Firestore settings:', e.message); }
@@ -7378,6 +7379,486 @@ console.log('✅ [Fix] copiarVersiculoDia() y abrirModalProyecto() definidas');
   }
 
   console.log('✅ [FIX v17] 2 botones: PayPal (link) + Tarjeta (SDK).');
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════
+     FIX v18 · Forzar reconexión de Firestore
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+  if (window.__firestoreFixV18) return;
+  window.__firestoreFixV18 = true;
+
+  // Función helper: leer cualquier doc sin romper si Firestore falla
+  window.safeGetDoc = function(col, doc) {
+    return new Promise(function(resolve) {
+      try {
+        firebase.firestore().collection(col).doc(doc).get()
+          .then(function(snap){ resolve(snap); })
+          .catch(function(e){
+            console.warn('[safeGet] ' + col + '/' + doc + ':', e.code || e.message);
+            resolve({ exists: false, data: function(){ return {}; } });
+          });
+      } catch(e) {
+        resolve({ exists: false, data: function(){ return {}; } });
+      }
+    });
+  };
+
+  // ─── Reemplazar TODAS las cargarConfig* con versiones safeGet ───
+
+  window.cargarConfigCallMeBot = async function() {
+    try {
+      var snap = await window.safeGetDoc('config_callmebot', 'config');
+      if (!snap.exists) return;
+      var d = snap.data();
+      if (typeof callmebotConfig !== 'undefined') {
+        callmebotConfig.enabled = d.enabled === true;
+        callmebotConfig.phone = d.phone || '';
+        callmebotConfig.apikey = d.apikey || '';
+      }
+      window.callmebotConfig = window.callmebotConfig || {};
+      Object.assign(window.callmebotConfig, { enabled: d.enabled === true, phone: d.phone || '', apikey: d.apikey || '' });
+      var en = document.getElementById('callmebotEnabled'); if (en) en.checked = d.enabled === true;
+      var ph = document.getElementById('callmebotPhone');   if (ph) ph.value = d.phone || '';
+      var ak = document.getElementById('callmebotApikey');  if (ak) ak.value = d.apikey || '';
+    } catch(e) {}
+  };
+
+  window.cargarConfigBiblia = async function() {
+    try {
+      var snap = await window.safeGetDoc('config_biblia', 'config');
+      if (!snap.exists) return;
+      var d = snap.data();
+      if (typeof bibliaConfig !== 'undefined') {
+        bibliaConfig.fuente = d.fuente || 'auto';
+        bibliaConfig.githubOwner = d.githubOwner || '';
+        bibliaConfig.githubRepo = d.githubRepo || '';
+        bibliaConfig.githubBranch = d.githubBranch || 'main';
+        bibliaConfig.githubPath = d.githubPath || 'Biblia';
+      }
+      window.bibliaConfig = Object.assign(window.bibliaConfig || {}, d);
+      var f = document.getElementById('bibliaFuenteSelect'); if (f) f.value = d.fuente || 'auto';
+      var go = document.getElementById('bibliaGithubOwner'); if (go) go.value = d.githubOwner || '';
+      var gr = document.getElementById('bibliaGithubRepo');  if (gr) gr.value = d.githubRepo || '';
+      var gb = document.getElementById('bibliaGithubBranch'); if (gb) gb.value = d.githubBranch || 'main';
+      var gp = document.getElementById('bibliaGithubPath');   if (gp) gp.value = d.githubPath || 'Biblia';
+    } catch(e) {}
+  };
+
+  window.cargarConfigAgenteIA = async function() {
+    try {
+      var snap = await window.safeGetDoc('config_agente_ia', 'config');
+      if (!snap.exists) return;
+      var d = snap.data();
+      window.agenteIAConfig = Object.assign(window.agenteIAConfig || {}, d);
+      if (typeof agenteIAConfig !== 'undefined') {
+        Object.assign(agenteIAConfig, d);
+      }
+    } catch(e) {}
+  };
+
+  window.cargarPoliticasComunidad = async function() {
+    try {
+      var snap = await window.safeGetDoc('config_politicas', 'config');
+      if (!snap.exists) return;
+      var d = snap.data();
+      if (typeof politicasComunidad !== 'undefined') {
+        politicasComunidad.texto = d.texto || '';
+        politicasComunidad.avisoBase = d.avisoBase || '';
+      }
+      window.politicasComunidad = Object.assign(window.politicasComunidad || {}, d);
+      var t = document.getElementById('politicasTexto'); if (t) t.value = d.texto || '';
+      var a = document.getElementById('politicasAvisoBase'); if (a) a.value = d.avisoBase || '';
+    } catch(e) {}
+  };
+
+  window.cargarConfigAgenteModerador = async function() {
+    try {
+      var snap = await window.safeGetDoc('config_agente_moderador', 'config');
+      if (!snap.exists) return;
+      var d = snap.data();
+      window.agenteModeradorConfig = Object.assign(window.agenteModeradorConfig || {}, d);
+      if (typeof agenteModeradorConfig !== 'undefined') {
+        Object.assign(agenteModeradorConfig, d);
+      }
+    } catch(e) {}
+  };
+
+  window.cargarMapboxToken = async function() {
+    try {
+      var snap = await window.safeGetDoc('config_mapbox', 'config');
+      if (!snap.exists) return;
+      var d = snap.data();
+      if (d.token && typeof mapboxgl !== 'undefined') {
+        mapboxToken = d.token;
+        mapboxgl.accessToken = d.token;
+        window.mapboxToken = d.token;
+      }
+    } catch(e) {}
+  };
+
+  window.cargarConfigMenu = async function() {
+    try {
+      var snap = await window.safeGetDoc('appConfig', 'config');
+      if (!snap.exists) return;
+      var d = snap.data();
+      if (d.forceHamburger) {
+        document.body.classList.add('force-hamburger');
+        var cb = document.getElementById('forceHamburgerCheck'); if (cb) cb.checked = true;
+      }
+    } catch(e) {}
+  };
+
+  window.cargarEstilosConfig = async function() {
+    try {
+      var snap = await window.safeGetDoc('appConfig', 'config');
+      if (!snap.exists) return;
+      var d = snap.data();
+      if (d.primaryColor && typeof aplicarColorTema === 'function') aplicarColorTema(d.primaryColor);
+      if (d.animationsEnabled !== undefined) {
+        document.body.classList.toggle('animations-on', d.animationsEnabled);
+        var cb = document.getElementById('animationsToggle'); if (cb) cb.checked = d.animationsEnabled;
+      }
+    } catch(e) {}
+  };
+
+  window.cargarConfigPaypal = async function() {
+    try {
+      var snap = await window.safeGetDoc('config_paypal', 'config');
+      if (!snap.exists) {
+        console.warn('[PayPal] Doc config_paypal/config no existe');
+        return;
+      }
+      var d = snap.data();
+      // Actualizar variable léxica
+      try {
+        if (typeof paypalConfig !== 'undefined' && paypalConfig) {
+          paypalConfig.clientId = d.clientId || '';
+          paypalConfig.moneda   = d.moneda   || 'USD';
+          paypalConfig.paypalMe = d.paypalMe || '';
+          paypalConfig.email    = d.email    || '';
+        }
+      } catch(e) {}
+      // Actualizar window
+      window.paypalConfig = window.paypalConfig || {};
+      Object.assign(window.paypalConfig, {
+        clientId: d.clientId || '',
+        moneda:   d.moneda   || 'USD',
+        paypalMe: d.paypalMe || '',
+        email:    d.email    || ''
+      });
+      // Actualizar campos del form admin
+      var ci = document.getElementById('paypalClientId'); if (ci) ci.value = d.clientId || '';
+      var pm = document.getElementById('paypalMe'); if (pm) pm.value = d.paypalMe || '';
+      var em = document.getElementById('paypalEmail'); if (em) em.value = d.email || '';
+      var mo = document.getElementById('paypalMoneda'); if (mo) mo.value = d.moneda || 'USD';
+      console.log('[PayPal] Config cargada OK');
+    } catch(e) { console.warn('[PayPal] cargarConfigPaypal:', e); }
+  };
+
+  window.cargarConfigIA = async function() {
+    try {
+      var snap = await window.safeGetDoc('config_ia', 'config');
+      if (!snap.exists) return;
+      var d = snap.data();
+      var k = document.getElementById('openrouterKey'); if (k) k.value = d.apiKey || '';
+      var s = document.getElementById('openrouterModelSelect'); if (s && d.selectedModel) s.value = d.selectedModel;
+    } catch(e) {}
+  };
+
+  // ─── Reconectar Firestore ───
+  function reconectarFirestore() {
+    try {
+      firebase.firestore().enableNetwork().then(function(){
+        console.log('[Firestore] Red habilitada');
+      }).catch(function(e){
+        console.warn('[Firestore] enableNetwork:', e.message);
+      });
+    } catch(e) {}
+  }
+
+  // Reconectar al cargar
+  window.addEventListener('load', function() {
+    setTimeout(reconectarFirestore, 800);
+    // Y tras login
+    if (typeof firebase !== 'undefined' && firebase.auth) {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          setTimeout(function() {
+            reconectarFirestore();
+            // Recargar todas las configs
+            setTimeout(function() {
+              try { window.cargarConfigPaypal(); } catch(e) {}
+              try { window.cargarConfigCallMeBot(); } catch(e) {}
+              try { window.cargarConfigBiblia(); } catch(e) {}
+              try { window.cargarConfigAgenteIA(); } catch(e) {}
+              try { window.cargarPoliticasComunidad(); } catch(e) {}
+              try { window.cargarConfigAgenteModerador(); } catch(e) {}
+              try { window.cargarMapboxToken(); } catch(e) {}
+              try { window.cargarConfigMenu(); } catch(e) {}
+              try { window.cargarEstilosConfig(); } catch(e) {}
+              try { window.cargarConfigIA(); } catch(e) {}
+            }, 1200);
+          }, 500);
+        }
+      });
+    }
+  });
+
+  console.log('✅ [FIX v18] safeGetDoc + reconexión Firestore activos.');
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════
+     FIX v19 · Esperar a Firestore + cargar perfil correctamente
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+  if (window.__firestoreFixV19) return;
+  window.__firestoreFixV19 = true;
+
+  // ─── Esperar a que Firestore esté disponible ───
+  // Estrategia: reintentos con backoff hasta que una lectura funcione
+  window.waitForFirestore = function(maxIntentos, intervaloMs) {
+    maxIntentos = maxIntentos || 8;
+    intervaloMs = intervaloMs || 400;
+    return new Promise(function(resolve) {
+      var intentos = 0;
+      function probar() {
+        intentos++;
+        firebase.firestore().collection('appConfig').doc('config').get()
+          .then(function() {
+            console.log('[Firestore] Listo tras ' + intentos + ' intento(s).');
+            resolve(true);
+          })
+          .catch(function(e) {
+            if (intentos >= maxIntentos) {
+              console.warn('[Firestore] No disponible tras ' + intentos + ' intentos:', e.code || e.message);
+              resolve(false);
+              return;
+            }
+            setTimeout(probar, intervaloMs);
+          });
+      }
+      probar();
+    });
+  };
+
+  // ─── Reemplazar cargarUsuarioActual con versión blindada ───
+  window.cargarUsuarioActual = async function(user) {
+    if (!user) {
+      try { currentUser = null; } catch(e){}
+      window.currentUser = null;
+      try { isAdmin = false; isSuperAdmin = false; isRegularAdmin = false; } catch(e){}
+      if (typeof actualizarUIUsuario === 'function') actualizarUIUsuario();
+      return;
+    }
+
+    // Fallback inmediato con datos de Auth (nunca falla)
+    var fallback = {
+      uid: user.uid,
+      email: user.email,
+      displayName: user.displayName || (user.email ? user.email.split('@')[0] : 'Usuario'),
+      telefono: '', edad: '', apoyos: [], fotoPerfil: '', portada: '',
+      biografia: '', iglesia: '', ministerio: '', situacionLaboral: '',
+      situacionSentimental: '', nacionalidad: '', fechaNacimiento: '',
+      estudios: '', talentos: '', caracter: '', experiencia: '', fotosPerfil: [],
+      facebook: '', instagram: '', tiktok: '', otraRed: '', otraRedNombre: '',
+      perfilSoloSeguidores: true, privacidad: {}
+    };
+
+    try { currentUser = Object.assign({}, fallback); } catch(e){}
+    window.currentUser = currentUser;
+
+    // Rol por email (no depende de Firestore)
+    try {
+      isSuperAdmin = (user.email === 'salyluz@comunidad.com');
+      isRegularAdmin = (user.email === 'admin@iglesia.com');
+      isAdmin = isSuperAdmin || isRegularAdmin;
+    } catch(e){}
+
+    // Actualizar UI con el fallback inmediatamente
+    if (typeof actualizarUIUsuario === 'function') actualizarUIUsuario();
+
+    // Esperar a que Firestore esté disponible
+    var fsOK = await window.waitForFirestore(8, 400);
+
+    if (fsOK) {
+      // Enriquecer con datos reales de Firestore
+      try {
+        var snap = await firebase.firestore().collection('users').doc(user.uid).get();
+        if (snap.exists) {
+          var data = snap.data();
+          Object.assign(currentUser, {
+            displayName: data.displayName || currentUser.displayName,
+            telefono: data.telefono || '',
+            edad: data.edad || '',
+            apoyos: data.apoyos || [],
+            fotoPerfil: data.fotoPerfil || '',
+            portada: data.portada || '',
+            biografia: data.biografia || '',
+            iglesia: data.iglesia || '',
+            ministerio: data.ministerio || '',
+            situacionLaboral: data.situacionLaboral || '',
+            situacionSentimental: data.situacionSentimental || '',
+            nacionalidad: data.nacionalidad || '',
+            fechaNacimiento: data.fechaNacimiento || '',
+            estudios: data.estudios || '',
+            talentos: data.talentos || '',
+            caracter: data.caracter || '',
+            experiencia: data.experiencia || '',
+            fotosPerfil: data.fotosPerfil || [],
+            facebook: data.facebook || '',
+            instagram: data.instagram || '',
+            tiktok: data.tiktok || '',
+            otraRed: data.otraRed || '',
+            otraRedNombre: data.otraRedNombre || '',
+            perfilSoloSeguidores: data.perfilSoloSeguidores !== false,
+            privacidad: data.privacidad || {}
+          });
+          window.currentUser = currentUser;
+          if (typeof actualizarUIUsuario === 'function') actualizarUIUsuario();
+          console.log('[Auth] Perfil enriquecido desde Firestore:', currentUser.displayName);
+        } else {
+          // Crear doc si no existe
+          try {
+            await firebase.firestore().collection('users').doc(user.uid).set({
+              uid: user.uid, displayName: currentUser.displayName, email: user.email,
+              telefono: '', edad: '', apoyos: [], fotoPerfil: '', portada: '',
+              biografia: '', iglesia: '', ministerio: '',
+              situacionLaboral: '', situacionSentimental: '', nacionalidad: '', fechaNacimiento: '',
+              estudios: '', talentos: '', caracter: '', experiencia: '', fotosPerfil: [],
+              facebook: '', instagram: '', tiktok: '', otraRed: '', otraRedNombre: '',
+              perfilSoloSeguidores: true, privacidad: { historias: true },
+              fechaRegistro: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          } catch(e) { console.warn('No se pudo crear doc usuario:', e.message); }
+        }
+      } catch (e) {
+        console.warn('[Auth] No se pudo enriquecer perfil:', e.code || e.message);
+      }
+
+      // Cargar todas las configs (ya con Firestore listo)
+      try { await window.cargarConfigPaypal(); } catch(e){}
+      try { await window.cargarConfigCallMeBot(); } catch(e){}
+      try { await window.cargarConfigBiblia(); } catch(e){}
+      try { await window.cargarConfigAgenteIA(); } catch(e){}
+      try { await window.cargarPoliticasComunidad(); } catch(e){}
+      try { await window.cargarConfigAgenteModerador(); } catch(e){}
+      try { await window.cargarMapboxToken(); } catch(e){}
+      try { await window.cargarConfigMenu(); } catch(e){}
+      try { await window.cargarEstilosConfig(); } catch(e){}
+      try { await window.cargarConfigIA(); } catch(e){}
+    }
+
+    // Renderizar todo (sin bloquear)
+    var renders = [
+      'cargarContadorNotificaciones','cargarLogoConfig','renderEventos','renderNoticias',
+      'renderReels','renderHistorias','renderHistoriasMuro','renderIglesiasPanel',
+      'renderWidgetPerfilRapido','renderWidgetGrupos','renderWidgetOracion',
+      'renderWidgetEventos','renderWidgetCumple','renderWidgetSermones','renderVersiculoDia',
+      'renderWidgetMiniChat','renderWidgetContactos','renderWidgetGuardados',
+      'renderWidgetOfrendas','renderWidgetTestimonios','renderWidgetTendencias',
+      'renderWidgetPlanLectura','renderWidgetAnuncios','renderWidgetPlaylist',
+      'renderMapaAcordeon','actualizarBotonesPorRol','actualizarTabs'
+    ];
+    renders.forEach(function(fn){
+      try { if (typeof window[fn] === 'function') window[fn](); } catch(e){}
+    });
+
+    try { if (isSuperAdmin && typeof renderSolicitudesPassword === 'function') renderSolicitudesPassword(); } catch(e){}
+    try { if (isSuperAdmin && typeof cargarContadorNotifSuperAdmin === 'function') cargarContadorNotifSuperAdmin(); } catch(e){}
+  };
+
+  // ─── Al cargar la página, esperar Firestore antes de hacer nada ───
+  window.addEventListener('load', function() {
+    setTimeout(async function() {
+      var ok = await window.waitForFirestore(10, 500);
+      if (ok) {
+        console.log('[Firestore] Conectado. Recargando configs...');
+        try { await window.cargarConfigPaypal(); } catch(e){}
+        // Re-render widgets por si el login fue rápido
+        var user = firebase.auth().currentUser;
+        if (user && typeof window.cargarUsuarioActual === 'function') {
+          // No re-llamar si ya cargó; solo los widgets
+          try { renderWidgetOfrendas(); } catch(e){}
+          try { renderWidgetMiniChat(); } catch(e){}
+          try { renderWidgetGuardados(); } catch(e){}
+        }
+      }
+    }, 600);
+  });
+
+  console.log('✅ [FIX v19] waitForFirestore + cargarUsuarioActual blindado.');
+})();
+</script>]
+<!-- ═══════════════════════════════════════════════════════════════
+     FIX v20 · Silenciar avisos de safeGet (unavailable)
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+  if (window.__silentSafeGet) return;
+  window.__silentSafeGet = true;
+
+  // Guardar el original si existe
+  var _origSafeGet = window.safeGetDoc;
+
+  // Reemplazar safeGetDoc para no loguear "unavailable" (es esperado)
+  window.safeGetDoc = function(col, doc) {
+    return new Promise(function(resolve) {
+      try {
+        firebase.firestore().collection(col).doc(doc).get()
+          .then(function(snap){ resolve(snap); })
+          .catch(function(e){
+            var code = (e && e.code) || '';
+            // Silenciar 'unavailable' (conexión inicial) y 'not-found'
+            if (code !== 'unavailable' && code !== 'not-found' && code !== 'permission-denied') {
+              console.warn('[safeGet] ' + col + '/' + doc + ':', code || e.message);
+            }
+            resolve({ exists: false, data: function(){ return {}; } });
+          });
+      } catch(e) {
+        resolve({ exists: false, data: function(){ return {}; } });
+      }
+    });
+  };
+
+  // Silenciar también los "no existe" en cargarConfigPaypal
+  var _origCargarPP = window.cargarConfigPaypal;
+  if (typeof _origCargarPP === 'function') {
+    window.cargarConfigPaypal = async function() {
+      try {
+        var snap = await window.safeGetDoc('config_paypal', 'config');
+        if (!snap.exists) return; // silencio total
+        var d = snap.data();
+        try {
+          if (typeof paypalConfig !== 'undefined' && paypalConfig) {
+            paypalConfig.clientId = d.clientId || '';
+            paypalConfig.moneda   = d.moneda   || 'USD';
+            paypalConfig.paypalMe = d.paypalMe || '';
+            paypalConfig.email    = d.email    || '';
+          }
+        } catch(e) {}
+        window.paypalConfig = window.paypalConfig || {};
+        Object.assign(window.paypalConfig, {
+          clientId: d.clientId || '',
+          moneda:   d.moneda   || 'USD',
+          paypalMe: d.paypalMe || '',
+          email:    d.email    || ''
+        });
+        var ci = document.getElementById('paypalClientId'); if (ci) ci.value = d.clientId || '';
+        var pm = document.getElementById('paypalMe'); if (pm) pm.value = d.paypalMe || '';
+        var em = document.getElementById('paypalEmail'); if (em) em.value = d.email || '';
+        var mo = document.getElementById('paypalMoneda'); if (mo) mo.value = d.moneda || 'USD';
+        console.log('[PayPal] Config cargada correctamente.');
+      } catch(e) {}
+    };
+  }
+
+  console.log('✅ [FIX v20] Avisos de safeGet silenciados.');
 })();
 </script>
 </body>

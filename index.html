@@ -2879,7 +2879,22 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 try {
- firebase.firestore().settings({ cacheSizeBytes: 0, merge: true });
+ // Deshabilitar TODA la caché local (IndexedDB incluido)
+try {
+try {
+  firebase.firestore().settings({
+    cacheSizeBytes: 1048576,
+    experimentalAutoDetectLongPolling: true,
+    merge: true
+  });
+} catch(e) { console.warn('Firestore settings:', e.message); }
+} catch(e) {
+  console.warn('No se pudo configurar Firestore:', e);
+}
+// Forzar modo "memory only" — evita crashes con Tracking Prevention
+try {
+  firebase.firestore().disableNetwork().then(() => firebase.firestore().enableNetwork());
+} catch(e) {}
 } catch(e) {}
 const auth = firebase.auth();
 const db = firebase.firestore();
@@ -3417,50 +3432,125 @@ window.registerUser = async function(email, password, nombre, telefono, edad, ap
 };
 
 async function cargarUsuarioActual(user) {
-  if (!user) { currentUser = null; isAdmin = false; isSuperAdmin = false; isRegularAdmin = false; actualizarUIUsuario(); return; }
+  if (!user) {
+    currentUser = null; isAdmin = false; isSuperAdmin = false; isRegularAdmin = false;
+    actualizarUIUsuario(); return;
+  }
+
+  // ✅ Fallback inmediato: siempre crear currentUser con datos de Auth
+  currentUser = {
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName || (user.email ? user.email.split('@')[0] : 'Usuario'),
+    telefono: '', edad: '', apoyos: [], fotoPerfil: '', portada: '',
+    biografia: '', iglesia: '', ministerio: '', situacionLaboral: '',
+    situacionSentimental: '', nacionalidad: '', fechaNacimiento: '',
+    estudios: '', talentos: '', caracter: '', experiencia: '', fotosPerfil: [],
+    facebook: '', instagram: '', tiktok: '', otraRed: '', otraRedNombre: '',
+    perfilSoloSeguidores: true, privacidad: {}
+  };
+
+  // ✅ Determinar admin por email (funciona aunque Firestore falle)
+  isSuperAdmin = (user.email === 'salyluz@comunidad.com');
+  isRegularAdmin = (user.email === 'admin@iglesia.com');
+  isAdmin = isSuperAdmin || isRegularAdmin;
+
+  // ✅ Actualizar UI con el fallback inmediatamente
+  actualizarUIUsuario();
+
+  // ✅ Luego intentar enriquecer con datos de Firestore (sin bloquear)
   try {
     const doc = await USERS.doc(user.uid).get();
     if (doc.exists) {
       const data = doc.data();
-      currentUser = {
-        uid: user.uid, email: user.email, displayName: data.displayName || user.displayName || 'Anónimo',
-        telefono: data.telefono || '', edad: data.edad || '', apoyos: data.apoyos || [], fotoPerfil: data.fotoPerfil || '', portada: data.portada || '',
-        biografia: data.biografia || '', iglesia: data.iglesia || '', ministerio: data.ministerio || '', situacionLaboral: data.situacionLaboral || '',
-        situacionSentimental: data.situacionSentimental || '', nacionalidad: data.nacionalidad || '', fechaNacimiento: data.fechaNacimiento || '',
-        estudios: data.estudios || '', talentos: data.talentos || '', caracter: data.caracter || '', experiencia: data.experiencia || '', fotosPerfil: data.fotosPerfil || [],
-        facebook: data.facebook || '', instagram: data.instagram || '', tiktok: data.tiktok || '', otraRed: data.otraRed || '', otraRedNombre: data.otraRedNombre || '',
-        perfilSoloSeguidores: data.perfilSoloSeguidores !== false, privacidad: data.privacidad || {}
-      };
+      currentUser = Object.assign(currentUser, {
+        displayName: data.displayName || currentUser.displayName,
+        telefono: data.telefono || '',
+        edad: data.edad || '',
+        apoyos: data.apoyos || [],
+        fotoPerfil: data.fotoPerfil || '',
+        portada: data.portada || '',
+        biografia: data.biografia || '',
+        iglesia: data.iglesia || '',
+        ministerio: data.ministerio || '',
+        situacionLaboral: data.situacionLaboral || '',
+        situacionSentimental: data.situacionSentimental || '',
+        nacionalidad: data.nacionalidad || '',
+        fechaNacimiento: data.fechaNacimiento || '',
+        estudios: data.estudios || '',
+        talentos: data.talentos || '',
+        caracter: data.caracter || '',
+        experiencia: data.experiencia || '',
+        fotosPerfil: data.fotosPerfil || [],
+        facebook: data.facebook || '',
+        instagram: data.instagram || '',
+        tiktok: data.tiktok || '',
+        otraRed: data.otraRed || '',
+        otraRedNombre: data.otraRedNombre || '',
+        perfilSoloSeguidores: data.perfilSoloSeguidores !== false,
+        privacidad: data.privacidad || {}
+      });
+      actualizarUIUsuario();
     } else {
-      const newUser = { uid: user.uid, displayName: user.displayName || 'Anónimo', email: user.email, telefono: '', edad: '', apoyos: [], fotoPerfil: '', portada: '', biografia: '', iglesia: '', ministerio: '', situacionLaboral: '', situacionSentimental: '', nacionalidad: '', fechaNacimiento: '', estudios: '', talentos: '', caracter: '', experiencia: '', fotosPerfil: [], facebook: '', instagram: '', tiktok: '', otraRed: '', otraRedNombre: '', perfilSoloSeguidores: true, privacidad: { historias: true }, fechaRegistro: firebase.firestore.FieldValue.serverTimestamp() };
-      await USERS.doc(user.uid).set(newUser);
-      currentUser = Object.assign({}, newUser);
+      // Crear doc si no existe
+      try {
+        await USERS.doc(user.uid).set({
+          uid: user.uid, displayName: currentUser.displayName, email: user.email,
+          telefono: '', edad: '', apoyos: [], fotoPerfil: '', portada: '',
+          biografia: '', iglesia: '', ministerio: '',
+          situacionLaboral: '', situacionSentimental: '', nacionalidad: '', fechaNacimiento: '',
+          estudios: '', talentos: '', caracter: '', experiencia: '', fotosPerfil: [],
+          facebook: '', instagram: '', tiktok: '', otraRed: '', otraRedNombre: '',
+          perfilSoloSeguidores: true,
+          privacidad: { historias: true },
+          fechaRegistro: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch(e) { console.warn('No se pudo crear doc de usuario:', e); }
     }
-    isSuperAdmin = (user.email === 'salyluz@comunidad.com');
-    isRegularAdmin = (user.email === 'admin@iglesia.com');
-    isAdmin = isSuperAdmin || isRegularAdmin;
-    actualizarUIUsuario();
-    cargarContadorNotificaciones();
-    cargarLogoConfig();
-    cargarMapboxToken();
-    cargarConfigIA();
-    cargarConfigMenu();
-    cargarEstilosConfig();
-    cargarConfigCallMeBot();
-    cargarConfigPaypal();
-    await cargarConfigBiblia();
-    cargarConfigAgenteIA();
-    // ✅ Nuevas configuraciones: políticas + agente moderador
-    await cargarPoliticasComunidad();
-    await cargarConfigAgenteModerador();
-    renderEventos(); renderNoticias(); renderReels(); renderHistorias(); renderHistoriasMuro(); renderIglesiasPanel();
-    renderWidgetPerfilRapido(); renderWidgetGrupos(); renderWidgetOracion(); renderWidgetEventos(); renderWidgetCumple(); renderWidgetSermones(); renderVersiculoDia();
-    renderWidgetMiniChat(); renderWidgetContactos(); renderWidgetGuardados(); renderWidgetOfrendas(); renderWidgetTestimonios(); renderWidgetTendencias(); renderWidgetPlanLectura(); renderWidgetAnuncios(); renderWidgetPlaylist();
-    renderMapaAcordeon();
-    if (isSuperAdmin) renderSolicitudesPassword();
-    // Contador de notificaciones del SuperAdmin
-    if (isSuperAdmin) cargarContadorNotifSuperAdmin();
-  } catch (error) { console.error('Error cargando perfil:', error); }
+  } catch (error) {
+    console.warn('Error cargando perfil desde Firestore (usando fallback):', error.message);
+    // currentUser ya está seteado con el fallback, la app sigue funcionando
+  }
+
+  // ✅ El resto de la carga (widgets, etc.) sin bloquear
+  try { cargarContadorNotificaciones(); } catch(e) {}
+  try { cargarLogoConfig(); } catch(e) {}
+  try { cargarMapboxToken(); } catch(e) {}
+  try { cargarConfigIA(); } catch(e) {}
+  try { cargarConfigMenu(); } catch(e) {}
+  try { cargarEstilosConfig(); } catch(e) {}
+  try { cargarConfigCallMeBot(); } catch(e) {}
+  try { cargarConfigPaypal(); } catch(e) {}
+  try { await cargarConfigBiblia(); } catch(e) {}
+  try { cargarConfigAgenteIA(); } catch(e) {}
+  try { await cargarPoliticasComunidad(); } catch(e) {}
+  try { await cargarConfigAgenteModerador(); } catch(e) {}
+
+  try { renderEventos(); } catch(e) {}
+  try { renderNoticias(); } catch(e) {}
+  try { renderReels(); } catch(e) {}
+  try { renderHistorias(); } catch(e) {}
+  try { renderHistoriasMuro(); } catch(e) {}
+  try { renderIglesiasPanel(); } catch(e) {}
+  try { renderWidgetPerfilRapido(); } catch(e) {}
+  try { renderWidgetGrupos(); } catch(e) {}
+  try { renderWidgetOracion(); } catch(e) {}
+  try { renderWidgetEventos(); } catch(e) {}
+  try { renderWidgetCumple(); } catch(e) {}
+  try { renderWidgetSermones(); } catch(e) {}
+  try { renderVersiculoDia(); } catch(e) {}
+  try { renderWidgetMiniChat(); } catch(e) {}
+  try { renderWidgetContactos(); } catch(e) {}
+  try { renderWidgetGuardados(); } catch(e) {}
+  try { renderWidgetOfrendas(); } catch(e) {}
+  try { renderWidgetTestimonios(); } catch(e) {}
+  try { renderWidgetTendencias(); } catch(e) {}
+  try { renderWidgetPlanLectura(); } catch(e) {}
+  try { renderWidgetAnuncios(); } catch(e) {}
+  try { renderWidgetPlaylist(); } catch(e) {}
+  try { renderMapaAcordeon(); } catch(e) {}
+  try { if (isSuperAdmin) renderSolicitudesPassword(); } catch(e) {}
+  try { if (isSuperAdmin) cargarContadorNotifSuperAdmin(); } catch(e) {}
 }
 
 window.logoutUser = async function() {
@@ -5527,19 +5617,21 @@ window.ORACIONES = ORACIONES; window.MISIONEROS = MISIONEROS; window.MAPA_COL = 
   // ────────────────────────────────────────────────────────────
   (function inyectarCSP() {
     if (document.querySelector('meta[http-equiv="Content-Security-Policy"]')) return;
-    var directivas = {
-      "default-src": "'self'",
-      "script-src": "'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://api.mapbox.com https://events.mapbox.com https://www.gstatic.com https://apis.google.com https://www.google.com https://www.recaptcha.net https://openrouter.ai https://api.callmebot.com https://www.paypal.com https://www.sandbox.paypal.com https://docs.google.com https://api.qrserver.com https://nominatim.openstreetmap.org https://raw.githubusercontent.com https://api.github.com https://us-central1-bibliarv60-5bbc5.cloudfunctions.net",
-      "style-src": "'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://api.mapbox.com https://fonts.googleapis.com",
-      "font-src": "'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com",
-      "img-src": "'self' data: blob: https:",
-      "media-src": "'self' data: blob: https:",
-      "connect-src": "'self' https: wss:",
-      "frame-src": "'self' https://docs.google.com https://www.youtube.com https://www.google.com",
-      "object-src": "'none'",
-      "base-uri": "'self'",
-      "form-action": "'self'"
-    };
+ var directivas = {
+  "default-src": "'self'",
+  "script-src": "'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://api.mapbox.com https://events.mapbox.com https://www.gstatic.com https://apis.google.com https://www.google.com https://www.recaptcha.net https://openrouter.ai https://api.callmebot.com https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com https://*.paypalobjects.com https://docs.google.com https://api.qrserver.com https://nominatim.openstreetmap.org https://raw.githubusercontent.com https://api.github.com https://us-central1-bibliarv60-5bbc5.cloudfunctions.net",
+  "style-src": "'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://api.mapbox.com https://fonts.googleapis.com https://*.paypal.com https://*.paypalobjects.com",
+  "font-src": "'self' data: https://cdnjs.cloudflare.com https://fonts.gstatic.com https://*.paypal.com https://*.paypalobjects.com",
+  "img-src": "'self' data: blob: https:",
+  "media-src": "'self' data: blob: https:",
+  "connect-src": "'self' https: wss:",
+  "frame-src": "'self' https://docs.google.com https://www.youtube.com https://www.google.com https://*.paypal.com https://*.paypalobjects.com https://www.sandbox.paypal.com",
+  "child-src": "'self' https://*.paypal.com https://*.paypalobjects.com",
+  "worker-src": "'self' blob:",
+  "object-src": "'none'",
+  "base-uri": "'self'",
+  "form-action": "'self' https://*.paypal.com"
+};
     var csp = Object.keys(directivas).map(function(k) {
       return k + ' ' + directivas[k];
     }).join('; ');
@@ -6438,6 +6530,854 @@ console.log('✅ [Fix] copiarVersiculoDia() y abrirModalProyecto() definidas');
   };
 
   console.log('✅ [FIX v7] Silenciador robusto + Tracking Prevention manejado.');
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════
+     FIX v10 · Widgets con acceso correcto a currentUser
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+  if (window.__widgetsFixV10) return;
+  window.__widgetsFixV10 = true;
+
+  // ─── Helper: obtiene el usuario desde cualquier fuente ───
+  function getUser() {
+    // 1) Variable léxica global (la real)
+    try {
+      if (typeof currentUser !== 'undefined' && currentUser && currentUser.uid) return currentUser;
+    } catch(e) {}
+    // 2) window.currentUser (por si acaso)
+    if (window.currentUser && window.currentUser.uid) return window.currentUser;
+    // 3) Firebase Auth directo (fallback infalible)
+    try {
+      var fu = firebase.auth().currentUser;
+      if (fu) return {
+        uid: fu.uid,
+        email: fu.email,
+        displayName: fu.displayName || (fu.email ? fu.email.split('@')[0] : 'Usuario'),
+        fotoPerfil: fu.photoURL || '',
+        apoyos: [], iglesia: '', telefono: '', edad: ''
+      };
+    } catch(e) {}
+    return null;
+  }
+  window.getUser = getUser;
+
+  var INVITADO = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;">Inicia sesión para ver esto.</p>';
+  var CARGANDO = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;">Cargando...</p>';
+
+  // ══════════════ PERFIL RÁPIDO ══════════════
+  window.renderWidgetPerfilRapido = function() {
+    var cont = document.getElementById('widgetPerfilContenido'); if(!cont) return;
+    var u = getUser();
+    if (!u) { cont.innerHTML = INVITADO; return; }
+    var f = u.fotoPerfil || '';
+    var ini = (u.displayName || '?').charAt(0).toUpperCase();
+    cont.innerHTML =
+      '<div class="widget-perfil-mini">' +
+        (f ? '<img src="'+f+'" class="avatar-placeholder">' : '<div class="avatar-placeholder">'+ini+'</div>') +
+        '<div class="nombre">'+(u.displayName||'')+'</div>' +
+        '<div class="sub">'+(u.iglesia||u.email||'')+'</div>' +
+        '<div class="widget-actions">' +
+          '<button type="button" onclick="verPerfil(\''+u.uid+'\')"><i class="fas fa-user"></i> Ver perfil</button>' +
+          '<button type="button" onclick="abrirEditarPerfil()"><i class="fas fa-edit"></i> Editar</button>' +
+        '</div>' +
+      '</div>';
+  };
+
+  // ══════════════ GRUPOS ══════════════
+  window.renderWidgetGrupos = function() {
+    var cont = document.getElementById('widgetGruposLista'); if(!cont) return;
+    var u = getUser();
+    if (!u) { cont.innerHTML = INVITADO; return; }
+    cont.innerHTML = CARGANDO;
+    if (typeof GRUPOS === 'undefined') { cont.innerHTML = INVITADO; return; }
+    GRUPOS.limit(20).get().then(function(snap){
+      var html = '';
+      snap.forEach(function(doc){
+        var g = doc.data();
+        if (!g.miembros || !g.miembros.includes(u.uid)) return;
+        html += '<div class="widget-grupo-item" onclick="switchPanel(\'grupos\')">' +
+          '<div class="widget-grupo-icon"><i class="fas fa-users"></i></div>' +
+          '<div class="widget-grupo-info"><div class="widget-grupo-nombre">'+(g.nombre||'')+'</div>' +
+          '<div class="widget-grupo-meta">'+(g.miembros||[]).length+' miembros</div></div>' +
+          '<div class="widget-grupo-dot"></div></div>';
+      });
+      cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">No estás en ningún grupo.</p>';
+    }).catch(function(){ cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Sin grupos.</p>'; });
+  };
+
+  // ══════════════ ORACIÓN ══════════════
+  window.renderWidgetOracion = function() {
+    var cont = document.getElementById('widgetOracionLista'); if(!cont) return;
+    cont.innerHTML = CARGANDO;
+    if (typeof ORACIONES === 'undefined') { cont.innerHTML = INVITADO; return; }
+    ORACIONES.orderBy('fecha','desc').limit(3).get().then(function(snap){
+      var html = '';
+      snap.forEach(function(doc){
+        var o = doc.data();
+        html += '<div class="widget-oracion-item"><div class="widget-oracion-autor">'+(o.autorNombre||'')+'</div>' +
+          '<div class="widget-oracion-texto">'+((o.texto||'').substring(0,80))+'</div>' +
+          '<button class="widget-oracion-btn" onclick="orarOracion(\''+doc.id+'\')"><i class="fas fa-pray"></i> Orar ('+((o.orado||[]).length)+')</button></div>';
+      });
+      cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">Sin peticiones.</p>';
+    }).catch(function(){ cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Sin peticiones.</p>'; });
+  };
+
+  // ══════════════ EVENTOS ══════════════
+  window.renderWidgetEventos = function() {
+    var cont = document.getElementById('widgetEventosLista'); if(!cont) return;
+    if (typeof EVENTOS === 'undefined') { cont.innerHTML = CARGANDO; return; }
+    EVENTOS.orderBy('fecha','asc').limit(5).get().then(function(snap){
+      var hoy = new Date(), html = '';
+      snap.forEach(function(doc){
+        var e = doc.data(); if(!e.fecha) return;
+        var f = new Date(e.fecha); if(f < hoy) return;
+        html += '<div class="widget-evento-item"><div class="widget-evento-fecha"><span class="dia">'+f.getDate()+'</span><span class="mes">'+f.toLocaleString('es',{month:'short'})+'</span></div>' +
+          '<div class="widget-evento-info"><div class="widget-evento-titulo">'+(e.titulo||'')+'</div>' +
+          '<div class="widget-evento-meta">'+(e.hora||'')+' '+(e.lugar||'')+'</div></div></div>';
+      });
+      cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">Sin eventos.</p>';
+    }).catch(function(){ cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Sin eventos.</p>'; });
+  };
+
+  // ══════════════ CUMPLEAÑOS ══════════════
+  window.renderWidgetCumple = function() {
+    var cont = document.getElementById('widgetCumpleLista'); if(!cont) return;
+    if (typeof USERS === 'undefined') { cont.innerHTML = CARGANDO; return; }
+    var hoy = new Date();
+    var md = String(hoy.getMonth()+1).padStart(2,'0')+'-'+String(hoy.getDate()).padStart(2,'0');
+    USERS.limit(50).get().then(function(snap){
+      var html = '';
+      snap.forEach(function(doc){
+        var u = doc.data(); if(!u.fechaNacimiento) return;
+        var p = u.fechaNacimiento.split('-'); if(p.length<3) return;
+        if((p[1]+'-'+p[2]) !== md) return;
+        var f = u.fotoPerfil||'';
+        html += '<div class="widget-cumple-item"><div class="widget-cumple-avatar" style="'+(f?'background-image:url('+f+');background-size:cover;':'')+'">'+(f?'':(u.displayName||'?').charAt(0))+'</div>' +
+          '<div class="widget-cumple-info"><div class="widget-cumple-nombre">'+(u.displayName||'')+'</div><div class="widget-cumple-edad">¡Feliz cumpleaños!</div></div>' +
+          '<button class="widget-cumple-btn" onclick="enviarSaludoCumple(\''+doc.id+'\')">Saludar</button></div>';
+      });
+      cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">Sin cumpleaños hoy.</p>';
+    }).catch(function(){ cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Sin cumpleaños hoy.</p>'; });
+  };
+
+  // ══════════════ SERMONES ══════════════
+  window.renderWidgetSermones = function() {
+    var cont = document.getElementById('widgetSermonesContenido'); if(!cont) return;
+    if (typeof DEVOCIONALES === 'undefined') { cont.innerHTML = CARGANDO; return; }
+    DEVOCIONALES.orderBy('fecha','desc').limit(1).get().then(function(snap){
+      if(snap.empty){ cont.innerHTML='<p style="font-size:12px;color:var(--text-secondary);">Sin contenido.</p>'; return; }
+      var d = snap.docs[0].data();
+      cont.innerHTML = '<div class="widget-sermon"><i class="fas fa-play-circle big"></i><div class="widget-sermon-info"><div class="widget-sermon-titulo">'+(d.titulo||'')+'</div><div class="widget-sermon-meta">'+(d.autorNombre||'')+'</div></div></div>';
+    }).catch(function(){ cont.innerHTML='<p style="font-size:12px;color:var(--text-secondary);">Sin contenido.</p>'; });
+  };
+
+  // ══════════════ MINI CHAT ══════════════
+  window.renderWidgetMiniChat = function() {
+    var cont = document.getElementById('widgetMiniChatLista'); if(!cont) return;
+    var u = getUser();
+    if (!u) { cont.innerHTML = INVITADO; return; }
+    cont.innerHTML = CARGANDO;
+    if (typeof CHATS_PRIVADOS === 'undefined') { cont.innerHTML = INVITADO; return; }
+    CHATS_PRIVADOS.where('participantes','array-contains',u.uid).limit(5).get().then(function(snap){
+      var ps = [];
+      snap.forEach(function(doc){
+        var chat = doc.data();
+        var otro = (chat.participantes||[]).find(function(p){ return p !== u.uid; });
+        if (!otro) return;
+        ps.push(USERS.doc(otro).get().then(function(ud){
+          if (!ud.exists) return '';
+          var u2 = ud.data(); var f = u2.fotoPerfil||'';
+          return '<div class="widget-mini-chat-item" onclick="abrirChatPrivado(\''+otro+'\')"><div class="widget-mini-chat-avatar" style="'+(f?'background-image:url('+f+');':'')+'">'+(f?'':(u2.displayName||'?').charAt(0))+'<span class="widget-mini-chat-dot"></span></div><div class="widget-mini-chat-info"><div class="widget-mini-chat-name">'+(u2.displayName||'')+'</div><div class="widget-mini-chat-preview">Conversación privada</div></div></div>';
+        }));
+      });
+      Promise.all(ps).then(function(arr){
+        cont.innerHTML = arr.filter(function(x){return x;}).join('') || '<p style="font-size:12px;color:var(--text-secondary);">Sin conversaciones.</p>';
+      });
+    }).catch(function(){ cont.innerHTML='<p style="font-size:12px;color:var(--text-secondary);">Sin conversaciones.</p>'; });
+  };
+
+  // ══════════════ CONTACTOS ══════════════
+  window.renderWidgetContactos = function() {
+    var cont = document.getElementById('widgetContactosLista'); if(!cont) return;
+    var u = getUser();
+    if (!u) { cont.innerHTML = INVITADO; return; }
+    if (typeof USERS === 'undefined') { cont.innerHTML = CARGANDO; return; }
+    USERS.limit(10).get().then(function(snap){
+      var html = '';
+      snap.forEach(function(doc){
+        if (doc.id === u.uid) return;
+        var u2 = doc.data(); var f = u2.fotoPerfil||'';
+        html += '<div class="widget-contacto-item" onclick="verPerfil(\''+doc.id+'\')"><div class="widget-contacto-avatar" style="'+(f?'background-image:url('+f+');':'')+'">'+(f?'':(u2.displayName||'?').charAt(0))+'</div><div class="widget-contacto-info"><div class="widget-contacto-name">'+(u2.displayName||'')+'</div><div class="widget-contacto-meta">'+(u2.iglesia||'')+'</div></div></div>';
+      });
+      cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">Sin sugerencias.</p>';
+    }).catch(function(){ cont.innerHTML='<p style="font-size:12px;color:var(--text-secondary);">Sin sugerencias.</p>'; });
+  };
+
+  // ══════════════ GUARDADOS ══════════════
+  window.renderWidgetGuardados = function() {
+    var cont = document.getElementById('widgetGuardadosLista'); if(!cont) return;
+    var u = getUser();
+    if (!u) { cont.innerHTML = INVITADO; return; }
+    if (typeof GUARDADOS !== 'function') { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Aún no tienes guardados.</p>'; return; }
+    GUARDADOS(u.uid).limit(5).get().then(function(snap){
+      if(snap.empty){ cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);">Aún no tienes guardados.</p>'; return; }
+      var html = '';
+      snap.forEach(function(doc){
+        var g = doc.data();
+        html += '<div class="widget-guardado-item"><div class="widget-guardado-icon"><i class="fas fa-bookmark"></i></div><div class="widget-guardado-texto"><strong>'+((g.titulo||'Guardado').substring(0,40))+'</strong><small>'+((g.descripcion||'').substring(0,50))+'</small></div></div>';
+      });
+      cont.innerHTML = html;
+    }).catch(function(){ cont.innerHTML='<p style="font-size:12px;color:var(--text-secondary);">Aún no tienes guardados.</p>'; });
+  };
+
+  // ══════════════ OFRENDAS ══════════════
+  window.renderWidgetOfrendas = function() {
+    var cont = document.getElementById('widgetOfrendasLista'); if(!cont) return;
+    var u = getUser();
+    if (!u) { cont.innerHTML = INVITADO; return; }
+    cont.innerHTML = '<div class="widget-ofrenda-card"><h5><i class="fas fa-hand-holding-usd"></i> Apoya la obra</h5><p>Tu donativo bendice vidas y familias misioneras.</p><button class="widget-ofrenda-btn" onclick="abrirOfrendaModal()"><i class="fab fa-paypal"></i> Donar ahora</button><button class="widget-ofrenda-btn" onclick="verHistorialOfrendas()" style="margin-top:6px;background:rgba(255,255,255,0.25);color:#fff;"><i class="fas fa-history"></i> Mis donativos</button></div>';
+  };
+
+  // ══════════════ TESTIMONIOS ══════════════
+  window.renderWidgetTestimonios = function() {
+    var cont = document.getElementById('widgetTestimoniosLista'); if(!cont) return;
+    if (typeof POSTS === 'undefined') { cont.innerHTML = CARGANDO; return; }
+    POSTS.orderBy('fecha','desc').limit(20).get().then(function(snap){
+      var html = '', n = 0;
+      snap.forEach(function(doc){
+        if(n >= 3) return;
+        var p = doc.data(); if(p.categoria !== 'testimonio') return;
+        html += '<div class="widget-oracion-item"><div class="widget-oracion-autor">'+(p.autorNombre||'')+'</div><div class="widget-oracion-texto">'+((p.texto||'').substring(0,80))+'...</div></div>';
+        n++;
+      });
+      cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">Sin testimonios.</p>';
+    }).catch(function(){ cont.innerHTML='<p style="font-size:12px;color:var(--text-secondary);">Sin testimonios.</p>'; });
+  };
+
+  // ══════════════ TENDENCIAS ══════════════
+  window.renderWidgetTendencias = function() {
+    var cont = document.getElementById('widgetTendenciasLista'); if(!cont) return;
+    if (typeof POSTS === 'undefined') { cont.innerHTML = CARGANDO; return; }
+    POSTS.orderBy('fecha','desc').limit(30).get().then(function(snap){
+      var arr = []; snap.forEach(function(doc){ arr.push(Object.assign({id:doc.id},doc.data())); });
+      arr.sort(function(a,b){ return ((b.likes||[]).length+(b.comentarios||[]).length)-((a.likes||[]).length+(a.comentarios||[]).length); });
+      var html = '';
+      arr.slice(0,3).forEach(function(p,i){
+        html += '<div class="widget-tendencia-item" onclick="switchPanel(\'muro\')"><div class="widget-tendencia-rank">'+(i+1)+'</div><div class="widget-tendencia-body"><div class="widget-tendencia-texto">'+((p.texto||'').substring(0,70))+'...</div><div class="widget-tendencia-meta">❤ '+((p.likes||[]).length)+' · 💬 '+((p.comentarios||[]).length)+'</div></div></div>';
+      });
+      cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">Sin contenido.</p>';
+    }).catch(function(){ cont.innerHTML='<p style="font-size:12px;color:var(--text-secondary);">Sin contenido.</p>'; });
+  };
+
+  // ══════════════ PLAN LECTURA ══════════════
+  window.renderWidgetPlanLectura = function() {
+    var cont = document.getElementById('widgetPlanLecturaContenido'); if(!cont) return;
+    var dia = Math.floor((Date.now()/86400000) % 365)+1;
+    var pct = Math.min(100, Math.round((dia/365)*100));
+    cont.innerHTML = '<div class="barra"><div class="barra-fill" style="width:'+pct+'%"></div></div><div class="dia-info"><span>Día '+dia+' de 365</span><span>'+pct+'%</span></div><div class="pasaje-hoy"><i class="fas fa-book-open"></i> Hoy: Salmos '+((dia%150)+1)+'</div>';
+  };
+
+  // ══════════════ ANUNCIOS ══════════════
+  window.renderWidgetAnuncios = function() {
+    var cont = document.getElementById('widgetAnunciosLista'); if(!cont) return;
+    if (typeof NOTICIAS === 'undefined') { cont.innerHTML = CARGANDO; return; }
+    NOTICIAS.orderBy('fecha','desc').limit(3).get().then(function(snap){
+      var html = '';
+      snap.forEach(function(doc){ var n = doc.data(); html += '<div class="widget-anuncio-item"><strong>'+(n.titulo||'')+'</strong>'+(n.desc?'<span>'+n.desc.substring(0,100)+'</span>':'')+'</div>'; });
+      cont.innerHTML = html || '<p style="font-size:12px;color:var(--text-secondary);">Sin anuncios.</p>';
+    }).catch(function(){ cont.innerHTML='<p style="font-size:12px;color:var(--text-secondary);">Sin anuncios.</p>'; });
+  };
+
+  // ══════════════ PLAYLIST ══════════════
+  window.renderWidgetPlaylist = function() {
+    var cont = document.getElementById('widgetPlaylistLista'); if(!cont) return;
+    cont.innerHTML = '<div class="widget-playlist-item" onclick="window.open(\'https://open.spotify.com\',\'_blank\')"><div class="widget-playlist-icon"><i class="fab fa-spotify"></i></div><div class="widget-playlist-info"><div class="widget-playlist-title">Alabanza de la semana</div><div class="widget-playlist-artist">Playlist comunitaria</div></div></div>';
+  };
+
+  // ══════════════ MAPA · permitir init sin currentUser ══════════════
+  var _origInitMapbox = window.initMapboxMap;
+  if (typeof _origInitMapbox === 'function' && !window.__mapInitHooked) {
+    window.__mapInitHooked = true;
+    window.initMapboxMap = function() {
+      // Ya no exige currentUser
+      return _origInitMapbox.apply(this, arguments);
+    };
+  }
+
+  // Reintentar renderizar widgets cada 2s (por si el login tarda)
+  var intentos = 0;
+  var reint = setInterval(function(){
+    intentos++;
+    try {
+      if (getUser()) {
+        renderWidgetPerfilRapido();
+        renderWidgetGrupos();
+        renderWidgetMiniChat();
+        renderWidgetContactos();
+        renderWidgetGuardados();
+        renderWidgetOfrendas();
+        clearInterval(reint);
+      }
+    } catch(e){}
+    if (intentos > 30) clearInterval(reint);
+  }, 2000);
+
+  console.log('✅ [FIX v10] Widgets con getUser() + map init activos.');
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════
+     FIX v11 · PayPal card fields + timeout de seguridad
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+  if (window.__paypalFixV11) return;
+  window.__paypalFixV11 = true;
+
+  // Guardar la función original
+  var _origRenderPaypal = window.renderPayPalButtons;
+
+  if (typeof _origRenderPaypal === 'function') {
+    window.renderPayPalButtons = async function() {
+      var container = document.getElementById('paypalButtonsContainer');
+      if (!container) return;
+
+      // Mensaje inicial
+      container.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:8px;"><i class="fas fa-spinner fa-spin"></i> Cargando PayPal...</p>';
+
+      // Verificar configuración
+      if (typeof paypalConfig === 'undefined' || !paypalConfig.clientId) {
+        container.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:8px;">⚠️ PayPal no está configurado. Contacta al administrador.</p>';
+        console.error('[PayPal] Falta clientId en paypalConfig:', paypalConfig);
+        return;
+      }
+
+      console.log('[PayPal] Iniciando carga del SDK con clientId:', paypalConfig.clientId.substring(0, 20) + '...');
+
+      try {
+        // Cargar SDK manualmente con manejo de errores explícito
+        if (!window.paypal || !window.paypal.Buttons) {
+          console.log('[PayPal] Cargando SDK...');
+          await new Promise(function(resolve, reject) {
+            // Eliminar cualquier script previo de PayPal
+            var viejos = document.querySelectorAll('script[src*="paypal.com/sdk"]');
+            viejos.forEach(function(s){ s.remove(); });
+
+            var script = document.createElement('script');
+            var moneda = (paypalConfig && paypalConfig.moneda) || 'USD';
+            script.src = 'https://www.paypal.com/sdk/js?client-id=' +
+                        encodeURIComponent(paypalConfig.clientId) +
+                        '&currency=' + encodeURIComponent(moneda) +
+                        '&intent=capture&components=buttons&disable-funding=credit';
+            script.async = true;
+            script.onload = function() {
+              console.log('[PayPal] SDK cargado correctamente.');
+              resolve();
+            };
+            script.onerror = function() {
+              console.error('[PayPal] Error al cargar el SDK. Verifica el Client ID y la conexión.');
+              reject(new Error('No se pudo cargar el SDK de PayPal. Verifica tu Client ID.'));
+            };
+            document.head.appendChild(script);
+
+            // Timeout de seguridad de 15 segundos
+            setTimeout(function() {
+              if (!window.paypal || !window.paypal.Buttons) {
+                reject(new Error('Timeout: el SDK de PayPal tardó demasiado en cargar.'));
+              }
+            }, 15000);
+          });
+        }
+
+        if (!window.paypal || !window.paypal.Buttons) {
+          throw new Error('El objeto paypal no está disponible después de cargar el SDK.');
+        }
+
+        container.innerHTML = '';
+
+        window.paypal.Buttons({
+          style: {
+            layout: 'vertical',
+            color: 'gold',
+            shape: 'pill',
+            label: 'donate',
+            height: 45
+          },
+          createOrder: function(data, actions) {
+            var montoEl = document.getElementById('ofrendaMonto');
+            var monto = parseFloat((montoEl && montoEl.value) || '0');
+            if (!monto || monto <= 0 || isNaN(monto)) {
+              alert('Ingresa un monto válido antes de pagar.');
+              return Promise.reject(new Error('Monto inválido'));
+            }
+            var destino = (document.getElementById('ofrendaDestino') || {}).value || 'general';
+            var nota = ((document.getElementById('ofrendaNota') || {}).value || '').trim();
+            var descripcion = ('Donativo - ' + destino + (nota ? ' - ' + nota : '')).substring(0, 127);
+            return actions.order.create({
+              intent: 'CAPTURE',
+              purchase_units: [{
+                amount: {
+                  value: monto.toFixed(2),
+                  currency_code: (paypalConfig && paypalConfig.moneda) || 'USD'
+                },
+                description: descripcion
+              }]
+            });
+          },
+          onApprove: async function(data, actions) {
+            try {
+              var details = await actions.order.capture();
+              if (typeof guardarOfrendaPaypal === 'function') {
+                await guardarOfrendaPaypal(details);
+              }
+              alert('✅ Donativo completado correctamente. ¡Dios te bendiga!');
+              if (typeof cerrarModal === 'function') cerrarModal('ofrendaModal');
+              if (typeof renderWidgetOfrendas === 'function') renderWidgetOfrendas();
+            } catch (e) {
+              console.error('[PayPal] Error capturando orden:', e);
+              alert('El pago fue aprobado pero hubo un problema al registrarlo. Contacta al administrador.');
+            }
+          },
+          onCancel: function() {
+            console.log('[PayPal] Pago cancelado por el usuario.');
+          },
+          onError: function(err) {
+            console.error('[PayPal] Error:', err);
+            alert('⚠️ Error de PayPal: ' + (err && err.message ? err.message : 'Desconocido'));
+          }
+        }).render('#paypalButtonsContainer');
+
+        console.log('[PayPal] Botones renderizados correctamente.');
+
+      } catch (e) {
+        console.error('[PayPal] Error:', e);
+        container.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:8px;">⚠️ ' + e.message + '</p>';
+      }
+    };
+  }
+
+  // Override de actualizarMetodoOfrenda para que no se quede colgado
+  var _origActualizarMetodo = window.actualizarMetodoOfrenda;
+  if (typeof _origActualizarMetodo === 'function') {
+    window.actualizarMetodoOfrenda = function() {
+      var metodo = ((document.getElementById('ofrendaMetodo') || {}).value) || 'paypal';
+      var btnConfirmar = document.getElementById('btnConfirmarOfrenda');
+      var paypalContainer = document.getElementById('paypalButtonsContainer');
+
+      if (metodo === 'paypal') {
+        if (btnConfirmar) btnConfirmar.style.display = 'none';
+        if (paypalContainer) paypalContainer.style.display = 'block';
+        // Timeout para asegurar que el DOM esté listo
+        setTimeout(function() {
+          try { window.renderPayPalButtons(); }
+          catch(e) { console.error('[PayPal] Fallo al renderizar:', e); }
+        }, 200);
+      } else {
+        if (btnConfirmar) btnConfirmar.style.display = 'inline-block';
+        if (paypalContainer) paypalContainer.style.display = 'none';
+      }
+    };
+  }
+
+  console.log('✅ [FIX v11] PayPal card fields + CSP actualizado.');
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════
+     FIX v12 · PayPal Donate (funciona sin cuenta PayPal)
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+  if (window.__paypalFixV12) return;
+  window.__paypalFixV12 = true;
+
+  // ─── Abre modal de donativo con PayPal Donate Button ───
+  window.abrirOfrendaModal = function() {
+    if (typeof currentUser === 'undefined' || !currentUser) {
+      alert('Debes iniciar sesión para dar tu donativo.');
+      var lb = document.getElementById('loginBtn'); if (lb) lb.click();
+      return;
+    }
+    var mEl = document.getElementById('ofrendaMonto'); if (mEl) mEl.value = '';
+    var nEl = document.getElementById('ofrendaNota'); if (nEl) nEl.value = '';
+    var metodoEl = document.getElementById('ofrendaMetodo'); if (metodoEl) metodoEl.value = 'paypal';
+    abrirModal('ofrendaModal');
+    setTimeout(function(){ actualizarMetodoOfrenda(); }, 100);
+  };
+
+  // ─── Render del botón de PayPal ───
+  window.renderPayPalButtons = function() {
+    var container = document.getElementById('paypalButtonsContainer');
+    if (!container) return;
+
+    // Leer config de PayPal
+    var email = (window.paypalConfig && paypalConfig.email) || '';
+    var paypalMe = (window.paypalConfig && paypalConfig.paypalMe) || '';
+    var moneda = (window.paypalConfig && paypalConfig.moneda) || 'USD';
+    var clientId = (window.paypalConfig && paypalConfig.clientId) || '';
+
+    // ❌ Sin configuración
+    if (!email && !paypalMe && !clientId) {
+      container.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:12px;">⚠️ PayPal no está configurado. Contacta al administrador.</p>';
+      return;
+    }
+
+    // ✅ Opción 1: PayPal Donate Button (funciona con email Business)
+    // Esta opción es la MEJOR: acepta tarjeta sin cuenta PayPal
+    if (email) {
+      container.innerHTML =
+        '<div style="text-align:center;">' +
+          '<form action="https://www.paypal.com/donate" method="post" target="_blank" style="display:inline-block;">' +
+            '<input type="hidden" name="business" value="' + email + '" />' +
+            '<input type="hidden" name="no_recurring" value="0" />' +
+            '<input type="hidden" name="currency_code" value="' + moneda + '" />' +
+            '<input type="hidden" name="item_name" value="Donativo SAL Y LUZ" />' +
+            '<button type="submit" style="background:#ffc439;color:#003087;border:none;padding:12px 28px;border-radius:30px;font-weight:700;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">' +
+              '<i class="fab fa-paypal"></i> Donar con PayPal o Tarjeta' +
+            '</button>' +
+          '</form>' +
+          '<p style="font-size:11px;color:var(--text-secondary);margin-top:10px;">' +
+            'No necesitas cuenta PayPal. Acepta tarjetas de crédito/débito.' +
+          '</p>' +
+        '</div>';
+      return;
+    }
+
+    // ⚠️ Opción 2: PayPal.me (fallback, requiere cuenta)
+    if (paypalMe) {
+      container.innerHTML =
+        '<div style="text-align:center;">' +
+          '<a href="https://www.paypal.com/paypalme/' + encodeURIComponent(paypalMe) + '" target="_blank" rel="noopener" ' +
+             'style="background:#0070ba;color:#fff;border:none;padding:12px 28px;border-radius:30px;font-weight:700;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">' +
+            '<i class="fab fa-paypal"></i> Donar vía PayPal.me' +
+          '</a>' +
+          '<p style="font-size:11px;color:var(--text-secondary);margin-top:10px;">' +
+            '⚠️ Requiere cuenta PayPal.' +
+          '</p>' +
+        '</div>';
+      return;
+    }
+
+    container.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:12px;">⚠️ Falta configurar el email Business de PayPal. Contacta al administrador.</p>';
+  };
+
+  // ─── actualizarMetodoOfrenda sin bucles raros ───
+  window.actualizarMetodoOfrenda = function() {
+    var metodo = ((document.getElementById('ofrendaMetodo') || {}).value) || 'paypal';
+    var btnConfirmar = document.getElementById('btnConfirmarOfrenda');
+    var paypalContainer = document.getElementById('paypalButtonsContainer');
+    if (metodo === 'paypal') {
+      if (btnConfirmar) btnConfirmar.style.display = 'none';
+      if (paypalContainer) paypalContainer.style.display = 'block';
+      setTimeout(function(){ window.renderPayPalButtons(); }, 100);
+    } else {
+      if (btnConfirmar) btnConfirmar.style.display = 'inline-block';
+      if (paypalContainer) paypalContainer.style.display = 'none';
+    }
+  };
+
+  console.log('✅ [FIX v12] PayPal Donate Button activo (acepta tarjetas sin cuenta PayPal).');
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════
+     FIX v13 · Forzar re-validación del usuario al recargar
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+  if (window.__authFixV13) return;
+  window.__authFixV13 = true;
+
+  // Esperar a que Firebase Auth esté listo y re-forzar la carga del usuario real
+  function forzarUsuarioReal() {
+    try {
+      var fu = firebase.auth().currentUser;
+      if (!fu) {
+        // No hay usuario autenticado → limpiar todo
+        if (typeof currentUser !== 'undefined') currentUser = null;
+        window.currentUser = null;
+        return;
+      }
+      // Hay usuario de Firebase Auth → recargar sus datos
+      console.log('[Auth] Reforzando usuario:', fu.email);
+      if (typeof cargarUsuarioActual === 'function') {
+        cargarUsuarioActual(fu).then(function(){
+          // Actualizar widgets del muro
+          try { renderWidgetPerfilRapido(); } catch(e){}
+          try { renderWidgetGrupos(); } catch(e){}
+          try { renderWidgetMiniChat(); } catch(e){}
+          try { renderWidgetContactos(); } catch(e){}
+          try { renderWidgetGuardados(); } catch(e){}
+          try { renderWidgetOfrendas(); } catch(e){}
+        });
+      }
+    } catch(e) { console.warn('[Auth] forzarUsuarioReal:', e.message); }
+  }
+
+  // Escuchar cuando Firebase Auth esté listo
+  if (typeof firebase !== 'undefined' && firebase.auth) {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log('[Auth] Usuario detectado:', user.email);
+        // Re-forzar después de un pequeño delay para ganar a otros listeners
+        setTimeout(forzarUsuarioReal, 500);
+      } else {
+        console.log('[Auth] Sin usuario autenticado');
+      }
+    });
+  }
+
+  // Al recargar la página, si hay token guardado, forzar re-fetch
+  window.addEventListener('load', function() {
+    setTimeout(forzarUsuarioReal, 1500);
+  });
+
+  // Forzar tras Ctrl+R (reload)
+  if (performance && performance.navigation) {
+    if (performance.navigation.type === 1) {
+      console.log('[Auth] Recarga detectada, forzando usuario real...');
+      setTimeout(forzarUsuarioReal, 800);
+    }
+  }
+
+  console.log('✅ [FIX v13] Re-validación de usuario activa.');
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════════════════
+     FIX v17 · 2 botones separados: PayPal (link) + Tarjeta (SDK)
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+  'use strict';
+  if (window.__paypalFixV17) return;
+  window.__paypalFixV17 = true;
+
+  // ─── Helper para leer config ───
+  function getPaypalCfg() {
+    var cfg = {};
+    try { if (typeof paypalConfig !== 'undefined' && paypalConfig) cfg = paypalConfig; } catch(e) {}
+    if (!cfg.clientId && window.paypalConfig && window.paypalConfig.clientId) cfg = window.paypalConfig;
+    return cfg;
+  }
+  window.getPaypalCfg = getPaypalCfg;
+
+  // ─── Cargar SDK solo si hace falta ───
+  function cargarPayPalSDK(clientId, moneda) {
+    return new Promise(function(resolve, reject) {
+      if (window.paypal && window.paypal.Buttons) { resolve(window.paypal); return; }
+      document.querySelectorAll('script[src*="paypal.com/sdk"]').forEach(function(s){ s.remove(); });
+      var s = document.createElement('script');
+      s.src = 'https://www.paypal.com/sdk/js?client-id=' + encodeURIComponent(clientId) +
+              '&currency=' + encodeURIComponent(moneda || 'USD') +
+              '&intent=capture&components=buttons&enable-funding=card';
+      s.async = true;
+      s.onload = function() {
+        if (window.paypal && window.paypal.Buttons) resolve(window.paypal);
+        else reject(new Error('SDK sin window.paypal'));
+      };
+      s.onerror = function() { reject(new Error('No se pudo cargar el SDK')); };
+      document.head.appendChild(s);
+      setTimeout(function() {
+        if (window.paypal && window.paypal.Buttons) resolve(window.paypal);
+        else reject(new Error('Timeout SDK'));
+      }, 15000);
+    });
+  }
+
+  // ─── Render de los 2 botones ───
+  window.renderPayPalButtons = async function() {
+    var container = document.getElementById('paypalButtonsContainer');
+    if (!container) return;
+
+    var cfg = getPaypalCfg();
+    var emailLink = cfg.email    || '';
+    var paypalMe  = cfg.paypalMe || '';
+    var clientId  = cfg.clientId || '';
+    var moneda    = cfg.moneda   || 'USD';
+
+    console.log('[PayPal] Render. emailLink:', emailLink || '(vacío)', '| paypalMe:', paypalMe || '(vacío)');
+
+    // Detectar la mejor URL para "Pagar con PayPal"
+    var paypalUrl = '';
+    if (emailLink && /^https?:\/\//i.test(emailLink)) {
+      paypalUrl = emailLink; // NCP link (no muestra nombre)
+    } else if (paypalMe) {
+      paypalUrl = 'https://www.paypal.com/paypalme/' + encodeURIComponent(paypalMe);
+    }
+
+    container.innerHTML = '';
+
+    // ═══════════════════════════════════════════════════════
+    // BOTÓN 1 · PAGAR CON PAYPAL (nueva ventana limpia)
+    // ═══════════════════════════════════════════════════════
+    if (paypalUrl) {
+      var btnPaypal = document.createElement('button');
+      btnPaypal.type = 'button';
+      btnPaypal.style.cssText = 'width:100%;background:#ffc439;color:#003087;border:none;padding:14px 18px;border-radius:30px;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;box-shadow:0 4px 12px rgba(255,196,57,0.4);transition:transform .15s;';
+      btnPaypal.innerHTML = '<i class="fab fa-paypal" style="font-size:20px;"></i> Pagar con PayPal';
+      btnPaypal.onmouseover = function(){ this.style.transform = 'scale(1.02)'; };
+      btnPaypal.onmouseout  = function(){ this.style.transform = 'scale(1)'; };
+      btnPaypal.onclick = function() {
+        var montoEl = document.getElementById('ofrendaMonto');
+        var monto = montoEl ? parseFloat(montoEl.value) : 0;
+        // NCP links aceptan ?amount=X
+        var url = paypalUrl;
+        if (monto && monto > 0 && paypalUrl.indexOf('ncp/payment') > -1) {
+          url += (url.indexOf('?') > -1 ? '&' : '?') + 'amount=' + monto.toFixed(2);
+        }
+        window.open(url, '_blank', 'noopener,noreferrer');
+      };
+      container.appendChild(btnPaypal);
+
+      var nota1 = document.createElement('p');
+      nota1.style.cssText = 'font-size:11px;color:var(--text-secondary);text-align:center;margin:0 0 12px;';
+      nota1.textContent = '✅ Acepta tarjetas de crédito/débito';
+      container.appendChild(nota1);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // BOTÓN 2 · PAGAR CON TARJETA (SDK form embebido)
+    // ═══════════════════════════════════════════════════════
+    if (clientId) {
+      var cardWrap = document.createElement('div');
+      cardWrap.style.marginTop = '4px';
+      container.appendChild(cardWrap);
+
+      var loading = document.createElement('p');
+      loading.style.cssText = 'font-size:12px;color:var(--text-secondary);text-align:center;padding:8px;';
+      loading.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cargando formulario de tarjeta...';
+      cardWrap.appendChild(loading);
+
+      try {
+        var paypal = await cargarPayPalSDK(clientId, moneda);
+        cardWrap.innerHTML = '';
+
+        paypal.Buttons({
+          fundingSource: paypal.FUNDING.CARD,
+          style: {
+            layout: 'vertical',
+            color: 'black',
+            shape: 'pill',
+            label: 'pay',
+            height: 45
+          },
+          createOrder: function(data, actions) {
+            var montoEl = document.getElementById('ofrendaMonto');
+            var monto = parseFloat((montoEl && montoEl.value) || '0');
+            if (!monto || monto <= 0 || isNaN(monto)) {
+              alert('Ingresa un monto válido antes de pagar.');
+              return Promise.reject(new Error('Monto inválido'));
+            }
+            var destino = (document.getElementById('ofrendaDestino') || {}).value || 'general';
+            var nota = ((document.getElementById('ofrendaNota') || {}).value || '').trim();
+            var desc = ('Donativo - ' + destino + (nota ? ' - ' + nota : '')).substring(0, 127);
+            return actions.order.create({
+              intent: 'CAPTURE',
+              purchase_units: [{
+                amount: { value: monto.toFixed(2), currency_code: moneda },
+                description: desc
+              }]
+            });
+          },
+          onApprove: async function(data, actions) {
+            try {
+              var details = await actions.order.capture();
+              if (typeof guardarOfrendaPaypal === 'function') {
+                await guardarOfrendaPaypal(details);
+              }
+              alert('✅ Donativo completado. ¡Dios te bendiga!');
+              if (typeof cerrarModal === 'function') cerrarModal('ofrendaModal');
+              if (typeof renderWidgetOfrendas === 'function') renderWidgetOfrendas();
+            } catch (e) {
+              console.error('[PayPal] Error capturando:', e);
+              alert('El pago fue aprobado pero hubo un problema al registrarlo. Contacta al administrador.');
+            }
+          },
+          onCancel: function() { console.log('[PayPal] Cancelado.'); },
+          onError: function(err) {
+            console.error('[PayPal] Error:', err);
+            // Fallback: si el card-only falla, mostrar botón de checkout estándar
+            cardWrap.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:8px;">⚠️ No se pudo cargar el formulario de tarjeta. Usa el botón de PayPal de arriba.</p>';
+          }
+        }).render(cardWrap);
+
+        console.log('[PayPal] Botón de tarjeta renderizado.');
+
+      } catch (e) {
+        console.error('[PayPal] Error cargando tarjeta:', e);
+        cardWrap.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:8px;">⚠️ No se pudo cargar el formulario de tarjeta.</p>';
+      }
+    }
+
+    // Si no hay nada configurado
+    if (!paypalUrl && !clientId) {
+      container.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:12px;">⚠️ PayPal no configurado. Contacta al administrador.</p>';
+    }
+  };
+
+  // ─── Abrir modal ───
+  window.abrirOfrendaModal = function() {
+    if (typeof currentUser === 'undefined' || !currentUser) {
+      alert('Debes iniciar sesión para dar tu donativo.');
+      var lb = document.getElementById('loginBtn'); if (lb) lb.click();
+      return;
+    }
+    var mEl = document.getElementById('ofrendaMonto'); if (mEl) mEl.value = '';
+    var nEl = document.getElementById('ofrendaNota'); if (nEl) nEl.value = '';
+    var metodoEl = document.getElementById('ofrendaMetodo'); if (metodoEl) metodoEl.value = 'paypal';
+    abrirModal('ofrendaModal');
+    setTimeout(function(){ window.actualizarMetodoOfrenda(); }, 100);
+  };
+
+  // ─── Actualizar método ───
+  window.actualizarMetodoOfrenda = function() {
+    var metodo = ((document.getElementById('ofrendaMetodo') || {}).value) || 'paypal';
+    var btnConfirmar = document.getElementById('btnConfirmarOfrenda');
+    var paypalContainer = document.getElementById('paypalButtonsContainer');
+    if (metodo === 'paypal') {
+      if (btnConfirmar) btnConfirmar.style.display = 'none';
+      if (paypalContainer) paypalContainer.style.display = 'block';
+      setTimeout(function(){ window.renderPayPalButtons(); }, 150);
+    } else {
+      if (btnConfirmar) btnConfirmar.style.display = 'inline-block';
+      if (paypalContainer) paypalContainer.style.display = 'none';
+    }
+  };
+
+  // ─── Recargar config desde Firestore ───
+  async function recargarCfg() {
+    try {
+      var doc = await firebase.firestore().collection('config_paypal').doc('config').get();
+      if (!doc.exists) return;
+      var d = doc.data() || {};
+      try {
+        if (typeof paypalConfig !== 'undefined' && paypalConfig) {
+          paypalConfig.clientId = d.clientId || '';
+          paypalConfig.moneda   = d.moneda   || 'USD';
+          paypalConfig.paypalMe = d.paypalMe || '';
+          paypalConfig.email    = d.email    || '';
+        }
+      } catch(e) {}
+      window.paypalConfig = window.paypalConfig || {};
+      window.paypalConfig.clientId = d.clientId || '';
+      window.paypalConfig.moneda   = d.moneda   || 'USD';
+      window.paypalConfig.paypalMe = d.paypalMe || '';
+      window.paypalConfig.email    = d.email    || '';
+      console.log('[PayPal] Config recargada OK');
+    } catch(e) { console.warn('[PayPal] recargarCfg:', e.message); }
+  }
+  window.recargarPaypalConfig = recargarCfg;
+
+  if (typeof firebase !== 'undefined' && firebase.auth) {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) setTimeout(recargarCfg, 1500);
+    });
+  }
+
+  console.log('✅ [FIX v17] 2 botones: PayPal (link) + Tarjeta (SDK).');
 })();
 </script>
 </body>

@@ -6285,5 +6285,538 @@ console.log('✅ FIX v4.1 aplicado: copiarVersiculoDia + compartirVersiculoDia')
   console.log('✅ FIX v6.0: Persistencia de versión bíblica activa (RVR1960 por defecto)');
 })();
 </script>
+<!-- ═══════════════════════════════════════════════════════════════
+     FIX v7.0 — Indicador de salud para modelos OpenRouter
+     · Ping real a cada modelo (con latencia medida)
+     · Auto-orden: funcionando arriba, fallando abajo
+     · Caché de 1 hora en localStorage
+     · Botón "Probar todos" + botón individual por modelo
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+  /* ── Indicador de salud de modelos ─────────────────────── */
+  .modelo-openrouter-item {
+    position: relative;
+    transition: border-left 0.2s, background 0.2s;
+  }
+  .modelo-openrouter-item .health-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    flex-shrink: 0;
+    background: #94a3b8;
+    transition: background 0.25s, box-shadow 0.25s;
+  }
+  .modelo-openrouter-item .health-dot.ok {
+    background: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.22);
+  }
+  .modelo-openrouter-item .health-dot.fail {
+    background: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.22);
+  }
+  .modelo-openrouter-item .health-dot.testing {
+    background: #f59e0b;
+    animation: pulseHealthDot 0.9s ease-in-out infinite;
+  }
+  @keyframes pulseHealthDot {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%     { opacity: 0.35; transform: scale(0.85); }
+  }
+  .modelo-openrouter-item.health-working { border-left: 3px solid #22c55e; }
+  .modelo-openrouter-item.health-failing { border-left: 3px solid #ef4444; opacity: 0.88; }
+  .modelo-openrouter-item.health-testing { border-left: 3px solid #f59e0b; }
+  .modelo-openrouter-item.health-unknown { border-left: 3px solid #cbd5e1; }
+
+  .modelo-openrouter-item .health-info {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+  }
+  .modelo-openrouter-item .health-info.ok { color: #16a34a; }
+  .modelo-openrouter-item .health-info.fail { color: #dc2626; }
+  .modelo-openrouter-item .health-info.testing { color: #d97706; }
+
+  .modelo-openrouter-item .health-spinner {
+    width: 10px; height: 10px;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spinHealth 0.7s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spinHealth { to { transform: rotate(360deg); } }
+
+  .modelo-openrouter-item .health-retest {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 10px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 4px;
+    transition: 0.15s;
+  }
+  .modelo-openrouter-item .health-retest:hover {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+    transform: scale(1.1);
+  }
+
+  /* ── Toolbar de estadísticas + acciones ────────────────── */
+  .modelos-health-toolbar {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 10px 12px; margin-bottom: 10px;
+    background: var(--bg-body);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    font-size: 12px;
+  }
+  .modelos-health-toolbar .stat {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-weight: 600; padding: 3px 8px; border-radius: 20px;
+  }
+  .modelos-health-toolbar .stat .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .modelos-health-toolbar .stat.ok { color: #16a34a; background: rgba(34,197,94,0.1); }
+  .modelos-health-toolbar .stat.ok .dot { background: #22c55e; }
+  .modelos-health-toolbar .stat.fail { color: #dc2626; background: rgba(239,68,68,0.1); }
+  .modelos-health-toolbar .stat.fail .dot { background: #ef4444; }
+  .modelos-health-toolbar .stat.pend { color: #d97706; background: rgba(245,158,11,0.1); }
+  .modelos-health-toolbar .stat.pend .dot { background: #f59e0b; }
+
+  .modelos-health-toolbar button {
+    background: var(--teal); color: #fff; border: none;
+    padding: 6px 14px; border-radius: 30px;
+    font-size: 11px; font-weight: 600; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: 0.15s;
+  }
+  .modelos-health-toolbar button:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .modelos-health-toolbar button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .modelos-health-toolbar button.secondary {
+    background: transparent; color: var(--text-primary);
+    border: 1px solid var(--border-color);
+  }
+  .modelos-health-toolbar button.secondary:hover { background: var(--bg-body); }
+  .modelos-health-toolbar .spacer { flex: 1; }
+</style>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// SALUD DE MODELOS OPENROUTER
+// ═══════════════════════════════════════════════════════════════
+(function () {
+  'use strict';
+
+  // ── Configuración ────────────────────────────────────────
+  const CACHE_KEY        = 'openrouter_health_v1';
+  const TTL_MS           = 60 * 60 * 1000;   // 1 hora
+  const CONCURRENCIA     = 2;                 // peticiones simultáneas
+  const TIMEOUT_MS       = 12000;             // timeout por test
+  const MAX_AUTOTEST     = 15;                // máximo de modelos a testear automáticamente al cargar
+
+  // ── Estado interno ───────────────────────────────────────
+  const state = {
+    agente:    { container: null, modelos: [], apiKey: '', selectedId: '', testing: false },
+    moderador: { container: null, modelos: [], apiKey: '', selectedId: '', testing: false }
+  };
+
+  // ── Caché de salud ───────────────────────────────────────
+  let healthCache = {};
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) || {};
+      const ahora = Date.now();
+      Object.keys(parsed).forEach(k => {
+        if (parsed[k] && (ahora - (parsed[k].testedAt || 0)) < TTL_MS) {
+          healthCache[k] = parsed[k];
+        }
+      });
+    }
+  } catch (e) { healthCache = {}; }
+
+  function guardarCache() {
+    try {
+      const ahora = Date.now();
+      const out = {};
+      Object.keys(healthCache).forEach(k => {
+        if (healthCache[k] && (ahora - (healthCache[k].testedAt || 0)) < TTL_MS) {
+          out[k] = healthCache[k];
+        }
+      });
+      localStorage.setItem(CACHE_KEY, JSON.stringify(out));
+    } catch (e) { /* quota llena — ignorar */ }
+  }
+
+  // ── Helpers ──────────────────────────────────────────────
+  function escapar(s) {
+    return String(s == null ? '' : s)
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, "\\'")
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function rankSalud(id) {
+    const h = healthCache[id];
+    if (!h) return 1.5;              // desconocido → al medio
+    if (h.status === 'testing') return 1.2;
+    if (h.status === 'ok') return 0; // arriba
+    return 3;                        // fallando → abajo
+  }
+
+  // ── Test individual ──────────────────────────────────────
+  async function testearModelo(modelId, apiKey) {
+    const t0 = performance.now();
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
+    try {
+      const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        signal: ctrl.signal,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + apiKey,
+          'HTTP-Referer': (typeof window !== 'undefined' && window.location && window.location.origin) || 'https://salyluz.app',
+          'X-Title': 'SAL Y LUZ · Health'
+        },
+        body: JSON.stringify({
+          model: modelId,
+          messages: [{ role: 'user', content: 'hi' }],
+          max_tokens: 5,
+          temperature: 0
+        })
+      });
+      clearTimeout(timer);
+      const latencia = Math.round(performance.now() - t0);
+      let data = null;
+      try { data = await resp.json(); } catch (e) { data = null; }
+
+      if (!resp.ok) {
+        const msg = (data && data.error && data.error.message) || ('HTTP ' + resp.status);
+        return { ok: false, latency: latencia, error: msg };
+      }
+      if (data && data.error) {
+        return { ok: false, latency: latencia, error: data.error.message || 'Error API' };
+      }
+      if (!data || !Array.isArray(data.choices) || data.choices.length === 0) {
+        return { ok: false, latency: latencia, error: 'Sin respuesta' };
+      }
+      return { ok: true, latency: latencia };
+    } catch (e) {
+      clearTimeout(timer);
+      const latencia = Math.round(performance.now() - t0);
+      const msg = (e && e.name === 'AbortError') ? 'Timeout' : ((e && e.message) || 'Error de red');
+      return { ok: false, latency: latencia, error: msg };
+    }
+  }
+
+  // ── Pintar la lista ──────────────────────────────────────
+  function pintarLista(tipo) {
+    const st = state[tipo];
+    if (!st || !st.container) return;
+
+    const scrollPrevio = st.container.scrollTop;
+
+    // Ordenar: ok (por latencia) → testing → desconocido → fallando
+    const ordenados = st.modelos.slice().sort((a, b) => {
+      const ra = rankSalud(a.id), rb = rankSalud(b.id);
+      if (ra !== rb) return ra - rb;
+      const ha = healthCache[a.id], hb = healthCache[b.id];
+      if (ha && hb && ha.status === 'ok' && hb.status === 'ok') {
+        return (ha.latency || 9999) - (hb.latency || 9999);
+      }
+      return String(a.name || a.id).localeCompare(String(b.name || b.id));
+    });
+
+    // Estadísticas
+    let ok = 0, fail = 0, pend = 0;
+    st.modelos.forEach(m => {
+      const h = healthCache[m.id];
+      if (!h || h.status === 'testing') pend++;
+      else if (h.status === 'ok') ok++;
+      else if (h.status === 'fail') fail++;
+      else pend++;
+    });
+
+    const fnSeleccionar = tipo === 'agente' ? 'seleccionarModeloAgente' : 'seleccionarModeloModerador';
+
+    let html = `
+      <div class="modelos-health-toolbar">
+        <span class="stat ok"><span class="dot"></span> ${ok} OK</span>
+        <span class="stat fail"><span class="dot"></span> ${fail} con error</span>
+        <span class="stat pend"><span class="dot"></span> ${pend} pendientes</span>
+        <span class="spacer"></span>
+        <button type="button" onclick="probarTodosLosModelos('${tipo}')" ${st.testing ? 'disabled' : ''}>
+          <i class="fas fa-flask"></i> ${st.testing ? 'Probando…' : 'Probar todos'}
+        </button>
+        <button type="button" class="secondary" onclick="limpiarCacheModelos()">
+          <i class="fas fa-redo-alt"></i> Limpiar caché
+        </button>
+      </div>
+    `;
+
+    ordenados.forEach(m => {
+      const id = m.id;
+      const nombre = m.name || id;
+      const seleccionado = (st.selectedId === id) ? ' selected' : '';
+      const h = healthCache[id];
+
+      let dotCls = 'unknown';
+      let rowCls = 'health-unknown';
+      let infoHtml = '<span style="opacity:0.7;">Sin probar</span>';
+
+      if (h) {
+        if (h.status === 'testing') {
+          dotCls = 'testing'; rowCls = 'health-testing';
+          infoHtml = '<span class="health-spinner"></span> <span class="health-info testing">Probando…</span>';
+        } else if (h.status === 'ok') {
+          dotCls = 'ok'; rowCls = 'health-working';
+          infoHtml = `<span class="health-info ok"><i class="fas fa-check-circle"></i> ${h.latency} ms</span>`;
+        } else if (h.status === 'fail') {
+          dotCls = 'fail'; rowCls = 'health-failing';
+          infoHtml = `<span class="health-info fail"><i class="fas fa-times-circle"></i> No responde</span>`;
+        }
+      }
+
+      const titleAttr = (h && h.error) ? ` title="${escapar(h.error)}"` : '';
+
+      html += `
+        <div class="modelo-openrouter-item${seleccionado} ${rowCls}" onclick="${fnSeleccionar}('${escapar(id)}')">
+          <span class="health-dot ${dotCls}"${titleAttr}></span>
+          <div class="info">
+            <div class="nombre">${nombre}</div>
+            <div class="id">${id}</div>
+            <div style="margin-top:2px;">${infoHtml}</div>
+          </div>
+          <span class="badge-free">GRATIS</span>
+          <button type="button" class="health-retest"
+                  onclick="event.stopPropagation();probarModeloIndividual('${tipo}','${escapar(id)}')"
+                  title="Probar este modelo ahora">
+            <i class="fas fa-bolt"></i>
+          </button>
+        </div>
+      `;
+    });
+
+    st.container.innerHTML = html;
+    st.container.scrollTop = scrollPrevio;
+  }
+
+  // ── Test masivo con concurrencia limitada ────────────────
+  async function testearCola(tipo, ids, apiKey) {
+    const st = state[tipo];
+    if (!st) return;
+    st.testing = true;
+    pintarLista(tipo);
+
+    let idx = 0;
+    const total = ids.length;
+
+    async function worker() {
+      while (idx < total) {
+        const i = idx++;
+        const id = ids[i];
+        if (!id) continue;
+        // Marcar testing
+        healthCache[id] = { status: 'testing', testedAt: Date.now() };
+        pintarLista(tipo);
+        // Test real
+        const res = await testearModelo(id, apiKey);
+        healthCache[id] = {
+          status: res.ok ? 'ok' : 'fail',
+          latency: res.latency || 0,
+          error: res.error || '',
+          testedAt: Date.now()
+        };
+        pintarLista(tipo);
+      }
+    }
+
+    const workers = [];
+    for (let w = 0; w < Math.min(CONCURRENCIA, total); w++) {
+      workers.push(worker());
+    }
+    await Promise.all(workers);
+
+    st.testing = false;
+    guardarCache();
+    pintarLista(tipo);
+    console.log(`✅ Test completado (${tipo}): ${total} modelos probados`);
+  }
+
+  // ── API pública ──────────────────────────────────────────
+
+  window.probarTodosLosModelos = async function (tipo) {
+    const st = state[tipo];
+    if (!st || st.testing) return;
+    if (!st.modelos.length) { alert('No hay modelos cargados.'); return; }
+    const apiKey = (st.apiKey || '').trim();
+    if (!apiKey) { alert('Primero ingresa tu API Key de OpenRouter.'); return; }
+
+    // Forzar re-test (ignora caché)
+    st.modelos.forEach(m => { delete healthCache[m.id]; });
+
+    const ids = st.modelos.map(m => m.id);
+    await testearCola(tipo, ids, apiKey);
+  };
+
+  window.probarModeloIndividual = async function (tipo, id) {
+    const st = state[tipo];
+    if (!st) return;
+    const apiKey = (st.apiKey || '').trim();
+    if (!apiKey) { alert('Ingresa primero tu API Key.'); return; }
+
+    healthCache[id] = { status: 'testing', testedAt: Date.now() };
+    pintarLista(tipo);
+
+    const res = await testearModelo(id, apiKey);
+    healthCache[id] = {
+      status: res.ok ? 'ok' : 'fail',
+      latency: res.latency || 0,
+      error: res.error || '',
+      testedAt: Date.now()
+    };
+    guardarCache();
+    pintarLista(tipo);
+  };
+
+  window.limpiarCacheModelos = function () {
+    if (!confirm('¿Limpiar caché de salud? Los modelos se marcarán como "sin probar".')) return;
+    healthCache = {};
+    try { localStorage.removeItem(CACHE_KEY); } catch (e) {}
+    pintarLista('agente');
+    pintarLista('moderador');
+  };
+
+  // ── Overrides: Cargar modelos del Agente Bíblico ─────────
+  window.cargarModelosGratisOpenRouter = async function () {
+    const cont = document.getElementById('agenteModelosLista');
+    if (!cont) return;
+    cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px;"><i class="fas fa-spinner fa-spin"></i> Consultando OpenRouter…</p>';
+
+    try {
+      const resp = await fetch('https://openrouter.ai/api/v1/models');
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const data = await resp.json();
+      const modelos = (data.data || []).filter(m => {
+        const p = m.pricing || {};
+        return parseFloat(p.prompt || '0') === 0 && parseFloat(p.completion || '0') === 0;
+      });
+
+      if (!modelos.length) {
+        cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px;">No se encontraron modelos gratuitos.</p>';
+        return;
+      }
+
+      // Guardar en estado
+      state.agente.container = cont;
+      state.agente.modelos = modelos;
+      const apiKeyInput = document.getElementById('agenteApiKeyInput');
+      state.agente.apiKey = apiKeyInput ? apiKeyInput.value.trim() : '';
+      const selInput = document.getElementById('agenteModeloSeleccionado');
+      state.agente.selectedId = selInput ? selInput.value.trim() : '';
+
+      window.agenteModelosCargados = modelos;
+
+      pintarLista('agente');
+
+      // Auto-test: solo los sin caché, tope MAX_AUTOTEST
+      const sinCache = modelos.filter(m => !healthCache[m.id]).slice(0, MAX_AUTOTEST);
+      if (sinCache.length > 0 && state.agente.apiKey) {
+        console.log(`🔬 Auto-test de ${sinCache.length} modelos (Bíblico)…`);
+        testearCola('agente', sinCache.map(m => m.id), state.agente.apiKey);
+      } else if (!state.agente.apiKey) {
+        console.warn('⚠️ Sin API Key — no se auto-testean modelos.');
+      }
+    } catch (e) {
+      cont.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:10px;">Error: ' + escapar(e.message) + '</p>';
+    }
+  };
+
+  // ── Overrides: Cargar modelos del Moderador ──────────────
+  window.cargarModelosGratisModerador = async function () {
+    const cont = document.getElementById('moderadorModelosLista');
+    if (!cont) return;
+    cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px;"><i class="fas fa-spinner fa-spin"></i> Consultando OpenRouter…</p>';
+
+    try {
+      const resp = await fetch('https://openrouter.ai/api/v1/models');
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const data = await resp.json();
+      const modelos = (data.data || []).filter(m => {
+        const p = m.pricing || {};
+        return parseFloat(p.prompt || '0') === 0 && parseFloat(p.completion || '0') === 0;
+      });
+
+      if (!modelos.length) {
+        cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:10px;">No se encontraron modelos gratuitos.</p>';
+        return;
+      }
+
+      state.moderador.container = cont;
+      state.moderador.modelos = modelos;
+      const apiKeyInput = document.getElementById('moderadorApiKeyInput');
+      state.moderador.apiKey = apiKeyInput ? apiKeyInput.value.trim() : '';
+      const selInput = document.getElementById('moderadorModeloSeleccionado');
+      state.moderador.selectedId = selInput ? selInput.value.trim() : '';
+
+      window.moderadorModelosCargados = modelos;
+
+      pintarLista('moderador');
+
+      const sinCache = modelos.filter(m => !healthCache[m.id]).slice(0, MAX_AUTOTEST);
+      if (sinCache.length > 0 && state.moderador.apiKey) {
+        console.log(`🔬 Auto-test de ${sinCache.length} modelos (Moderador)…`);
+        testearCola('moderador', sinCache.map(m => m.id), state.moderador.apiKey);
+      } else if (!state.moderador.apiKey) {
+        console.warn('⚠️ Sin API Key — no se auto-testean modelos (moderador).');
+      }
+    } catch (e) {
+      cont.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:10px;">Error: ' + escapar(e.message) + '</p>';
+    }
+  };
+
+  // ── Overrides: Selección ─────────────────────────────────
+  window.seleccionarModeloAgente = function (id) {
+    const input = document.getElementById('agenteModeloSeleccionado');
+    if (input) input.value = id;
+    state.agente.selectedId = id;
+    pintarLista('agente');
+  };
+
+  window.seleccionarModeloModerador = function (id) {
+    const input = document.getElementById('moderadorModeloSeleccionado');
+    if (input) input.value = id;
+    state.moderador.selectedId = id;
+    pintarLista('moderador');
+  };
+
+  // ── Sincronizar selectedId al abrir el panel admin ───────
+  document.addEventListener('DOMContentLoaded', function () {
+    const sync = (tipo, inputId) => {
+      const el = document.getElementById(inputId);
+      if (el && state[tipo]) state[tipo].selectedId = el.value.trim();
+    };
+    setInterval(() => {
+      sync('agente', 'agenteModeloSeleccionado');
+      sync('moderador', 'moderadorModeloSeleccionado');
+    }, 2000);
+  });
+
+  console.log('✅ FIX v7.0 aplicado: Indicador de salud + auto-orden de modelos OpenRouter');
+})();
+</script>
 </body>
 </html>

@@ -6818,5 +6818,1454 @@ console.log('✅ FIX v4.1 aplicado: copiarVersiculoDia + compartirVersiculoDia')
   console.log('✅ FIX v7.0 aplicado: Indicador de salud + auto-orden de modelos OpenRouter');
 })();
 </script>
+<!-- ═══════════════════════════════════════════════════════════════
+     CENTINEL v4.0 — Guardián + Moderador + CallMeBot
+     · UI sutil · Logo Sal y Luz · 3 chips · Moderación integrada
+     · Estadísticas mensuales · Reportes de plataforma
+     ═══════════════════════════════════════════════════════════════ -->
+<style>
+  :root {
+    --centinel-primary:      #1D9E75;
+    --centinel-primary-2:    #085041;
+    --centinel-primary-glow: rgba(29,158,117,0.45);
+    --centinel-primary-soft: rgba(29,158,117,0.12);
+    --centinel-on-primary:   #ffffff;
+  }
+
+  /* ══════ BOTÓN FLOTANTE · SUTIL ══════ */
+  .centinel-fab {
+    position: fixed;
+    bottom: 84px; left: 18px;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.35);
+    padding: 0; cursor: pointer; z-index: 9995;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.04) 45%, rgba(0,0,0,0.10) 100%),
+      linear-gradient(135deg, var(--centinel-primary), var(--centinel-primary-2));
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.18),
+      inset 0 1px 0 rgba(255,255,255,0.45);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    transition: transform .25s cubic-bezier(.2,.9,.3,1.15), box-shadow .25s ease, opacity .35s ease;
+    overflow: hidden; isolation: isolate;
+    opacity: 0.85;
+  }
+  .centinel-fab:hover { opacity: 1; transform: scale(1.06); }
+  .centinel-fab:active { transform: scale(0.94); }
+  .centinel-fab.oculto { opacity: 0; pointer-events: none; transform: scale(.3); }
+  .centinel-fab img {
+    width: 78%; height: 78%; object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+  }
+  .centinel-fab i { font-size: 22px; color: #fff; filter: drop-shadow(0 1px 2px rgba(0,0,0,.3)); }
+  .centinel-fab .dot-online {
+    position: absolute; top: 3px; right: 3px;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: #4ade80; border: 1.5px solid #fff;
+    box-shadow: 0 0 8px rgba(74,222,128,.7);
+    animation: centinelDotPulse 2s ease-in-out infinite;
+  }
+  @keyframes centinelDotPulse { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+  @media (max-width: 640px) {
+    .centinel-fab {
+      width: 46px; height: 46px;
+      bottom: 72px; left: 12px;
+      opacity: 0.72;
+    }
+    .centinel-fab:active, .centinel-fab:focus { opacity: 1; }
+  }
+
+  /* Pestaña restaurar */
+  .centinel-restore {
+    position: fixed; left: 0; bottom: 84px;
+    width: 18px; height: 48px; padding: 0; border: none;
+    border-radius: 0 14px 14px 0; cursor: pointer; z-index: 9994;
+    display: none; align-items: center; justify-content: center;
+    color: #fff; font-size: 11px;
+    background: linear-gradient(135deg, var(--centinel-primary), var(--centinel-primary-2));
+    box-shadow: 3px 3px 12px rgba(0,0,0,.25);
+    transition: width .2s ease;
+    opacity: 0.85;
+  }
+  .centinel-restore.show { display: flex; }
+  .centinel-restore:hover { width: 26px; opacity: 1; }
+  @media (max-width: 640px) {
+    .centinel-restore { bottom: 72px; height: 44px; width: 16px; opacity: .72; }
+    .centinel-restore:hover { width: 22px; opacity: 1; }
+  }
+
+  /* ══════ PANEL · LIQUIDGLASS ══════ */
+  .centinel-panel {
+    position: fixed; bottom: 152px; left: 18px;
+    width: 400px; max-width: calc(100vw - 28px);
+    height: 560px; max-height: calc(100vh - 190px);
+    z-index: 9998; display: none; flex-direction: column;
+    overflow: hidden; border-radius: 30px;
+    background: linear-gradient(180deg, rgba(255,255,255,.75) 0%, rgba(255,255,255,.6) 100%);
+    backdrop-filter: blur(44px) saturate(190%);
+    -webkit-backdrop-filter: blur(44px) saturate(190%);
+    border: 1px solid rgba(255,255,255,.55);
+    box-shadow:
+      0 30px 70px rgba(0,0,0,.28),
+      0 10px 30px rgba(0,0,0,.12),
+      inset 0 1px 0 rgba(255,255,255,.85);
+    transform-origin: bottom left;
+    animation: centinelPanelIn .32s cubic-bezier(.2,.9,.3,1.15);
+  }
+  body.dark .centinel-panel {
+    background: linear-gradient(180deg, rgba(30,30,46,.76) 0%, rgba(20,20,34,.66) 100%);
+    border-color: rgba(255,255,255,.10);
+    box-shadow: 0 30px 70px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.12);
+  }
+  .centinel-panel.show { display: flex; }
+  @keyframes centinelPanelIn {
+    from { opacity: 0; transform: translateY(18px) scale(.96); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .centinel-header {
+    position: relative; padding: 14px 16px;
+    display: flex; align-items: center; gap: 11px;
+    color: var(--centinel-on-primary);
+    background:
+      radial-gradient(120% 130% at 20% 0%, rgba(255,255,255,.28), transparent 55%),
+      linear-gradient(135deg, var(--centinel-primary), var(--centinel-primary-2));
+    border-bottom: 1px solid rgba(255,255,255,.18);
+    overflow: hidden;
+  }
+  .centinel-header::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+  }
+  .centinel-header .avatar {
+    width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 20px;
+    background: radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,.6), rgba(255,255,255,.15) 60%), rgba(255,255,255,.22);
+    border: 1.5px solid rgba(255,255,255,.55);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 4px 12px rgba(0,0,0,.14);
+    overflow: hidden;
+  }
+  .centinel-header .avatar img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+  .centinel-header .info { flex: 1; min-width: 0; }
+  .centinel-header .name { font-weight: 700; font-size: 14.5px; letter-spacing: .2px; text-shadow: 0 1px 2px rgba(0,0,0,.15); }
+  .centinel-header .status { font-size: 11px; opacity: .94; display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+  .centinel-header .status .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #4ade80;
+    box-shadow: 0 0 0 2px rgba(74,222,128,.35), 0 0 10px rgba(74,222,128,.65);
+  }
+  .centinel-header .status .dot.offline {
+    background: #fbbf24;
+    box-shadow: 0 0 0 2px rgba(251,191,36,.35), 0 0 10px rgba(251,191,36,.55);
+  }
+  .centinel-icon-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.14);
+    color: #fff; font-size: 12px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: .18s ease;
+  }
+  .centinel-icon-btn:hover { background: rgba(255,255,255,.28); transform: scale(1.06); }
+
+  .centinel-body {
+    flex: 1; overflow-y: auto; padding: 16px 14px;
+    display: flex; flex-direction: column; gap: 10px;
+    scrollbar-width: thin; scrollbar-color: rgba(120,120,140,.35) transparent;
+  }
+  .centinel-body::-webkit-scrollbar { width: 6px; }
+  .centinel-body::-webkit-scrollbar-thumb { background: rgba(120,120,140,.35); border-radius: 6px; }
+
+  .centinel-msg {
+    max-width: 88%; padding: 11px 15px; font-size: 13.5px; line-height: 1.55;
+    word-wrap: break-word; white-space: pre-wrap; border-radius: 22px;
+    animation: centinelMsgIn .24s ease;
+  }
+  @keyframes centinelMsgIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .centinel-msg.agent {
+    align-self: flex-start; color: var(--text-primary);
+    background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.75));
+    border: 1px solid rgba(255,255,255,.7); border-bottom-left-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.06), inset 0 1px 0 rgba(255,255,255,.9);
+  }
+  body.dark .centinel-msg.agent {
+    color: var(--text-primary);
+    background: linear-gradient(180deg, rgba(50,50,72,.78), rgba(38,38,58,.68));
+    border-color: rgba(255,255,255,.10);
+  }
+  .centinel-msg.user {
+    align-self: flex-end; color: var(--centinel-on-primary);
+    background:
+      radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,.25), transparent 60%),
+      linear-gradient(135deg, var(--centinel-primary), var(--centinel-primary-2));
+    border-bottom-right-radius: 8px;
+    box-shadow: 0 6px 18px var(--centinel-primary-glow), inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .centinel-msg.loading { font-style: italic; opacity: .8; }
+  .centinel-msg.loading::after { content: '...'; display: inline-block; animation: centinelDots 1.2s steps(1) infinite; }
+  @keyframes centinelDots { 0%,20% { content: '.'; } 40% { content: '..'; } 60%,100% { content: '...'; } }
+
+  /* Chips — solo 3, discretos */
+  .centinel-chips {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 10px 14px 6px;
+    border-top: 1px solid rgba(0,0,0,.05);
+  }
+  body.dark .centinel-chips { border-top-color: rgba(255,255,255,.06); }
+  .centinel-chip {
+    background: rgba(255,255,255,.55);
+    border: 1px solid rgba(255,255,255,.65);
+    color: var(--text-primary);
+    padding: 6px 12px; border-radius: 30px;
+    font-size: 11.5px; font-weight: 500; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,.9);
+    transition: .18s ease;
+  }
+  body.dark .centinel-chip {
+    background: rgba(60,60,84,.55); border-color: rgba(255,255,255,.10);
+    box-shadow: 0 3px 10px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.1);
+  }
+  .centinel-chip:hover {
+    background: linear-gradient(135deg, var(--centinel-primary), var(--centinel-primary-2));
+    color: var(--centinel-on-primary); border-color: transparent;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px var(--centinel-primary-glow);
+  }
+  .centinel-chip i { font-size: 11px; }
+
+  .centinel-inputbar {
+    display: flex; align-items: flex-end; gap: 8px;
+    padding: 12px 12px 14px;
+    background: rgba(255,255,255,.4);
+    border-top: 1px solid rgba(0,0,0,.06);
+  }
+  body.dark .centinel-inputbar { background: rgba(24,24,40,.5); border-top-color: rgba(255,255,255,.07); }
+  .centinel-inputbar textarea {
+    flex: 1; padding: 11px 16px; border-radius: 22px;
+    border: 1px solid rgba(255,255,255,.7);
+    background: rgba(255,255,255,.75); color: var(--text-primary);
+    font-size: 13.5px; font-family: inherit; resize: none;
+    max-height: 96px; min-height: 44px; outline: none;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 2px 8px rgba(0,0,0,.05);
+    transition: box-shadow .2s ease, border .2s ease;
+  }
+  body.dark .centinel-inputbar textarea {
+    background: rgba(38,38,58,.65); border-color: rgba(255,255,255,.10); color: var(--text-primary);
+  }
+  .centinel-inputbar textarea:focus {
+    border-color: var(--centinel-primary);
+    box-shadow: 0 0 0 3px var(--centinel-primary-soft), inset 0 1px 0 rgba(255,255,255,.9);
+  }
+  .centinel-send-btn {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.45);
+    background:
+      radial-gradient(120% 120% at 30% 20%, rgba(255,255,255,.3), transparent 60%),
+      linear-gradient(135deg, var(--centinel-primary), var(--centinel-primary-2));
+    color: var(--centinel-on-primary); font-size: 15px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    box-shadow: 0 8px 22px var(--centinel-primary-glow), inset 0 1px 0 rgba(255,255,255,.45);
+    transition: .18s ease;
+  }
+  .centinel-send-btn:hover { transform: scale(1.06); }
+  .centinel-send-btn:active { transform: scale(.94); }
+  .centinel-send-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  @media (max-width: 640px) {
+    .centinel-panel {
+      bottom: 0; left: 0; right: 0; width: 100%; max-width: 100%;
+      height: 100vh; max-height: 100vh; border-radius: 22px 22px 0 0;
+      bottom: 68px;
+      height: calc(100vh - 68px);
+      max-height: calc(100vh - 68px);
+    }
+  }
+
+  /* ── Admin cards ── */
+  .centinel-color-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+    gap: 8px; margin-top: 8px;
+  }
+  .centinel-color-swatch {
+    width: 100%; aspect-ratio: 1/1; border-radius: 14px;
+    cursor: pointer; border: 2.5px solid transparent;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 15px;
+    transition: transform .15s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.4);
+  }
+  .centinel-color-swatch:hover { transform: scale(1.08); }
+  .centinel-color-swatch.active { border-color: #fff; box-shadow: 0 0 0 2px var(--centinel-primary), 0 6px 18px rgba(0,0,0,.22); }
+  .centinel-color-swatch i { display: none; }
+  .centinel-color-swatch.active i { display: inline-block; }
+  .centinel-custom-color {
+    display: flex; align-items: center; gap: 10px; padding: 10px;
+    margin-top: 10px; background: var(--bg-body);
+    border: 1px solid var(--border-color); border-radius: 12px;
+  }
+  .centinel-custom-color input[type="color"] {
+    width: 44px; height: 44px; border: none; padding: 0;
+    border-radius: 10px; cursor: pointer; background: transparent;
+  }
+  .centinel-custom-color input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+  .centinel-custom-color input[type="color"]::-webkit-color-swatch { border: none; border-radius: 10px; }
+  .centinel-custom-color label { flex: 1; font-size: 12px; color: var(--text-secondary); margin: 0; }
+
+  /* Modelos */
+  .centinel-model-list {
+    max-height: 320px; overflow-y: auto; margin-top: 8px;
+    border: 1px solid var(--border-color); border-radius: 12px;
+    padding: 6px; background: var(--bg-body);
+  }
+  .centinel-model-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: 10px; cursor: pointer;
+    border: 1px solid transparent; transition: .15s ease;
+    margin-bottom: 4px; background: white;
+  }
+  body.dark .centinel-model-item { background: #1e1e30; }
+  .centinel-model-item:hover { border-color: var(--centinel-primary); background: var(--centinel-primary-soft); }
+  .centinel-model-item.selected {
+    border-color: var(--centinel-primary);
+    box-shadow: 0 0 0 2px var(--centinel-primary-soft);
+  }
+  .centinel-model-item .health-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    background: #94a3b8;
+  }
+  .centinel-model-item .health-dot.ok      { background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,.22); }
+  .centinel-model-item .health-dot.fail    { background: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.22); }
+  .centinel-model-item .health-dot.testing { background: #f59e0b; animation: dotPulse .9s ease-in-out infinite; }
+  @keyframes dotPulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  .centinel-model-item .health-info { font-size: 10px; font-weight: 500; }
+  .centinel-model-item .health-info.ok  { color: #16a34a; }
+  .centinel-model-item .health-info.fail{ color: #dc2626; }
+  .centinel-model-item .info { flex: 1; min-width: 0; }
+  .centinel-model-item .nombre { font-weight: 600; font-size: 12.5px; }
+  .centinel-model-item .id { font-size: 10.5px; color: var(--text-secondary); word-break: break-all; }
+  .centinel-model-item .badge-free {
+    background: #22c55e; color: #fff; font-size: 9.5px; font-weight: 700;
+    padding: 2px 7px; border-radius: 20px; flex-shrink: 0;
+  }
+  .centinel-model-toolbar {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
+    font-size: 11.5px; align-items: center;
+  }
+  .centinel-model-toolbar .stat-ok   { color: #16a34a; font-weight: 600; }
+  .centinel-model-toolbar .stat-fail { color: #dc2626; font-weight: 600; }
+  .centinel-model-toolbar .stat-pend { color: #d97706; font-weight: 600; }
+  .centinel-model-toolbar .spacer { flex: 1; }
+  .centinel-model-toolbar button {
+    background: var(--teal); color: #fff; border: none;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 10.5px; font-weight: 600; cursor: pointer;
+  }
+  .centinel-model-toolbar button.sec {
+    background: transparent; color: var(--text-primary);
+    border: 1px solid var(--border-color);
+  }
+
+  /* Estadísticas en admin */
+  .centinel-stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(90px,1fr));
+    gap: 8px; margin-top: 8px;
+  }
+  .centinel-stat-box {
+    background: var(--bg-body); padding: 10px 8px;
+    border-radius: 12px; text-align: center;
+    border: 1px solid var(--border-color);
+  }
+  .centinel-stat-box .num { font-size: 20px; font-weight: 700; color: var(--centinel-primary); }
+  .centinel-stat-box .lbl { font-size: 10.5px; color: var(--text-secondary); margin-top: 2px; }
+</style>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CENTINEL v4.0 — Guardián + Moderador + CallMeBot
+// ═══════════════════════════════════════════════════════════════
+(function () {
+  'use strict';
+
+  const K_HIDDEN    = 'centinel_hidden_v4';
+  const K_HISTORIAL = 'centinel_historial_v4';
+  const K_CONFIG    = 'centinel_config_v4';
+  const K_COLOR     = 'centinel_color_v4';
+  const K_HEALTH    = 'centinel_health_v4';
+  const K_STATS_TS  = 'centinel_stats_ts_v4';
+  const TTL_HEALTH  = 60 * 60 * 1000;
+
+  const COLORES_PRESET = [
+    { hex:'#1D9E75', hex2:'#085041', label:'Sal y Luz' },
+    { hex:'#3b82f6', hex2:'#1e40af', label:'Azul' },
+    { hex:'#6366f1', hex2:'#3730a3', label:'Índigo' },
+    { hex:'#a855f7', hex2:'#6b21a8', label:'Púrpura' },
+    { hex:'#ec4899', hex2:'#9d174d', label:'Rosa' },
+    { hex:'#ef4444', hex2:'#991b1b', label:'Rojo' },
+    { hex:'#f97316', hex2:'#9a3412', label:'Naranja' },
+    { hex:'#f59e0b', hex2:'#92400e', label:'Ámbar' },
+    { hex:'#10b981', hex2:'#065f46', label:'Verde' },
+    { hex:'#14b8a6', hex2:'#115e59', label:'Turquesa' },
+    { hex:'#06b6d4', hex2:'#155e75', label:'Cian' },
+    { hex:'#64748b', hex2:'#334155', label:'Gris' }
+  ];
+
+  let cfg = {
+    nombre: 'Centinel',
+    logoUrl: '',
+    apiKey: '',
+    modelo: '',
+    modeloNombre: '',
+    promptSistema: '',
+    mensajeBienvenida: '¡Shalom! Soy Centinel, guardián de SAL Y LUZ. Puedo orientarte sobre nuestra confesión de fe, los reglamentos y esta sección. ¿En qué te ayudo?',
+    confesionFe: '',
+    reglamentos: '',
+    entrenamientoExtra: '',
+    color1: '#1D9E75',
+    color2: '#085041',
+    // Moderación
+    moderarMuro: true,
+    moderarOraciones: true,
+    moderarNecesidades: true,
+    moderarConsejeria: true,
+    moderarChatAdmin: true,
+    // CallMeBot
+    notifRegistro: true,
+    notifMensajes: true,
+    notifDonativos: true,
+    notifInfracciones: true,
+    notifErrores: true,
+    notifPeticiones: true,
+    statsMensuales: true
+  };
+  let historial = [];
+  let cargando = false;
+  let modo = 'desconocido';
+  let CONFIG_REF = null;
+  let modelosCargados = [];
+  let healthCache = {};
+  let testando = false;
+
+  try {
+    if (typeof db !== 'undefined' && db && typeof db.collection === 'function') {
+      CONFIG_REF = db.collection('config_centinel').doc('config');
+    }
+  } catch (e) {}
+
+  // ═══════ Health cache ═══════
+  try {
+    const raw = localStorage.getItem(K_HEALTH);
+    if (raw) {
+      const p = JSON.parse(raw) || {};
+      const now = Date.now();
+      Object.keys(p).forEach(k => { if (p[k] && (now - (p[k].t || 0)) < TTL_HEALTH) healthCache[k] = p[k]; });
+    }
+  } catch (e) {}
+  function guardarHealth() {
+    try {
+      const now = Date.now(); const out = {};
+      Object.keys(healthCache).forEach(k => { if (healthCache[k] && (now - (healthCache[k].t||0)) < TTL_HEALTH) out[k] = healthCache[k]; });
+      localStorage.setItem(K_HEALTH, JSON.stringify(out));
+    } catch (e) {}
+  }
+
+  // ═══════ Colores ═══════
+  function shadeHex(hex, p) {
+    const num = parseInt(hex.replace('#',''), 16);
+    const amt = Math.round(2.55 * p);
+    const R = Math.max(0, Math.min(255, (num >> 16) + amt));
+    const G = Math.max(0, Math.min(255, ((num >> 8) & 0xFF) + amt));
+    const B = Math.max(0, Math.min(255, (num & 0xFF) + amt));
+    return '#' + (0x1000000 + R*0x10000 + G*0x100 + B).toString(16).slice(1);
+  }
+  function hexToRgba(hex, a) {
+    const h = hex.replace('#','');
+    return `rgba(${parseInt(h.substring(0,2),16)},${parseInt(h.substring(2,4),16)},${parseInt(h.substring(4,6),16)},${a})`;
+  }
+  function aplicarColores(c1, c2) {
+    if (!c1) c1 = '#1D9E75';
+    if (!c2) c2 = shadeHex(c1, -25);
+    const r = document.documentElement.style;
+    r.setProperty('--centinel-primary', c1);
+    r.setProperty('--centinel-primary-2', c2);
+    r.setProperty('--centinel-primary-glow', hexToRgba(c1, .45));
+    r.setProperty('--centinel-primary-soft', hexToRgba(c1, .12));
+    try { localStorage.setItem(K_COLOR, JSON.stringify({ c1, c2 })); } catch (e) {}
+    cfg.color1 = c1; cfg.color2 = c2;
+  }
+  function cargarColorGuardado() {
+    try {
+      const raw = localStorage.getItem(K_COLOR);
+      if (raw) { const p = JSON.parse(raw); if (p && p.c1) aplicarColores(p.c1, p.c2); }
+    } catch (e) {}
+  }
+
+  // ═══════ Logo Sal y Luz ═══════
+  async function cargarLogoSistema() {
+    if (cfg.logoUrl) return;
+    try {
+      if (typeof APP_CONFIG !== 'undefined' && APP_CONFIG) {
+        const doc = await APP_CONFIG.get();
+        if (doc.exists && doc.data().logoUrl) {
+          cfg.logoUrl = doc.data().logoUrl;
+          refrescarUI();
+        }
+      }
+    } catch (e) {}
+  }
+
+  // ═══════ Colecciones ═══════
+  const COLECCIONES = `
+- Biblia: lectura bíblica con múltiples versiones. Puedes copiar, compartir y consultar al Agente Bíblico IA.
+- Devocionales: reflexiones, estudios y testimonios en PDF.
+- Muro: red social interna con publicaciones, reacciones, comentarios y compartidos.
+- Reels: videos cortos de la comunidad.
+- Iglesias: registro de iglesias locales con mapa.
+- Proyectos: grupos temáticos con chat interno.
+- Grupos: grupos de conexión (máximo 15).
+- Discipulado: formación espiritual.
+- Oración: peticiones y alabanzas.
+- Mapa: misioneros, iglesias, grupos, eventos y servicios.
+- Necesidades: publicación de necesidades comunitarias.
+- Servicio: ayuda alimentaria.
+- Consejería: orientación bíblica.
+- Chat Admin: contacto con la administración.
+- Reportes: canal del equipo de apoyo.
+- Equipo: chat del equipo.`;
+
+  function panelActual() {
+    const p = document.querySelector('.panel.active');
+    return p ? (p.id || '').replace('panel-','') : 'inicio';
+  }
+  function nombrePanel(id) {
+    const m = { inicio:'Inicio', biblia:'Biblia', devocionales:'Devocionales', muro:'Muro',
+      reels:'Reels', iglesias:'Iglesias', proyectos:'Proyectos', grupos:'Grupos',
+      discipulado:'Discipulado', oracion:'Oración', mapa:'Mapa',
+      necesidades:'Necesidades', servicio:'Servicio', consejeria:'Consejería',
+      reportes:'Reportes', chatadmin:'Chat Admin', chatequipo:'Equipo', admin:'Admin' };
+    return m[id] || id;
+  }
+
+  function construirSystemPrompt() {
+    const pol = (typeof politicasComunidad !== 'undefined' && politicasComunidad && politicasComunidad.texto) ? politicasComunidad.texto : '';
+    const conf = cfg.confesionFe || '(Aún no configurada por la administración.)';
+    const regl = cfg.reglamentos || '(Aún no configurados por la administración.)';
+    const extra = cfg.entrenamientoExtra || '';
+
+    let base = cfg.promptSistema;
+    if (!base || base.trim().length < 30) {
+      base = `Eres "Centinel", guardián virtual de la comunidad cristiana SAL Y LUZ.
+Orientas con amor y respeto a cualquier persona sobre: confesión de fe, reglamentos y el propósito de cada sección.
+
+REGLAS:
+- Tono pastoral, amable, claro y breve (máx. 180 palabras salvo que pidan detalle).
+- Usa EXCLUSIVAMENTE el CONTEXTO OFICIAL entregado. NO inventes.
+- Si no está cubierto, dilo y sugiere "Chat Admin".
+- Si detectas lenguaje ofensivo, reprende con amor y recuerda las políticas.
+- No des consejos médicos, legales ni financieros.`;
+    }
+    return `${base}
+
+=== POLÍTICAS ===
+${pol || '(No configuradas)'}
+
+=== CONFESIÓN DE FE ===
+${conf}
+
+=== REGLAMENTOS ===
+${regl}
+
+${extra ? '=== ENTRENAMIENTO ADICIONAL ===\n' + extra + '\n\n' : ''}=== COLECCIONES ===
+${COLECCIONES}
+
+=== CONTEXTO ===
+Sección actual: "${nombrePanel(panelActual())}" (${panelActual()}).`;
+  }
+
+  function respuestaOffline(p) {
+    p = (p || '').toLowerCase();
+    if (p.includes('confes') || p.includes('cre') || p.includes('fe')) {
+      return cfg.confesionFe ? '🙏 *Confesión de Fe:*\n\n' + cfg.confesionFe : 'La confesión de fe aún no ha sido publicada por la administración.';
+    }
+    if (p.includes('reglament') || p.includes('regla') || p.includes('norma') || p.includes('estatut')) {
+      return cfg.reglamentos ? '📖 *Reglamentos:*\n\n' + cfg.reglamentos : 'Los reglamentos aún no han sido publicados.';
+    }
+    if (p.includes('secci') || p.includes('aqui') || p.includes('aquí') || p.includes('esto') || p.includes('esta')) {
+      const panel = panelActual();
+      return `🧭 Estás en la sección *${nombrePanel(panel)}*.\n\n¿Qué necesitas saber de ella? Puedo contarte su propósito general o consultar las políticas relacionadas.`;
+    }
+    if (p.includes('colec') || p.includes('plataforma') || p.includes('funciona') || p.includes('tiene')) {
+      return '🧭 *Colecciones de SAL Y LUZ:*\n' + COLECCIONES;
+    }
+    return '¡Shalom! Soy *Centinel* 🛡️.\n\nPuedo orientarte sobre:\n• 🙏 Confesión de fe\n• 📖 Reglamento\n• 🧭 Esta sección\n\nToca un botón o escribe tu pregunta.';
+  }
+
+  async function consultar(pregunta) {
+    if (!cfg.apiKey || !cfg.modelo) return respuestaOffline(pregunta);
+    const sys = construirSystemPrompt();
+    const msgs = [
+      { role: 'system', content: sys },
+      ...historial.slice(-8),
+      { role: 'user', content: pregunta }
+    ];
+    const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + cfg.apiKey,
+        'HTTP-Referer': window.location.origin || 'https://salyluz.app',
+        'X-Title': 'SAL Y LUZ · Centinel'
+      },
+      body: JSON.stringify({ model: cfg.modelo, messages: msgs, max_tokens: 900, temperature: 0.5 })
+    });
+    const data = await resp.json();
+    if (data.error) return '⚠️ No pude conectar con mi cerebro IA.\n\n' + respuestaOffline(pregunta);
+    return (data.choices?.[0]?.message?.content) || 'Sin respuesta.';
+  }
+
+  async function cargarConfig() {
+    try {
+      const raw = localStorage.getItem(K_CONFIG);
+      if (raw) {
+        const local = JSON.parse(raw);
+        if (local && typeof local === 'object') {
+          cfg = Object.assign({}, cfg, local);
+          if (cfg.color1) aplicarColores(cfg.color1, cfg.color2);
+        }
+      }
+    } catch (e) {}
+
+    if (!CONFIG_REF) { modo = 'local'; refrescarUI(); return; }
+    try {
+      const doc = await CONFIG_REF.get();
+      if (doc.exists) {
+        const d = doc.data() || {};
+        cfg = Object.assign({}, cfg, d);
+        modo = 'firestore';
+        try { localStorage.setItem(K_CONFIG, JSON.stringify(cfg)); } catch (e) {}
+      } else {
+        modo = 'firestore';
+      }
+      if (cfg.color1) aplicarColores(cfg.color1, cfg.color2);
+    } catch (e) {
+      console.warn('Centinel: Firestore inaccesible.', e.message || e);
+      modo = 'local';
+    }
+    refrescarUI();
+  }
+
+  function refrescarUI() {
+    const n = document.getElementById('centinelNombre');
+    if (n) n.textContent = cfg.nombre + ' · Guardián';
+    const av = document.getElementById('centinelAvatar');
+    const bImg = document.getElementById('centinelBtnImg');
+    const logoHtml = cfg.logoUrl ? `<img src="${cfg.logoUrl}" alt="">` : '<i class="fas fa-shield-halved"></i>';
+    if (av) av.innerHTML = logoHtml;
+    if (bImg) bImg.innerHTML = cfg.logoUrl ? `<img src="${cfg.logoUrl}" alt="">` : '<i class="fas fa-shield-halved"></i>';
+    const st = document.getElementById('centinelStatus');
+    if (st) {
+      if (cfg.apiKey && cfg.modelo) st.innerHTML = '<span class="dot"></span> En línea';
+      else st.innerHTML = '<span class="dot offline"></span> Modo offline';
+    }
+  }
+
+  function agregarMsg(rol, texto, loading) {
+    const c = document.getElementById('centinelChatMensajes');
+    if (!c) return null;
+    const d = document.createElement('div');
+    d.className = 'centinel-msg ' + (rol === 'user' ? 'user' : 'agent');
+    if (loading) d.classList.add('loading');
+    d.textContent = texto;
+    c.appendChild(d);
+    c.scrollTop = c.scrollHeight;
+    return d;
+  }
+
+  async function enviarMsg() {
+    if (cargando) return;
+    const input = document.getElementById('centinelChatInput');
+    if (!input) return;
+    const t = input.value.trim();
+    if (!t) return;
+    cargando = true;
+    const btn = document.getElementById('centinelChatEnviarBtn');
+    if (btn) btn.disabled = true;
+    agregarMsg('user', t);
+    historial.push({ role:'user', content: t });
+    try { sessionStorage.setItem(K_HISTORIAL, JSON.stringify(historial.slice(-20))); } catch (e) {}
+    input.value = '';
+    input.style.height = 'auto';
+    const loader = agregarMsg('agent', 'Consultando', true);
+    try {
+      const reply = await consultar(t);
+      if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+      agregarMsg('agent', reply);
+      historial.push({ role:'assistant', content: reply });
+      try { sessionStorage.setItem(K_HISTORIAL, JSON.stringify(historial.slice(-20))); } catch (e) {}
+    } catch (e) {
+      if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+      agregarMsg('agent', '⚠️ Error: ' + (e.message || 'desconocido'));
+    } finally {
+      cargando = false;
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  // ═══════ API pública chat ═══════
+  window.toggleCentinel = function () {
+    const p = document.getElementById('centinelChatPanel');
+    if (!p) return;
+    if (p.classList.contains('show')) p.classList.remove('show');
+    else {
+      p.classList.add('show');
+      const c = document.getElementById('centinelChatMensajes');
+      if (c && c.children.length === 0) agregarMsg('agent', cfg.mensajeBienvenida);
+      const i = document.getElementById('centinelChatInput');
+      if (i) setTimeout(() => i.focus(), 180);
+    }
+  };
+  window.cerrarCentinel  = function () { const p = document.getElementById('centinelChatPanel'); if (p) p.classList.remove('show'); };
+  window.ocultarCentinel = function () {
+    try { localStorage.setItem(K_HIDDEN, '1'); } catch (e) {}
+    const b = document.getElementById('centinelFab'); const t = document.getElementById('centinelRestore'); const p = document.getElementById('centinelChatPanel');
+    if (p) p.classList.remove('show');
+    if (b) b.classList.add('oculto');
+    if (t) t.classList.add('show');
+  };
+  window.mostrarCentinel = function () {
+    try { localStorage.setItem(K_HIDDEN, '0'); } catch (e) {}
+    const b = document.getElementById('centinelFab'); const t = document.getElementById('centinelRestore');
+    if (b) b.classList.remove('oculto');
+    if (t) t.classList.remove('show');
+  };
+  window.centinelSugerencia = function (txt) {
+    const i = document.getElementById('centinelChatInput');
+    if (!i) return;
+    i.value = txt;
+    enviarMsg();
+  };
+  window.enviarMensajeCentinel = enviarMsg;
+
+  // ═══════ HTML ═══════
+  function inyectarHTML() {
+    ['centinelFab','centinelRestore','centinelChatPanel'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    });
+    const w = document.createElement('div');
+    w.innerHTML = `
+      <button type="button" class="centinel-restore" id="centinelRestore"
+              onclick="mostrarCentinel();toggleCentinel();" title="Mostrar Centinel">
+        <i class="fas fa-shield-halved"></i>
+      </button>
+
+      <button type="button" class="centinel-fab" id="centinelFab"
+              onclick="toggleCentinel()" title="Centinel · Guardián de la comunidad">
+        <span id="centinelBtnImg"><i class="fas fa-shield-halved"></i></span>
+        <span class="dot-online" id="centinelDotOnline" style="display:none;"></span>
+      </button>
+
+      <div class="centinel-panel" id="centinelChatPanel" role="dialog" aria-label="Centinel">
+        <div class="centinel-header">
+          <div class="avatar" id="centinelAvatar"><i class="fas fa-shield-halved"></i></div>
+          <div class="info">
+            <div class="name" id="centinelNombre">Centinel · Guardián</div>
+            <div class="status" id="centinelStatus"><span class="dot"></span> En línea</div>
+          </div>
+          <button type="button" class="centinel-icon-btn" onclick="ocultarCentinel()" title="Ocultar">
+            <i class="fas fa-eye-slash"></i>
+          </button>
+          <button type="button" class="centinel-icon-btn" onclick="cerrarCentinel()" title="Cerrar">
+            <i class="fas fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="centinel-body" id="centinelChatMensajes"></div>
+
+        <div class="centinel-chips">
+          <button type="button" class="centinel-chip" onclick="centinelSugerencia('¿Cuál es la confesión de fe de SAL Y LUZ?')">
+            <i class="fas fa-dove"></i> Confesión de fe
+          </button>
+          <button type="button" class="centinel-chip" onclick="centinelSugerencia('¿Qué reglamentos tiene la plataforma?')">
+            <i class="fas fa-scroll"></i> Reglamento
+          </button>
+          <button type="button" class="centinel-chip" onclick="centinelSugerencia('¿Para qué sirve esta sección donde estoy?')">
+            <i class="fas fa-compass"></i> Esta sección
+          </button>
+        </div>
+
+        <div class="centinel-inputbar">
+          <textarea id="centinelChatInput" placeholder="Escribe tu pregunta…" rows="1"
+            onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();enviarMensajeCentinel();}"></textarea>
+          <button type="button" class="centinel-send-btn" id="centinelChatEnviarBtn" onclick="enviarMensajeCentinel()">
+            <i class="fas fa-arrow-up"></i>
+          </button>
+        </div>
+      </div>
+    `;
+    while (w.firstChild) document.body.appendChild(w.firstChild);
+
+    try {
+      const raw = sessionStorage.getItem(K_HISTORIAL);
+      if (raw) { const p = JSON.parse(raw); if (Array.isArray(p)) historial = p; }
+    } catch (e) {}
+    try {
+      if (localStorage.getItem(K_HIDDEN) === '1') {
+        const b = document.getElementById('centinelFab'); const t = document.getElementById('centinelRestore');
+        if (b) b.classList.add('oculto');
+        if (t) t.classList.add('show');
+      }
+    } catch (e) {}
+    const ta = document.getElementById('centinelChatInput');
+    if (ta) ta.addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 96) + 'px';
+    });
+    refrescarUI();
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // MODERACIÓN IA (absorbe al Agente Moderador)
+  // ═══════════════════════════════════════════════════════════
+  async function moderarContenido(texto, contexto) {
+    if (!texto || typeof texto !== 'string') return { infringe: false };
+    if (!cfg.apiKey || !cfg.modelo) return { infringe: false };
+    const pol = (typeof politicasComunidad !== 'undefined' && politicasComunidad && politicasComunidad.texto) ? politicasComunidad.texto : '';
+    if (!pol || pol.length < 20) return { infringe: false };
+    try {
+      const sys = 'Eres un moderador cristiano del sistema SAL Y LUZ. Evalúa si el contenido del usuario infringe las políticas. Responde SOLO con JSON: {"infringe": true/false, "motivo": "razón breve", "respuesta_usuario": "mensaje pastoral y respetuoso"}.';
+      const userMsg = `POLÍTICAS:\n${pol}\n\nCONTEXTO: ${contexto}\n\nCONTENIDO:\n"""${texto.substring(0, 2000)}"""\n\nResponde JSON:`;
+      const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + cfg.apiKey,
+          'HTTP-Referer': window.location.origin || 'https://salyluz.app',
+          'X-Title': 'SAL Y LUZ · Centinel Moderador'
+        },
+        body: JSON.stringify({ model: cfg.modelo, messages: [{ role:'system', content: sys }, { role:'user', content: userMsg }], max_tokens: 500, temperature: 0.3 })
+      });
+      const data = await resp.json();
+      if (data.error) return { infringe: false };
+      let content = (data.choices?.[0]?.message?.content || '').trim();
+      content = content.replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+      let parsed;
+      try { parsed = JSON.parse(content); } catch (e) {
+        const m = content.match(/\{[\s\S]*\}/);
+        if (m) try { parsed = JSON.parse(m[0]); } catch (_) {}
+      }
+      if (!parsed) return { infringe: false };
+      return {
+        infringe: !!parsed.infringe,
+        motivo: (parsed.motivo || '').toString(),
+        respuesta_usuario: (parsed.respuesta_usuario || '').toString()
+      };
+    } catch (e) { return { infringe: false }; }
+  }
+
+  async function evaluarYResponderInfraccion(texto, contexto, extra) {
+    try {
+      const res = await moderarContenido(texto, contexto);
+      if (!res || !res.infringe) return { permitido: true };
+      const motivo = res.motivo || 'Contenido no permitido';
+      const respuestaIA = res.respuesta_usuario || 'Tu publicación infringe las políticas de SAL Y LUZ.';
+      try {
+        if (typeof MODERACION_INFRACCIONES !== 'undefined' && MODERACION_INFRACCIONES) {
+          await MODERACION_INFRACCIONES.add({
+            uid: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.uid : null,
+            nombre: (typeof currentUser !== 'undefined' && currentUser) ? currentUser.displayName : 'Anónimo',
+            contexto, contenido: (texto || '').substring(0, 1500),
+            motivo, respuestaIA, extra: extra || {},
+            fecha: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+      } catch (e) {}
+      alert('⚠️ Aviso del Agente Moderador:\n\n' + respuestaIA + '\n\nMotivo: ' + motivo);
+      if (cfg.notifInfracciones) {
+        centinelCallMeBot(`🛡️ *Infracción detectada*\n👤 ${(typeof currentUser !== 'undefined' && currentUser) ? currentUser.displayName : 'Anónimo'}\n📍 ${contexto}\nMotivo: ${motivo}`);
+      }
+      return { permitido: false, motivo, respuestaIA };
+    } catch (e) {
+      return { permitido: true };
+    }
+  }
+
+  // Exponer como moderador global
+  window.moderarContenido = moderarContenido;
+  window.evaluarYResponderInfraccion = evaluarYResponderInfraccion;
+
+  // ═══════════════════════════════════════════════════════════
+  // CALLMEBOT + ESTADÍSTICAS
+  // ═══════════════════════════════════════════════════════════
+  function centinelCallMeBot(mensaje) {
+    try {
+      if (typeof callmebotConfig === 'undefined' || !callmebotConfig || !callmebotConfig.enabled) return;
+      if (typeof enviarWhatsAppCallMeBot === 'function') enviarWhatsAppCallMeBot(mensaje);
+    } catch (e) {}
+  }
+
+  window.centinelNotificar = function (tipo, mensaje) {
+    if (tipo === 'registro'   && !cfg.notifRegistro) return;
+    if (tipo === 'mensaje'    && !cfg.notifMensajes) return;
+    if (tipo === 'donativo'   && !cfg.notifDonativos) return;
+    if (tipo === 'infraccion' && !cfg.notifInfracciones) return;
+    if (tipo === 'error'      && !cfg.notifErrores) return;
+    if (tipo === 'peticion'   && !cfg.notifPeticiones) return;
+    centinelCallMeBot(mensaje);
+  };
+
+  // Estadísticas
+  async function calcularEstadisticas() {
+    const stats = { usuarios:0, posts:0, oraciones:0, iglesias:0, grupos:0, infracciones:0, nuevosMes:0 };
+    try {
+      const inicioMes = new Date(); inicioMes.setDate(1); inicioMes.setHours(0,0,0,0);
+      const tsInicio = firebase.firestore.Timestamp.fromDate(inicioMes);
+
+      const [uSnap, pSnap, oSnap, iSnap, gSnap] = await Promise.all([
+        USERS.get(), POSTS.get(), ORACIONES.get(), IGLESIAS.get(), GRUPOS.get()
+      ]);
+      stats.usuarios = uSnap.size;
+      stats.posts = pSnap.size;
+      stats.oraciones = oSnap.size;
+      stats.iglesias = iSnap.size;
+      stats.grupos = gSnap.size;
+      uSnap.forEach(d => { const f = d.data().fechaRegistro; if (f && f.seconds && f.seconds * 1000 >= tsInicio.toMillis()) stats.nuevosMes++; });
+
+      try {
+        const infSnap = await db.collection('moderacion_infracciones').orderBy('fecha','desc').limit(100).get();
+        const ahora = Date.now();
+        infSnap.forEach(d => { const f = d.data().fecha; if (f && f.seconds && (ahora - f.seconds * 1000) < 30*24*60*60*1000) stats.infracciones++; });
+      } catch (e) {}
+    } catch (e) { console.warn('Stats:', e); }
+    return stats;
+  }
+
+  async function enviarEstadisticasMensuales(force) {
+    if (!cfg.statsMensuales && !force) return;
+    if (typeof callmebotConfig === 'undefined' || !callmebotConfig || !callmebotConfig.enabled) return;
+    try {
+      const last = parseInt(localStorage.getItem(K_STATS_TS) || '0');
+      const ahora = Date.now();
+      const MES = 30 * 24 * 60 * 60 * 1000;
+      if (!force && last && (ahora - last) < MES) return;
+
+      const s = await calcularEstadisticas();
+      const fecha = new Date().toLocaleDateString('es-ES', { year:'numeric', month:'long', day:'numeric' });
+      const msg = `📊 *ESTADÍSTICAS MENSUALES — SAL Y LUZ*\n📅 ${fecha}\n\n👥 Usuarios totales: ${s.usuarios}\n🆕 Nuevos este mes: ${s.nuevosMes}\n📝 Publicaciones: ${s.posts}\n🙏 Oraciones: ${s.oraciones}\n⛪ Iglesias: ${s.iglesias}\n👥 Grupos: ${s.grupos}\n🛡️ Infracciones (30d): ${s.infracciones}\n\n— Centinel 🛡️`;
+      centinelCallMeBot(msg);
+      localStorage.setItem(K_STATS_TS, String(ahora));
+      console.log('📊 Estadísticas enviadas por Centinel');
+    } catch (e) { console.warn('enviarEstadisticasMensuales:', e); }
+  }
+
+  // Reporte comportamiento de la plataforma
+  window.centinelEnviarReporteComportamiento = async function () {
+    const s = await calcularEstadisticas();
+    const fecha = new Date().toLocaleString('es-ES');
+    const msg = `🔍 *REPORTE DE COMPORTAMIENTO — SAL Y LUZ*\n📅 ${fecha}\n\n👥 Usuarios: ${s.usuarios} (${s.nuevosMes} nuevos este mes)\n📝 Publicaciones totales: ${s.posts}\n🙏 Peticiones de oración: ${s.oraciones}\n⛪ Iglesias registradas: ${s.iglesias}\n👥 Grupos activos: ${s.grupos}\n🛡️ Infracciones últimos 30 días: ${s.infracciones}\n\n— Centinel 🛡️`;
+    centinelCallMeBot(msg);
+    alert('📤 Reporte enviado por WhatsApp (si CallMeBot está activo).');
+  };
+
+  // ═══════════════════════════════════════════════════════════
+  // ADMIN CARD
+  // ═══════════════════════════════════════════════════════════
+  function inyectarAdminCard() {
+    if (document.getElementById('cardCentinelConfig')) return;
+    const anchor = document.getElementById('msgAgenteModeradorConfig') || document.getElementById('msgAgenteIAConfig');
+    if (!anchor || !anchor.parentNode) return;
+
+    const swatches = COLORES_PRESET.map(c => `
+      <div class="centinel-color-swatch" data-c1="${c.hex}" data-c2="${c.hex2}"
+           style="background:linear-gradient(135deg, ${c.hex}, ${c.hex2});"
+           onclick="centinelSetPresetColor('${c.hex}','${c.hex2}')"
+           title="${c.label}"><i class="fas fa-check"></i></div>
+    `).join('');
+
+    const card = document.createElement('div');
+    card.className = 'card config-solo-admin';
+    card.id = 'cardCentinelConfig';
+    card.innerHTML = `
+      <h3><i class="fas fa-shield-halved"></i> Centinel — Guardián + Moderador + Notificaciones</h3>
+      <div class="admin-ia-config">
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">
+          <strong>Centinel</strong> es el asistente flotante disponible para <strong>todos</strong>.
+          También modera el contenido (absorbió al Agente Moderador) y puede enviarte
+          notificaciones por <strong>CallMeBot (WhatsApp)</strong>. Solo el <strong>SuperAdmin</strong> edita.
+        </p>
+
+        <div id="centinelStatusAlmacen" style="padding:8px 12px;border-radius:10px;background:var(--bg-body);border:1px solid var(--border-color);font-size:11.5px;color:var(--text-secondary);margin-bottom:12px;"></div>
+
+        <h5 style="margin:14px 0 8px;"><i class="fas fa-user-astronaut"></i> Identidad</h5>
+        <label>Nombre</label><input type="text" id="centinelNombreInput" placeholder="Centinel">
+        <label>🖼️ Logo (URL) — si lo dejas vacío, usa el de SAL Y LUZ</label>
+        <input type="url" id="centinelLogoUrl" placeholder="https://...">
+        <label>Mensaje de bienvenida</label>
+        <input type="text" id="centinelMensajeBienvenida">
+
+        <h5 style="margin:18px 0 8px;"><i class="fas fa-microchip"></i> Inteligencia (IA)</h5>
+        <label>API Key de OpenRouter</label>
+        <input type="text" id="centinelApiKeyInput" placeholder="sk-or-v1-...">
+        <button type="button" class="btn-outline" onclick="centinelCargarModelos()" style="margin-top:8px;width:100%;">
+          <i class="fas fa-sync"></i> Cargar modelos GRATIS (con salud)
+        </button>
+        <div class="centinel-model-toolbar" id="centinelModelToolbar" style="display:none;">
+          <span class="stat-ok" id="cStatOk">● 0 OK</span>
+          <span class="stat-fail" id="cStatFail">● 0 con error</span>
+          <span class="stat-pend" id="cStatPend">● 0 pendientes</span>
+          <span class="spacer"></span>
+          <button type="button" onclick="centinelProbarTodos()" id="cBtnProbarTodos"><i class="fas fa-flask"></i> Probar todos</button>
+          <button type="button" class="sec" onclick="centinelLimpiarHealth()"><i class="fas fa-redo-alt"></i> Limpiar</button>
+        </div>
+        <div class="centinel-model-list" id="centinelModelLista" style="display:none;">
+          <p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:14px;">Carga los modelos para elegir.</p>
+        </div>
+        <label style="margin-top:10px;">Modelo seleccionado</label>
+        <input type="text" id="centinelModeloSeleccionado" readonly placeholder="Selecciona de la lista">
+
+        <h5 style="margin:18px 0 8px;"><i class="fas fa-brain"></i> Entrenamiento</h5>
+        <label>Prompt del sistema (opcional)</label>
+        <textarea id="centinelPromptSistema" rows="3" placeholder="Vacío = prompt por defecto"></textarea>
+        <label>🙏 Confesión de Fe</label>
+        <textarea id="centinelConfesionFe" rows="6" placeholder="Ej: Creemos en un solo Dios: Padre, Hijo y Espíritu Santo..."></textarea>
+        <label>📖 Reglamentos</label>
+        <textarea id="centinelReglamentos" rows="5" placeholder="Ej: 1) Respeto... 2) ..."></textarea>
+        <label>🧠 Entrenamiento adicional</label>
+        <textarea id="centinelEntrenamientoExtra" rows="4" placeholder="Directrices extra, contexto histórico, etc."></textarea>
+
+        <h5 style="margin:18px 0 8px;"><i class="fas fa-shield-alt"></i> Moderación IA</h5>
+        <p style="font-size:11px;color:var(--text-secondary);margin:0 0 8px 0;">Centinel revisa el contenido con IA y aplica las políticas. Marca las secciones a moderar:</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">
+          <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="cModMuro"> Muro</label>
+          <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="cModOraciones"> Oraciones</label>
+          <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="cModNecesidades"> Necesidades</label>
+          <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="cModConsejeria"> Consejería</label>
+          <label style="display:flex;gap:6px;align-items:center;grid-column:1/-1;"><input type="checkbox" id="cModChatAdmin"> Chat Admin</label>
+        </div>
+
+        <h5 style="margin:18px 0 8px;"><i class="fab fa-whatsapp"></i> Notificaciones CallMeBot</h5>
+        <p style="font-size:11px;color:var(--text-secondary);margin:0 0 8px 0;">Requiere que CallMeBot esté activo en su sección correspondiente.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px;">
+          <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="cNotRegistro"> Nuevos registros</label>
+          <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="cNotMensajes"> Mensajes Chat Admin</label>
+          <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="cNotDonativos"> Donativos</label>
+          <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="cNotInfracciones"> Infracciones</label>
+          <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="cNotErrores"> Errores de plataforma</label>
+          <label style="display:flex;gap:6px;align-items:center;"><input type="checkbox" id="cNotPeticiones"> Peticiones de oración</label>
+          <label style="display:flex;gap:6px;align-items:center;grid-column:1/-1;"><input type="checkbox" id="cNotStats"> 📊 Estadísticas mensuales automáticas</label>
+        </div>
+        <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">
+          <button type="button" class="btn-outline" onclick="centinelEnviarReporteComportamiento()" style="flex:1;min-width:160px;">
+            <i class="fas fa-chart-line"></i> Enviar reporte ahora
+          </button>
+          <button type="button" class="btn-outline" onclick="centinelEnviarStatsForzado()" style="flex:1;min-width:160px;">
+            <i class="fas fa-paper-plane"></i> Enviar estadísticas
+          </button>
+        </div>
+
+        <h5 style="margin:18px 0 8px;"><i class="fas fa-palette"></i> Color</h5>
+        <div class="centinel-color-grid" id="centinelColorGrid">${swatches}</div>
+        <div class="centinel-custom-color">
+          <input type="color" id="centinelCustomColor" value="#1D9E75">
+          <label for="centinelCustomColor">Color personalizado</label>
+        </div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
+          <button type="button" class="btn-primary" onclick="guardarConfigCentinel()" style="flex:1;min-width:200px;">
+            <i class="fas fa-save"></i> Guardar configuración
+          </button>
+          <button type="button" class="btn-outline" onclick="probarCentinel()" style="flex:1;min-width:140px;">
+            <i class="fas fa-flask"></i> Probar
+          </button>
+          <button type="button" class="btn-outline" onclick="restaurarCentinelAdmin()" style="flex:1;min-width:140px;">
+            <i class="fas fa-rotate"></i> Recargar
+          </button>
+        </div>
+      </div>
+    `;
+    anchor.parentNode.insertBefore(card, anchor.nextSibling);
+
+    setTimeout(() => {
+      const cc = document.getElementById('centinelCustomColor');
+      if (cc) cc.addEventListener('input', function () {
+        aplicarColores(this.value, shadeHex(this.value, -25));
+        document.querySelectorAll('.centinel-color-swatch').forEach(el => el.classList.remove('active'));
+      });
+    }, 100);
+  }
+
+  function rellenarAdminCard() {
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+    const chk = (id, v) => { const el = document.getElementById(id); if (el) el.checked = !!v; };
+    set('centinelNombreInput', cfg.nombre);
+    set('centinelLogoUrl', cfg.logoUrl);
+    set('centinelMensajeBienvenida', cfg.mensajeBienvenida);
+    set('centinelApiKeyInput', cfg.apiKey);
+    set('centinelModeloSeleccionado', cfg.modelo);
+    set('centinelPromptSistema', cfg.promptSistema);
+    set('centinelConfesionFe', cfg.confesionFe);
+    set('centinelReglamentos', cfg.reglamentos);
+    set('centinelEntrenamientoExtra', cfg.entrenamientoExtra);
+    chk('cModMuro', cfg.moderarMuro);
+    chk('cModOraciones', cfg.moderarOraciones);
+    chk('cModNecesidades', cfg.moderarNecesidades);
+    chk('cModConsejeria', cfg.moderarConsejeria);
+    chk('cModChatAdmin', cfg.moderarChatAdmin);
+    chk('cNotRegistro', cfg.notifRegistro);
+    chk('cNotMensajes', cfg.notifMensajes);
+    chk('cNotDonativos', cfg.notifDonativos);
+    chk('cNotInfracciones', cfg.notifInfracciones);
+    chk('cNotErrores', cfg.notifErrores);
+    chk('cNotPeticiones', cfg.notifPeticiones);
+    chk('cNotStats', cfg.statsMensuales);
+    const cc = document.getElementById('centinelCustomColor');
+    if (cc && cfg.color1) cc.value = cfg.color1;
+    document.querySelectorAll('.centinel-color-swatch').forEach(el => {
+      el.classList.toggle('active', el.getAttribute('data-c1') === cfg.color1);
+    });
+    const info = document.getElementById('centinelStatusAlmacen');
+    if (info) {
+      if (modo === 'firestore') info.innerHTML = '💾 <strong>Firestore</strong> <span style="color:#16a34a;">(sincronizado)</span>';
+      else if (modo === 'local') info.innerHTML = '⚠️ <strong>Local</strong>. <a href="#" onclick="centinelMostrarAyudaReglas();return false;" style="color:var(--teal);font-weight:600;">Ver reglas de Firestore</a>';
+      else info.innerHTML = '🔍 Verificando…';
+    }
+  }
+
+  window.guardarConfigCentinel = async function () {
+    if (typeof isSuperAdmin !== 'undefined' && !isSuperAdmin) {
+      alert('🔒 Solo el SuperAdmin puede editar el Centinel.'); return;
+    }
+    const v = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    const c = (id) => { const el = document.getElementById(id); return el ? el.checked : false; };
+    const payload = {
+      nombre: v('centinelNombreInput') || 'Centinel',
+      logoUrl: v('centinelLogoUrl'),
+      mensajeBienvenida: v('centinelMensajeBienvenida') || cfg.mensajeBienvenida,
+      apiKey: v('centinelApiKeyInput'),
+      modelo: v('centinelModeloSeleccionado'),
+      modeloNombre: cfg.modeloNombre || '',
+      promptSistema: v('centinelPromptSistema'),
+      confesionFe: v('centinelConfesionFe'),
+      reglamentos: v('centinelReglamentos'),
+      entrenamientoExtra: v('centinelEntrenamientoExtra'),
+      color1: cfg.color1,
+      color2: cfg.color2,
+      moderarMuro: c('cModMuro'),
+      moderarOraciones: c('cModOraciones'),
+      moderarNecesidades: c('cModNecesidades'),
+      moderarConsejeria: c('cModConsejeria'),
+      moderarChatAdmin: c('cModChatAdmin'),
+      notifRegistro: c('cNotRegistro'),
+      notifMensajes: c('cNotMensajes'),
+      notifDonativos: c('cNotDonativos'),
+      notifInfracciones: c('cNotInfracciones'),
+      notifErrores: c('cNotErrores'),
+      notifPeticiones: c('cNotPeticiones'),
+      statsMensuales: c('cNotStats')
+    };
+    try { localStorage.setItem(K_CONFIG, JSON.stringify(payload)); } catch (e) {}
+    cfg = Object.assign({}, cfg, payload);
+    refrescarUI();
+    if (!CONFIG_REF) { modo = 'local'; rellenarAdminCard(); alert('✅ Guardado localmente.'); return; }
+    try {
+      await CONFIG_REF.set(Object.assign({}, payload, { actualizado: firebase.firestore.FieldValue.serverTimestamp() }), { merge: true });
+      modo = 'firestore';
+      rellenarAdminCard();
+      alert('✅ Configuración guardada y sincronizada.');
+    } catch (e) {
+      const code = (e && e.code) || '';
+      const msg = (e && e.message) || '';
+      modo = 'local'; rellenarAdminCard();
+      if (code === 'permission-denied' || msg.indexOf('Missing or insufficient') !== -1) {
+        if (confirm('✅ Guardado en este navegador.\n\n⚠️ Firestore denegó (faltan reglas).\n\n¿Ver las reglas?')) centinelMostrarAyudaReglas();
+      } else {
+        alert('⚠️ No sincronizó: ' + msg + '\n\n✅ Guardado localmente.');
+      }
+    }
+  };
+
+  window.probarCentinel = async function () {
+    const apiKey = ((document.getElementById('centinelApiKeyInput') || {}).value || '').trim();
+    const modelo = ((document.getElementById('centinelModeloSeleccionado') || {}).value || '').trim();
+    if (!apiKey || !modelo) { alert('Completa API Key y modelo.'); return; }
+    try {
+      const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+        body: JSON.stringify({ model: modelo, messages: [{ role:'user', content:'Responde solo "OK".' }], max_tokens: 20 })
+      });
+      const d = await r.json();
+      if (d.error) { alert('❌ Error: ' + (d.error.message || JSON.stringify(d.error))); return; }
+      alert('✅ Conexión exitosa.');
+    } catch (e) { alert('❌ Error: ' + e.message); }
+  };
+
+  window.restaurarCentinelAdmin = async function () {
+    await cargarConfig(); rellenarAdminCard();
+    alert('✅ Configuración recargada.');
+  };
+  window.centinelEnviarStatsForzado = async function () {
+    await enviarEstadisticasMensuales(true);
+    alert('📤 Estadísticas enviadas (si CallMeBot está activo).');
+  };
+  window.centinelSetPresetColor = function (c1, c2) {
+    aplicarColores(c1, c2);
+    document.querySelectorAll('.centinel-color-swatch').forEach(el => {
+      el.classList.toggle('active', el.getAttribute('data-c1') === c1);
+    });
+    try {
+      const raw = localStorage.getItem(K_CONFIG);
+      const c = raw ? JSON.parse(raw) : {};
+      c.color1 = c1; c.color2 = c2;
+      localStorage.setItem(K_CONFIG, JSON.stringify(c));
+    } catch (e) {}
+  };
+
+  // ═══════ Modelos OpenRouter ═══════
+  function pintarModelos() {
+    const cont = document.getElementById('centinelModelLista');
+    const tb = document.getElementById('centinelModelToolbar');
+    if (!cont) return;
+    if (tb) tb.style.display = 'flex';
+    const ordenados = modelosCargados.slice().sort((a, b) => {
+      const ha = healthCache[a.id] || { status: 'unknown' };
+      const hb = healthCache[b.id] || { status: 'unknown' };
+      const rank = (h) => h.status === 'ok' ? 0 : h.status === 'testing' ? 1 : h.status === 'unknown' ? 2 : 3;
+      const ra = rank(ha), rb = rank(hb);
+      if (ra !== rb) return ra - rb;
+      if (ha.status === 'ok' && hb.status === 'ok') return (ha.latency || 9999) - (hb.latency || 9999);
+      return String(a.name || a.id).localeCompare(String(b.name || b.id));
+    });
+    let ok = 0, fail = 0, pend = 0;
+    modelosCargados.forEach(m => {
+      const h = healthCache[m.id];
+      if (!h || h.status === 'testing') pend++;
+      else if (h.status === 'ok') ok++;
+      else if (h.status === 'fail') fail++;
+    });
+    const okEl = document.getElementById('cStatOk'); if (okEl) okEl.textContent = `● ${ok} OK`;
+    const failEl = document.getElementById('cStatFail'); if (failEl) failEl.textContent = `● ${fail} con error`;
+    const pendEl = document.getElementById('cStatPend'); if (pendEl) pendEl.textContent = `● ${pend} pendientes`;
+    const btnTodos = document.getElementById('cBtnProbarTodos');
+    if (btnTodos) { btnTodos.disabled = testando; btnTodos.innerHTML = testando ? '<i class="fas fa-spinner fa-spin"></i> Probando…' : '<i class="fas fa-flask"></i> Probar todos'; }
+    let html = '';
+    ordenados.forEach(m => {
+      const h = healthCache[m.id];
+      let dot = 'unknown', infoH = '<span style="opacity:.7;">Sin probar</span>';
+      if (h) {
+        if (h.status === 'testing') { dot = 'testing'; infoH = '⟳ Probando…'; }
+        else if (h.status === 'ok') { dot = 'ok'; infoH = `<span class="health-info ok">✓ ${h.latency} ms</span>`; }
+        else if (h.status === 'fail') { dot = 'fail'; infoH = '<span class="health-info fail">✕ No responde</span>'; }
+      }
+      const selected = cfg.modelo === m.id ? ' selected' : '';
+      const safeId = String(m.id).replace(/'/g, "\\'");
+      html += `<div class="centinel-model-item${selected}" onclick="centinelSeleccionarModelo('${safeId}', '${String(m.name||'').replace(/'/g,"\\'")}')">
+        <span class="health-dot ${dot}"></span>
+        <div class="info"><div class="nombre">${m.name || m.id}</div><div class="id">${m.id}</div><div style="margin-top:2px;">${infoH}</div></div>
+        <span class="badge-free">GRATIS</span>
+        <button type="button" class="sec" style="padding:3px 8px;border-radius:50%;width:26px;height:26px;"
+          onclick="event.stopPropagation();centinelProbarUno('${safeId}')" title="Probar"><i class="fas fa-bolt"></i></button>
+      </div>`;
+    });
+    cont.innerHTML = html;
+    cont.style.display = 'block';
+  }
+
+  async function testearUno(id) {
+    const t0 = performance.now();
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 12000);
+    try {
+      const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST', signal: ctrl.signal,
+        headers: {
+          'Content-Type': 'application/json', 'Authorization': 'Bearer ' + cfg.apiKey,
+          'HTTP-Referer': window.location.origin || 'https://salyluz.app',
+          'X-Title': 'SAL Y LUZ · Centinel Health'
+        },
+        body: JSON.stringify({ model: id, messages: [{ role:'user', content:'hi' }], max_tokens: 5, temperature: 0 })
+      });
+      clearTimeout(timer);
+      const lat = Math.round(performance.now() - t0);
+      let d = null; try { d = await r.json(); } catch (e) {}
+      if (!r.ok) return { ok:false, latency:lat, error:(d && d.error && d.error.message) || ('HTTP ' + r.status) };
+      if (d && d.error) return { ok:false, latency:lat, error:d.error.message };
+      if (!d || !d.choices || !d.choices.length) return { ok:false, latency:lat, error:'Sin respuesta' };
+      return { ok:true, latency:lat };
+    } catch (e) {
+      clearTimeout(timer);
+      const lat = Math.round(performance.now() - t0);
+      return { ok:false, latency:lat, error: e.name === 'AbortError' ? 'Timeout' : (e.message || 'Error') };
+    }
+  }
+
+  async function testearCola(ids) {
+    testando = true; pintarModelos();
+    let i = 0;
+    const total = ids.length;
+    async function worker() {
+      while (i < total) {
+        const id = ids[i++]; if (!id) continue;
+        healthCache[id] = { status: 'testing', t: Date.now() }; pintarModelos();
+        const res = await testearUno(id);
+        healthCache[id] = { status: res.ok ? 'ok' : 'fail', latency: res.latency || 0, error: res.error || '', t: Date.now() };
+        pintarModelos();
+      }
+    }
+    const ws = [];
+    for (let w = 0; w < Math.min(2, total); w++) ws.push(worker());
+    await Promise.all(ws);
+    testando = false; guardarHealth(); pintarModelos();
+  }
+
+  window.centinelCargarModelos = async function () {
+    const cont = document.getElementById('centinelModelLista');
+    if (!cont) return;
+    cont.style.display = 'block';
+    cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:14px;"><i class="fas fa-spinner fa-spin"></i> Consultando OpenRouter…</p>';
+    const apiKeyInput = document.getElementById('centinelApiKeyInput');
+    cfg.apiKey = apiKeyInput ? apiKeyInput.value.trim() : cfg.apiKey;
+    try {
+      const r = await fetch('https://openrouter.ai/api/v1/models');
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const d = await r.json();
+      const modelos = (d.data || []).filter(m => {
+        const p = m.pricing || {};
+        return parseFloat(p.prompt || '0') === 0 && parseFloat(p.completion || '0') === 0;
+      });
+      if (!modelos.length) { cont.innerHTML = '<p style="font-size:12px;color:var(--text-secondary);text-align:center;padding:14px;">Sin modelos gratuitos.</p>'; return; }
+      modelosCargados = modelos;
+      pintarModelos();
+      const sinCache = modelos.filter(m => !healthCache[m.id]).slice(0, 15);
+      if (sinCache.length && cfg.apiKey) testearCola(sinCache.map(m => m.id));
+    } catch (e) {
+      cont.innerHTML = '<p style="font-size:12px;color:#e74c3c;text-align:center;padding:14px;">Error: ' + e.message + '</p>';
+    }
+  };
+
+  window.centinelSeleccionarModelo = function (id, nombre) {
+    cfg.modelo = id; cfg.modeloNombre = nombre || '';
+    const mSel = document.getElementById('centinelModeloSeleccionado');
+    if (mSel) mSel.value = id;
+    pintarModelos();
+  };
+
+  window.centinelProbarUno = async function (id) {
+    if (!cfg.apiKey) { alert('Ingresa la API Key primero.'); return; }
+    healthCache[id] = { status: 'testing', t: Date.now() }; pintarModelos();
+    const res = await testearUno(id);
+    healthCache[id] = { status: res.ok ? 'ok' : 'fail', latency: res.latency || 0, error: res.error || '', t: Date.now() };
+    guardarHealth(); pintarModelos();
+  };
+
+  window.centinelProbarTodos = async function () {
+    if (testando) return;
+    const apiKeyInput = document.getElementById('centinelApiKeyInput');
+    cfg.apiKey = apiKeyInput ? apiKeyInput.value.trim() : cfg.apiKey;
+    if (!cfg.apiKey) { alert('Ingresa la API Key.'); return; }
+    if (!modelosCargados.length) { alert('Carga los modelos.'); return; }
+    modelosCargados.forEach(m => delete healthCache[m.id]);
+    await testearCola(modelosCargados.map(m => m.id));
+  };
+
+  window.centinelLimpiarHealth = function () {
+    if (!confirm('¿Limpiar caché de salud?')) return;
+    healthCache = {};
+    try { localStorage.removeItem(K_HEALTH); } catch (e) {}
+    pintarModelos();
+  };
+
+  // ═══════ Reglas Firestore ═══════
+  window.centinelMostrarAyudaReglas = function () {
+    const reglas = `rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /config_centinel/{doc} {
+      allow read: if true;
+      allow write: if request.auth != null
+                   && request.auth.token.email == 'salyluz@comunidad.com';
+    }
+    match /config_politicas/{doc}        { allow read: if true; allow write: if request.auth != null && request.auth.token.email == 'salyluz@comunidad.com'; }
+    match /config_agente_moderador/{doc} { allow read: if true; allow write: if request.auth != null && request.auth.token.email == 'salyluz@comunidad.com'; }
+    match /config_agente_ia/{doc}        { allow read: if true; allow write: if request.auth != null && request.auth.token.email == 'salyluz@comunidad.com'; }
+    match /config_biblia/{doc}           { allow read: if true; allow write: if request.auth != null && request.auth.token.email == 'salyluz@comunidad.com'; }
+    match /config_callmebot/{doc}        { allow read: if false; allow write: if request.auth != null && request.auth.token.email == 'salyluz@comunidad.com'; }
+    match /config_paypal/{doc}           { allow read: if true; allow write: if request.auth != null && request.auth.token.email == 'salyluz@comunidad.com'; }
+    match /config_mapbox/{doc}           { allow read: if true; allow write: if request.auth != null && request.auth.token.email == 'salyluz@comunidad.com'; }
+    match /appConfig/{doc}               { allow read: if true; allow write: if request.auth != null && request.auth.token.email == 'salyluz@comunidad.com'; }
+
+    match /{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}`;
+    const w = window.open('', '_blank', 'width=780,height=680');
+    if (!w) { alert('Permite ventanas emergentes.'); return; }
+    w.document.write(`<html><head><title>Reglas Firestore · Centinel v4</title>
+      <style>body{font-family:system-ui,sans-serif;padding:24px;background:#0f172a;color:#e2e8f0;}
+      h1{color:#7dd3fc;font-size:20px;margin-top:0;}p{font-size:14px;line-height:1.6;}
+      pre{background:#1e293b;padding:16px;border-radius:10px;overflow:auto;font-size:12.5px;border:1px solid #334155;}
+      code{background:#334155;padding:2px 6px;border-radius:4px;font-size:12px;}
+      button{background:#3b82f6;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:600;margin-top:12px;}
+      button:hover{background:#2563eb;}</style></head><body>
+      <h1>🛡️ Reglas de Firestore para Centinel v4</h1>
+      <p>Pega estas reglas en <strong>Firebase Console → Firestore → Reglas</strong>.</p>
+      <pre id="reglas">${reglas.replace(/</g, '&lt;')}</pre>
+      <button onclick="navigator.clipboard.writeText(document.getElementById('reglas').textContent).then(()=>alert('✅ Copiadas'))">📋 Copiar reglas</button>
+      </body></html>`);
+    w.document.close();
+  };
+
+  // ═══════ Hook switchPanel('admin') ═══════
+  function hookAdmin() {
+    if (typeof window.switchPanel !== 'function') return;
+    if (window._centinelAdminHookV4) return;
+    window._centinelAdminHookV4 = true;
+    const orig = window.switchPanel;
+    window.switchPanel = function (name, ...rest) {
+      const r = orig.call(this, name, ...rest);
+      if (name === 'admin') setTimeout(() => { inyectarAdminCard(); rellenarAdminCard(); }, 220);
+      return r;
+    };
+  }
+
+  // ═══════ Init ═══════
+  async function init() {
+    cargarColorGuardado();
+    inyectarHTML();
+    await cargarConfig();
+    await cargarLogoSistema();
+    setTimeout(() => { inyectarAdminCard(); rellenarAdminCard(); }, 400);
+    hookAdmin();
+    // Programar estadísticas mensuales
+    setTimeout(() => enviarEstadisticasMensuales(false), 4000);
+    // Hook a auth para re-cargar cuando cambie
+    try {
+      if (typeof auth !== 'undefined' && auth && auth.onAuthStateChanged) {
+        auth.onAuthStateChanged(function () {
+          setTimeout(async () => {
+            await cargarConfig();
+            await cargarLogoSistema();
+            inyectarAdminCard();
+            rellenarAdminCard();
+          }, 700);
+        });
+      }
+    } catch (e) {}
+    // Cargar dot online si tiene key+modelo
+    setTimeout(() => {
+      const dot = document.getElementById('centinelDotOnline');
+      if (dot && cfg.apiKey && cfg.modelo) dot.style.display = 'block';
+    }, 1500);
+    console.log('✅ Centinel v4.0 (Guardián + Moderador + CallMeBot) inicializado');
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+</script>
 </body>
 </html>

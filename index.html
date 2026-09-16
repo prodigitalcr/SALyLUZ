@@ -5956,10 +5956,181 @@ console.log('✅ FIX v4.1 aplicado: copiarVersiculoDia + compartirVersiculoDia')
 })();
 </script>
 <script>
-// Stubs mínimos para silenciar errores de botones del versículo
-window.copiarVersiculoDia    = window.copiarVersiculoDia    || function(){};
-window.compartirVersiculoDia = window.compartirVersiculoDia || function(){};
-window.abrirModalProyecto    = window.abrirModalProyecto    || function(){};
+// ═══════════════════════════════════════════════════════════════
+// FIX v5.0 — Biblia: cargar capítulos robusto + normalización ampliada
+// ═══════════════════════════════════════════════════════════════
+(function () {
+  'use strict';
+
+  // ── URL encoding seguro (espacios, acentos, #, ?, %) ─────
+  function normalizarURL(url) {
+    if (!url) return url;
+    // Firebase Storage URLs ya están encoded → no tocar
+    if (url.indexOf('firebasestorage.googleapis.com') !== -1) return url;
+    if (url.indexOf('storage.googleapis.com') !== -1) return url;
+    // Separar protocolo + host + path
+    var m = url.match(/^(https?:\/\/[^\/]+)(\/.*)?$/);
+    if (!m) return encodeURI(url);
+    var base = m[1];
+    var path = m[2] || '';
+    // encodeURIComponent por segmento (respeta los /)
+    path = path.split('/').map(function (seg) { return encodeURIComponent(decodeURIComponent(seg)); }).join('/');
+    return base + path;
+  }
+
+  // ── Normalizador ampliado: maneja 6 formatos comunes ─────
+  window.normalizarCapitulos = function (data) {
+    if (!data) return {};
+    var obj = {};
+
+    // Caso 1: array de versículos {chapter, verse, text}
+    if (Array.isArray(data) && data.length > 0 && data[0] && typeof data[0] === 'object'
+        && (data[0].chapter !== undefined || data[0].capitulo !== undefined)
+        && (data[0].verse !== undefined || data[0].versiculo !== undefined || data[0].v !== undefined)) {
+      data.forEach(function (v) {
+        var cap = parseInt(v.chapter || v.capitulo || v.cap || 1);
+        if (!obj[cap]) obj[cap] = [];
+        obj[cap].push(v.text || v.texto || v.t || '');
+      });
+      return obj;
+    }
+
+    // Caso 2: array de capítulos [{chapter, verses: [...]}]
+    if (Array.isArray(data)) {
+      data.forEach(function (ch) {
+        var n = ch.chapter || ch.capitulo || ch.number || ch.n || 1;
+        var v = ch.verses || ch.versiculos || ch.text || ch.v || [];
+        if (Array.isArray(v)) {
+          obj[n] = v;
+        } else if (v && typeof v === 'object') {
+          obj[n] = Object.keys(v).sort(function (a, b) { return parseInt(a) - parseInt(b); }).map(function (k) { return v[k]; });
+        } else {
+          obj[n] = [];
+        }
+      });
+      return obj;
+    }
+
+    // Caso 3: { "book": { "1": [...], "2": [...] } } — un libro con nombre
+    var keys = Object.keys(data);
+    if (keys.length === 1 && typeof data[keys[0]] === 'object' && !Array.isArray(data[keys[0]])) {
+      var inner = data[keys[0]];
+      var innerKeys = Object.keys(inner);
+      // Detectar si los keys internos son números (capítulos)
+      var hayNumeros = innerKeys.some(function (k) { return !isNaN(parseInt(k)); });
+      if (hayNumeros) {
+        return window.normalizarCapitulos(inner);
+      }
+    }
+
+    // Caso 4: { chapters: [...] } o { capitulos: [...] }
+    if (data.chapters && Array.isArray(data.chapters)) return window.normalizarCapitulos(data.chapters);
+    if (data.capitulos && Array.isArray(data.capitulos)) return window.normalizarCapitulos(data.capitulos);
+
+    // Caso 5: { "1": [...], "2": [...] } — formato clásico
+    // Caso 6: { "1": { "1": "versículo", "2": "versículo" } } — capítulo como objeto
+    keys.forEach(function (k) {
+      if (isNaN(parseInt(k))) return;
+      var v = data[k];
+      if (Array.isArray(v)) {
+        // Aplanar si son objetos {verse, text} en vez de strings
+        obj[k] = v.map(function (item) {
+          if (typeof item === 'string') return item;
+          if (item && typeof item === 'object') return item.text || item.texto || item.t || JSON.stringify(item);
+          return String(item);
+        });
+      } else if (v && typeof v === 'object') {
+        if (Array.isArray(v.verses)) obj[k] = v.verses;
+        else if (Array.isArray(v.versiculos)) obj[k] = v.versiculos;
+        else {
+          // Convertir { "1": "txt", "2": "txt" } a array
+          obj[k] = Object.keys(v)
+            .sort(function (a, b) { return parseInt(a) - parseInt(b); })
+            .map(function (kk) {
+              var item = v[kk];
+              if (typeof item === 'string') return item;
+              if (item && typeof item === 'object') return item.text || item.texto || item.t || JSON.stringify(item);
+              return String(item);
+            });
+        }
+      }
+    });
+    return obj;
+  };
+
+  // ── Cargar capítulos con logging completo ────────────────
+  window.cargarCapitulos = async function (libro) {
+    var url = librosBiblia.antiguoTestamento[libro] || librosBiblia.nuevoTestamento[libro];
+    var capSelect = document.getElementById('capitulo');
+    if (!url) {
+      if (capSelect) capSelect.innerHTML = '<option value="">Sin URL para este libro</option>';
+      console.warn('⚠️ No hay URL para:', libro);
+      return;
+    }
+
+    if (capSelect) capSelect.innerHTML = '<option value="">Cargando…</option>';
+
+    var urlFinal = normalizarURL(url);
+    console.log('📖 Cargando capítulos de:', libro);
+    console.log('   URL original:', url);
+    console.log('   URL normalizada:', urlFinal);
+
+    try {
+      var resp = await fetch(urlFinal);
+      if (!resp.ok) {
+        console.error('❌ HTTP ' + resp.status + ' — ' + resp.statusText);
+        if (resp.status === 404) {
+          if (capSelect) capSelect.innerHTML = '<option value="">❌ Archivo no encontrado (404)</option>';
+        } else if (resp.status === 403) {
+          if (capSelect) capSelect.innerHTML = '<option value="">❌ Acceso denegado (403)</option>';
+        } else {
+          if (capSelect) capSelect.innerHTML = '<option value="">❌ Error ' + resp.status + '</option>';
+        }
+        return;
+      }
+
+      var data = await resp.json();
+      var chaptersObj = window.normalizarCapitulos(data);
+      textosCapitulosCache[libro] = chaptersObj;
+      capituloKeys = Object.keys(chaptersObj).sort(function (a, b) { return parseInt(a) - parseInt(b); });
+
+      console.log('✅ Capítulos cargados:', capituloKeys.length);
+
+      if (capituloKeys.length === 0) {
+        if (capSelect) capSelect.innerHTML = '<option value="">⚠️ Formato no reconocido</option>';
+        console.error('❌ normalizarCapitulos devolvió 0 capítulos. Revisa el formato del JSON.');
+        console.error('   Estructura del JSON:', data);
+        return;
+      }
+
+      if (capSelect) {
+        capSelect.innerHTML = '<option value="">Capítulo</option>';
+        capituloKeys.forEach(function (cap) {
+          var o = document.createElement('option');
+          o.value = cap;
+          o.textContent = cap;
+          capSelect.appendChild(o);
+        });
+        capSelect.value = capituloKeys[0];
+        capituloActual = capituloKeys[0];
+        actualizarInfoCap();
+        cargarVersiculos(libro, capituloActual);
+      }
+    } catch (e) {
+      console.error('❌ Error cargando capítulos:', e);
+      console.error('   URL intentada:', urlFinal);
+      if (e.name === 'SyntaxError') {
+        if (capSelect) capSelect.innerHTML = '<option value="">❌ JSON inválido en el archivo</option>';
+      } else if (e.message && e.message.indexOf('Failed to fetch') !== -1) {
+        if (capSelect) capSelect.innerHTML = '<option value="">❌ Error de red / CORS</option>';
+      } else {
+        if (capSelect) capSelect.innerHTML = '<option value="">❌ ' + (e.message || 'Error desconocido') + '</option>';
+      }
+    }
+  };
+
+  console.log('✅ FIX v5.0 aplicado: Biblia robusta (URL encoding + formatos ampliados + logs)');
+})();
 </script>
 </body>
 </html>

@@ -6132,5 +6132,158 @@ console.log('✅ FIX v4.1 aplicado: copiarVersiculoDia + compartirVersiculoDia')
   console.log('✅ FIX v5.0 aplicado: Biblia robusta (URL encoding + formatos ampliados + logs)');
 })();
 </script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// FIX v6.0 — Persistencia de la versión bíblica (RVR1960 por defecto)
+// • Guarda la versión elegida en localStorage (clave: iglesia_version_biblia)
+// • Al refrescar, restaura automáticamente la última versión usada
+// • Si no hay versión guardada, busca "Reina Valera 1960" en la colección
+//   BIBLIAS_VERSIONES y la aplica como predeterminada
+// ═══════════════════════════════════════════════════════════════
+(function () {
+  'use strict';
+
+  const STORAGE_KEY = 'iglesia_version_biblia';
+
+  // ── Detecta cualquier variante del nombre RVR1960 ──────────
+  function esRVR1960(nombre) {
+    if (!nombre) return false;
+    const n = String(nombre).toLowerCase().replace(/[\s\-_\.]+/g, '');
+    return n.includes('reinavalera1960') || n.includes('rvr1960') || n.includes('rvr60');
+  }
+
+  // ── Aplica una versión de Firestore a librosBiblia + UI ────
+  async function aplicarVersionDesdeFirestore(id, actualizarSelect) {
+    if (!id) return false;
+    let doc;
+    try { doc = await BIBLIAS_VERSIONES.doc(id).get(); } catch (e) { return false; }
+    if (!doc.exists) return false;
+
+    const v = doc.data() || {};
+    librosBiblia = { antiguoTestamento: {}, nuevoTestamento: {} };
+
+    if (v.libros) {
+      Object.keys(v.libros).forEach(nombreLibro => {
+        const info = v.libros[nombreLibro];
+        if (typeof info === 'string') {
+          const testamento = (ORDEN_BIBLICO.indexOf(nombreLibro) >= 0 && ORDEN_BIBLICO.indexOf(nombreLibro) < 39)
+            ? 'antiguoTestamento' : 'nuevoTestamento';
+          if (!librosBiblia[testamento]) librosBiblia[testamento] = {};
+          librosBiblia[testamento][nombreLibro] = info;
+        } else if (info && typeof info === 'object') {
+          const testamento = info.testamento || 'nuevoTestamento';
+          if (!librosBiblia[testamento]) librosBiblia[testamento] = {};
+          librosBiblia[testamento][nombreLibro] = info.url;
+        }
+      });
+    }
+
+    llenarSelectorLibros();
+
+    if (actualizarSelect) {
+      const select = document.getElementById('bibliaVersionSelect');
+      if (select) select.value = id;
+    }
+
+    const badge = document.getElementById('bibliaFuenteBadge');
+    if (badge) badge.innerHTML = `<i class="fas fa-bookmark"></i> ${v.nombre || 'Versión personalizada'}`;
+
+    versionBibliaActualId = id;
+    return true;
+  }
+
+  // ── 1) Override: cambiarVersionBiblia → persistir en localStorage ──
+  window.cambiarVersionBiblia = async function () {
+    const select = document.getElementById('bibliaVersionSelect');
+    const id = select ? select.value : '';
+    versionBibliaActualId = id;
+
+    if (id) {
+      try { localStorage.setItem(STORAGE_KEY, id); } catch (e) {}
+      const ok = await aplicarVersionDesdeFirestore(id, true);
+      if (!ok) {
+        // La versión ya no existe → limpiar y volver al default
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+        await cargarLibrosBiblia();
+      }
+    } else {
+      // El usuario eligió "Predeterminada (config actual)"
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      await cargarLibrosBiblia();
+    }
+  };
+
+  // ── 2) Override: cargarVersionesBiblia → auto-restaurar ────
+  window.cargarVersionesBiblia = async function () {
+    const select = document.getElementById('bibliaVersionSelect');
+    if (!select) return;
+    select.innerHTML = '<option value="">Cargando versiones...</option>';
+
+    let snap;
+    try {
+      snap = await BIBLIAS_VERSIONES.orderBy('fechaSubida', 'desc').get();
+    } catch (e) {
+      select.innerHTML = '<option value="">Predeterminada (config actual)</option>';
+      return;
+    }
+
+    select.innerHTML = '<option value="">Predeterminada (config actual)</option>';
+    let rvr1960Id = null;
+
+    snap.forEach(doc => {
+      const v = doc.data() || {};
+      const opt = document.createElement('option');
+      opt.value = doc.id;
+      opt.textContent = v.nombre || 'Versión sin nombre';
+      select.appendChild(opt);
+      if (!rvr1960Id && esRVR1960(v.nombre)) rvr1960Id = doc.id;
+    });
+
+    // Prioridad: (1) versión guardada → (2) RVR1960 → (3) default
+    let elegida = null;
+    let guardada = null;
+    try { guardada = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+
+    if (guardada && snap.docs.some(d => d.id === guardada)) {
+      elegida = guardada;
+    } else if (rvr1960Id) {
+      elegida = rvr1960Id;
+    }
+
+    if (elegida) {
+      select.value = elegida;
+      versionBibliaActualId = elegida;
+      try { localStorage.setItem(STORAGE_KEY, elegida); } catch (e) {}
+      await aplicarVersionDesdeFirestore(elegida, true);
+      console.log('✅ Versión bíblica aplicada:', elegida);
+    }
+  };
+
+  // ── 3) Override: cargarLibrosBiblia → ganar la carrera ─────
+  //    Después de cargar los libros base (GitHub/local), si hay una
+  //    versión guardada en localStorage, la re-aplicamos para que
+  //    sea la que quede visible.
+  if (typeof window.cargarLibrosBiblia === 'function') {
+    const _origCargarLibros = window.cargarLibrosBiblia;
+    window.cargarLibrosBiblia = async function () {
+      await _origCargarLibros.apply(this, arguments);
+
+      let guardada = null;
+      try { guardada = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+      if (!guardada) return;
+
+      const doc = await BIBLIAS_VERSIONES.doc(guardada).get().catch(() => null);
+      if (doc && doc.exists) {
+        await aplicarVersionDesdeFirestore(guardada, true);
+      } else {
+        // La versión guardada ya no existe → limpiar
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      }
+    };
+  }
+
+  console.log('✅ FIX v6.0: Persistencia de versión bíblica activa (RVR1960 por defecto)');
+})();
+</script>
 </body>
 </html>
